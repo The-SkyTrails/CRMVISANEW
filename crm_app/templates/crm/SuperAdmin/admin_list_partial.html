@@ -1,0 +1,31 @@
+<tbody class="list form-check-all">
+    {% for admin in page_obj %}
+    <tr>
+        <td>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="check-{{ admin.id }}">
+            </div>
+        </td>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ admin.user.first_name }} {{ admin.user.last_name }}</td>
+        <td>{{ admin.user.email }}</td>
+        <td>{{ admin.mobile_no }}</td>
+        <td>
+            <!-- Action buttons like edit/delete -->
+        </td>
+    </tr>
+    {% endfor %}
+</tbody>
+<div class="d-flex justify-content-between">
+    <div>
+        {% if page_obj.has_previous %}
+            <button class="btn btn-secondary" hx-get="{% url 'admin_list' %}?page={{ page_obj.previous_page_number }}&search={{ search_query }}" hx-target="tbody">Previous</button>
+        {% endif %}
+        {% if page_obj.has_next %}
+            <button class="btn btn-secondary" hx-get="{% url 'admin_list' %}?page={{ page_obj.next_page_number }}&search={{ search_query }}" hx-target="tbody">Next</button>
+        {% endif %}
+    </div>
+    <div>
+        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+    </div>
+</div>

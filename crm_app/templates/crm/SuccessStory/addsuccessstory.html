@@ -1,0 +1,43 @@
+{% load crispy_forms_tags %}
+<form hx-post="{{ request.path }}" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}' class="modal-content" enctype="multipart/form-data">
+   
+    <div class="modal-header bg-light p-3">
+        <h5 class="modal-title" id="exampleModalLabel">{% if request.path == "/Add/Successstory" %}Add{% else %}Edit{% endif %}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+    </div>
+    
+    <div class="modal-body">
+
+        <!-- Display non-field form errors -->
+       
+        
+        <!-- Render the form -->
+        <div class="row form-group mb-3">
+          <div class="col-md-12">
+            <input type="file" id="imageInput" name="image" class="form-control">
+            <div id="imagePreview" style="display:none;">
+              <img id="image" src="" alt="Image preview" style="display:none;">
+              <canvas id="editCanvas"></canvas>
+              <div id="brushControls" style="display:none;">
+                <label for="brushSize">Brush Size:</label>
+                <input type="range" id="brushSize" min="5" max="50" value="10">
+                <label for="blurIntensity">Blur Intensity:</label>
+                <input type="range" id="blurIntensity" min="0" max="10" value="2" step="0.1">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+            {% comment %} {{ form|crispy }} {% endcomment %}
+            {{ form.description }}
+        </div>
+
+        <!-- Display individual field errors -->
+        
+        
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>

@@ -1,0 +1,74 @@
+{% comment %} 
+<div class="modal fade" id="editAminModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header bg-light p-3">
+            <h5 class="modal-title" id="exampleModalLabel"></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                id="close-modal"></button>
+        </div>
+        <form class="tablelist-form" autocomplete="off">
+            <div class="modal-body">
+                <div class="mb-3" id="modal-id" style="display: none;">
+                    <label for="id-field" class="form-label">ID</label>
+                    <input type="text" id="id-field" class="form-control" placeholder="ID"
+                        readonly="">
+                </div>
+
+                <div class="mb-3">
+                    <label for="customername-field" class="form-label">First Name</label>
+                    <input type="text" id="customername-field" class="form-control"
+                        placeholder="Enter First Name" required="">
+                    <div class="invalid-feedback">Please enter a customer name.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="customername-field" class="form-label">Last Name</label>
+                    <input type="text" id="customername-field" class="form-control"
+                        placeholder="Enter Last Name" required="">
+                    <div class="invalid-feedback">Please enter a customer name.</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email-field" class="form-label">Email</label>
+                    <input type="email" id="email-field" class="form-control"
+                        placeholder="Enter Email" required="">
+                    <div class="invalid-feedback">Please enter an email.</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="phone-field" class="form-label">Phone</label>
+                    <input type="text" id="phone-field" class="form-control"
+                        placeholder="Enter Phone no." required="">
+                    <div class="invalid-feedback">Please enter a phone.</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="date-field" class="form-label">Password</label>
+                    <input type="password" id="date-field" class="form-control"
+                        placeholder="Enter Password" required="">
+                    <div class="invalid-feedback">Please select a date.</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="date-field" class="form-label">Profile</label>
+                    <input type="file" id="date-field" class="form-control"
+                        placeholder="Enter Password" required="">
+                    <div class="invalid-feedback">Please select a date.</div>
+                </div>
+
+               
+            </div>
+            <div class="modal-footer">
+                <div class="hstack gap-2 justify-content-end">
+                    <button type="button" class="btn btn-light"
+                        data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success" id="add-btn">Add
+                        Customer</button>
+                    <!-- <button type="button" class="btn btn-success" id="edit-btn">Update</button> -->
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</div> {% endcomment %}

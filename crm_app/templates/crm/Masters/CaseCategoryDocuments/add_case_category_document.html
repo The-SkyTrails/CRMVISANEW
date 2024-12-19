@@ -1,0 +1,36 @@
+{% load crispy_forms_tags %}
+<form hx-post="{{ request.path }}" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}' class="modal-content" enctype="multipart/form-data">
+   
+    <div class="modal-header bg-light p-3">
+        <h5 class="modal-title" id="exampleModalLabel">{% if request.path == "/Add/VisaCountry" %}Add{% else %}Edit{% endif %}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+    </div>
+    
+    <div class="modal-body">
+
+       
+        <!-- Render the form -->
+        <div class="form-group">
+            {% comment %} <label for="id_Document_category">{{ form.Document_category.label }}*</label>  <!-- Display the label --> {% endcomment %}
+            {{form|crispy}}
+        </div>
+
+        <!-- Display individual field errors -->
+        {% for field in form %}
+            {% if field.errors %}
+                <div class="alert alert-danger">
+                    <ul>
+                        {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endfor %}
+        
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>

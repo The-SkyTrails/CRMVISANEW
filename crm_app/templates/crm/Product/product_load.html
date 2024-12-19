@@ -1,0 +1,41 @@
+{% extends "crm/base/base.html" %}
+{% load custom_filters %}
+{% load static %}
+{% block main-content %}
+<div class="page-content">
+   <div class="container-fluid">
+      <div class="row">
+         <div class="col-xxl-12">
+            <h5 class="mb-3">Package Types</h5>
+            <div class="col-sm">
+               <div class="d-flex justify-content-sm-end">
+                 
+                  <div class="search-box ms-2 mb-2">
+                     <input class="form-control" type="search" 
+                        name="search" placeholder="Search ..." 
+                        hx-get="{% url "package_list" %}" 
+                        hx-trigger="input changed delay:500ms, search" 
+                        hx-target="#search-results" 
+                        hx-indicator=".htmx-indicator">
+                     {% comment %} <input type="text" class="form-control searching" placeholder="Search..." id="searchInput"> {% endcomment %}
+                     <i class="ri-search-line search-icon"></i>
+                  </div>
+               </div>
+            </div>
+            {% comment %} <button class="btn btn-primary add-btn mb-2" hx-get="{% url "after_Swap" %}" hx-swap="HTML swap:1s">Add</button> {% endcomment %}
+            {% comment %} <button class="btn btn-primary add-btn mb-2" hx-get="{% url "add_package" %}" hx-target="#dialog">Add</button> {% endcomment %}
+            <div class="card">
+               <div class="card-body" hx-get="{% url "package_list" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="search-results">
+               
+               </div>
+               <!-- end card-body -->
+            </div>
+         </div>
+         <!--end col-->
+      </div>
+      <!-- end row -->
+   </div>
+</div>
+
+
+{% endblock main-content %}

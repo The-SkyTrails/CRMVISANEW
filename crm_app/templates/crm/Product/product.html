@@ -1,0 +1,117 @@
+{% load static %}
+{% load custom_filters %}
+
+<!-- Tab Navigation -->
+<ul class="nav nav-pills animation-nav nav-justified gap-2 mb-3" role="tablist">
+   <!-- Add the 'All' tab -->
+   <li class="nav-item waves-effect waves-light">
+      <a class="nav-link active" data-bs-toggle="tab" href="#all" role="tab">
+      All
+      </a>
+   </li>
+   
+   <!-- Loop through other package choices -->
+   {% for state in package_choices %}
+   <li class="nav-item waves-effect waves-light">
+      <a class="nav-link" data-bs-toggle="tab" href="#{{ state.0|slugify }}" role="tab">
+      {{ state.1 }}
+      </a>
+   </li>
+   {% endfor %}
+</ul>
+
+<!-- Tab Content -->
+<div class="tab-content text-muted">
+   <!-- All Packages Tab Content -->
+   <div class="tab-pane active" id="all" role="tabpanel">
+      <div class="row ">
+         {% with packages_by_type.all as package_list %}
+         {% if package_list %}
+         {% for package in package_list %}
+         <div class="col-sm-6 col-xl-3 d-flex align-items-stretch" data-aos="zoom-in-up" data-aos-duration="3000">
+            <div class="card w-100">
+               <div class="" style="height:250px;" >
+                  {% if package.image %} <!-- Check if image exists -->
+               <img class="card-img-top h-100 img-fluid" src="{{ package.image.url }}" alt="{{ package.title }}">
+               {% else %}
+               <img class="card-img-top h-100 img-fluid" src="{% static 'path/to/default_image.jpg' %}" alt="{{ package.title }}"> <!-- Default image -->
+               {% endif %}
+               </div>
+               <div class="card-body">
+                  <h4 class="card-title text-secondary mb-2">{{ package.title }}</h4>
+                  <p class="card-text">Category: {{ package.visa_category }}</p>
+                  <p class="card-text">Contry: {{ package.visa_country }}</p>
+                  <p class="card-text">Processing Time: {{ package.processing_time }}</p>
+                  <p class="card-text">No. Of Visa : {{ package.number_of_visa }}</p>
+                  <p class="card-text">Expiry Date : {{ package.package_expiry_date }}</p>
+                  <p class="card-text">Created By : {{ package.last_updated_by }}</p>
+               </div>
+               <div class="card-footer d-flex justify-content-between">
+                  <a href="{% url "product_details" package.id %}"  class="btn btn-primary btn-sm">See Details</a>
+                  <button class="btn btn-success btn-sm">Dispproved</button>
+                  <button class="btn btn-sm btn-danger remove-item-btn" hx-delete="{% url 'delete_package' pk=package.pk %}" 
+                     hx-confirm="Are you sure you want to delete this Product ?"
+                     hx-target="#all"
+                     hx-swap="outerHTML"
+                     hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}'>
+                     Delete
+                  </button>    
+               </div>
+            </div>
+         </div>
+         {% endfor %}
+         {% else %}
+         <p>No packages available.</p>
+         {% endif %}
+         {% endwith %}
+      </div>
+   </div>
+   
+   <!-- Loop through other package choices -->
+   {% for state in package_choices %}
+   <div class="tab-pane" id="{{ state.0|slugify }}" role="tabpanel">
+      <div class="row ">
+         {% with packages_by_type|get_item:state.0 as package_list %}
+         {% if package_list %}
+         {% for package in package_list %}
+         <div class="col-sm-6 col-xl-3 d-flex align-items-stretch" data-aos="zoom-in-up" data-aos-duration="3000">
+            <div class="card w-100">
+               <div class="" style="height:250px;" >
+                  {% if package.image %} <!-- Check if image exists -->
+               <img class="card-img-top h-100 img-fluid" src="{{ package.image.url }}" alt="{{ package.title }}">
+               {% else %}
+               <img class="card-img-top h-100 img-fluid" src="{% static 'path/to/default_image.jpg' %}" alt="{{ package.title }}"> <!-- Default image -->
+               {% endif %}
+               </div>
+               <div class="card-body">
+                  <h4 class="card-title text-secondary mb-2">{{ package.title }}</h4>
+                  <p class="card-text">Category: {{ package.visa_category }}</p>
+                  <p class="card-text">Contry: {{ package.visa_country }}</p>
+                  <p class="card-text">Processing Time: {{ package.processing_time }}</p>
+                  <p class="card-text">No. Of Visa : {{ package.number_of_visa }}</p>
+                  <p class="card-text">Expiry Date : {{ package.package_expiry_date }}</p>
+                  <p class="card-text">Created By : {{ package.last_updated_by }}</p>
+               </div>
+               <div class="card-footer">
+                  <a href="{% url "product_details" package.id %}"  class="btn btn-primary btn-sm">See Details</a>
+                  <button class="btn btn-sm btn-danger remove-item-btn" hx-delete="{% url 'delete_package' pk=package.pk %}" 
+                  hx-confirm="Are you sure you want to delete this Product ?"
+                  hx-target="#all"
+                  hx-swap="outerHTML"
+                  hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}'>
+                  Delete
+               </button>  
+               
+               </div>
+            </div>
+         </div>
+         {% endfor %}
+         {% else %}
+         <p>No packages available.</p>
+         {% endif %}
+         {% endwith %}
+      </div>
+     
+   </div>
+   {% endfor %}
+</div>

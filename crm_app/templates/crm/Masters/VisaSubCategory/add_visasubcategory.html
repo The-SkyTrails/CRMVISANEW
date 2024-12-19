@@ -1,0 +1,93 @@
+{% load crispy_forms_tags %}
+<form hx-post="{{ request.path }}" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}' class="modal-content" enctype="multipart/form-data">
+   
+    <div class="modal-header bg-light p-3">
+        <h5 class="modal-title" id="exampleModalLabel">{% if request.path == "/Add/VisaCountry" %}Add{% else %}Edit{% endif %}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+    </div>
+    
+    <div class="modal-body">
+        <div class="form-group">
+            <label class="control-label label-with-margin">Country</label>
+            <select class="form-select bg-dark" name="country" id="country">
+                <option value="----">----</option>
+                {% for country in country %}
+                <option value="{{ country.id }}" {% if visa_subcat.country_id.id == country.id %}selected{% endif %}>{{ country.country }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group mt-4">
+            <label class="control-label label-with-margin">Category</label>
+            <select class="form-select bg-dark" name="category" id="category1">
+                <option value="----">----</option>
+                {% for category in category %}
+                <option value="{{ category.id }}" {% if visa_subcat.category_id.id == category.id %}selected{% endif %}>{{ category.category }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group mt-4">
+            <label class="control-label label-with-margin">SubCategory</label>
+            <select class="form-select bg-dark" name="subcategory" id="subcategory">
+                <option value="----">----</option>
+                {% for subcategory in category %}
+                <option value="{{ subcategory.id }}" {% if visa_subcat.subcategory_name_id.id == subcategory.subcategory.id %}selected{% endif %}>{{ subcategory.subcategory }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-4">
+                <div class="form-group">
+                    <label class="control-label label-with-margin">Estimated amount</label>
+                    <input class="form-control" type="text" name="amount" id="amount" placeholder="Enter Amount" value="{{ visa_subcat.estimate_amt }}" onblur="updateTotal()"/>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group">
+                    <label class="control-label label-with-margin">CGST (%)</label>
+                    <input class="form-control" type="text" name="cgst" id="cgst" placeholder="0" value="{{ visa_subcat.cgst }}" oninput="updateTotal()" />
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group">
+                    <label class="control-label label-with-margin">SGST (%)</label>
+                    <input class="form-control" type="text" name="sgst" id="sgst" placeholder="0" value="{{ visa_subcat.sgst }}" oninput="updateTotal()" />
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group mt-4">
+            <label class="control-label label-with-margin">Total</label>
+            <input class="form-control" type="text" id="total" value="{{ visa_subcat.totalAmount }}" readonly />
+        </div> 
+
+        <!-- Display individual field errors -->
+        {% for field in form %}
+            {% if field.errors %}
+                <div class="alert alert-danger">
+                    <ul>
+                        {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endfor %}
+        
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+
+<script>
+    function updateTotal() {
+        var amount = parseFloat(document.getElementById("amount").value) || 0;
+        var cgst = parseFloat(document.getElementById("cgst").value) || 0;
+        var sgst = parseFloat(document.getElementById("sgst").value) || 0;
+
+        var totalAmount = amount + ((amount * (cgst + sgst)) / 100);
+        document.getElementById("total").value = totalAmount.toFixed(2); // Set value instead of textContent
+    }
+</script>

@@ -1,0 +1,70 @@
+{% extends "crm/base/base.html" %}
+{% load custom_filters %}
+{% load static %}
+{% block main-content %}
+<div class="page-content">
+   <div class="container-fluid">
+      <div class="row">
+         <div class="col-xxl-12">
+            <h5 class="mb-3">Package Types</h5>
+            <div class="card">
+               <div class="card-body">
+                  <!-- Nav tabs -->
+                  <ul class="nav nav-pills animation-nav nav-justified gap-2 mb-3" role="tablist">
+                     {% for state in package_choices %}
+                     <li class="nav-item waves-effect waves-light">
+                        <a class="nav-link {% if forloop.first %}active{% endif %}" data-bs-toggle="tab" href="#{{ state.0|slugify }}" role="tab">
+                        {{ state.1 }}
+                        </a>
+                     </li>
+                     {% endfor %}
+                  </ul>
+                  
+                  <!-- Tab Content -->
+                  <div class="tab-content text-muted">
+                     {% for state in package_choices %}
+                     <div class="tab-pane {% if forloop.first %}active{% endif %}" id="{{ state.0|slugify }}" role="tabpanel">
+                        <div class="row">
+                           {% with packages_by_type|get_item:state.0 as package_list %}
+                           {% if package_list %}
+                           {% for package in package_list %}
+                           <div class="col-sm-6 col-xl-3">
+                              <div class="card">
+                                 {% if package.image %} <!-- Check if image exists -->
+                                 <img class="card-img-top img-fluid" src="{{ package.image.url }}" alt="{{ package.title }}">
+                                 {% else %}
+                                 <img class="card-img-top img-fluid" src="{% static 'path/to/default_image.jpg' %}" alt="{{ package.title }}"> <!-- Default image -->
+                                 {% endif %}
+                                 <div class="card-body">
+                                    <h4 class="card-title mb-2">{{ package.title }}</h4>
+                                    <p class="card-text">{{ package.description }}</p>
+                                    <p class="card-text">Amount: {{ package.amount }}</p>
+                                 </div>
+                                 <div class="card-footer">
+                                    <a href="{% url "product_details" %}"  class="btn btn-primary btn-sm">See Details</a>
+                                    
+                                 </div>
+                                 
+                              </div>
+                           </div>
+                           {% endfor %}
+                           {% else %}
+                           <p>No packages available for {{ state.1 }}</p>
+                           {% endif %}
+                           {% endwith %}
+                        </div>
+                     </div>
+                     {% endfor %}
+                  </div>
+               </div>
+               <!-- end card-body -->
+            </div>
+         </div>
+         <!--end col-->
+      </div>
+      <!-- end row -->
+   </div>
+</div>
+
+
+{% endblock main-content %}

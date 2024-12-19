@@ -1,0 +1,208 @@
+{% load static %}
+<!doctype html>
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg"
+   data-sidebar-image="none" data-bs-theme="dark" data-body-image="img-1" data-preloader="disable">
+   <head>
+      <meta charset="utf-8">
+      {% comment %} <title>Dashboard | Velzon - Admin & Dashboard Template</title> {% endcomment %}
+      <title>{% block title %}{% endblock title %}</title>
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta content="visacrm" name="description">
+      <meta content="theskytrails" name="author">
+      <!-- App favicon -->
+      <link rel="shortcut icon" href="{% static "assets/images/favicon.ico" %}">
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      
+      <!-- gridjs css -->
+      <link rel="stylesheet" href="{% static "assets/libs/gridjs/theme/mermaid.min.css" %}">
+       <!--Animation -->
+      <link rel="stylesheet" href="{% static "assets/libs/aos/aos.css" %}">
+
+      <!--Swiper slider css-->
+      <link href="{% static "assets/libs/swiper/swiper-bundle.min.css" %}" rel="stylesheet" type="text/css">
+
+      <!-- jsvectormap css -->
+      <link href="{% static "assets/libs/jsvectormap/css/jsvectormap.min.css" %}" rel="stylesheet" type="text/css">
+      <!--Swiper slider css-->
+      <link href="{% static "assets/libs/swiper/swiper-bundle.min.css" %}" rel="stylesheet" type="text/css">
+      
+      <!-- Sweet Alert css-->
+      <link href="{% static "assets/libs/sweetalert2/sweetalert2.min.css" %}" rel="stylesheet" type="text/css">
+
+      <!-- Layout config Js -->
+      <script src="{% static "assets/js/layout.js" %}"></script>
+      <!-- Bootstrap Css -->
+      <link href="{% static "assets/css/bootstrap.min.css" %}" rel="stylesheet" type="text/css">
+      <!-- Icons Css -->
+      <link href="{% static "assets/css/icons.min.css" %}" rel="stylesheet" type="text/css">
+      <!-- App Css-->
+      <link href="{% static "assets/css/app.min.css" %}" rel="stylesheet" type="text/css">
+      <!-- custom Css-->
+      <link href="{% static "assets/css/custom.min.css" %}" rel="stylesheet" type="text/css">
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+   </head>
+   <body>
+      <!-- Begin page -->
+      <div id="layout-wrapper">
+         {% include "crm/base/header.html" %}
+         <!-- removeNotificationModal -->
+         {% include "crm/base/notification_modal.html" %}
+         <!-- /.modal -->
+         <!-- ========== App Menu ========== -->
+         {% include "crm/base/navbar.html" %}
+         <!-- Left Sidebar End -->
+         <!-- Vertical Overlay-->
+         <div class="vertical-overlay"></div>
+         <!-- ============================================================== -->
+         <!-- Start right Content here -->
+         <!-- ============================================================== -->
+         <div class="main-content" id="main-content">
+           
+            {% block main-content %}{% endblock main-content %}
+           
+            <!-- End Page-content -->
+            {% include "crm/base/footer.html" %}
+         </div>
+         <div id="modal" class="modal fade" tabindex="-1" >
+            <div id="dialog" class="modal-dialog modal-dialog-centered" hx-target="this">
+               
+            </div>
+         </div> 
+
+         
+           
+         
+         <!-- end main content-->
+      </div>
+      <!-- END layout-wrapper -->
+      <!--start back-to-top-->
+      <button onclick="topFunction()" class="btn btn-primary btn-icon" id="back-to-top">
+      <i class="ri-arrow-up-line"></i>
+      </button>
+      <!--end back-to-top-->
+      <!--preloader-->
+      <div id="preloader">
+         <div id="status">
+            <div class="spinner-border text-primary avatar-sm" role="status">
+               <span class="visually-hidden">Loading...</span>
+            </div>
+         </div>
+      </div>
+      <div class="customizer-setting d-none d-md-block">
+         <div class="btn-primary btn-rounded shadow-lg btn btn-icon btn-lg p-2" data-bs-toggle="offcanvas"
+            data-bs-target="#theme-settings-offcanvas" aria-controls="theme-settings-offcanvas">
+            <i class='mdi mdi-spin mdi-cog-outline fs-22'></i>
+         </div>
+      </div>
+      <!-- Theme Settings -->
+      {% include "crm/base/theme.html" %}
+      <!-- JAVASCRIPT -->
+      <script src="{% static "assets/libs/bootstrap/js/bootstrap.bundle.min.js" %}"></script>
+      <script src="{% static "assets/libs/simplebar/simplebar.min.js" %}"></script>
+      <script src="{% static "assets/libs/node-waves/waves.min.js" %}"></script>
+      <script src="{% static "assets/libs/feather-icons/feather.min.js" %}"></script>
+      <script src="{% static "assets/js/pages/plugins/lord-icon-2.1.0.js" %}"></script>
+      <script src="{% static "assets/js/plugins.js" %}"></script>
+      <!-- apexcharts -->
+      <script src="{% static "assets/libs/apexcharts/apexcharts.min.js" %}"></script>
+      <!-- Vector map-->
+      <script src="{% static "assets/libs/jsvectormap/js/jsvectormap.min.js" %}"></script>
+      <script src="{% static "assets/libs/jsvectormap/maps/world-merc.js" %}"></script>
+      <!--Swiper slider js-->
+      <script src="{% static "assets/libs/swiper/swiper-bundle.min.js" %}"></script>
+      <!-- Dashboard init -->
+      <script src="{% static "assets/js/pages/dashboard-ecommerce.init.js" %}"></script>
+      {% comment %} animation------------ {% endcomment %}
+      <script src="{% static "assets/libs/aos/aos.js" %}"></script>
+      <script src="{% static "assets/libs/prismjs/prism.js" %}"></script>
+      <script src="{% static "assets/js/pages/animation-aos.init.js" %}"></script>
+      <!--Swiper slider js-->
+      <script src="{% static "assets/libs/swiper/swiper-bundle.min.js" %}"></script>
+
+      <!-- swiper.init js -->
+      <script src="{% static "assets/js/pages/swiper.init.js" %}"></script>
+
+
+      <!-- Sweet Alerts js -->
+      <script src="{% static "assets/libs/sweetalert2/sweetalert2.min.js" %}"></script>
+
+      <!-- Sweet alert init js-->
+      <script src="{% static "assets/js/pages/sweetalerts.init.js" %}"></script>
+      <!-- Masonry plugin -->
+      <script src="{% static "assets/libs/masonry-layout/masonry.pkgd.min.js" %}"></script>
+       <!-- card init js -->
+      <script src="{% static "assets/js/pages/card.init.js" %}"></script>
+
+      
+      <!-- profile-setting init js -->
+      <script src="{% static "assets/js/pages/profile-setting.init.js" %}"></script>
+
+      
+     <!-- list.js min js -->
+      <script src="{% static "assets/libs/list.js/list.min.js" %}"></script>
+      <script src="{% static "assets/libs/list.pagination.js/list.pagination.min.js" %}"></script>
+      <script src="{% static "assets/js/pages/listjs.init.js" %}"></script>
+      <!-- crm leads init -->
+      {% comment %} <script src="{% static "assets/js/pages/crm-leads.init.js" %}"></script> {% endcomment %}
+      
+      <!-- gridjs js -->
+      <script src="{% static "assets/libs/gridjs/gridjs.umd.js" %}"></script>
+      <!-- gridjs init -->
+      <script src="{% static "assets/js/pages/gridjs.init.js" %}"></script>
+     
+      <!-- App js -->
+      <script src="https://unpkg.com/htmx.org@2.0.2"></script>
+      <script src="{% static "assets/dialog.js" %}"></script>
+      <script src="{% static "assets/toast.js" %}"></script>
+      
+      <script src="{% static "assets/js/pages/form-wizard.init.js" %}"></script>
+      
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+
+      <script src="{% static "assets/js/app.js" %}"></script>
+
+
+    <script>
+        // Function to show the SweetAlert notification
+        function showWelcomeNotification() {
+            Swal.fire({
+                html: '<div class="mt-3"><div class="avatar-lg mx-auto"><img src="{% static "assets/images/users/avatar-2.jpg" %}" class="rounded-circle img-thumbnail" alt="thumbnail"></div><div class="mt-4 pt-2 fs-15"><h4 class="fs-18 fw-semibold">Welcome <span class="fw-semibold">{{request.user.first_name}} {{request.user.last_name}}</span></h4><p class="text-muted mb-0 fs-13">You have <span class="fw-semibold text-success">2</span> Notifications</p></div></div>',
+                showCancelButton: false,
+                confirmButtonClass: "btn btn-primary mb-1",
+                confirmButtonText: "Ok"
+            });
+        }
+
+        // Check if the notification has been shown
+        if (!sessionStorage.getItem('notificationShown')) {
+            showWelcomeNotification();
+            sessionStorage.setItem('notificationShown', 'true');
+        }
+    </script>
+
+    <script>
+      function getCookie(name) {
+         let cookieValue = null;
+         if (document.cookie && document.cookie !== '') {
+             const cookies = document.cookie.split(';');
+             for (let i = 0; i < cookies.length; i++) {
+                 const cookie = cookies[i].trim();
+                 // Check if this cookie string begins with the name we want
+                 if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                     cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                     break;
+                 }
+             }
+         }
+         return cookieValue;
+     }
+     
+    </script>
+
+    {% load sweetify %}
+    {% sweetify %}
+   </body>
+</html>

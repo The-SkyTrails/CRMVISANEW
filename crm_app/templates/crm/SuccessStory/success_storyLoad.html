@@ -1,0 +1,44 @@
+{% extends "crm/base/base.html" %}
+{% load user_roles %}
+{% block main-content %}
+<div class="page-content">
+   <div class="container-fluid">
+      <!-- start page title -->
+      <div class="row">
+         <div class="col-12">
+            <div
+               class="page-title-box d-sm-flex align-items-center justify-content-between bg-transparent">
+               <h4 class="mb-sm-0">Success Story</h4>
+               <div class="page-title-right">
+                  <ol class="breadcrumb m-0">
+                     <li class="breadcrumb-item"><a href="javascript: void(0);">Success Story</a></li>
+                     <li class="breadcrumb-item active">All SuccessStories</li>
+                  </ol>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- end page title -->
+      {% if user|is_admin %}
+      <button class="btn btn-primary add-btn" hx-get="{% url "add_successstory" %}" hx-target="#dialog">Add</button>
+      {% endif %}
+      <div class="row"  hx-get="{% url "successstory_list" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="search-results">
+         {% comment %} Loading..... {% endcomment %}
+         <center>
+            <div class="spinner-border text-warning" role="status">
+               <span class="sr-only">Loading...</span>
+           </div>
+         </center>
+         <!-- end col -->
+      </div>
+      <!-- end row -->
+      <!-- end row -->
+      {% comment %} {% include "crm/SuperAdmin/add_admin.html" %} {% endcomment %}
+      
+    
+      <!--end modal -->
+   </div>
+   <!-- container-fluid -->
+</div>
+
+{% endblock main-content %}

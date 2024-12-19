@@ -1,0 +1,41 @@
+{% load crispy_forms_tags %}
+{% load custom_filters %}
+<form hx-post="{{ request.path }}" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}' class="modal-content" enctype="multipart/form-data">
+   
+    <div class="modal-header bg-light p-3">
+        <h5 class="modal-title" id="exampleModalLabel">{% if request.path == "/Add/VisaCountry" %}Add{% else %}Edit{% endif %}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+    </div>
+    
+    <div class="modal-body">
+
+      
+        
+        <!-- Render the form -->
+        <div class="col-xxl-3 col-md-12 mb-2">
+            <div>
+                <label for="agreementname" class="form-label">Agreement Name</label>
+                <input type="text" class="form-control" id="agreementname" value="{{agree.agreement_name}}" name="agreement_name">
+            </div>
+        </div>
+        <div class="col-xxl-3 col-md-12">
+            <div>
+                <label for="file" class="form-label">Agreement Document</label>
+                <input type="file" class="form-control" id="file"  name="file">
+            </div>
+            {% if  agree.agreement_file and agree.agreement_file.url %}
+            <center><a class="fw-medium link-primary" href="{{agree.agreement_file.url}}" target="__blank">{{agree.agreement_file.url|filename}}</a></center>
+            {% else %} 
+            <center>No profile picture available</center>
+            {% endif %}
+        </div>
+
+        <!-- Display individual field errors -->
+       
+        
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Update</button>
+    </div>
+</form>

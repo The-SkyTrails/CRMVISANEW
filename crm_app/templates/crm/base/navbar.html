@@ -1,0 +1,368 @@
+{% load user_roles %}
+{% load static %}
+<div class="app-menu navbar-menu">
+   <!-- LOGO -->
+   <div class="navbar-brand-box">
+      <!-- Dark Logo-->
+      <a href="index.html" class="logo logo-dark">
+      <span class="logo-sm">
+      <img src="{% static "assets/images/logo-sm.png" %}" alt="" height="22">
+      </span>
+      <span class="logo-lg">
+      <img src="{% static "assets/images/logo-dark.png" %}" alt="" height="17">
+      </span>
+      </a>
+      <!-- Light Logo-->
+      <a href="index.html" class="logo logo-light">
+      <span class="logo-sm">
+      <img src="{% static "assets/images/logo-sm.png" %}" alt="" height="22">
+      </span>
+      <span class="logo-lg">
+      <img src="{% static "assets/images/crmlogonew.png" %}" alt="" height="45">
+      </span>
+      </a>
+      <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
+         id="vertical-hover">
+      <i class="ri-record-circle-line"></i>
+      </button>
+   </div>
+   <div id="scrollbar">
+      <div class="container-fluid">
+         <div id="two-column-menu">
+         </div>
+         <ul class="navbar-nav" id="navbar-nav">
+            <li class="menu-title"><span data-key="t-menu">Menu</span></li>
+            
+           
+            {% if request.user.user_type == "1" %}
+            <li class="nav-item">
+               <a class="nav-link menu-link"  href="{% url 'admin_load' %}">
+               <i class="ri-dashboard-2-line"></i> <span data-key="t-widgets">Admin</span>
+               </a>
+            </li>
+            
+            {% else %}
+            <li class="nav-item">
+               <a class="nav-link menu-link" href="{% url "dashboard" %}">
+               <i class="ri-dashboard-2-line"></i> <span data-key="t-widgets">Dashboard</span>
+               </a>
+            </li>
+
+            <li class="nav-item">
+               <a class="nav-link menu-link" href="#lead" data-bs-toggle="collapse" role="button"
+                  aria-expanded="false" aria-controls="lead">
+               <i class="ri-account-circle-line"></i> <span
+                  data-key="t-authentication"> Leads</span>
+               </a>
+               <div class="collapse menu-dropdown" id="lead">
+                  <ul class="nav nav-sm flex-column">
+                    
+                     
+                     <li class="nav-item">
+                        <a href="#sidebarSignIn" class="nav-link" data-bs-toggle="collapse"
+                           role="button" aria-expanded="false" aria-controls="sidebarSignIn"
+                           data-key="t-signin"> Leads
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarSignIn">
+                           <ul class="nav nav-sm flex-column">
+                              <li class="nav-item">
+                                 <a href="{% url "add_lead" %}" class="nav-link"
+                                    data-key="t-basic"> Add Lead
+                                 </a>
+                              </li>
+                              <li class="nav-item">
+                                 <a href="{% url "employee_load" %}" class="nav-link"
+                                    data-key="t-cover">All Leads
+                                 </a>
+                              </li>
+                             
+                           </ul>
+                        </div>
+                     </li>
+                    
+                     
+                     <li class="nav-item">
+                        <a href="{% url "add_agent" %}" class="nav-link"
+                           data-key="t-basic"> Meeting Appointment
+                        </a>
+                     </li>
+                  </ul>
+               </div>
+            </li>
+            <!-- end Dashboard Menu -->
+            {% comment %} <li class="nav-item">
+               <a class="nav-link menu-link" href="#" data-bs-toggle="collapse" role="button"
+                  aria-expanded="false" aria-controls="sidebarApps">
+               <i class="ri-apps-2-line"></i> <span data-key="t-apps">Leads</span>
+               </a>
+               <div class="collapse menu-dropdown" id="sidebarApps">
+                  <ul class="nav nav-sm flex-column">
+                     <li class="nav-item">
+                        <a href="#sidebarInvoices" class="nav-link" data-bs-toggle="collapse"
+                           role="button" aria-expanded="false" aria-controls="sidebarInvoices"
+                           data-key="t-invoices">
+                        Leads
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarInvoices">
+                           <ul class="nav nav-sm flex-column">
+                              <li class="nav-item">
+                                 <a href="apps-invoices-list.html" class="nav-link"
+                                    data-key="t-list-view">
+                                 Add Lead </a>
+                              </li>
+                              <li class="nav-item">
+                                 <a href="{% url "lead_load" %}" class="nav-link"
+                                    data-key="t-details">
+                                 Lead List </a>
+                              </li>
+                              <li class="nav-item">
+                                 <a href="apps-invoices-create.html" class="nav-link"
+                                    data-key="t-cArchive Leadreate-invoice"> Archive Leads </a>
+                              </li>
+                           </ul>
+                        </div>
+                     </li>
+                     <li class="nav-item">
+                        <a href="apps-chat.html" class="nav-link" data-key="t-chat"> Meeting Appointment </a>
+                     </li>
+                  </ul>
+               </div>
+            </li> {% endcomment %}
+            <!-- end Dashboard Menu -->
+            <li class="menu-title"><i class="ri-more-fill"></i> <span data-key="t-pages">Pages</span></li>
+            {% if user|has_access:"2,3" %}
+            <li class="nav-item">
+               <a class="nav-link menu-link" href="#sidebarAuth" data-bs-toggle="collapse" role="button"
+                  aria-expanded="false" aria-controls="sidebarAuth">
+               <i class="ri-account-circle-line"></i> <span
+                  data-key="t-authentication"> {% if request.user.user_type == "2" %}Internal Management{% endif %}  {% if request.user.user_type == "3" %}Agent{% endif %}</span>
+               </a>
+               <div class="collapse menu-dropdown" id="sidebarAuth">
+                  <ul class="nav nav-sm flex-column">
+                    
+                     {% if user|is_admin %}
+                     <li class="nav-item">
+                        <a href="#sidebarSignIn" class="nav-link" data-bs-toggle="collapse"
+                           role="button" aria-expanded="false" aria-controls="sidebarSignIn"
+                           data-key="t-signin"> Employee
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarSignIn">
+                           <ul class="nav nav-sm flex-column">
+                              <li class="nav-item">
+                                 <a href="{% url "add_employee" %}" class="nav-link"
+                                    data-key="t-basic"> Add Employee
+                                 </a>
+                              </li>
+                              <li class="nav-item">
+                                 <a href="{% url "employee_load" %}" class="nav-link"
+                                    data-key="t-cover">All Employee
+                                 </a>
+                              </li>
+                              <li class="nav-item">
+                                 <a href="{% url "visa_team_load" %}" class="nav-link"
+                                    data-key="t-cover">Visa Team
+                                 </a>
+                              </li>
+                           </ul>
+                        </div>
+                     </li>
+                     {% endif %}
+                     
+                     {% if user|has_access:"2,3" %}
+                     <li class="nav-item">
+                        <a href="#sidebarSignUp" class="nav-link" data-bs-toggle="collapse"
+                           role="button" aria-expanded="false" aria-controls="sidebarSignUp"
+                           data-key="t-signup"> Agent
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarSignUp">
+                           <ul class="nav nav-sm flex-column">
+                              <li class="nav-item">
+                                 <a href="{% url "add_agent" %}" class="nav-link"
+                                    data-key="t-basic"> Add Agent
+                                 </a>
+                              </li>
+                              <li class="nav-item">
+                                 <a href="{% url "agent_load" %}" class="nav-link"
+                                    data-key="t-cover"> All Agent
+                                 </a>
+                              </li>
+                           </ul>
+                        </div>
+                     </li>
+                     {% endif %}
+                  </ul>
+               </div>
+            </li>
+            {% endif %}
+            {% if user|is_admin %}
+            <li class="nav-item">
+               <a class="nav-link menu-link" href="#sidebarPages" data-bs-toggle="collapse" role="button"
+                  aria-expanded="false" aria-controls="sidebarPages">
+               <i class="ri-pages-line"></i> <span data-key="t-pages">Master Module</span>
+               </a>
+               <div class="collapse menu-dropdown" id="sidebarPages">
+                  <ul class="nav nav-sm flex-column">
+                     <li class="nav-item">
+                        <a href="{% url "visacountry_load" %}" class="nav-link" data-key="t-mailbox"> Visa Country </a>
+                     </li>
+                     <li class="nav-item">
+                        <a href="{% url "visacategory_load" %}" class="nav-link" data-key="t-mailbox"> Visa Category </a>
+                     </li>
+                     <li class="nav-item">
+                        <a href="#sidebarEmail" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarEmail" data-key="t-email">
+                        Document
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarEmail">
+                           <ul class="nav nav-sm flex-column">
+                              <li class="nav-item">
+                                 <a href="{% url "document_category_load" %}" class="nav-link" data-key="t-basic-action">Document Category </a>
+                              </li>
+                              <li class="nav-item">
+                                 <a href="{% url "document_load" %}" class="nav-link" data-key="t-basic-action">Documents </a>
+                              </li>
+                              </li>
+                              <li class="nav-item">
+                                 <a href="{% url "case_Category_document_load" %}" class="nav-link" data-key="t-basic-action">Case Category Document </a>
+                              </li>
+                              
+                              <li class="nav-item">
+                                 <a href="{% url "visasubcategory_load" %}" class="nav-link" data-key="t-mailbox"> Pricing </a>
+                              </li>
+                           </ul>
+                        </div>
+                     </li>
+                     <li class="nav-item">
+                        <a href="{% url "branch_load" %}" class="nav-link" data-key="t-mailbox"> Branch Management </a>
+                     </li>
+                     <li class="nav-item">
+                        <a href="{% url "group_load" %}" class="nav-link" data-key="t-mailbox"> Manage Group </a>
+                     </li>
+                     {% comment %} <li class="nav-item">
+                        <a href="apps-mailbox.html" class="nav-link" data-key="t-mailbox"> Logistic Details </a>
+                     </li> {% endcomment %}
+                  </ul>
+               </div>
+            </li>
+            {% endif %}
+            <li class="nav-item">
+               <a class="nav-link menu-link" href="#sidebarLanding" data-bs-toggle="collapse" role="button"
+                  aria-expanded="false" aria-controls="sidebarLanding">
+               <i class="ri-rocket-line"></i> <span data-key="t-landing">General</span>
+               </a>
+               <div class="collapse menu-dropdown" id="sidebarLanding">
+                  <ul class="nav nav-sm flex-column">
+                     {% if user|is_admin %}
+                     <li class="nav-item">
+                        <a href="landing.html" class="nav-link" data-key="t-one-page"> Login Logs </a>
+                     </li>
+                     <li class="nav-item">
+                        <a href="{% url "activity_log_load" %}" class="nav-link" data-key="t-nft-landing"> Activity
+                        Logs </a>
+                     </li>
+                     {% endif %}
+                     {% if user|is_employee %}
+                     <li class="nav-item">
+                        <a href="{% url "case_Category_document_load" %}" class="nav-link" data-key="t-basic-action">Case Category Document </a>
+                     </li>
+                     {% endif %}
+                     <li class="nav-item">
+                        <a href="{% url "succestory_load" %}" class="nav-link" data-key="t-job">{% if user|has_access:"3,4,5" %}View Success Storis{% endif %} {% if user|is_admin %} Manage Success Story {% endif %}</a>
+                     </li>
+                     <li class="nav-item">
+                        <a href="{% url "news_load" %}" class="nav-link" data-key="t-job">{% if user|has_access:"3,4,5" %}View News{% endif %} {% if user|is_admin %} Manage News {% endif %}</a>
+                     </li>
+                     {% if user|has_access:"2,4,5" %}
+                     <li class="nav-item">
+                        <a href="{% url "report_load" %}" class="nav-link" data-key="t-job">Reports</a>
+                     </li>
+                     {% endif %}
+                     {% if user|has_access:"2,3" %}
+                     <li class="nav-item">
+                        <a href="{% url "bulkMsg_load" %}" class="nav-link" data-key="t-job">Bulk Message</a>
+                     </li>
+                     {% endif %}
+                  </ul>
+               </div>
+            </li>
+            <li class="nav-item">
+               <a class="nav-link menu-link"  href="{% url 'package_load' %}">
+               <i class="ri-pencil-ruler-2-line"></i> <span data-key="t-widgets">Product</span>
+               </a>
+            </li>
+{% comment %}             
+            <li class="nav-item">
+               <a class="nav-link menu-link" href="#sidebarUI" data-bs-toggle="collapse" role="button"
+                  aria-expanded="false" aria-controls="sidebarUI">
+               <i class="ri-pencil-ruler-2-line"></i> <span data-key="t-base-ui">Products</span>
+               </a>
+               <div class="collapse menu-dropdown mega-dropdown-menu" id="sidebarUI">
+                  <div class="row">
+                     <div class="col-lg-4">
+                        <ul class="nav nav-sm flex-column">
+                           <li class="nav-item">
+                              <a href="ui-alerts.html" class="nav-link" data-key="t-alerts">Add Products</a>
+                           </li>
+                           <li class="nav-item">
+                              <a href="ui-badges.html" class="nav-link" data-key="t-badges">Holiday</a>
+                           </li>
+                           <li class="nav-item">
+                              <a href="ui-buttons.html" class="nav-link"
+                                 data-key="t-buttons">Work</a>
+                           </li>
+                           <li class="nav-item">
+                              <a href="ui-colors.html" class="nav-link" data-key="t-colors">Investment</a>
+                           </li>
+                        </ul>
+                     </div>
+                     <div class="col-lg-4">
+                        <ul class="nav nav-sm flex-column">
+                           <li class="nav-item">
+                              <a href="ui-images.html" class="nav-link" data-key="t-images">All Products</a>
+                           </li>
+                           <li class="nav-item">
+                              <a href="ui-tabs.html" class="nav-link" data-key="t-tabs">Visitor</a>
+                           </li>
+                           <li class="nav-item">
+                              <a href="ui-accordions.html" class="nav-link"
+                                 data-key="t-accordion-collapse">Study</a>
+                           </li>
+                           <li class="nav-item">
+                              <a href="ui-modals.html" class="nav-link" data-key="t-modals">Settlement</a>
+                           </li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+            </li> {% endcomment %}
+            <li class="nav-item">
+               <a class="nav-link menu-link" href="#sidebarAdvanceUI" data-bs-toggle="collapse"
+                  role="button" aria-expanded="false" aria-controls="sidebarAdvanceUI">
+               <i class="ri-stack-line"></i> <span data-key="t-advance-ui">{% if user|is_admin %}Others {% endif %} {% if user|has_access:"3,4,5" %}Queries {% endif %}</span>
+               </a>
+               <div class="collapse menu-dropdown" id="sidebarAdvanceUI">
+                  <ul class="nav nav-sm flex-column">
+                     {% if user|is_admin %}
+                     <li class="nav-item">
+                        <a href="{% url "passport_enq" %}" class="nav-link"
+                           data-key="t-sweet-alerts">Mobile App Passport Enquiry
+                        </a>
+                     </li>
+                     {% endif %}
+                     <li class="nav-item">
+                        <a href="{% url "queries_load" %}" class="nav-link"
+                           data-key="t-nestable-list">Queries
+                        List</a>
+                     </li>
+                     
+                  </ul>
+               </div>
+            </li>
+            {% endif %}
+
+         
+         </ul>
+      </div>
+      <!-- Sidebar -->
+   </div>
+   <div class="sidebar-background"></div>
+</div>

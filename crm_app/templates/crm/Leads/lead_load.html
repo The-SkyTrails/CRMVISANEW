@@ -1,0 +1,815 @@
+{% extends "crm/base/base.html" %}
+{% load sweetify %}
+{% sweetify %}
+{% block main-content %}
+<div class="page-content">
+   <div class="container-fluid">
+      <!-- start page title -->
+      <div class="row">
+         <div class="col-12">
+            <div
+               class="page-title-box d-sm-flex align-items-center justify-content-between bg-transparent">
+               <h4 class="mb-sm-0">Products</h4>
+               <div class="page-title-right">
+                  <ol class="breadcrumb m-0">
+                     <li class="breadcrumb-item"><a href="javascript: void(0);">Ecommerce</a></li>
+                     <li class="breadcrumb-item active">Products</li>
+                  </ol>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- end page title -->
+      <div class="row">
+         <!-- end col -->
+         <div class="col-xl-12 col-lg-12">
+            <div>
+               <div class="card">
+                  <div class="card-header border-0">
+                     <div class="row g-4">
+                        <div class="col-sm-auto">
+                           <div>
+                              <a href="apps-ecommerce-add-product.html" class="btn btn-primary"
+                                 id="addproduct-btn"><i
+                                 class="ri-add-line align-bottom me-1"></i> Add Product</a>
+                           </div>
+                        </div>
+                        <div class="col-sm">
+                           <div class="d-flex justify-content-sm-end">
+                              <div class="search-box ms-2">
+                                 <input type="text" class="form-control" id="searchProductList"
+                                    placeholder="Search Products...">
+                                 <i class="ri-search-line search-icon"></i>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="card-header">
+                     <div class="row align-items-center">
+                        <div class="col">
+                           <ul class="nav nav-tabs-custom card-header-tabs border-bottom-0"
+                              role="tablist">
+                              <li class="nav-item">
+                                 <a class="nav-link active fw-semibold" data-bs-toggle="tab"
+                                    href="#lead-all" role="tab">
+                                 All <span
+                                    class="badge bg-primary-subtle text-primary align-middle rounded-pill ms-1">12</span>
+                                 </a>
+                              </li>
+
+                              <li class="nav-item">
+                                <a class="nav-link fw-semibold" data-bs-toggle="tab"
+                                   href="#lead-enrolled" role="tab">
+                                Enrolled <span
+                                   class="badge bg-info-subtle text-info align-middle rounded-pill ms-1">5</span>
+                                </a>
+                             </li>
+
+
+                              <li class="nav-item">
+                                 <a class="nav-link fw-semibold" data-bs-toggle="tab"
+                                    href="#lead-cancel" role="tab">
+                                 Cancel <span
+                                    class="badge bg-danger-subtle text-danger align-middle rounded-pill ms-1">5</span>
+                                 </a>
+                              </li>
+                             
+                              <li class="nav-item">
+                                 <a class="nav-link fw-semibold" data-bs-toggle="tab"
+                                    href="#lead-active" role="tab">
+                                 Active<span
+                                 class="badge bg-danger-subtle text-danger align-middle rounded-pill ms-1">5</span>
+                                 </a>
+                              </li>
+                              <li class="nav-item">
+                                 <a class="nav-link fw-semibold" data-bs-toggle="tab"
+                                    href="#lead-inporcess" role="tab">
+                                    Inprocess<span
+                                 class="badge bg-danger-subtle text-danger align-middle rounded-pill ms-1">5</span>
+                                 </a>
+                              </li>
+                              <li class="nav-item">
+                                 <a class="nav-link fw-semibold" data-bs-toggle="tab"
+                                    href="#lead-Appointment" role="tab">
+                                    Appointment<span
+                                 class="badge bg-danger-subtle text-danger align-middle rounded-pill ms-1">5</span>
+                                 </a>
+                              </li>
+                              <li class="nav-item">
+                                 <a class="nav-link fw-semibold" data-bs-toggle="tab"
+                                    href="#Result-awaited" role="tab">
+                                    Result Awaited<span
+                                 class="badge bg-white-subtle text-white align-middle rounded-pill ms-1">5</span>
+                                 </a>
+                              </li>
+                              <li class="nav-item">
+                                 <a class="nav-link fw-semibold" data-bs-toggle="tab"
+                                    href="#lead-new" role="tab">
+                                    New<span
+                                 class="badge bg-info-subtle text-info align-middle rounded-pill ms-1">5</span>
+                                 </a>
+                              </li>
+                              <li class="nav-item">
+                                 <a class="nav-link fw-semibold" data-bs-toggle="tab"
+                                    href="#lead-approved" role="tab">
+                                    Approved<span
+                                 class="badge bg-warning-subtle text-warning align-middle rounded-pill ms-1">5</span>
+                                 </a>
+                              </li>
+                              <li class="nav-item">
+                                 <a class="nav-link fw-semibold" data-bs-toggle="tab"
+                                    href="#lead-completed" role="tab">
+                                    Completed<span
+                                 class="badge bg-success-subtle text-success align-middle rounded-pill ms-1">5</span>
+                                 </a>
+                              </li>
+                           </ul>
+                        </div>
+                        <div class="col-auto">
+                           <div id="selection-element">
+                              <div class="my-n1 d-flex align-items-center text-muted">
+                                 Select 
+                                 <div id="select-content"
+                                    class="text-body fw-semibold px-1"></div>
+                                 Result <button
+                                    type="button" class="btn btn-link link-danger p-0 ms-3"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#removeItemModal">Remove</button>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <!-- end card header -->
+                  <div class="card-body">
+                     <div class="tab-content">
+                        <div class="tab-pane active " id="lead-all" role="tabpanel">
+                          
+                           <div class="table-responsive table-card mb-1">
+                              <table class="table table-bordered border-secondary table-nowrap align-middle" id="orderTable">
+                                 <thead class="text-muted table-light">
+                                    <tr class="text-uppercase">
+                                       {% comment %} <th scope="col" style="width: 25px;">
+                                          <div class="form-check">
+                                             <input class="form-check-input" type="checkbox" id="checkAll" value="option">
+                                          </div>
+                                       </th> {% endcomment %}
+                                       <th>SR NO</th>
+                                       <th>ACTION</th>
+                                       <th>ENQUIRY No.</th>
+                                       <th>Name</th>
+                                       <th>DOB</th>
+                                       <th>Passport No</th>
+                                       <th>Registered ON.</th>
+                                       <th>Updated on</th>
+                                       <th>VISA COUNTRY</th>
+                                       <th>VISA Category - SUB CATEGORY</th>
+                                       <th>VISA TYPE</th>
+                                       <th>Package Name</th>
+                                       <th>CREATED BY</th>
+                                       <th>Assigned TO</th>
+                                       <th>Update Assigned To</th>
+                                       <th>Assign to Agent/OP</th>
+                                       <th>LEAD status</th>
+                                       <th>Lead Updated</th>
+                                       <th>Appointment</th>
+                                       <th>Appointment Status</th>
+                                       <th>NOTES</th>
+                                       <th>Colour Code</th>
+                                       <th>ACTION</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody class="list form-check-all"  hx-get="{% url "all_lead" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="search-results">
+                                    <tr>
+                                        <td>
+                                           <button type="button" class="btn btn-outline-warning btn-load">
+                                              <span class="d-flex align-items-center">
+                                                  <span class="flex-grow-1 me-2">
+                                                      Loading...
+                                                  </span>
+                                                  <span class="spinner-grow flex-shrink-0" role="status">
+                                                      <span class="visually-hidden">Loading...</span>
+                                                  </span>
+                                              </span>
+                                            </button>
+                                        
+                                        </td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                              <div class="noresult" style="display: none">
+                                 <div class="text-center">
+                                    <lord-icon src="../../../msoeawqm.json" trigger="loop" colors="primary:#405189,secondary:#0ab39c" style="width:75px;height:75px"></lord-icon>
+                                    <h5 class="mt-2">Sorry! No Result Found</h5>
+                                    <p class="text-muted">We've searched more than 150+ Orders We did not find any orders for you search.</p>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="d-flex justify-content-end">
+                              <div class="pagination-wrap hstack gap-2">
+                                 <a class="page-item pagination-prev disabled" href="#">
+                                 Previous
+                                 </a>
+                                 <ul class="pagination listjs-pagination mb-0"></ul>
+                                 <a class="page-item pagination-next" href="#">
+                                 Next
+                                 </a>
+                              </div>
+                           </div>
+                        </div>
+
+
+                        <div class="tab-pane " id="lead-enrolled" role="tabpanel">
+                          
+                            <div class="table-responsive table-card mb-1">
+                               <table class="table table-nowrap align-middle" id="orderTable">
+                                  <thead class="text-muted table-light">
+                                     <tr class="text-uppercase">
+                                        <th scope="col" style="width: 25px;">
+                                           <div class="form-check">
+                                              <input class="form-check-input" type="checkbox" id="checkAll" value="option">
+                                           </div>
+                                        </th>
+                                        <th class="sort" data-sort="id">Order ID</th>
+                                        <th class="sort" data-sort="customer_name">Customer</th>
+                                        <th class="sort" data-sort="product_name">Product</th>
+                                        <th class="sort" data-sort="date">Order Date</th>
+                                        <th class="sort" data-sort="amount">Amount</th>
+                                        <th class="sort" data-sort="payment">Payment Method</th>
+                                        <th class="sort" data-sort="status">Delivery Status</th>
+                                        <th class="sort" data-sort="city">Action</th>
+                                     </tr>
+                                  </thead>
+                                  <tbody class="list form-check-all"  hx-get="{% url "enrolled_lead" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="search-results">
+                                     <tr>
+                                         <td>
+                                            <button type="button" class="btn btn-outline-warning btn-load">
+                                               <span class="d-flex align-items-center">
+                                                   <span class="flex-grow-1 me-2">
+                                                      Enrolled
+                                                   </span>
+                                                   <span class="spinner-grow flex-shrink-0" role="status">
+                                                       <span class="visually-hidden">Loading...</span>
+                                                   </span>
+                                               </span>
+                                             </button>
+                                         
+                                         </td>
+                                     </tr>
+                                  </tbody>
+                               </table>
+                               <div class="noresult" style="display: none">
+                                  <div class="text-center">
+                                     <lord-icon src="../../../msoeawqm.json" trigger="loop" colors="primary:#405189,secondary:#0ab39c" style="width:75px;height:75px"></lord-icon>
+                                     <h5 class="mt-2">Sorry! No Result Found</h5>
+                                     <p class="text-muted">We've searched more than 150+ Orders We did not find any orders for you search.</p>
+                                  </div>
+                               </div>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                               <div class="pagination-wrap hstack gap-2">
+                                  <a class="page-item pagination-prev disabled" href="#">
+                                  Previous
+                                  </a>
+                                  <ul class="pagination listjs-pagination mb-0"></ul>
+                                  <a class="page-item pagination-next" href="#">
+                                  Next
+                                  </a>
+                               </div>
+                            </div>
+                         </div>
+                        <!-- end tab pane -->
+                        <div class="tab-pane" id="lead-cancel" role="tabpanel">
+
+                            <div class="table-responsive table-card mb-1">
+                                <table class="table table-nowrap align-middle" id="orderTable">
+                                   <thead class="text-muted table-light">
+                                      <tr class="text-uppercase">
+                                         <th scope="col" style="width: 25px;">
+                                            <div class="form-check">
+                                               <input class="form-check-input" type="checkbox" id="checkAll" value="option">
+                                            </div>
+                                         </th>
+                                         <th class="sort" data-sort="id">Order ID</th>
+                                         <th class="sort" data-sort="customer_name">Customer</th>
+                                         <th class="sort" data-sort="product_name">Product</th>
+                                         <th class="sort" data-sort="date">Order Date</th>
+                                         <th class="sort" data-sort="amount">Amount</th>
+                                         <th class="sort" data-sort="payment">Payment Method</th>
+                                         <th class="sort" data-sort="status">Delivery Status</th>
+                                         <th class="sort" data-sort="city">Action</th>
+                                      </tr>
+                                   </thead>
+                                   <tbody class="list form-check-all"  hx-get="{% url "lead_cancel" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="search-results">
+                                      <tr>
+                                          <td>
+                                             <button type="button" class="btn btn-outline-warning btn-load">
+                                                <span class="d-flex align-items-center">
+                                                    <span class="flex-grow-1 me-2">
+                                                       Cancel
+                                                    </span>
+                                                    <span class="spinner-grow flex-shrink-0" role="status">
+                                                        <span class="visually-hidden">Loading...</span>
+                                                    </span>
+                                                </span>
+                                              </button>
+                                          
+                                          </td>
+                                      </tr>
+                                   </tbody>
+                                </table>
+                                <div class="noresult" style="display: none">
+                                   <div class="text-center">
+                                      <lord-icon src="../../../msoeawqm.json" trigger="loop" colors="primary:#405189,secondary:#0ab39c" style="width:75px;height:75px"></lord-icon>
+                                      <h5 class="mt-2">Sorry! No Result Found</h5>
+                                      <p class="text-muted">We've searched more than 150+ Orders We did not find any orders for you search.</p>
+                                   </div>
+                                </div>
+                             </div>
+                             <div class="d-flex justify-content-end">
+                                <div class="pagination-wrap hstack gap-2">
+                                   <a class="page-item pagination-prev disabled" href="#">
+                                   Previous
+                                   </a>
+                                   <ul class="pagination listjs-pagination mb-0"></ul>
+                                   <a class="page-item pagination-next" href="#">
+                                   Next
+                                   </a>
+                                </div>
+                             </div>
+                           
+                        </div>
+                        <!-- end tab pane -->
+                        <div class="tab-pane" id="lead-active" role="tabpanel">
+                            <div class="table-responsive table-card mb-1">
+                                <table class="table table-nowrap align-middle" id="orderTable">
+                                   <thead class="text-muted table-light">
+                                      <tr class="text-uppercase">
+                                         <th scope="col" style="width: 25px;">
+                                            <div class="form-check">
+                                               <input class="form-check-input" type="checkbox" id="checkAll" value="option">
+                                            </div>
+                                         </th>
+                                         <th class="sort" data-sort="id">Order ID</th>
+                                         <th class="sort" data-sort="customer_name">Customer</th>
+                                         <th class="sort" data-sort="product_name">Product</th>
+                                         <th class="sort" data-sort="date">Order Date</th>
+                                         <th class="sort" data-sort="amount">Amount</th>
+                                         <th class="sort" data-sort="payment">Payment Method</th>
+                                         <th class="sort" data-sort="status">Delivery Status</th>
+                                         <th class="sort" data-sort="city">Action</th>
+                                      </tr>
+                                   </thead>
+                                   <tbody class="list form-check-all"  hx-get="{% url "lead_active" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="search-results">
+                                      <tr>
+                                          <td>
+                                             <button type="button" class="btn btn-outline-warning btn-load">
+                                                <span class="d-flex align-items-center">
+                                                    <span class="flex-grow-1 me-2">
+                                                       Active
+                                                    </span>
+                                                    {% comment %} <span class="spinner-grow flex-shrink-0" role="status">
+                                                        <span class="visually-hidden">Loading...</span>
+                                                    </span> {% endcomment %}
+                                                </span>
+                                              </button>
+                                          
+                                          </td>
+                                      </tr>
+                                   </tbody>
+                                </table>
+                                <div class="noresult" style="display: none">
+                                   <div class="text-center">
+                                      <lord-icon src="../../../msoeawqm.json" trigger="loop" colors="primary:#405189,secondary:#0ab39c" style="width:75px;height:75px"></lord-icon>
+                                      <h5 class="mt-2">Sorry! No Result Found</h5>
+                                      <p class="text-muted">We've searched more than 150+ Orders We did not find any orders for you search.</p>
+                                   </div>
+                                </div>
+                             </div>
+                             <div class="d-flex justify-content-end">
+                                <div class="pagination-wrap hstack gap-2">
+                                   <a class="page-item pagination-prev disabled" href="#">
+                                   Previous
+                                   </a>
+                                   <ul class="pagination listjs-pagination mb-0"></ul>
+                                   <a class="page-item pagination-next" href="#">
+                                   Next
+                                   </a>
+                                </div>
+                             </div>
+                        </div>
+
+                        {% comment %} ------------------------- Inprocess --------------- {% endcomment %}
+                        <div class="tab-pane" id="lead-inporcess" role="tabpanel">
+                            <div class="table-responsive table-card mb-1">
+                                <table class="table table-nowrap align-middle" id="orderTable">
+                                   <thead class="text-muted table-light">
+                                      <tr class="text-uppercase">
+                                         <th scope="col" style="width: 25px;">
+                                            <div class="form-check">
+                                               <input class="form-check-input" type="checkbox" id="checkAll" value="option">
+                                            </div>
+                                         </th>
+                                         <th class="sort" data-sort="id">Order ID</th>
+                                         <th class="sort" data-sort="customer_name">Customer</th>
+                                         <th class="sort" data-sort="product_name">Product</th>
+                                         <th class="sort" data-sort="date">Order Date</th>
+                                         <th class="sort" data-sort="amount">Amount</th>
+                                         <th class="sort" data-sort="payment">Payment Method</th>
+                                         <th class="sort" data-sort="status">Delivery Status</th>
+                                         <th class="sort" data-sort="city">Action</th>
+                                      </tr>
+                                   </thead>
+                                   <tbody class="list form-check-all"  hx-get="{% url "lead_inprocess" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="search-results">
+                                      <tr>
+                                          <td>
+                                             <button type="button" class="btn btn-outline-warning btn-load">
+                                                <span class="d-flex align-items-center">
+                                                    <span class="flex-grow-1 me-2">
+                                                       Inprocess
+                                                    </span>
+                                                    <span class="spinner-grow flex-shrink-0" role="status">
+                                                        <span class="visually-hidden">Loading...</span>
+                                                    </span>
+                                                </span>
+                                              </button>
+                                          
+                                          </td>
+                                      </tr>
+                                   </tbody>
+                                </table>
+                                <div class="noresult" style="display: none">
+                                   <div class="text-center">
+                                      <lord-icon src="../../../msoeawqm.json" trigger="loop" colors="primary:#405189,secondary:#0ab39c" style="width:75px;height:75px"></lord-icon>
+                                      <h5 class="mt-2">Sorry! No Result Found</h5>
+                                      <p class="text-muted">We've searched more than 150+ Orders We did not find any orders for you search.</p>
+                                   </div>
+                                </div>
+                             </div>
+                             <div class="d-flex justify-content-end">
+                                <div class="pagination-wrap hstack gap-2">
+                                   <a class="page-item pagination-prev disabled" href="#">
+                                   Previous
+                                   </a>
+                                   <ul class="pagination listjs-pagination mb-0"></ul>
+                                   <a class="page-item pagination-next" href="#">
+                                   Next
+                                   </a>
+                                </div>
+                             </div>
+                        </div>
+
+                        {% comment %} ------------------------- Appointment --------------- {% endcomment %}
+                        <div class="tab-pane" id="lead-Appointment" role="tabpanel">
+                            <div class="table-responsive table-card mb-1">
+                                <table class="table table-nowrap align-middle" id="orderTable">
+                                   <thead class="text-muted table-light">
+                                      <tr class="text-uppercase">
+                                         <th scope="col" style="width: 25px;">
+                                            <div class="form-check">
+                                               <input class="form-check-input" type="checkbox" id="checkAll" value="option">
+                                            </div>
+                                         </th>
+                                         <th class="sort" data-sort="id">Order ID</th>
+                                         <th class="sort" data-sort="customer_name">Customer</th>
+                                         <th class="sort" data-sort="product_name">Product</th>
+                                         <th class="sort" data-sort="date">Order Date</th>
+                                         <th class="sort" data-sort="amount">Amount</th>
+                                         <th class="sort" data-sort="payment">Payment Method</th>
+                                         <th class="sort" data-sort="status">Delivery Status</th>
+                                         <th class="sort" data-sort="city">Action</th>
+                                      </tr>
+                                   </thead>
+                                   <tbody class="list form-check-all"  hx-get="{% url "lead_appointment" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="search-results">
+                                      <tr>
+                                          <td>
+                                             <button type="button" class="btn btn-outline-warning btn-load">
+                                                <span class="d-flex align-items-center">
+                                                    <span class="flex-grow-1 me-2">
+                                                       Appointment
+                                                    </span>
+                                                    {% comment %} <span class="spinner-grow flex-shrink-0" role="status">
+                                                        <span class="visually-hidden">Loading...</span>
+                                                    </span> {% endcomment %}
+                                                </span>
+                                              </button>
+                                          
+                                          </td>
+                                      </tr>
+                                   </tbody>
+                                </table>
+                                <div class="noresult" style="display: none">
+                                   <div class="text-center">
+                                      <lord-icon src="../../../msoeawqm.json" trigger="loop" colors="primary:#405189,secondary:#0ab39c" style="width:75px;height:75px"></lord-icon>
+                                      <h5 class="mt-2">Sorry! No Result Found</h5>
+                                      <p class="text-muted">We've searched more than 150+ Orders We did not find any orders for you search.</p>
+                                   </div>
+                                </div>
+                             </div>
+                             <div class="d-flex justify-content-end">
+                                <div class="pagination-wrap hstack gap-2">
+                                   <a class="page-item pagination-prev disabled" href="#">
+                                   Previous
+                                   </a>
+                                   <ul class="pagination listjs-pagination mb-0"></ul>
+                                   <a class="page-item pagination-next" href="#">
+                                   Next
+                                   </a>
+                                </div>
+                             </div>
+                        </div>
+                        {% comment %} ------------------------- Result Awaited --------------- {% endcomment %}
+                        <div class="tab-pane" id="Result-awaited" role="tabpanel">
+                            <div class="table-responsive table-card mb-1">
+                                <table class="table table-nowrap align-middle" id="orderTable">
+                                   <thead class="text-muted table-light">
+                                      <tr class="text-uppercase">
+                                         <th scope="col" style="width: 25px;">
+                                            <div class="form-check">
+                                               <input class="form-check-input" type="checkbox" id="checkAll" value="option">
+                                            </div>
+                                         </th>
+                                         <th class="sort" data-sort="id">Order ID</th>
+                                         <th class="sort" data-sort="customer_name">Customer</th>
+                                         <th class="sort" data-sort="product_name">Product</th>
+                                         <th class="sort" data-sort="date">Order Date</th>
+                                         <th class="sort" data-sort="amount">Amount</th>
+                                         <th class="sort" data-sort="payment">Payment Method</th>
+                                         <th class="sort" data-sort="status">Delivery Status</th>
+                                         <th class="sort" data-sort="city">Action</th>
+                                      </tr>
+                                   </thead>
+                                   <tbody class="list form-check-all"  hx-get="{% url "result_awaited" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="search-results">
+                                      <tr>
+                                          <td>
+                                             <button type="button" class="btn btn-outline-warning btn-load">
+                                                <span class="d-flex align-items-center">
+                                                    <span class="flex-grow-1 me-2">
+                                                      Result-awaited
+                                                    </span>
+                                                    <span class="spinner-grow flex-shrink-0" role="status">
+                                                        <span class="visually-hidden">Loading...</span>
+                                                    </span>
+                                                </span>
+                                              </button>
+                                          
+                                          </td>
+                                      </tr>
+                                   </tbody>
+                                </table>
+                                <div class="noresult" style="display: none">
+                                   <div class="text-center">
+                                      <lord-icon src="../../../msoeawqm.json" trigger="loop" colors="primary:#405189,secondary:#0ab39c" style="width:75px;height:75px"></lord-icon>
+                                      <h5 class="mt-2">Sorry! No Result Found</h5>
+                                      <p class="text-muted">We've searched more than 150+ Orders We did not find any orders for you search.</p>
+                                   </div>
+                                </div>
+                             </div>
+                             <div class="d-flex justify-content-end">
+                                <div class="pagination-wrap hstack gap-2">
+                                   <a class="page-item pagination-prev disabled" href="#">
+                                   Previous
+                                   </a>
+                                   <ul class="pagination listjs-pagination mb-0"></ul>
+                                   <a class="page-item pagination-next" href="#">
+                                   Next
+                                   </a>
+                                </div>
+                             </div>
+                        </div>
+                        {% comment %} ------------------------- lEAD New --------------- {% endcomment %}
+
+                        <div class="tab-pane" id="lead-new" role="tabpanel">
+                            <div class="table-responsive table-card mb-1">
+                                <table class="table table-nowrap align-middle" id="orderTable">
+                                   <thead class="text-muted table-light">
+                                      <tr class="text-uppercase">
+                                         <th scope="col" style="width: 25px;">
+                                            <div class="form-check">
+                                               <input class="form-check-input" type="checkbox" id="checkAll" value="option">
+                                            </div>
+                                         </th>
+                                         <th class="sort" data-sort="id">Order ID</th>
+                                         <th class="sort" data-sort="customer_name">Customer</th>
+                                         <th class="sort" data-sort="product_name">Product</th>
+                                         <th class="sort" data-sort="date">Order Date</th>
+                                         <th class="sort" data-sort="amount">Amount</th>
+                                         <th class="sort" data-sort="payment">Payment Method</th>
+                                         <th class="sort" data-sort="status">Delivery Status</th>
+                                         <th class="sort" data-sort="city">Action</th>
+                                      </tr>
+                                   </thead>
+                                   <tbody class="list form-check-all"  hx-get="{% url "lead_new" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="search-results">
+                                      <tr>
+                                          <td>
+                                             <button type="button" class="btn btn-outline-warning btn-load">
+                                                <span class="d-flex align-items-center">
+                                                    <span class="flex-grow-1 me-2">
+                                                       New
+                                                    </span>
+                                                    <span class="spinner-grow flex-shrink-0" role="status">
+                                                        <span class="visually-hidden">Loading...</span>
+                                                    </span>
+                                                </span>
+                                              </button>
+                                          
+                                          </td>
+                                      </tr>
+                                   </tbody>
+                                </table>
+                                <div class="noresult" style="display: none">
+                                   <div class="text-center">
+                                      <lord-icon src="../../../msoeawqm.json" trigger="loop" colors="primary:#405189,secondary:#0ab39c" style="width:75px;height:75px"></lord-icon>
+                                      <h5 class="mt-2">Sorry! No Result Found</h5>
+                                      <p class="text-muted">We've searched more than 150+ Orders We did not find any orders for you search.</p>
+                                   </div>
+                                </div>
+                             </div>
+                             <div class="d-flex justify-content-end">
+                                <div class="pagination-wrap hstack gap-2">
+                                   <a class="page-item pagination-prev disabled" href="#">
+                                   Previous
+                                   </a>
+                                   <ul class="pagination listjs-pagination mb-0"></ul>
+                                   <a class="page-item pagination-next" href="#">
+                                   Next
+                                   </a>
+                                </div>
+                             </div>
+                        </div>
+                        
+                        
+                        {% comment %} ------------------------- lEAD Approved --------------- {% endcomment %}
+
+                        <div class="tab-pane" id="lead-approved" role="tabpanel">
+                            <div class="table-responsive table-card mb-1">
+                                <table class="table table-nowrap align-middle" id="orderTable">
+                                   <thead class="text-muted table-light">
+                                      <tr class="text-uppercase">
+                                         <th scope="col" style="width: 25px;">
+                                            <div class="form-check">
+                                               <input class="form-check-input" type="checkbox" id="checkAll" value="option">
+                                            </div>
+                                         </th>
+                                         <th class="sort" data-sort="id">Order ID</th>
+                                         <th class="sort" data-sort="customer_name">Customer</th>
+                                         <th class="sort" data-sort="product_name">Product</th>
+                                         <th class="sort" data-sort="date">Order Date</th>
+                                         <th class="sort" data-sort="amount">Amount</th>
+                                         <th class="sort" data-sort="payment">Payment Method</th>
+                                         <th class="sort" data-sort="status">Delivery Status</th>
+                                         <th class="sort" data-sort="city">Action</th>
+                                      </tr>
+                                   </thead>
+                                   <tbody class="list form-check-all"  hx-get="{% url "lead_approved" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="search-results">
+                                      <tr>
+                                          <td>
+                                             <button type="button" class="btn btn-outline-warning btn-load">
+                                                <span class="d-flex align-items-center">
+                                                    <span class="flex-grow-1 me-2">
+                                                       Approved
+                                                    </span>
+                                                    {% comment %} <span class="spinner-grow flex-shrink-0" role="status">
+                                                        <span class="visually-hidden">Loading...</span>
+                                                    </span> {% endcomment %}
+                                                </span>
+                                              </button>
+                                          
+                                          </td>
+                                      </tr>
+                                   </tbody>
+                                </table>
+                                <div class="noresult" style="display: none">
+                                   <div class="text-center">
+                                      <lord-icon src="../../../msoeawqm.json" trigger="loop" colors="primary:#405189,secondary:#0ab39c" style="width:75px;height:75px"></lord-icon>
+                                      <h5 class="mt-2">Sorry! No Result Found</h5>
+                                      <p class="text-muted">We've searched more than 150+ Orders We did not find any orders for you search.</p>
+                                   </div>
+                                </div>
+                             </div>
+                             <div class="d-flex justify-content-end">
+                                <div class="pagination-wrap hstack gap-2">
+                                   <a class="page-item pagination-prev disabled" href="#">
+                                   Previous
+                                   </a>
+                                   <ul class="pagination listjs-pagination mb-0"></ul>
+                                   <a class="page-item pagination-next" href="#">
+                                   Next
+                                   </a>
+                                </div>
+                             </div>
+                        </div>
+                        {% comment %} ------------------------- lEAD Completed --------------- {% endcomment %}
+
+                        <div class="tab-pane" id="lead-completed" role="tabpanel">
+                            <div class="table-responsive table-card mb-1">
+                                <table class="table table-nowrap align-middle" id="orderTable">
+                                   <thead class="text-muted table-light">
+                                      <tr class="text-uppercase">
+                                         <th scope="col" style="width: 25px;">
+                                            <div class="form-check">
+                                               <input class="form-check-input" type="checkbox" id="checkAll" value="option">
+                                            </div>
+                                         </th>
+                                         <th class="sort" data-sort="id">Order ID</th>
+                                         <th class="sort" data-sort="customer_name">Customer</th>
+                                         <th class="sort" data-sort="product_name">Product</th>
+                                         <th class="sort" data-sort="date">Order Date</th>
+                                         <th class="sort" data-sort="amount">Amount</th>
+                                         <th class="sort" data-sort="payment">Payment Method</th>
+                                         <th class="sort" data-sort="status">Delivery Status</th>
+                                         <th class="sort" data-sort="city">Action</th>
+                                      </tr>
+                                   </thead>
+                                   <tbody class="list form-check-all"  hx-get="{% url "lead_completed" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="search-results">
+                                      <tr>
+                                          <td>
+                                             <button type="button" class="btn btn-outline-warning btn-load">
+                                                <span class="d-flex align-items-center">
+                                                    <span class="flex-grow-1 me-2">
+                                                       Completed
+                                                    </span>
+                                                    {% comment %} <span class="spinner-grow flex-shrink-0" role="status">
+                                                        <span class="visually-hidden">Loading...</span>
+                                                    </span> {% endcomment %}
+                                                </span>
+                                              </button>
+                                          
+                                          </td>
+                                      </tr>
+                                   </tbody>
+                                </table>
+                                <div class="noresult" style="display: none">
+                                   <div class="text-center">
+                                      <lord-icon src="../../../msoeawqm.json" trigger="loop" colors="primary:#405189,secondary:#0ab39c" style="width:75px;height:75px"></lord-icon>
+                                      <h5 class="mt-2">Sorry! No Result Found</h5>
+                                      <p class="text-muted">We've searched more than 150+ Orders We did not find any orders for you search.</p>
+                                   </div>
+                                </div>
+                             </div>
+                             <div class="d-flex justify-content-end">
+                                <div class="pagination-wrap hstack gap-2">
+                                   <a class="page-item pagination-prev disabled" href="#">
+                                   Previous
+                                   </a>
+                                   <ul class="pagination listjs-pagination mb-0"></ul>
+                                   <a class="page-item pagination-next" href="#">
+                                   Next
+                                   </a>
+                                </div>
+                             </div>
+                        </div>
+                        <!-- end tab pane -->
+                     </div>
+                     <!-- end tab content -->
+                  </div>
+                  <!-- end card body -->
+               </div>
+               <!-- end card -->
+            </div>
+         </div>
+         <!-- end col -->
+      </div>
+      <!-- end row -->
+   </div>
+   <!-- container-fluid -->
+</div>
+<script>
+   document.addEventListener('DOMContentLoaded', function() {
+       
+       // Get the last active tab from localStorage
+       const activeTab = localStorage.getItem('activeTab');
+      
+       if (activeTab) {
+           // Use Bootstrap's tab method to show the stored active tab
+           const tabElement = document.querySelector(`[href="${activeTab}"]`);
+           if (tabElement) {
+               const tabInstance = new bootstrap.Tab(tabElement);
+               tabInstance.show();
+           }
+       } else {
+           // Default to showing the first tab if no active tab is stored
+           const firstTabElement = document.querySelector('.nav-link');
+           if (firstTabElement) {
+               const firstTabInstance = new bootstrap.Tab(firstTabElement);
+               firstTabInstance.show();
+           }
+       }
+   
+       // Save the clicked tab in localStorage
+       document.querySelectorAll('.nav-link').forEach(tab => {
+           tab.addEventListener('click', function() {
+               localStorage.setItem('activeTab', this.getAttribute('href'));
+           });
+       });
+   });
+   
+   function myfunc(){
+       
+       document.getElementById("message-text").value  = ""
+       
+       
+   }
+</script>
+{% endblock main-content %}

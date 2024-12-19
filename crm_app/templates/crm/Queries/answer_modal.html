@@ -1,0 +1,27 @@
+<div id="pending-{{ i.pk }}" class="modal fade flip" tabindex="-1" aria-labelledby="flipModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered">
+        <form action="{% url "add_answer" %}" method="POST">
+            {% csrf_token %}
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="flipModalLabel">Add Answer</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
+                    <input type="text" value="{{i.id}}" name="question_id" hidden>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Answer:</label>
+                        <textarea class="form-control" id="message-text" name="answer" rows="2" required></textarea>
+                    </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary ">Save Changes</button>
+            </div>
+
+        </div><!-- /.modal-content -->
+        </form>
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

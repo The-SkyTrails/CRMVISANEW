@@ -1,0 +1,62 @@
+{% load crispy_forms_tags %}
+<form hx-post="{{ request.path }}" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}' class="modal-content" enctype="multipart/form-data">
+   
+    <div class="modal-header bg-light p-3">
+        <h5 class="modal-title" id="exampleModalLabel">Kyc</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+    </div>
+    
+    <div class="modal-body">
+       
+        <div class="row gy-4">
+            {% if document_type == "Aadhar Card Front" %}
+            <div class="col-xxl-3 col-md-12">
+                <div>
+                    <label for="firstname" class="form-label">Aadhar Card Front</label>
+                    <input type="file" class="form-control" id="firstname"  name="adharfront_file">
+                </div>
+            </div>
+            
+            {% elif  document_type == "Aadhar Card Back" %}
+            <div class="col-xxl-3 col-md-12">
+                <div>
+                    <label for="firstname" class="form-label">Aadhar Card Back</label>
+                    <input type="file" class="form-control" id="firstname"  name="adharback_file">
+                </div>
+            </div>
+           
+            {% elif document_type == "Pancard" %}
+            <div class="col-xxl-3 col-md-12">
+                <div>
+                    <label for="firstname" class="form-label">Pancard</label>
+                    <input type="file" class="form-control" id="firstname"  name="pan_file">
+                </div>
+            </div>
+            {% else %}
+            <div class="col-xxl-3 col-md-12">
+                <div>
+                    <label for="firstname" class="form-label">Registration Certificate</label>
+                    <input type="file" class="form-control" id="firstname"  name="registration_file">
+                </div>
+            </div>
+            {% endif %}
+
+            
+
+        </div>
+        
+        <!-- Display non-field form errors -->
+       
+        
+        <!-- Render the form -->
+        
+
+        <!-- Display individual field errors -->
+        
+        
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>

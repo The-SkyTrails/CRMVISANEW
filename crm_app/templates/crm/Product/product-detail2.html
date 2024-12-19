@@ -1,0 +1,258 @@
+{% extends "crm/base/base.html" %}
+{% load custom_filters %}
+
+{% block main-content %}
+
+
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-transparent">
+                    <h4 class="mb-sm-0">Product Details</h4>
+
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
+                            <li class="breadcrumb-item active">Product Details</li>
+                        </ol>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row gx-lg-5">
+                            <div class="col-xl-4 col-md-8 mx-auto">
+                                <div >
+                                    {% load static %}
+                                    <div class="card">
+                                        {% if package.image %}
+                                        <img class="img-fluid d-block" src="{{package.image.url}}" alt="Card image cap" style="height:20rem;">
+                                        {% else %}
+                                        No Product Image
+                                        {% endif %}
+
+                                        {% comment %} <img class="img-fluid d-block" src="{% static "assets/images/small/img-2.jpg" %}" alt="Card image cap" style="height:20rem;"> {% endcomment %}
+
+                                        
+                                    </div><!-- end card -->
+                                    {% comment %} <div class="swiper product-thumbnail-slider p-2 rounded bg-light">
+                                        <div class="swiper-wrapper">
+                                            <div class="swiper-slide">
+                                                <img src="assets/images/products/img-8.png" alt="" class="img-fluid d-block">
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <img src="assets/images/products/img-6.png" alt="" class="img-fluid d-block">
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <img src="assets/images/products/img-1.png" alt="" class="img-fluid d-block">
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <img src="assets/images/products/img-8.png" alt="" class="img-fluid d-block">
+                                            </div>
+                                        </div>
+                                        <div class="swiper-button-next"></div>
+                                        <div class="swiper-button-prev"></div>
+                                    </div>
+                                    <!-- end swiper thumbnail slide -->
+                                    <div class="swiper product-nav-slider mt-2">
+                                        <div class="swiper-wrapper">
+                                            <div class="swiper-slide">
+                                                <div class="nav-slide-item">
+                                                    <img src="assets/images/products/img-8.png" alt="" class="img-fluid d-block">
+                                                </div>
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <div class="nav-slide-item">
+                                                    <img src="assets/images/products/img-6.png" alt="" class="img-fluid d-block">
+                                                </div>
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <div class="nav-slide-item">
+                                                    <img src="assets/images/products/img-1.png" alt="" class="img-fluid d-block">
+                                                </div>
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <div class="nav-slide-item">
+                                                    <img src="assets/images/products/img-8.png" alt="" class="img-fluid d-block">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> {% endcomment %}
+                                    <!-- end swiper nav slide -->
+                                </div>
+                            </div>
+                            <!-- end col -->
+
+                            <div class="col-xl-8">
+                                <div class="mt-xl-0 mt-5">
+                                    <div class="d-flex">
+                                        <div class="flex-grow-1">
+                                            <h4>{{package.title}}</h4>
+                                            <div class="hstack gap-3 flex-wrap">
+                                                {% comment %} <div><a href="#" class="text-primary d-block">Tommy Hilfiger</a></div> {% endcomment %}
+                                                {% comment %} <div class="vr"></div> {% endcomment %}
+                                                <div class="text-muted">country : <span class="text-body fw-medium">{{package.visa_country.country}}</span></div>
+                                                <div class="vr"></div>
+                                                <div class="text-muted">Category-SubCategory : <span class="text-body fw-medium">{{package.visa_category}}</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="flex-shrink-0">
+                                            <div>
+                                                {% comment %} <a href="apps-ecommerce-add-product.html" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="ri-pencil-fill align-bottom"></i></a> {% endcomment %}
+                                                <a href="{% url "pac_pdf" package.id %}" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Download"><i class="ri-download-fill align-bottom"></i></a>
+                                                <a href="#" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Share" id="shareButton" data-id="{{ package.id }}"><i class="ri-share-fill align-bottom"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    
+
+
+
+                                    <div class="mt-4 text-muted">
+                                        <h5 class="fs-14">Description :</h5>
+                                        <p>{{package.description}}</p>
+                                    </div>
+{% comment %} 
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="mt-3">
+                                                <h5 class="fs-14">Features :</h5>
+                                                <ul class="list-unstyled">
+                                                    <li class="py-1"><i class="mdi mdi-circle-medium me-1 text-muted align-middle"></i> Full Sleeve</li>
+                                                    <li class="py-1"><i class="mdi mdi-circle-medium me-1 text-muted align-middle"></i> Cotton</li>
+                                                    <li class="py-1"><i class="mdi mdi-circle-medium me-1 text-muted align-middle"></i> All Sizes available</li>
+                                                    <li class="py-1"><i class="mdi mdi-circle-medium me-1 text-muted align-middle"></i> 4 Different Color</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="mt-3">
+                                                <h5 class="fs-14">Services :</h5>
+                                                <ul class="list-unstyled product-desc-list">
+                                                    <li class="py-1">10 Days Replacement</li>
+                                                    <li class="py-1">Cash on Delivery available</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div> {% endcomment %}
+
+
+                                    <div class="product-content mt-5">
+                                        <h5 class="fs-14 mb-3">Product Description :</h5>
+                                        <nav>
+                                            <ul class="nav nav-tabs nav-tabs-custom nav-primary" id="nav-tab" role="tablist">
+                                                <li class="nav-item">
+                                                    <a class="nav-link active" id="nav-speci-tab" data-bs-toggle="tab" href="#nav-speci" role="tab" aria-controls="nav-speci" aria-selected="true">Specification</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" id="nav-detail-tab" data-bs-toggle="tab" href="#nav-detail" role="tab" aria-controls="nav-detail" aria-selected="false">Details</a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                        <div class="tab-content border border-top-0 p-4" id="nav-tabContent">
+                                            <div class="tab-pane fade show active" id="nav-speci" role="tabpanel" aria-labelledby="nav-speci-tab">
+                                                <div class="table-responsive">
+                                                    <table class="table mb-0">
+                                                        <tbody>
+                                                            <tr>
+                                                                <th scope="row" style="width: 200px;">Nmber Of Visa</th>
+                                                                <td>{{package.number_of_visa}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">Processing Time</th>
+                                                                <td>{{package.processing_time}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">Product Code</th>
+                                                                <td>{{package.amount}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">Advance Product code</th>
+                                                                <td>{{package.advance_amount}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">File Charges</th>
+                                                                <td>{{package.file_charges}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">Expiry Date</th>
+                                                                <td>{{package.package_expiry_date}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">Product Pdf</th>
+                                                                <td>{% if package.product_pdf %}<a href="{{package.product_pdf.url}}" target="_blank">{{package.product_pdf.url|filename}}</a>{% else %}nofile{% endif %}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="nav-detail" role="tabpanel" aria-labelledby="nav-detail-tab">
+                                                <div>
+                                                    <h5 class="font-size-16 mb-3">{{package.title}}</h5>
+                                                    <p>{{package.description}}</p>
+                                                    {% comment %} <div>
+                                                        <p class="mb-2"><i class="mdi mdi-circle-medium me-1 text-muted align-middle"></i> Machine Wash</p>
+                                                        <p class="mb-2"><i class="mdi mdi-circle-medium me-1 text-muted align-middle"></i> Fit Type: Regular</p>
+                                                        <p class="mb-2"><i class="mdi mdi-circle-medium me-1 text-muted align-middle"></i> 100% Cotton</p>
+                                                        <p class="mb-0"><i class="mdi mdi-circle-medium me-1 text-muted align-middle"></i> Long sleeve</p>
+                                                    </div> {% endcomment %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- product-content -->
+
+                                    <!-- end card body -->
+                                </div>
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
+                    </div>
+                    <!-- end card body -->
+                </div>
+                <!-- end card -->
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end row -->
+
+    </div>
+    <!-- container-fluid -->
+</div>
+
+
+
+<script>
+    document.getElementById('shareButton').addEventListener('click', async () => {
+        const shareButton = document.getElementById('shareButton');
+        const dynamicId = shareButton.getAttribute('data-id');
+        console.log("data iddd",dynamicId)
+        const shareUrl = `https://crm.theskytrails.com/packages/share/${dynamicId}/`;
+        if (navigator.share) {  // Check if the Web Share API is supported
+            try {
+                await navigator.share({
+                    title: 'Check out this product!',
+                    text: 'I found this amazing product. Have a look!',
+                    url: shareUrl,
+                });
+                console.log('Successfully shared');
+            } catch (error) {
+                console.error('Error sharing:', error);
+            }
+        } else {
+            alert('Sharing not supported on this browser. Please copy the link manually.');
+        }
+    });
+</script> 
+{% endblock main-content %}

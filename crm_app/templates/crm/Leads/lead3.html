@@ -1,0 +1,129 @@
+{% extends "crm/base/base.html" %}
+
+{% block main-content %}
+<style>
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: white;
+        line-height: 28px;
+        background-color: rgba(4, 19, 36, .95);
+        {% comment %} color: {% endcomment %}
+    }
+
+    .select2-container--default .select2-selection--single {
+        background-color: #fff;
+        border: 1px solid #aaa;
+        border-radius: 4px;
+        height: revert;
+    }
+</style>
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title mb-0">Add Lead</h4>
+                </div><!-- end card header -->
+                <div class="card-body">
+                    <form action="" class="form-steps" method="POST" autocomplete="off">
+                        {% csrf_token %}
+                        {% comment %} <div class="text-center pt-3 pb-4 mb-1 d-flex justify-content-center">
+                            <img src="assets/images/logo-dark.png" class="card-logo card-logo-dark" alt="logo dark" height="17">
+                            <img src="assets/images/logo-light.png" class="card-logo card-logo-light" alt="logo light" height="17">
+                        </div> {% endcomment %}
+                        {% include "crm/base/multistep.html" %}
+                       {% comment %} ---------------comm  {% endcomment %}
+
+                       <div>
+                        <div class="row gy-4">
+                           <div class="col-xxl-3 col-md-4">
+                              
+
+
+                                <label class="form-label" for="id_Visa_country">Visa Country <span class="text-warning">*</span></label>
+                               
+                                {{form.Visa_country}}
+                                
+                                
+                               
+                           </div>
+                           <!--end col-->
+                           <div class="col-xxl-3 col-md-4">
+                             
+                                <label class="form-label" for="id_Visa_category">Visa Category-SubCategory <span class="text-warning">*</span></label>
+                                {{form.Visa_category}}
+                                
+                              
+                           </div>
+                           <div class="col-xxl-3 col-md-4">
+                              
+                                <label class="form-label" for="id_Visa_type">Visa Type <span class="text-warning">*</span></label>
+                                {{form.Visa_type}}
+                                
+                              
+                           </div>
+                           <!--end col-->
+                           <div class="col-xxl-3 col-md-4">
+                              
+                                <label for="id_Package" class="form-label">Product <span class="text-warning">*</span></label>
+                                {{form.Package}}
+                             
+                           </div>
+                           <!--end col-->
+                           <div class="col-xxl-3 col-md-4">
+                              
+                            <label for="id_Source" class="form-label">Source(Optional) <span class="text-warning">*</span></label>
+                            {{form.Source}}
+                        
+                           </div>
+                           <div class="col-xxl-3 col-md-4">
+                              
+                                <label for="id_Reference" class="form-label">Reference(Optional) <span class="text-warning">*</span></label>
+                                {{form.Reference}}
+                             
+                           </div>
+                           <!--end col-->
+                           <div class="col-xxl-12 col-md-12 mb-2">
+                              
+                                <label for="id_visa_amount" class="form-label">Visa Amount <span class="text-warning">*</span></label>
+                                {{form.visa_amount}}
+                              
+                           </div>
+                           <!--end col-->
+                           
+                           <!--end col-->
+                           
+                           <!--end col-->
+   
+                          
+                           <!--end col-->
+                           
+   
+                           <!--end col-->
+                          
+                           <!--end col-->
+                         
+                           
+                           <!--end col-->
+                          
+                           <!--end col-->
+                          
+                           <!--end col-->
+                       
+                        <!--end row-->
+                    </div>
+                    {% comment %} <button type="submit" class="btn btn-secondary btn-animation waves-effect waves-light" data-text="Save"><span>Save & Proceed</span></button> {% endcomment %}
+                    <button type="submit" class="btn btn-secondary btn-animation waves-effect waves-light" >Save & Proceed <i class=" ri-arrow-right-fill align-bottom me-1"></i></button>
+
+                      
+                    </form>
+                </div>
+                <!-- end card body -->
+            </div>
+            <!-- end card -->
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock main-content %}

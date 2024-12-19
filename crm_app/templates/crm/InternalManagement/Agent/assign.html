@@ -1,0 +1,119 @@
+{% load crispy_forms_tags %}
+<style>
+    .search-select-container {
+        position: relative;
+    }
+
+    .rm-dropdownnn {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 50%;
+        z-index: 1000;
+        list-style: none;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-top: none;
+        padding: 0;
+        margin-top: 0;
+        
+        max-height: 200px; 
+        overflow-y: auto; 
+    }
+
+    .rm-dropdownnn li {
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+
+    .rm-dropdownnn li:hover {
+        background-color: #f0f0f0;
+    }
+</style>
+
+<form id="rmForm-{{ agent.id }}" hx-post="{{ request.path }}" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}' class="modal-content" enctype="multipart/form-data">
+   
+    <div class="modal-header bg-light p-3">
+        <h5 class="modal-title" id="exampleModalLabel">Assigned To RM</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+    </div>
+    
+    <div class="modal-body">
+        <label for="rmSearchInput-{{ agent.id }}" class="custom-form-label">Assigned</label>
+        <div class="search-select-container">
+            <input type="text" id="rm-search-{{ agent.id }}" placeholder="Type to search for an RM" class="form-control"/>
+            <input type="hidden" id="rmtid-{{ agent.id }}" name="rmIdInput"/>
+            <ul id="rm-list-{{ agent.id }}" class="rm-dropdownnn bg-dark"></ul>
+        </div>
+        <div class="alert alert-danger mt-2 d-none" id="rmAlert-{{ agent.id }}">No RM selected.</div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        // Handle input events on the RM search input field
+        $("[id^='rm-search']").on("input", function() {
+            var $input = $(this);
+            var id = $input.attr("id").split("-")[2]; // Extract the agent ID from the input ID
+            var query = $input.val();
+            
+            // If the input length is at least 3 characters, initiate the search
+            if (query.length >= 3) {
+                $.ajax({
+                    url: "{% url 'rm_search' %}",  // Your Django URL for RM search
+                    data: { q: query },
+                    success: function(response) {
+                        var results = response.results;
+                        
+                        var $list = $("#rm-list-" + id);
+                        $list.empty();  // Clear any previous results
+
+                        // Loop through the results and append them to the dropdown list
+                        results.forEach(function(rm) {
+                            var listItem = `<li data-rm-id="${rm.id}">${rm.text}</li>`;
+                            $list.append(listItem);
+                        });
+                    },
+                });
+            } else {
+                // If the query length is less than 3, clear the list
+                $("#rm-list-" + id).empty();
+            }
+        });
+
+        // Handle click events on the list items in the dropdown
+        $("[id^='rm-list']").on("click", "li", function() {
+            var $li = $(this);
+            var rmName = $li.text();  // Get the RM name
+            var rmId = $li.data("rm-id");  // Get the RM ID
+
+            // Extract the agent ID from the input's closest modal or search container
+            var id = $li.closest(".search-select-container").find("input[type='text']").attr("id").split("-")[2];
+
+            // Set the RM name to the input field and RM ID to the hidden field
+            $("#rm-search-" + id).val(rmName);
+            $("#rmtid-" + id).val(rmId);
+            $("#rm-list-" + id).empty();  // Optionally clear the list after selection
+        });
+
+        // Handle form submission
+        $("[id^='rmForm']").on("submit", function(event) {
+            var id = $(this).attr("id").split("-")[1]; // Extract agent ID from form ID
+            var rmIdInput = $("#rmtid-" + id).val();
+
+            // If no RM is selected, prevent form submission and show an alert
+            if (!rmIdInput) {
+                event.preventDefault();
+                $("#rmAlert-" + id).removeClass("d-none");
+            } else {
+                $("#rmAlert-" + id).addClass("d-none");
+            }
+        });
+    });
+</script>

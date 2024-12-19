@@ -1,0 +1,150 @@
+<form action="{% url "agent_agreement" agent.id %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row mb-2">
+        <div class="col-lg-12">
+            <div class="card">
+
+                <div class="card-header align-items-center d-flex">
+                    <h4 class="card-title mb-0 flex-grow-1">Add New Agreement</h4>
+                    
+                </div>
+                
+                <div class="card-body">
+                    <div class="live-preview">
+                        <div class="row gy-4">
+                            <div class="col-xxl-3 col-md-6">
+                                <div>
+                                    <label for="agreementname" class="form-label">Agreement Name</label>
+                                    <input type="text" class="form-control" id="agreementname" placeholder="Agreement Name" name="agreement_name" required>
+                                </div>
+                            </div>
+                            
+                            
+                            <div class="col-xxl-3 col-md-6">
+                                <div>
+                                    <label for="agreementdoc" class="form-label">Add Agreement Documents</label>
+                                    <input type="file" class="form-control" id="agreementdoc" name="file" required>
+                                </div>
+                            </div>
+
+                            <div class="d-flex profile-wrapper mb-2">
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-pills animation-nav profile-nav gap-2 gap-lg-3 flex-grow-1" role="tablist">
+                                    
+                                </ul>
+                                <div class="flex-shrink-0">
+                                    <button class="btn btn-success" type="submit">Update</button>
+                                
+                                </div>
+                            </div>
+                            
+                            
+                            
+                            
+                            
+                        </div>
+                        <!--end row-->
+                    </div>
+                                            
+                </div>
+            </div>
+        </div>
+        <!--end col-->
+    </div>
+</form>
+
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header align-items-center d-flex">
+                <h4 class="card-title mb-0 flex-grow-1">All Agreements</h4>
+                
+            </div><!-- end card header -->
+
+            <div class="card-body">
+            
+                <div class="live-preview">
+                    <div class="table-responsive">
+                        <table class="table table-bordered border-secondary align-middle table-nowrap mb-0">
+                            <thead>
+                                <tr>
+                                    <th scope="col">SI No</th>
+                                    <th scope="col">Agreement Name</th>
+                                    <th scope="col">view/download</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for i in agreement %}
+                                <tr id="agreement-{{ i.pk }}">
+                                    <th scope="row"><a href="#" class="fw-medium">{{forloop.counter}}</a></th>
+                                    <td>{{i.agreement_name}}</td>
+                                    
+                                    <td>
+                                        {% if i.agreement_file %}
+                                        <ul class="list-inline hstack gap-2 mb-0">
+                                            <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" aria-label="Call" data-bs-original-title="View">
+                                                <a href="{{i.agreement_file.url}}" class="d-inline-block" target="_blank">
+                                                    <i class="ri-eye-fill fs-20"></i>
+                                                </a>
+                                            </li>
+                                            <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" aria-label="Message" data-bs-original-title="Download">
+                                                <a href="{{i.agreement_file.url}}" download class="d-inline-block">
+                                                    {% comment %} <i class="ri-question-answer-line fs-16"></i> {% endcomment %}
+                                                    <i class="ri-download-2-line fs-20"></i>
+                                                </a>
+                                            </li>
+                                            
+                                        </ul>
+                                        {% else %}
+                                        No Any File Upload
+                                        {% endif %}
+                                    </td>
+                                    {% comment %} <td><a href="javascript:void(0);" class="link-success">View More <i class="ri-arrow-right-line align-middle"></i></a></td> {% endcomment %}
+                                    <td>
+                                        <ul class="list-inline hstack gap-2 mb-0">
+                                        
+                                            <li>
+                                                
+                                                <a href="#" class="text-primary edit-item-btn" hx-get="{% url 'edit_agent_agreement' id=i.id %}" hx-target="#dialog"><i class="ri-pencil-fill fs-16"></i></a>
+                                            </li>
+                                        
+                                           
+                                            <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" aria-label="Delete" data-bs-original-title="Delete">
+                                                
+
+                                                <button class="btn btn-sm text-danger remove-item-btn" 
+                                                        hx-delete="{% url 'delete_agent_agreement' pk=i.pk %}" 
+                                                        hx-confirm="Do you want to Delete ?"
+                                                        hx-target="#agreement-{{ i.pk }}"
+                                                        hx-swap="outerHTML"
+                                                        hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}'>
+                                                        <i class="ri-delete-bin-fill align-bottom "></i>
+                                                </button> 
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+
+
+                               
+                                {% endfor %}
+                            
+                            </tbody>
+
+                            <!--end add modal-->
+
+                <!--end delete modal -->
+                        </table>
+                    </div>
+                </div>
+
+                
+            </div><!-- end card-body -->
+        </div><!-- end card -->
+    </div>
+    <!-- end col -->
+
+    <!-- end col -->
+</div>

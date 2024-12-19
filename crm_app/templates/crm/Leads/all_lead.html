@@ -1,0 +1,105 @@
+{% for i in page_obj %}
+{% if i.archive == False %}
+<tr class="{% if i.color_code == 'Blue'  or i.color_code == 'Grey' or i.color_code == 'White' or i.color_code == 'Red' or i.color_code == 'Green' %}text-dark{% endif %}" style="background-color: {% if i.color_code == 'Grey' %}#efe5e5{% elif i.color_code == 'Blue' %}#89CFF0{% elif i.color_code == 'White' %}#FAF9F6{% elif i.color_code == 'Red' %}#ff9090{% elif i.color_code == 'Green' %}#9cc599{% else %}Transparent{% endif %};">
+    {% comment %} <th scope="row">
+       <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="checkAll" value="option1">
+       </div>
+    </th> {% endcomment %}
+    <td class="id"><a href="apps-ecommerce-order-details.html" class="fw-medium link-primary">{{forloop.counter}}</a></td>
+    <td class="customer_name">Edit</td>
+    <td class="product_name">{{i.enquiry_number}}</td>
+    <td class="date">{{i.FirstName}} {{i.LastName}} </td>
+    <td class="amount">{{i.Dob}}</td>
+    <td class="payment">{{i.passport_no}}</td>
+    <td>{{i.registered_on}}</td>
+    <td>{{i.last_updated_on}}</td>
+    <td>{{i.Visa_country}}</td>
+    <td>{{i.Visa_category}}</td>
+    <td>{{i.Visa_type}}</td>
+    <td>{{i.Package}}</td>
+    <td>{{i.created_by}}</td>
+    
+    <div id="zoomInModal" class="modal fade zoomIn" tabindex="-1" aria-labelledby="zoomInModalLabel" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="zoomInModalLabel">Modal Heading</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                  <h5 class="fs-16">
+                      Overflowing text to show scroll behavior
+                  </h5>
+                  <p class="text-muted">One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections.</p>
+                  <p class="text-muted">The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked. "What's happened to me?" he thought.</p>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary ">Save Changes</button>
+              </div>
+
+          </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+  </div>
+    <td>
+      {% comment %} {% if i.assign_to_employee %}
+      {{i.assign_to_employee.users.first_name }} {{i.assign_to_employee.users.last_name}}
+      ({{i.assign_to_employee.department}})
+      {% endif %}
+      {% if i.assign_to_assesment_employee %}
+      {{i.assign_to_assesment_employee.users.first_name }} {{i.assign_to_assesment_employee.users.last_name}}
+      {% endif %} {% endcomment %}
+      {% if i.assign_to_employee %}
+      <div class="text-secondary" data-bs-toggle="modal" data-bs-target="#zoomInModal">loveee{{ i.assign_to_employee.users.first_name }} {{ i.assign_to_employee.users.last_name }} ({{ i.assign_to_employee.department }})</div>
+  {% endif %}
+  {% if i.assign_to_assesment_employee %}
+      <div>{{ i.assign_to_assesment_employee.users.first_name }} {{ i.assign_to_assesment_employee.users.last_name }} ({{i.assign_to_assesment_employee.department}})</div>
+  {% endif %}
+  {% if i.assign_to_sales_employee %}
+      <div>{{i.assign_to_sales_employee.users.first_name }} {{i.assign_to_sales_employee.users.last_name}} ({{i.assign_to_sales_employee.department}})</div>
+  {% endif %}
+  {% if i.assign_to_documentation_employee %}
+      <div>{{i.assign_to_documentation_employee.users.first_name }} {{i.assign_to_documentation_employee.users.last_name}} ({{i.assign_to_documentation_employee.department}})</div>
+  {% endif %}
+  {% if i.assign_to_visa_team_employee %}
+      <div>{{i.assign_to_visa_team_employee.users.first_name }} {{i.assign_to_visa_team_employee.users.last_name}} ({{i.assign_to_visa_team_employee.department}})</div>
+  {% endif %}
+    </td>
+    <td>
+      <button type="button" class="btn rounded-pill btn-primary waves-effect waves-light"  hx-get="{% url 'update_assign_employee' i.id%}"  hx-target="#dialog" hx-trigger="click">
+          Assigned
+         </button>
+    </td>
+    <td>Assigned</td>
+    <td class="status"><span class="badge border border-secondary text-secondary text-uppercase">{{i.lead_status}}</span></td>
+    <td>Appointment</td>
+    <td>Appointment</td>
+    <td>Appointment</td>
+    <td> {{i.color_code}}</td>
+    <td class="status"><span class="badge bg-secondary-subtle text-secondary text-uppercase">Pending</span>
+    </td>
+    <td>
+       <ul class="list-inline hstack gap-2 mb-0">
+          <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="View">
+             <a href="apps-ecommerce-order-details.html" class="text-primary d-inline-block">
+             <i class="ri-eye-fill fs-16"></i>
+             </a>
+          </li>
+          <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Edit">
+             <a href="#showModal" data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn">
+             <i class="ri-pencil-fill fs-16"></i>
+             </a>
+          </li>
+          <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Remove">
+             <a class="text-danger d-inline-block remove-item-btn" data-bs-toggle="modal" href="#deleteOrder">
+             <i class="ri-delete-bin-5-fill fs-16"></i>
+             </a>
+          </li>
+       </ul>
+    </td>
+</tr>
+
+{% endif %}
+
+{% endfor %}

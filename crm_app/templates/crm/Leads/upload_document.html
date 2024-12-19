@@ -1,0 +1,43 @@
+    {% load crispy_forms_tags %}
+    <form hx-post="{{ request.path }}" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}' class="modal-content" enctype="multipart/form-data">
+    
+        <div class="modal-header bg-light p-3">
+
+            <h5 class="modal-title" id="exampleModalLabel">Upload Document</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+        </div>
+        
+        <div class="modal-body">
+        
+            <div class="row gy-4">
+            
+                <div class="col-xxl-3 col-md-12">
+                    <div>
+                        <input type="text" value="{{ enquiry_id }}" name="enq_id" hidden>
+                        <label for="firstname" class="form-label">Select</label>
+                        <input type="file" class="form-control" id="document_file"  accept="image/*,.pdf" name="document_file">
+                    </div>
+                </div>
+                
+            
+            
+
+                
+
+            </div>
+            
+            <!-- Display non-field form errors -->
+        
+            
+            <!-- Render the form -->
+            
+
+            <!-- Display individual field errors -->
+            
+            
+        </div>
+
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>

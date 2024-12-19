@@ -1,0 +1,99 @@
+{% load crispy_forms_tags %}
+<form hx-post="{{ request.path }}" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}' class="modal-content" enctype="multipart/form-data">
+
+    <div class="modal-header bg-light p-3">
+
+        <h5 class="modal-title" id="exampleModalLabel">Assigned To Employee</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+    </div>
+    
+    <div class="modal-body">
+    
+        <div class="row gy-4">
+        
+            <div class="col-xxl-3 col-md-12">
+                <div>
+                    <input type="text" value="{{ enquiry.id }}" name="enq_id" hidden>
+                    {% if enquiry.lead_status == "New Lead" %}
+                    <label for="firstname" class="form-label">Assigned To Presales Employee</label>
+                    
+                    <select class="form-select bg-dark" name="assign_to_employee" id="assign_to_employee">
+                        <option value="0">Select</option>
+                        {% for employee in presales_employees %}
+                    
+                        <option value="{{ employee.id }}" {% if enquiry.assign_to_employee_id == employee.id %}selected{% endif %}>{{ employee.users }}</option>
+                    {% endfor %}
+                    </select>
+                    {% endif %}
+
+                    {% if enquiry.lead_status == "Active" %}
+                    <label for="firstname" class="form-label">Assigned To Presales Employee</label>
+                    
+                    <select class="form-select bg-dark" name="assign_to_assesment_employee" id="assign_to_assesment_employee">
+                        <option value="0">Select</option>
+                        {% for employee in assesment_employee %}
+                    
+                        <option value="{{ employee.id }}" {% if enquiry.assign_to_assesment_employee_id == employee.id %}selected{% endif %}>{{ employee.users }}</option>
+                    {% endfor %}
+                    </select>
+                    {% endif %}
+
+
+                    {% if enquiry.lead_status == "PreEnrolled" %}
+                    <label for="firstname" class="form-label">Assigned To Presales Employee</label>
+                    
+                    <select class="form-select bg-dark" name="assign_to_sales_employee" id="assign_to_sales_employee">
+                        <option value="0">Select</option>
+                        {% for employee in sales_employees %}
+                    
+                        <option value="{{ employee.id }}" {% if enquiry.assign_to_sales_employee_id == employee.id %}selected{% endif %}>{{ employee.users }}</option>
+                    {% endfor %}
+                    </select>
+                    {% endif %}
+                    {% if enquiry.lead_status == "Enrolled" %}
+                    <label for="firstname" class="form-label">Assigned To Presales Employee</label>
+                    
+                    <select class="form-select bg-dark" name="assign_to_documentation_employee" id="assign_to_documentation_employee">
+                        <option value="0">Select</option>
+                        {% for employee in documentation_employees %}
+                    
+                        <option value="{{ employee.id }}" {% if enquiry.assign_to_sales_employee_id == employee.id %}selected{% endif %}>{{ employee.users }}</option>
+                    {% endfor %}
+                    </select>
+                    {% endif %}
+                    {% if enquiry.lead_status == "Inprocess" %}
+                    <label for="firstname" class="form-label">Assigned To VisaTeam Employee</label>
+                    
+                    <select class="form-select bg-dark" name="assign_to_visa_team_employee" id="assign_to_visa_team_employee">
+                        <option value="0">Select</option>
+                        {% for employee in visa_team %}
+                    
+                        <option value="{{ employee.id }}" {% if enquiry.assign_to_visa_team_employee_id == employee.id %}selected{% endif %}>{{ employee.users }}</option>
+                    {% endfor %}
+                    </select>
+                    {% endif %}
+                </div>
+            </div>
+            
+        
+        
+
+            
+
+        </div>
+        
+        <!-- Display non-field form errors -->
+    
+        
+        <!-- Render the form -->
+        
+
+        <!-- Display individual field errors -->
+        
+        
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>

@@ -1,0 +1,212 @@
+<div class="col-xxl-6 mb-5">
+    <div class="card">
+       
+        <div class="card-body">
+            
+            <div class="live-preview">
+                <div class="accordion custom-accordionwithicon custom-accordion-border accordion-border-box accordion-success" id="accordionBordered">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="accordionborderedExample1">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#accor_borderedExamplecollapse1" aria-expanded="true" aria-controls="accor_borderedExamplecollapse1">
+                                <code>All Agreements</code>
+                            </button>
+                        </h2>
+                        <div id="accor_borderedExamplecollapse1" class="accordion-collapse collapse show" aria-labelledby="accordionborderedExample1" data-bs-parent="#accordionBordered">
+                            <div class="accordion-body">
+                                <div class="col-xl-12">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover align-middle table-nowrap mb-0">
+                                            <thead>
+                                                <tr>
+                                                    
+                                                    <th scope="col">SI NO</th>
+                                                    <th scope="col">Document Name</th>
+                                                    <th scope="col">Uploaded on</th>
+                                                    <th scope="col">View/Download</th>
+                                                    <th scope="col">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for i in adhar_details %}
+                                               
+                                                <tr>
+                                                    <td>{{forloop.counter}}</td>
+                                                    <td>{{i}}</td>
+                                                   
+                                                    <td>
+                                                        {% if i == "Aadhar Card Front" and kyc_agent.adhar_card_front %}
+                                                        {{kyc_agent.uploaded_on}}
+                                                        {% elif i == "Aadhar Card Back" and kyc_agent.adhar_card_back %}
+                                                        {{kyc_agent.uploaded_on}}
+                                                        {% elif i == "Pancard" and kyc_agent.pancard  %}
+                                                        {{kyc_agent.uploaded_on}}
+                                                        {% else %}
+                                                        no file
+                                                        {% endif %}
+                                                    
+                                                   
+                                                    <td>
+                                                        {% if i == "Aadhar Card Front" and kyc_agent.adhar_card_front %}
+                                                        <ul class="list-inline hstack gap-2 mb-0">
+                                                            <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" aria-label="Call" data-bs-original-title="View">
+                                                                <a href="{{kyc_agent.adhar_card_front.url}}" target="_blank">
+                                                                    <i class="ri-eye-fill fs-16"></i>
+                                                                </a>
+                                                            </li>
+                                                            <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" aria-label="Message" data-bs-original-title="Download">
+                                                                <a href="{{kyc_agent.adhar_card_front.url}}"download >
+                                                                    {% comment %} <i class="ri-question-answer-line fs-16"></i> {% endcomment %}
+                                                                    <i class="ri-download-2-line fs-17 lh-1 align-middle"></i>
+                                                                </a>
+                                                            </li>
+                                                            
+                                                        </ul>
+                                                        {% elif i == "Aadhar Card Back" and kyc_agent.adhar_card_back %}
+                                                        <ul class="list-inline hstack gap-2 mb-0">
+                                                            <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" aria-label="Call" data-bs-original-title="View">
+                                                                <a href="{{kyc_agent.adhar_card_back.url}}" target="_blank">
+                                                                    <i class="ri-eye-fill fs-16"></i>
+                                                                </a>
+                                                            </li>
+                                                            <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" aria-label="Message" data-bs-original-title="Download">
+                                                                <a href="{{kyc_agent.adhar_card_back.url}}"download >
+                                                                    {% comment %} <i class="ri-question-answer-line fs-16"></i> {% endcomment %}
+                                                                    <i class="ri-download-2-line fs-17 lh-1 align-middle"></i>
+                                                                </a>
+                                                            </li>
+                                                            
+                                                        </ul>
+                                                        {% elif i == "Pancard" and kyc_agent.pancard  %}
+                                                        <ul class="list-inline hstack gap-2 mb-0">
+                                                            <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" aria-label="Call" data-bs-original-title="View">
+                                                                <a href="{{kyc_agent.pancard.url}}" target="_blank">
+                                                                    <i class="ri-eye-fill fs-16"></i>
+                                                                </a>
+                                                            </li>
+                                                            <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" aria-label="Message" data-bs-original-title="Download">
+                                                                <a href="{{kyc_agent.pancard.url}}"download >
+                                                                    {% comment %} <i class="ri-question-answer-line fs-16"></i> {% endcomment %}
+                                                                    <i class="ri-download-2-line fs-17 lh-1 align-middle"></i>
+                                                                </a>
+                                                            </li>
+                                                            
+                                                        </ul>
+                                                        {% else %}
+                                                        no file upload
+
+
+                                                        {% endif %}
+                                                            
+                                                    </td>
+                                                   
+                                                    <td><button type="button" class="btn rounded-pill btn-primary waves-effect waves-light" 
+                                                        hx-get="{% url 'add_agent_kyc' agent.id %}?document={{ i }}" 
+                                                        hx-target="#dialog" 
+                                                        hx-trigger="click">
+                                                        <i class="ri-upload-line fs-17 lh-1 align-middle"></i> Upload
+                                                    </button></td>
+                                                    {% comment %} <td><button type="button" class="btn rounded-pill btn-primary waves-effect waves-light" hx-get="{% url "add_agent_kyc" agent.id  %}" hx-target="#dialog"><i class="ri-upload-line fs-17 lh-1 align-middle"></i>  Upload</button></td> {% endcomment %}
+
+                                                </tr>
+                                                {% endfor %}
+                                              
+                                               
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div>
+            </div>
+           
+        </div><!-- end card-body -->
+    </div><!-- end card -->
+</div>
+<div class="col-xxl-6 mb-5">
+    <div class="card">
+       
+        <div class="card-body">
+            
+            <div class="live-preview">
+                <div class="accordion custom-accordionwithicon custom-accordion-border accordion-border-box accordion-success" id="accordionBordered">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="accordionborderedExample2">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#accor_borderedExamplecollapse2" aria-expanded="true" aria-controls="accor_borderedExamplecollapse1">
+                                <code>Company Documents</code>
+                            </button>
+                        </h2>
+                        <div id="accor_borderedExamplecollapse2" class="accordion-collapse collapse show" aria-labelledby="accordionborderedExample2" data-bs-parent="#accordionBordered">
+                            <div class="accordion-body">
+                                <div class="col-xl-12">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover align-middle table-nowrap mb-0">
+                                            <thead>
+                                                <tr>
+                                                    
+                                                    <th scope="col">SI NO</th>
+                                                    <th scope="col">Document Name</th>
+                                                    <th scope="col">Uploaded on</th>
+                                                    <th scope="col">View/Download</th>
+                                                    <th scope="col">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                   
+                                                    <td>1</td>
+                                                    <td>Registration Certificate</td>
+                                                    <td>
+                                                        {% if kyc_agent.registration_certificate %}
+                                                        {{kyc_agent.uploaded_on}}
+                                                        {% else %}
+                                                        no file
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if kyc_agent.registration_certificate %}
+                                                        <ul class="list-inline hstack gap-2 mb-0">
+                                                            <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" aria-label="Call" data-bs-original-title="View">
+                                                                <a href="{{kyc_agent.registration_certificate.url}}" target="_blank">
+                                                                    <i class="ri-eye-fill fs-16"></i>
+                                                                </a>
+                                                            </li>
+                                                            <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" aria-label="Message" data-bs-original-title="Download">
+                                                                <a href="{{kyc_agent.registration_certificate.url}}" download >
+                                                                    {% comment %} <i class="ri-question-answer-line fs-16"></i> {% endcomment %}
+                                                                    <i class="ri-download-2-line fs-17 lh-1 align-middle"></i>
+                                                                </a>
+                                                            </li>
+                                                            
+                                                        </ul>
+                                                        {% else %}
+                                                        no upload file
+                                                        {% endif %}
+                                                    </td>
+                                                    {% comment %} <td><a href="javascript:void(0);"><i class="ri-download-2-line fs-17 lh-1 align-middle"></i></a></td> {% endcomment %}
+                                                    {% comment %} <td><button type="button" class="btn rounded-pill btn-primary waves-effect waves-light"><i class="ri-upload-line fs-17 lh-1 align-middle"></i> Upload</button></td> {% endcomment %}
+                                                    <td><button type="button" class="btn rounded-pill btn-primary waves-effect waves-light" 
+                                                        hx-get="{% url 'add_agent_kyc' agent.id %}?document='certificate'" 
+                                                        hx-target="#dialog" 
+                                                        hx-trigger="click">
+                                                        <i class="ri-upload-line fs-17 lh-1 align-middle"></i> Upload
+                                                    </button></td>
+                                                </tr>
+                                               
+                                               
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div>
+            </div>
+           
+        </div><!-- end card-body -->
+    </div><!-- end card -->
+</div>

@@ -1,0 +1,309 @@
+{% extends "crm/base/base.html" %}
+{% block main-content %}
+<div class="page-content">
+   <div class="container-fluid">
+      <div class="col-xl-12">
+         <div class="card">
+            <div class="card-header">
+               <h4 class="card-title mb-0">Add Lead</h4>
+            </div>
+            <!-- end card header -->
+            <div class="card-body">
+               <form action="" class="form-steps" method="POST" autocomplete="off">
+                {% csrf_token %}
+                  {% comment %} <div class="text-center pt-3 pb-4 mb-1 d-flex justify-content-center">
+                     <img src="assets/images/logo-dark.png" class="card-logo card-logo-dark" alt="logo dark" height="17">
+                     <img src="assets/images/logo-light.png" class="card-logo card-logo-light" alt="logo light" height="17">
+                  </div> {% endcomment %}
+                  {% include "crm/base/multistep.html" %}
+                  {% comment %} ---------------comm  {% endcomment %}
+                  <div>
+                     <div class="row gy-4 mb-2">
+                        <div class="col-xxl-3 col-md-4">
+                           <label class="form-label" for="id_FirstName">Spouse Name</label>
+                           {{form.spouse_name}}
+                        </div>
+                        <!--end col-->
+                        <div class="col-xxl-3 col-md-4">
+                           <label for="id_contact" class="form-label">Contact Number</label>
+                           {{form.spouse_no}}
+                        </div>
+                        <div class="col-xxl-3 col-md-4">
+                           <label class="form-label" for="id_email">Email</label>
+                           {{form.spouse_email}}
+                        </div>
+                        <!--end col-->
+                        <!--end col-->
+                        <div class="col-xxl-3 col-md-4">
+                           <label for="id_Dob" class="form-label">Passport</label>
+                           {{form.spouse_passport}}
+                        </div>
+                        <div class="col-xxl-3 col-md-4">
+                           <label for="id_Gender" class="form-label">Date Of Birth </label>
+                           {{form.spouse_dob}}
+                        </div>
+                        <!--end col-->
+                        <div class="col-xxl-3 col-md-4">
+                           <label for="id_Country" class="form-label">Relation With Applicant</span></label>
+                           {{form.spouse_relation}}
+                        </div>
+                        <!--end col-->
+                        <!--end col-->
+                        <!--end col-->
+                        <!--end col-->
+                        <!--end col-->
+                        <!--end col-->
+                        <!--end col-->
+                     </div>
+                     <div id="spouse2" style="display: none;" class="mt-5 mb-2">
+                        <hr>
+                        <div class="row gy-4" >
+                           <div class="col-xxl-3 col-md-4">
+                              <label class="form-label" for="id_spouse_name1">Applicant Name</label>
+                              {{form.spouse_name1}}
+                           </div>
+                           <!--end col-->
+                           <div class="col-xxl-3 col-md-4">
+                              <label for="id_spouse_no1" class="form-label">Contact Number </label>
+                              {{form.spouse_no1}}
+                           </div>
+                           <div class="col-xxl-3 col-md-4">
+                              <label class="form-label" for="id_spouse_email1">Email</label>
+                              {{form.spouse_email1}}
+                           </div>
+                           <!--end col-->
+                           <!--end col-->
+                           <div class="col-xxl-3 col-md-4">
+                              <label for="id_spouse_passport1" class="form-label">Passport</label>
+                              {{form.spouse_passport1}}
+                           </div>
+                           <div class="col-xxl-3 col-md-4">
+                              <label for="id_spouse_dob1" class="form-label">Date Of Birth</label>
+                              {{form.spouse_dob1}}
+                           </div>
+                           <!--end col-->
+                           <div class="col-xxl-3 col-md-4">
+                              <label for="id_spouse_relation1" class="form-label">Relation With Applicant</label>
+                              {{form.spouse_relation1}}
+                           </div>
+                           <!--end col-->
+                           <!--end col-->
+                           <!--end col-->
+                           <!--end col-->
+                           <!--end col-->
+                           <!--end col-->
+                           <!--end col-->
+                        </div>
+                     </div>
+                     <div id="spouse3" style="display: none;" class="mt-5 mb-2">
+                        <hr>
+                        <div class="row gy-4" >
+                           <div class="col-xxl-3 col-md-4">
+                              <label class="form-label" for="id_spouse_name2">Applicant Name</label>
+                              {{form.spouse_name2}}
+                           </div>
+                           <!--end col-->
+                           <div class="col-xxl-3 col-md-4">
+                              <label for="id_spouse_no2" class="form-label">Contact Number</label>
+                              {{form.spouse_no2}}
+                           </div>
+                           <div class="col-xxl-3 col-md-4">
+                              <label class="form-label" for="id_spouse_email2">Email</label>
+                              {{form.spouse_email2}}
+                           </div>
+                           <!--end col-->
+                           <!--end col-->
+                           <div class="col-xxl-3 col-md-4">
+                              <label for="id_spouse_passport2" class="form-label">Passport</label>
+                              {{form.spouse_passport2}}
+                           </div>
+                           <div class="col-xxl-3 col-md-4">
+                              <label for="id_spouse_dob2" class="form-label">Date Of Birth </label>
+                              {{form.spouse_dob2}}
+                           </div>
+                           <!--end col-->
+                           <div class="col-xxl-3 col-md-4">
+                              <label for="id_spouse_relation2" class="form-label">Relation With Applicant</label>
+                              {{form.spouse_relation2}}
+                           </div>
+                           <!--end col-->
+                           <!--end col-->
+                           <!--end col-->
+                           <!--end col-->
+                           <!--end col-->
+                           <!--end col-->
+                           <!--end col-->
+                        </div>
+                     </div>
+                     <div id="spouse4" style="display: none;" class="mt-5 mb-2">
+                        <hr>
+                        <div class="row gy-4" >
+                           <div class="col-xxl-3 col-md-4">
+                              <label class="form-label" for="id_spouse_name3">Applicant Name</label>
+                              {{form.spouse_name3}}
+                           </div>
+                           <!--end col-->
+                           <div class="col-xxl-3 col-md-4">
+                              <label for="id_spouse_no3" class="form-label">Contact Number</label>
+                              {{form.spouse_no3}}
+                           </div>
+                           <div class="col-xxl-3 col-md-4">
+                              <label class="form-label" for="id_spouse_email2">Email </label>
+                              {{form.spouse_email2}}
+                           </div>
+                           <!--end col-->
+                           <!--end col-->
+                           <div class="col-xxl-3 col-md-4">
+                              <label for="id_spouse_passport3" class="form-label">Passport </label>
+                              {{form.spouse_passport3}}
+                           </div>
+                           <div class="col-xxl-3 col-md-4">
+                              <label for="id_spouse_dob3" class="form-label">Date Of Birth </label>
+                              {{form.spouse_dob3}}
+                           </div>
+                           <!--end col-->
+                           <div class="col-xxl-3 col-md-4">
+                              <label for="id_spouse_relation3" class="form-label">Relation With Applicant </label>
+                              {{form.spouse_relation3}}
+                           </div>
+                           <!--end col-->
+                           <!--end col-->
+                           <!--end col-->
+                           <!--end col-->
+                           <!--end col-->
+                           <!--end col-->
+                           <!--end col-->
+                        </div>
+                     </div>
+                     <div id="spouse5" style="display: none;" class="mt-5 mb-2">
+                        <hr>
+                        <div class="row gy-4" >
+                           <div class="col-xxl-3 col-md-4">
+                              <label class="form-label" for="id_spouse_name4">Applicant Name</label>
+                              {{form.spouse_name4}}
+                           </div>
+                           <!--end col-->
+                           <div class="col-xxl-3 col-md-4">
+                              <label for="id_spouse_no4" class="form-label">Contact Number </label>
+                              {{form.spouse_no4}}
+                           </div>
+                           <div class="col-xxl-3 col-md-4">
+                              <label class="form-label" for="id_spouse_email4">Email </label>
+                              {{form.spouse_email4}}
+                           </div>
+                           <!--end col-->
+                           <!--end col-->
+                           <div class="col-xxl-3 col-md-4">
+                              <label for="id_spouse_passport4" class="form-label">Passport</label>
+                              {{form.spouse_passport4}}
+                           </div>
+                           <div class="col-xxl-3 col-md-4">
+                              <label for="id_spouse_dob4" class="form-label">Date Of Birth </label>
+                              {{form.spouse_dob4}}
+                           </div>
+                           <!--end col-->
+                           <div class="col-xxl-3 col-md-4">
+                              <label for="id_spouse_relation4" class="form-label">Relation With Applicant </label>
+                              {{form.spouse_relation4}}
+                           </div>
+                           <!--end col-->
+                           <!--end col-->
+                           <!--end col-->
+                           <!--end col-->
+                           <!--end col-->
+                           <!--end col-->
+                           <!--end col-->
+                        </div>
+                     </div>
+                     <div id="spouse6" style="display: none;" class="mt-5 mb-2">
+                        <hr>
+                        <div class="row gy-4" >
+                           <div class="col-xxl-3 col-md-4">
+                              <label class="form-label" for="id_spouse_name5">Applicant Name</label>
+                              {{form.spouse_name5}}
+                           </div>
+                           <!--end col-->
+                           <div class="col-xxl-3 col-md-4">
+                              <label for="id_spouse_no5" class="form-label">Contact Number </label>
+                              {{form.spouse_no5}}
+                           </div>
+                           <div class="col-xxl-3 col-md-4">
+                              <label class="form-label" for="id_spouse_email5">Email</label>
+                              {{form.spouse_email5}}
+                           </div>
+                           <!--end col-->
+                           <!--end col-->
+                           <div class="col-xxl-3 col-md-4">
+                              <label for="id_spouse_passport5" class="form-label">Passport</label>
+                              {{form.spouse_passport5}}
+                           </div>
+                           <div class="col-xxl-3 col-md-4">
+                              <label for="id_spouse_dob5" class="form-label">Date Of Birth</label>
+                              {{form.spouse_dob5}}
+                           </div>
+                           <!--end col-->
+                           <div class="col-xxl-3 col-md-4">
+                              <label for="id_spouse_relation4" class="form-label">Relation With Applicant</label>
+                              {{form.spouse_relation5}}
+                           </div>
+                           <!--end col-->
+                           <!--end col-->
+                           <!--end col-->
+                           <!--end col-->
+                           <!--end col-->
+                           <!--end col-->
+                           <!--end col-->
+                        </div>
+                     </div>
+                     <!--end row-->
+                  </div>
+                
+                   <div class="row">
+                    <!-- Add More Button on the Left -->
+                    <div class="col text-start">
+                        <button type="button" class="btn btn-warning" id="addMoreButton" onclick="addMoreForm()">
+                            <span>Add More</span>
+                        </button>
+                    </div>
+                
+                    <!-- Skip and Save & Proceed Buttons on the Right -->
+                    <div class="col text-end">
+                        <button type="submit" class="btn btn-primary btn-animation waves-effect waves-light" data-text="Skip">
+                            <span>Skip</span>
+                        </button>
+                        <button type="submit" class="btn btn-secondary btn-animation waves-effect waves-light">
+                            Save & Proceed <i class="ri-arrow-right-fill align-bottom me-1"></i>
+                        </button>
+                    </div>
+                </div>
+                
+               </form>
+            </div>
+            <!-- end card body -->
+         </div>
+         <!-- end card -->
+      </div>
+   </div>
+</div>
+<script>
+   var formCount = 1;
+   var maxForms = 6;
+   
+   function addMoreForm() {
+       console.log("helooooooo")
+       if (formCount < maxForms) {
+           formCount++;
+           var currentForm = document.getElementById('spouse' + formCount);
+           
+           if (currentForm) {
+               currentForm.style.display = 'block';
+           }
+   
+           // Disable add more button after reaching the maximum limit
+           if (formCount === maxForms) {
+               document.getElementById('addMoreButton').disabled = true;
+           }
+       }
+   }
+</script>
+{% endblock main-content %}

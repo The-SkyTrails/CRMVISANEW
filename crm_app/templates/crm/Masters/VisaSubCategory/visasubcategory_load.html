@@ -1,0 +1,145 @@
+{% extends "crm/base/base.html" %}
+{% block main-content %}
+<div class="page-content">
+   <div class="container-fluid">
+      <!-- start page title -->
+      <div class="row">
+         <div class="col-12">
+            <div
+               class="page-title-box d-sm-flex align-items-center justify-content-between bg-transparent">
+               <h4 class="mb-sm-0">Visa Country</h4>
+               <div class="page-title-right">
+                  <ol class="breadcrumb m-0">
+                     <li class="breadcrumb-item"><a href="javascript: void(0);">Visa Country</a></li>
+                     <li class="breadcrumb-item active">List</li>
+                  </ol>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- end page title -->
+      <div class="row">
+         <div class="col-lg-12">
+            <div class="card">
+               <div class="card-header">
+                  <h4 class="card-title mb-0">Add, Edit & Remove</h4>
+               </div>
+               <!-- end card header -->
+               <div class="card-body">
+                  <div class="listjs-table" id="customerList">
+                     <div class="row g-4 mb-3">
+                        <div class="col-sm-auto">
+                           <div>
+                              {% comment %} <button type="button" class="btn btn-primary add-btn"
+                                 data-bs-toggle="modal" id="create-btn"
+                                 data-bs-target="#modal"><i
+                                 class="ri-add-line align-bottom me-1"></i> Add</button> {% endcomment %}
+                             
+                              <button class="btn btn-primary add-btn" hx-get="{% url "visasubcategory" %}" hx-target="#dialog">Add</button>
+                              {% comment %} <button class="btn btn-soft-danger" onclick="deleteMultiple()"><i
+                                 class="ri-delete-bin-2-line"></i></button> {% endcomment %}
+                           </div>
+                           
+                        </div>
+                        <div class="col-sm">
+                           <div class="d-flex justify-content-sm-end">
+                             
+                              <div class="search-box ms-2">
+                                 <input class="form-control" type="search" 
+                                    name="search" placeholder="Begin Typing To Search Users..." 
+                                    hx-get="{% url "visasubcategory_list" %}" 
+                                    hx-trigger="input changed delay:500ms, search" 
+                                    hx-target="#search-results" 
+                                    hx-indicator=".htmx-indicator">
+                                 {% comment %} <input type="text" class="form-control searching" placeholder="Search..." id="searchInput"> {% endcomment %}
+                                 <i class="ri-search-line search-icon"></i>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="table-responsive table-card mt-3 mb-1">
+                        <table class="table align-middle table-nowrap table-bordered border-secondary" id="customerTable" >
+                           <thead class="table-light">
+                              <tr>
+                                 {% comment %} <th>
+                                    <div class="form-check">
+                                       <input class="form-check-input" type="checkbox"
+                                          id="checkAll" value="option">
+                                    </div>
+                                 </th> {% endcomment %}
+                                 <th>Si No</th>   
+                                 <th>Visa Category - Sub Category</th>   
+                                 <th>Visa Country</th>                           
+                                 <th>Estimated Fee</th>
+                                 <th>Cgst(%)</th>
+                                 <th>Sgst(%)</th>
+                                 <th>Total Amount</th>
+                                 <th>Last Updated By</th>
+                                 <th>Created At</th>
+                                 <th>Last Updated On</th>
+                                 <th>Action</th>
+                              </tr>
+                           </thead>
+                           <tbody class="list form-check-all" hx-get="{% url "visasubcategory_list" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="search-results">
+                           {% comment %} <tbody class="list form-check-all" hx-trigger="load,  movieListChanged from:body" hx-get="{% url 'admin_list' %}" hx-target="this" id="search-results"> {% endcomment %}
+                              <tr>
+                                 <td class="spinner-border" role="status">
+                                 </td>
+                                 <td> <span class="htmx-indicator"> 
+                                     Loading.....
+                                   </span> </td>
+                              </tr>
+                           </tbody>
+                        </table>
+                        
+                      
+                     </div>
+                  </div>
+      
+               </div>
+               <!-- end card -->
+            </div>
+            <!-- end col -->
+         </div>
+         <!-- end col -->
+      </div>
+      <!-- end row -->
+      <!-- end row -->
+      {% comment %} {% include "crm/SuperAdmin/add_admin.html" %} {% endcomment %}
+      
+      <!-- Modal -->
+      <div class="modal fade zoomIn" id="deleteRecordModal" tabindex="-1" aria-hidden="true">
+         <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                     id="btn-close"></button>
+               </div>
+               <div class="modal-body">
+                  <div class="mt-2 text-center">
+                     <lord-icon src="../../../gsqxdxog.json" trigger="loop"
+                        colors="primary:#f7b84b,secondary:#f06548"
+                        style="width:100px;height:100px"></lord-icon>
+                     <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                        <h4>Are you Sure ?</h4>
+                        <p class="text-muted mx-4 mb-0">Are you Sure You want to Remove this Record
+                           ?
+                        </p>
+                     </div>
+                  </div>
+                  <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                     <button type="button" class="btn w-sm btn-light"
+                        data-bs-dismiss="modal">Close</button>
+                     <button type="button" class="btn w-sm btn-danger " id="delete-record">Yes,
+                     Delete It!</button>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!--end modal -->
+   </div>
+   <!-- container-fluid -->
+</div>
+
+{% endblock main-content %}

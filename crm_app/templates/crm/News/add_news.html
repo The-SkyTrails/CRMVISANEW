@@ -1,0 +1,38 @@
+{% load crispy_forms_tags %}
+<form hx-post="{{ request.path }}" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}' class="modal-content" enctype="multipart/form-data">
+   
+    <div class="modal-header bg-light p-3">
+        <h5 class="modal-title" id="exampleModalLabel">{% if request.path == "/Add/Group" %}Add{% else %}Edit{% endif %}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+    </div>
+   
+    
+    <div class="modal-body">
+
+        <div class="row formrow">
+            <div class="col-md-12 mb-4">
+                <label for="" class="custom-form-label">News</label>
+              {{form.news}}
+            </div>
+          </div>
+          <h3>Display For</h3>
+          <div class="row formrow">
+            <div class="col-md-4">
+              {{form.employee}} Employee
+            </div>
+            <div class="col-md-4">
+                {{form.agent}} Agent
+              </div>
+              <div class="col-md-4">
+                {{form.outsource_Agent}} OutSource Agent
+              </div>
+          </div>
+
+      
+        
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>

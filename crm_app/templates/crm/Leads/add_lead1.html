@@ -1,0 +1,196 @@
+{% extends "crm/base/base.html" %}
+
+{% block main-content %}
+<style>
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: white;
+        line-height: 28px;
+        background-color: rgba(4, 19, 36, .95);
+        {% comment %} color: {% endcomment %}
+    }
+
+    .select2-container--default .select2-selection--single {
+        background-color: #fff;
+        border: 1px solid #aaa;
+        border-radius: 4px;
+        height: revert;
+    }
+</style>
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title mb-0">Add Lead</h4>
+                </div><!-- end card header -->
+                <div class="card-body">
+                    <form action="" method="POST" class="form-steps" autocomplete="off">
+                        {% csrf_token %}
+                        {% comment %} <div class="text-center pt-3 pb-4 mb-1 d-flex justify-content-center">
+                            <img src="assets/images/logo-dark.png" class="card-logo card-logo-dark" alt="logo dark" height="17">
+                            <img src="assets/images/logo-light.png" class="card-logo card-logo-light" alt="logo light" height="17">
+                        </div> {% endcomment %}
+                        {% include "crm/base/multistep.html" %}
+                       {% comment %} ---------------comm  {% endcomment %}
+
+                       <div>
+                        <div class="row gy-4">
+                           <div class="col-xxl-3 col-md-4">
+                              
+
+
+                                <label class="form-label" for="id_FirstName">First Name <span class="text-warning">*</span></label>
+                               
+                                {{form.FirstName}}
+                                
+                                
+                               
+                           </div>
+                           <!--end col-->
+                           <div class="col-xxl-3 col-md-4">
+                             
+                                <label class="form-label" for="id_LastName">Last Name <span class="text-warning">*</span></label>
+                                {{form.LastName}}
+                                
+                              
+                           </div>
+                           <div class="col-xxl-3 col-md-4">
+                              
+                                <label class="form-label" for="id_email">Email <span class="text-warning">*</span></label>
+                                {{form.email}}
+                                
+                              
+                           </div>
+                           <!--end col-->
+                           <div class="col-xxl-3 col-md-4">
+                              
+                                <label for="id_contact" class="form-label">Contact Number <span class="text-warning">*</span></label>
+                                {{form.contact}}
+                             
+                           </div>
+                           <!--end col-->
+                           <div class="col-xxl-3 col-md-4">
+                              
+                            <label for="id_Dob" class="form-label">Date of Birth <span class="text-warning">*</span></label>
+                            {{form.Dob}}
+                        
+                           </div>
+                           <div class="col-xxl-3 col-md-4">
+                              
+                                <label for="id_Gender" class="form-label">Gender <span class="text-warning">*</span></label>
+                                {{form.Gender}}
+                             
+                           </div>
+                           <!--end col-->
+                           <div class="col-xxl-3 col-md-6">
+                              
+                                <label for="id_Country" class="form-label">Current Resident <span class="text-warning">*</span></label>
+                                {{form.Country}}
+                              
+                           </div>
+                           <!--end col-->
+                           <div class="col-xxl-3 col-md-6">
+                              
+                                <label for="id_passport_no" class="form-label">Passport Number <span class="text-warning">*</span></label>
+                                {{form.passport_no}}
+                              
+                           </div>
+                           <!--end col-->
+                           <div class="col-xxl-3 col-md-6">
+                            <h5>If Yes Click Box</h5>
+                            {{form.refusal}}
+                            <label for="exampleFormControlInput1" class="custom-form-label">Refused</label>
+                           </div>
+                           <!--end col-->
+   
+                           <div class="col-xxl-3 col-md-6">
+                              <div>
+                                 <label for="agent-dropdown" class="form-label">Assign to Agent</label>
+                                 {% comment %} <input type="text" class="form-control" id="state" placeholder="State" name="state" value="{{employee.state}}"> {% endcomment %}
+                                 {% comment %} <select class="form-select" id="agent-dropdown" name="agent" ></select> {% endcomment %}
+                                 <select class="form-select bg-dark" id="agent-dropdown" name="agent" style="width:100%;height:100%;">
+                                 </select>
+                              </div>
+                           </div>
+
+                           <div class="row formrow" id="refusal-country-field" style="display: none;">
+                            <div class="col-md-6 mb-2">
+                                <label for="exampleFormControlInput1" class="custom-form-label">Refused Country</label>
+                                {{ form.refusal_country }}
+                            </div>
+                           
+                           <!--end col-->
+                           
+   
+                           <!--end col-->
+                          
+                           <!--end col-->
+                         
+                           
+                           <!--end col-->
+                          
+                           <!--end col-->
+                          
+                           <!--end col-->
+                        </div>
+                        <!--end row-->
+                    </div>
+                    {% comment %} <button type="submit" class="btn btn-secondary btn-animation waves-effect waves-light" data-text="Save"><span>Save & Proceed</span></button> {% endcomment %}
+                    <button class="btn btn-secondary btn-animation waves-effect waves-light" type="submit" >Save & Proceed <i class=" ri-arrow-right-fill align-bottom me-1"></i></button>
+
+                      
+                    </form>
+                </div>
+                <!-- end card body -->
+            </div>
+            <!-- end card -->
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function() {
+        $("#agent-dropdown").select2({
+            ajax: {
+                url: "{% url 'agent_search' %}",  // AJAX endpoint
+                dataType: "json",
+                delay: 250,  // Delay to avoid too many requests
+                data: function (params) {
+                    return {
+                        q: params.term  // User input
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data.results  // Populate the dropdown with matches
+                    };
+                },
+            },
+            minimumInputLength: 1,  // Trigger AJAX after one character
+            placeholder: "Search for an Agent",  // Placeholder text
+           
+        });
+    });
+</script> 
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var refusalCheckbox = document.querySelector('input[name="refusal"]');
+        var refusalCountryField = document.getElementById('refusal-country-field');
+  
+        function toggleRefusalCountryField() {
+            if (refusalCheckbox.checked) {
+                refusalCountryField.style.display = 'block';
+            } else {
+                refusalCountryField.style.display = 'none';
+            }
+        }
+  
+        toggleRefusalCountryField();
+  
+        refusalCheckbox.addEventListener('change', toggleRefusalCountryField);
+    });
+  </script>
+{% endblock main-content %}

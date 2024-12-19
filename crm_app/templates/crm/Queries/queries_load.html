@@ -1,0 +1,306 @@
+{% extends "crm/base/base.html" %}
+{% load user_roles %}
+{% block main-content %}
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xxl-6">
+                {% comment %} <h5 class="mb-3">Custom Tabs Bordered</h5> {% endcomment %}
+                <div class="card">
+                    <div class="card-body">
+                        {% comment %} <p class="text-muted">Use <code>nav-tabs-custom</code> class to create custom tabs with borders.</p> {% endcomment %}
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs nav-tabs-custom nav-success nav-justified mb-3" role="tablist">
+                            <li class="nav-item">
+                              <a class="nav-link" id="home-tab" data-bs-toggle="tab" href="#queries" role="tab">
+                                Queries
+                                </a> 
+                            </li>
+                            <li class="nav-item">
+                               <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#pending" role="tab">
+                                Pending Queries
+                                </a> 
+                            </li>
+                        </ul>
+
+                        <!-- Tab panes -->
+                        <div class="tab-content text-muted" >
+                           <div class="tab-pane" id="queries" role="tabpanel">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="card">
+                                        {% comment %} <div class="card-header">
+                                            <h4 class="card-title mb-0">Add, Edit & Remove</h4>
+                                        </div><!-- end card header --> {% endcomment %}
+        
+                                        <div class="card-body">
+                                            <div class="listjs-table" id="customerList">
+                                                <div class="row g-4 mb-3">
+                                                    <div class="col-sm-auto">
+                                                        <div>
+                                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#varyingcontentModal" data-bs-whatever="Mary">Add</button>
+                                                            {% comment %} <button type="button" class="btn btn-primary add-btn"
+                                                                data-bs-toggle="modal" id="create-btn"
+                                                                data-bs-target="#showModal"><i
+                                                                    class="ri-add-line align-bottom me-1"></i> Add</button> {% endcomment %}
+                                                            {% comment %} <button class="btn btn-soft-danger" onclick="deleteMultiple()"><i
+                                                                    class="ri-delete-bin-2-line"></i></button> {% endcomment %}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm">
+                                                        <div class="d-flex justify-content-sm-end">
+                                                          {% comment %} <div class="search-box ms-2">
+                                                                <input type="text" class="form-control"
+                                                                    placeholder="Search...">
+                                                                <i class="ri-search-line search-icon"></i>
+                                                            </div>  {% endcomment %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+        
+                                                <div class="table-responsive table-card mt-3 mb-1">
+                                                    <table class="table align-middle table-nowrap" id="customerTable">
+                                                        <thead class="table-light">
+                                                            <tr>
+                                                               
+                                                                <th>SR.NO.</th>
+                                                                <th>question</th>
+                                                                <th>ANSWER</th>
+                                                                <th>ASKED ON</th>
+                                                                <th>ASKED BY</th>
+                                                                
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="list form-check-all">
+                                                            
+                                                           
+                                                            {% for i in resolved_queries  %}
+                                                            <tr id="resolved-{{ i.pk }}">
+                                                            <td>{{forloop.counter}}</td>
+                                                            <td>{{i.question}}</td>
+                                                            <td>
+                                                                {{i.answer}}
+                                                                
+
+                                                            </td>
+                                                            <td>{{i.last_updated_on}}</td>
+                                                            <td>{{i.user}}</td>
+                                                           
+                                                            </tr>
+                                                            
+                                                            
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                    <div class="noresult" style="display: none">
+                                                        <div class="text-center">
+                                                            <lord-icon src="../../../msoeawqm.json" trigger="loop"
+                                                                colors="primary:#121331,secondary:#08a88a"
+                                                                style="width:75px;height:75px"></lord-icon>
+                                                            <h5 class="mt-2">Sorry! No Result Found</h5>
+                                                            <p class="text-muted mb-0">We've searched more than 150+ Orders We
+                                                                did not find any orders for you search.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+        
+        
+                                            </div>
+                                             <div class="d-flex justify-content-end">
+                                                <div class="pagination-wrap hstack gap-2">
+                                                    {% comment %} <a class="page-item pagination-prev disabled" href="javascript:void(0);">
+                                                        Previous
+                                                    </a> {% endcomment %}
+                                                    {% if page_obj.has_previous %}
+                                                    <a class="page-item pagination-prev" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                                                {% else %}
+                                                    <a class="page-item pagination-prev disabled" href="#">Previous</a>
+                                                {% endif %}
+                                                    {% comment %} <ul class="pagination listjs-pagination mb-0"></ul>
+                                                    <a class="page-item pagination-next" href="javascript:void(0);">
+                                                        Next
+                                                    </a> {% endcomment %}
+                                                        <ul class="pagination listjs-pagination mb-0">
+                                                            {% for page_num in page_obj.paginator.page_range %}
+                                                                {% if page_obj.number == page_num %}
+                                                                    <li class="page-item active"><a href="?page={{ page_num }}">{{ page_num }}</a></li>
+                                                                {% else %}
+                                                                    <li class="page-item"><a href="?page={{ page_num }}">{{ page_num }}</a></li>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </ul>
+                                                        {% if page_obj.has_next %}
+                                                            <a class="page-item pagination-next" href="?page={{ page_obj.next_page_number }}">Next</a>
+                                                        {% else %}
+                                                            <a class="page-item pagination-next disabled" href="#">Next</a>
+                                                        {% endif %}
+                                                        
+                                                    
+                                                </div>
+                                            </div> 
+                                            
+                                            
+                                            
+                                        </div><!-- end card -->
+                                    </div>
+                                    <!-- end col -->
+                                </div>
+                                <!-- end col -->
+                            </div>
+                            </div>
+                            <div class="tab-pane" id="pending" role="tabpanel">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="card">
+                                            {% comment %} <div class="card-header">
+                                                <h4 class="card-title mb-0">Add, Edit & Remove</h4>
+                                            </div><!-- end card header --> {% endcomment %}
+            
+                                            <div class="card-body">
+                                                <div class="listjs-table" id="customerList">
+                                                    <div class="row g-4 mb-3">
+                                                        {% comment %} <div class="col-sm-auto">
+                                                            <div>
+                                                                <button type="button" class="btn btn-primary add-btn"
+                                                                    data-bs-toggle="modal" id="create-btn"
+                                                                    data-bs-target="#showModal"><i
+                                                                        class="ri-add-line align-bottom me-1"></i> Add</button>
+                                                                <button class="btn btn-soft-danger" onclick="deleteMultiple()"><i
+                                                                        class="ri-delete-bin-2-line"></i></button>
+                                                            </div>
+                                                        </div> {% endcomment %}
+                                                        <div class="col-sm">
+                                                            <div class="d-flex justify-content-sm-end">
+                                                                {% comment %} <div class="search-box ms-2">
+                                                                    <input type="text" class="form-control"
+                                                                        placeholder="Search...">
+                                                                    <i class="ri-search-line search-icon"></i>
+                                                                </div> {% endcomment %}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+            
+                                                    <div class="table-responsive table-card mt-3 mb-1">
+                                                        <table class="table align-middle table-nowrap" id="customerTable">
+                                                            <thead class="table-light">
+                                                                <tr>
+                                                                   
+                                                                    <th>SR.NO.</th>
+                                                                    <th>question</th>
+                                                                    {% if user|has_access:"2,3" %}
+                                                                    <th>Answer</th>
+                                                                    {% endif %}
+                                                                    
+                                                                    <th>Asked ON</th>
+                                                                    <th>Asked BY</th>
+                                                                    
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody class="list form-check-all">
+                                                               
+                                                                
+                                                                {% for i in pending_queries  %}
+                                                                <tr id="resolved-{{ i.pk }}">
+                                                                <td>{{forloop.counter}}</td>
+                                                                <td>{{i.question}}</td>
+                                                                {% if user|has_access:"2,3" %}
+                                                                <td>
+                                                                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#pending-{{ i.pk }}" onclick="myfunc()"><i
+                                                                        class="ri-add-line align-bottom me-1"></i>Answer</button>
+                                                                   
+    
+                                                                </td>
+                                                                {% endif %}
+                                                                
+                                                                <td>{{i.last_updated_on}}</td>
+                                                                <td>{{i.user}}</td>
+                                                                {% include "crm/Queries/answer_modal.html" %}
+                                                                </tr>
+                                                                
+                                                                
+                                                                {% endfor %}
+                                                            </tbody>
+                                                        </table>
+                                                        <div class="noresult" style="display: none">
+                                                            <div class="text-center">
+                                                                <lord-icon src="../../../msoeawqm.json" trigger="loop"
+                                                                    colors="primary:#121331,secondary:#08a88a"
+                                                                    style="width:75px;height:75px"></lord-icon>
+                                                                <h5 class="mt-2">Sorry! No Result Found</h5>
+                                                                <p class="text-muted mb-0">We've searched more than 150+ Orders We
+                                                                    did not find any orders for you search.</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+            
+            
+                                                </div>
+                                                <div class="d-flex justify-content-end">
+                                                    <div class="pagination-wrap hstack gap-2">
+                                                        <a class="page-item pagination-prev disabled" href="javascript:void(0);">
+                                                            Previous
+                                                        </a>
+                                                        <ul class="pagination listjs-pagination mb-0"></ul>
+                                                        <a class="page-item pagination-next" href="javascript:void(0);">
+                                                            Next
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div><!-- end card -->
+                                        </div>
+                                        <!-- end col -->
+                                    </div>
+                                    <!-- end col -->
+                                </div>
+                            </div> 
+                        </div> 
+                    </div><!-- end card-body -->
+                </div><!-- end card -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        // Get the last active tab from localStorage
+        const activeTab = localStorage.getItem('activeTab');
+        console.log("okkkkkkkkkkkkkk",activeTab)
+        
+        if (activeTab) {
+            // Use Bootstrap's tab method to show the stored active tab
+            const tabElement = document.querySelector(`[href="${activeTab}"]`);
+            if (tabElement) {
+                const tabInstance = new bootstrap.Tab(tabElement);
+                tabInstance.show();
+            }
+        } else {
+            // Default to showing the first tab if no active tab is stored
+            const firstTabElement = document.querySelector('.nav-link');
+            if (firstTabElement) {
+                const firstTabInstance = new bootstrap.Tab(firstTabElement);
+                firstTabInstance.show();
+            }
+        }
+
+        // Save the clicked tab in localStorage
+        document.querySelectorAll('.nav-link').forEach(tab => {
+            tab.addEventListener('click', function() {
+                localStorage.setItem('activeTab', this.getAttribute('href'));
+            });
+        });
+    });
+
+    function myfunc(){
+        
+        document.getElementById("message-text").value  = ""
+        
+        
+    }
+</script>
+
+{% include "crm/Queries/add_query.html" %}
+{% endblock main-content %}
