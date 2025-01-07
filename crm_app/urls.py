@@ -247,9 +247,16 @@ urlpatterns = [
    path('Lead/Completed',lead_completed,name="lead_completed"),
 
    path("UpdateAssign/<int:id>", update_assigned_employee, name="update_assign_employee"),
-
+   path("UpdateAssignAgent/<int:id>",update_assigned_agent,name="update_assigned_agent",),
+   path("UpdateAssignOP/<int:id>", update_assigned_op, name="update_assigned_op"),
+   path("lead_update/<int:id>", lead_updated, name="lead_updated"),
+   path("AddNotes/<int:id>/", add_notes, name="add_notes"),
    path("search/agents/", agent_search_view, name="agent_search"),  # The endpoint for AJAX requests
-   
+   path("search/agent/", agent_search, name="agent_searchh"),  # The endpoint for AJAX requests
+   path("search/outagents/", outagent_search_view, name="outagent_search"),
+   path("color_code/<int:id>/", color_code, name="color_code"),
+
+   path("Enq/Appointment/Save/<int:id>/", appointment_Save, name="appointment_Save"),
    # ----------------------------------
    path('sweetalert',sweet_alert,name="sweetalert")
    

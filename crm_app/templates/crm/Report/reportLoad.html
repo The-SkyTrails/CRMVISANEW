@@ -37,7 +37,7 @@
                                  data-bs-target="#modal"><i
                                  class="ri-add-line align-bottom me-1"></i> Add</button> {% endcomment %}
                               {% if user|is_admin %}
-                              <button class="btn btn-primary add-btn" hx-get="{% url "add_Report" %}" hx-target="#dialog">Add</button>
+                              {% comment %} <button class="btn btn-primary add-btn" hx-get="{% url "add_Report" %}" hx-target="#dialog">Add</button> {% endcomment %}
                               {% endif %}
                               {% comment %} <button class="btn btn-soft-danger" onclick="deleteMultiple()"><i
                                  class="ri-delete-bin-2-line"></i></button> {% endcomment %}

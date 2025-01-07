@@ -1,0 +1,35 @@
+{% load crispy_forms_tags %}
+
+<!-- Modal HTML Form -->
+<form hx-post="{{ request.path }}" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}' class="modal-content" enctype="multipart/form-data">
+    <!-- Modal Header -->
+    <div class="modal-header bg-light p-3">
+        <h5 class="modal-title" id="exampleModalLabel">Add Notes</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="modal-body">
+        <div class="row gy-4">
+            <div class="col-xxl-3 col-md-12">
+                <div class="mb-2">
+                    {% comment %} {% if enquiry.lead_status == "New Lead" %} {% endcomment %}
+                        <h6>Add Notes</h6>
+                        {% comment %} <textarea name="" id="" rows="4" cols="50"></textarea> {% endcomment %}
+                        <textarea class="form-control" aria-label="With textarea" rows="2" name="notes"></textarea>
+
+                </div>
+                <div>
+                    {% comment %} <label for="formFile" class="form-label">Default File Input Example</label> {% endcomment %}
+                   
+                    <input class="form-control" type="file" id="formFile" name="file">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Footer with Submit Button -->
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>

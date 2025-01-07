@@ -1,0 +1,105 @@
+{% load crispy_forms_tags %}
+<style>
+    
+        /* Change cursor to pointer when hovering over list items */
+        .list-group-item {
+            cursor: pointer;  /* Pointer cursor on hover */
+        }
+    
+        /* Change background color of list item on hover */
+        {% comment %} #agent-results .list-group-item:hover {
+            background-color: #f8f9fa;  /* Light gray background on hover */
+        } {% endcomment %}
+    
+    
+</style>
+<!-- Modal HTML Form -->
+<form hx-post="{{ request.path }}" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}' class="modal-content" enctype="multipart/form-data">
+    <!-- Modal Header -->
+    <div class="modal-header bg-light p-3">
+        <h5 class="modal-title" id="exampleModalLabel">Assigned To OutsourcePartner</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="modal-body">
+        <div class="row gy-4">
+            <div class="col-xxl-3 col-md-12">
+                <div>
+                    {% comment %} {% if enquiry.lead_status == "New Lead" %} {% endcomment %}
+                        <h5>Assigned To OutsourcePartner</h5>
+
+                        <!-- Normal Input Field for Agent -->
+                        <input type="text" name="agent" class="form-control" id="agent-input" placeholder="Search Agent"  autocomplete="off"  />
+
+                        <!-- Hidden Field to store Agent ID -->
+                        <input type="hidden" name="opagent_id" id="agent-id" />
+
+                        <!-- Display search results here -->
+                        <div id="agent-results" style="max-height: 200px; overflow-y: auto;"></div>
+                    {% comment %} {% endif %} {% endcomment %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Footer with Submit Button -->
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+<script>
+    $(document).ready(function() {
+        // Jab user input kare
+        $('#agent-input').on('input', function() {
+            var query = $(this).val();  // User ka input
+
+            // Agar input hai, toh AJAX call karein
+            if (query.length > 2) {  // 3 ya usse zyada characters input hone par request bhejein
+                $.ajax({
+                    url: '{% url "outagent_search" %}',  // Apne agent search view ka URL
+                    data: {
+                        q: query  // Search query ko bhejein
+                    },
+                    success: function(data) {
+                        // Data ko process karke user ko suggestions dikhaen
+                        var results = data.results;
+                        var html = '<ul class="list-group">';  // Start the unordered list
+                        
+                        results.forEach(function(agent) {
+                            html += '<li class="list-group-item agent-item" data-id="' + agent.id + '">' + agent.text + '</li>';
+                        });
+                        
+                        html += '</ul>';  // End the unordered list
+                        $('#agent-results').html(html);  // Results ko #agent-results div mein show karna
+
+                        // Hover effect and select agent on click
+                        $('.agent-item').on('click', function() {
+                            var agentName = $(this).text();  // Selected agent ka name
+                            var agentId = $(this).data('id');  // Selected agent ka ID
+
+                            // Input field mein selected agent ka name daalna
+                            $('#agent-input').val(agentName);
+
+                            // Hidden input field mein agent ka ID set karna
+                            $('#agent-id').val(agentId);
+
+                            // Search results ko hide karna
+                            $('#agent-results').html('');
+                        });
+
+                        // Hover effect to highlight the list item
+                        $('.agent-item').on('mouseenter', function() {
+                            $(this).addClass('active');  // Add 'active' class on hover
+                        }).on('mouseleave', function() {
+                            $(this).removeClass('active');  // Remove 'active' class on mouse out
+                        });
+                    }
+                });
+            } else {
+                // Agar query length 2 se kam hai, to results ko clear kar do
+                $('#agent-results').html('');
+            }
+        });
+    });
+</script>

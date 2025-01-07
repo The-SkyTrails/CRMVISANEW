@@ -1,0 +1,57 @@
+{% load crispy_forms_tags %}
+
+<!-- Modal HTML Form -->
+<form hx-post="{{ request.path }}" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}' class="modal-content" enctype="multipart/form-data">
+    <!-- Modal Header -->
+    <div class="modal-header bg-light p-3">
+        <h5 class="modal-title" id="exampleModalLabel">Add Appointment</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="modal-body">
+        <div class="row gy-4">
+            <div class="col-xxl-3 col-md-12">
+                <div>
+                    {% comment %} {% if enquiry.lead_status == "New Lead" %} {% endcomment %}
+                    <span class="sub-text d-flex">added by : {{request.user}}
+                                    
+                    </span>
+                        {% comment %} <textarea name="" id="" rows="4" cols="50"></textarea> {% endcomment %}
+                        
+
+                </div>
+               
+            </div>
+
+            <div class="col-12">
+                <div class="form-group">
+                    <div class="control-label mb-10">
+                        <textarea name="description" rows="4" cols="20" id="ContentPlaceHolder1_txtNotes" class="form-control" placeholder="Description" onkeypress="checkMaxLength(this, 120);" onpaste="handlePaste(this, 120)" oninput="updateCharacterCount(this,120);" maxlength="120"></textarea>
+                        <span id="ContentPlaceHolder1_rfnotes" style="color:Red;display:none;">Enter Notes</span>
+                        <p id="characterCount">Character Limit: 120</p>
+                        <input type="hidden" name="ctl00$ContentPlaceHolder1$hfEId" id="ContentPlaceHolder1_hfEId">
+                        
+                        <div class="custom-file-link text-left mt-3 mb-3">
+                            <label class="uploadFile">
+                                <em class="icon ni ni-clip mr-1 text-primary"></em>
+                                <span class="filename">Date</span>
+                                
+                                <input type="date" name="date" id="ContentPlaceHolder1_fuNotesFile" class="inputfile form-control" onchange="displayFileName(this)">
+                            </label>
+                            <label for="appt">Select a time:</label>
+                            <input type="time" id="appt" name="time">
+                        </div>
+                        <input type="text" value="{{i.id}}" name="enq_id" hidden>
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Footer with Submit Button -->
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>

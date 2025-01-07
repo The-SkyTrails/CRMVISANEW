@@ -838,6 +838,53 @@ class Enquiry(models.Model):
 
 
 
+class Notes(models.Model):
+
+    enquiry = models.ForeignKey(
+        Enquiry, on_delete=models.CASCADE, null=True, blank=True
+    )
+    notes = models.CharField(max_length=255)
+    file = models.FileField(upload_to="Enquiry/Notes/", null=True, blank=True)
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+    created_by = models.ForeignKey(
+        CustomUser, on_delete=models.SET_NULL, null=True, blank=True
+    )
+    created_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "Notes"
+
+    def __str__(self):
+        return self.notes
+
+
+
+
+
+class EnqAppointment(models.Model):
+    appointment_status = [
+        ("Process", "Process"),
+        ("Done", "Done"),
+    ]
+
+    enquiry = models.ForeignKey(
+        Enquiry, on_delete=models.CASCADE, null=True, blank=True
+    )
+    description = models.TextField()
+    date = models.DateField()
+    time = models.TimeField()
+    status = models.CharField(
+        max_length=100, choices=appointment_status, default="Process"
+    )
+    created_by = models.ForeignKey(
+        CustomUser, on_delete=models.SET_NULL, null=True, blank=True
+    )
+    created_date = models.DateTimeField(auto_now_add=False, auto_now=True)
+
+    class Meta:
+        db_table = "Enquiry Appointment"
+
+
 class DocumentFiles(models.Model):
 
     enquiry_id = models.ForeignKey(

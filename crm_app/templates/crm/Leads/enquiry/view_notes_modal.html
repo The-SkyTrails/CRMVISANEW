@@ -1,0 +1,72 @@
+{% load custom_filters %}
+
+<style>
+  .modal-content {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    width: 120%; 
+    color: var(--vz-modal-color);
+    pointer-events: auto;
+    background-color: var(--vz-modal-bg);
+    background-clip: padding-box;
+    border: var(--vz-modal-border-width) solid var(--vz-modal-border-color);
+    border-radius: var(--vz-modal-border-radius);
+    outline: 0;
+}
+</style>
+
+
+
+<div id="viewallnotes-{{i.id}}" class="modal fade zoomIn" tabindex="-1" aria-labelledby="zoomInModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="zoomInModalLabel">View All Notes</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+           
+            <table class="table">
+              <thead>
+                <tr>
+                  {% comment %} <th scope="col">#</th> {% endcomment %}
+                  <th>Created Date</th>
+                  <th>Created By</th>
+                  <th>IP Address</th>
+                  <th>Description</th>
+                  <th>Attachment</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for note in i.notes_set.all %}
+                  <tr>
+                    {% comment %} <td>{{forloop.counter}}</td> {% endcomment %}
+                    <td>{{note.created_date}}</td>
+                    <td>{{note.created_by}}</td>
+                    <td>{{note.ip_address}}</td>
+                    <td>{{note.notes}}</td>
+                    {% if note.file %}
+                     <td><a href="{{ note.file.url }}">{{ note.file.name|filename }}</a></td>
+                    {% else %}
+                        <td>No attachment</td> 
+                    {% endif %}
+                  </tr>
+                {% endfor %}
+               
+              </tbody>
+            </table>
+          </div>
+         
+
+      </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div> 
+
+
+

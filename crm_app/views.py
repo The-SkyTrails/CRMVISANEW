@@ -4369,6 +4369,7 @@ def delete_docfile(request, id):
 
 
 def agent_search_view(request):
+    print("ggggggggooooooooooooo")
     
     query = request.GET.get("q", "")  # The search query from the dropdown
     # Fetch a limited number of agents that match the query
@@ -4389,6 +4390,225 @@ def agent_search_view(request):
 
     return JsonResponse({"results": results})
 
+
+from django.http import JsonResponse
+from .models import Agent
+
+def agent_search(request):
+    print("ooooooooooo")
+    query = request.GET.get('q', '')  # Get the search query from the request
+    if query:
+        # Search agents based on name (case-insensitive)
+        # agents = Agent.objects.filter(name__icontains=query)
+        agents = Agent.objects.filter(
+        Q(users__first_name__icontains=query) |  # Match on first name
+        Q(users__last_name__icontains=query)    # Match on last name
+              # Match on agent type
+        
+    )  # Limit results to avoid too many results at once
+
+        print("agentsssss",agents)
+
+
+    else:
+        agents = Agent.objects.none()  # If no query, return empty queryset
+
+    # Format agents for Select2
+    # results = [{'id': agent.id, 'text': agent.name} for agent in agents]
+    results = [
+        {
+            "id": agent.id,
+            "text": f"{agent.users.first_name} {agent.users.last_name} - {agent.type}",  # How results appear in the dropdown
+        }
+        for agent in agents
+    ]
+
+    return JsonResponse({'results': results})
+
+
+
+def outagent_search_view(request):
+   
+    
+    query = request.GET.get("q", "")  # The search query from the dropdown
+    # Fetch a limited number of agents that match the query
+    outagents = OutSourcingAgent.objects.filter(
+        Q(users__first_name__icontains=query) |  # Match on first name
+        Q(users__last_name__icontains=query)    # Match on last name
+              # Match on agent type
+    ) # Limit results to avoid too many results at once
+
+    # Format the response for Select2
+    results = [
+        {
+            "id": outagent.id,
+            "text": f"{outagent.users.first_name} {outagent.users.last_name} - {outagent.type}",  # How results appear in the dropdown
+        }
+        for outagent in outagents
+    ]
+
+    return JsonResponse({"results": results})
+
+
+
+
+def color_code(request, id):
+    enquiry = Enquiry.objects.get(id=id)
+   
+    if request.method == "POST":
+        color_code = request.POST.get("color_code")
+        
+        enquiry.color_code = color_code
+        enquiry.save()
+        return HttpResponse(
+        status=204,
+        headers={
+            'HX-Trigger': json.dumps({
+                "movieListChanged": None,
+                "showMessage": f"Colour code updated Successfully !!"
+            })
+        })
+        # messages.success(request, f"Lead Color {color_code} Updated Successfully...")
+
+    context = {
+        'enquiry':enquiry
+    }
+    return render(request,'crm/Leads/color_modal.html',context)
+
+
+def lead_updated(request, id):
+    excluded_statuses = ["Accept","Reject"]
+    lead = [status for status in leads_status if status[0] not in excluded_statuses]
+    enquiry = Enquiry.objects.get(id=id)
+    if request.method == "POST":
+        lead_status = request.POST.get("lead_status")
+        
+        enquiry.lead_status = lead_status
+        enquiry.save()
+        return HttpResponse(
+        status=204,
+        headers={
+            'HX-Trigger': json.dumps({
+                "movieListChanged": None,
+                "showMessage": f"Lead Status Updated Successfully!!"
+            })
+        })
+        # messages.success(request, f"Lead {lead_status} Status Updated Successfully...")
+
+        
+        # redirect_to = request.POST.get("redirect_to")
+        # redirect_url = redirect_to
+        
+        # return redirect(redirect_url)
+    context = {
+        'enquiry_id':enquiry,
+        "lead": lead,
+    }
+    return render(request,'crm/Leads/lead_status_update_modal.html',context)
+
+
+def get_public_ip():
+    try:
+        response = requests.get("https://api64.ipify.org?format=json")
+        data = response.json()
+        return data["ip"]
+    except Exception as e:
+        # Handle the exception (e.g., log the error)
+        return None
+
+
+def add_notes(request,id):
+    enq = Enquiry.objects.get(id=id)
+    print("enquiry.....",enq)
+    if request.method == "POST":
+        
+        notes_text = request.POST.get("notes")
+        file = request.FILES.get("file")
+        user = request.user
+
+        try:
+            # enq = Enquiry.objects.get(id=enq_id)
+            ip_address = get_public_ip()
+
+            notes = Notes.objects.create(
+                enquiry=enq,
+                notes=notes_text,
+                file=file,
+                ip_address=ip_address,
+                created_by=user,
+            )
+            notes.save()
+            return HttpResponse(
+                status=204,
+                headers={
+                    'HX-Trigger': json.dumps({
+                        "movieListChanged": None,
+                        "showMessage": f"Notes Added Successfully!!"
+                    })
+                })
+            # messages.success(request, "Notes Added Successfully...")
+        except Enquiry.DoesNotExist:
+            pass
+
+        
+        # redirect_to = request.POST.get("redirect_to")
+        # redirect_url = redirect_to
+        
+        # return redirect(redirect_url)
+    return render(request,'crm/Leads/add_notes_modal.html')
+
+
+
+
+def appointment_Save(request,id):
+    if request.method == "POST":
+        # enq = request.POST.get("enq_id")
+        enq_id = Enquiry.objects.get(id=id)
+
+        desc = request.POST.get("description")
+        date = request.POST.get("date")
+        time = request.POST.get("time")
+
+        try:
+            enqapp = EnqAppointment.objects.get(enquiry=enq_id)
+
+            # Existing EnqAppointment found
+
+            enqapp.description = desc
+            enqapp.enquiry = enq_id
+            enqapp.date = date
+            enqapp.time = time
+            enqapp.created_by = request.user
+            enqapp.save()
+            return HttpResponse(
+                status=204,
+                headers={
+                    'HX-Trigger': json.dumps({
+                        "movieListChanged": None,
+                        "showMessage": f"Appointment Added Successfully!!"
+                    })
+                })
+        except EnqAppointment.DoesNotExist:
+            # No existing EnqAppointment found, create a new one
+            appt = EnqAppointment.objects.create(
+                enquiry=enq_id,
+                description=desc,
+                date=date,
+                time=time,
+                created_by=request.user,
+            )
+            appt.save()
+            return HttpResponse(
+                status=204,
+                headers={
+                    'HX-Trigger': json.dumps({
+                        "movieListChanged": None,
+                        "showMessage": f"Appointment Added Successfully!!"
+                    })
+                })
+
+        # return redirect("admin_new_leads_details")
+    return render(request,'crm/Leads/add_appointment_lead_modal.html')
 
 
 def lead_load(request):
@@ -4625,3 +4845,98 @@ def update_assigned_employee(request, id):
     }
     return render(request,'crm/Leads/assign_to_employee_modal.html',context)
     
+
+
+
+# @login_required
+def update_assigned_agent(request, id):
+    enquiry = Enquiry.objects.get(id=id)
+    if request.method == "POST":
+       
+        try:
+            assign_to_agent = request.POST.get("agent_id")
+            agent = Agent.objects.get(id=assign_to_agent)
+            enquiry.assign_to_agent = agent
+
+            agent_id = agent.id
+            # create_notification_agent(agent, "New Lead Assign Added")
+         
+
+        except Agent.DoesNotExist:
+            if enquiry.assign_to_agent is None:
+                enquiry.assign_to_agent = None
+            else:
+                pass
+
+        enquiry.save()
+        return HttpResponse(
+        status=204,
+        headers={
+            'HX-Trigger': json.dumps({
+                "movieListChanged": None,
+                "showMessage": f"Lead Assigned Successfully..."
+            })
+        })
+    context = {
+        'enquiry':enquiry
+    }
+    return render(request,'crm/Leads/assign_to_agent_modal.html',context)
+        # messages.success(request, "Lead Assigned Successfully...")
+        
+        
+        # redirect_to = request.POST.get("redirect_to")
+        # redirect_url = redirect_to
+        
+        # return redirect(redirect_url)
+
+
+
+
+# @login_required
+def update_assigned_op(request, id):
+    enquiry = Enquiry.objects.get(id=id)
+    if request.method == "POST":
+        try:
+            assign_to_outsourcingagent = request.POST.get("opagent_id")
+            
+            outsourcepartner = OutSourcingAgent.objects.get(
+                id=assign_to_outsourcingagent
+            )
+            enquiry.assign_to_outsourcingagent = outsourcepartner
+
+            agent_id = assign_to_outsourcingagent
+            # create_notification_outsourceagent(
+            #     outsourcepartner, "New Lead Assign Added"
+            # )
+
+            # current_count = Notification.objects.filter(
+            #     is_seen=False, outsourceagent=assign_to_outsourcingagent
+            # ).count()
+            # assignop_notification(agent_id, "New Lead Assign Added", current_count)
+
+        except OutSourcingAgent.DoesNotExist:
+            if enquiry.assign_to_outsourcingagent is None:
+                enquiry.assign_to_outsourcingagent = None
+            else:
+                pass
+
+        enquiry.save()
+        return HttpResponse(
+        status=204,
+        headers={
+            'HX-Trigger': json.dumps({
+                "movieListChanged": None,
+                "showMessage": f"Lead Assigned Successfully..."
+            })
+        })
+    context = {
+        'enquiry':enquiry
+    }
+    return render(request,'crm/Leads/assign_to_op_modal.html',context)
+        # messages.success(request, "Lead Assigned Successfully...")
+        
+        
+        # redirect_to = request.POST.get("redirect_to")
+        # redirect_url = redirect_to
+        
+        # return redirect(redirect_url)

@@ -1,0 +1,69 @@
+{% load crispy_forms_tags %}
+
+    
+
+<!-- Modal HTML Form -->
+<form hx-post="{{ request.path }}" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}' class="modal-content" enctype="multipart/form-data">
+    <!-- Modal Header -->
+    <div class="modal-header bg-light p-3">
+        <h5 class="modal-title" id="exampleModalLabel">Lead Update</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="modal-body">
+        <div class="row gy-4">
+            <div class="col-xxl-3 col-md-12">
+                <div>
+                    
+                        <h6>Lead Status</h6>
+
+                        <!-- Normal Input Field for Agent -->
+                        <select class="form-select" name="lead_status" id="assign_to_employee">
+                    
+                            {% for lead in lead %}
+                            
+                            <option value="{{lead.0}}" {% if lead.0 == enquiry.lead_status %}selected{% endif %}>
+                                {% if lead.0 == "New Lead" %}
+                                New Lead(Presales)
+                                {% elif lead.0 == "Active" %}
+                                Active(Assesment)
+                                {% elif lead.0 == "PreEnrolled" %}
+                                PreEnrolled(Sales)
+                                {% elif lead.0 == "Enrolled" %}
+                                Enrolled(Documentation)
+                                {% elif lead.0 == "Inprocess" %}
+                                Inprocess(Visa Team)
+                                {% elif lead.0 == "Ready To Submit" %}
+                                Ready To Submit(Visa Team)
+                                {% elif lead.0 == "Appointment" %}
+                                Appointment(Visa Team)
+                                {% elif lead.0 == "Result Awaited" %}
+                                Result Awaited(Visa Team)
+                                {% elif lead.0 == "Result" %}
+                                Result(Visa Team)
+                                {% elif lead.0 == "Approved" %}
+                                Approved(Visa Team)
+                                {% elif lead.0 == "Refuse" %}
+                                Refuse(Visa Team)
+                                {% elif lead.0 == "Ready To Collection" %}
+                                Ready To Collection(Visa Team)
+                                {% endif %}
+                            </option>
+                            
+                            {% endfor %}
+                            
+                           
+                        </select>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Footer with Submit Button -->
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+

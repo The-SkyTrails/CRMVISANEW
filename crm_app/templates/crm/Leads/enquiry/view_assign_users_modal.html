@@ -1,0 +1,333 @@
+{% load custom_filters %}
+
+<div id="zoomInModal-{{i.assign_to_employee.id}}" class="modal fade zoomIn" tabindex="-1" aria-labelledby="zoomInModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="zoomInModalLabel"> Employee Code : {{i.assign_to_employee.emp_code}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
+                <div class="row mb-2">
+                    <div class="col-6">
+                        First Name : {{i.assign_to_employee.users.first_name }} 
+                    </div>
+                    <div class="col-6">
+                        Last Name : {{i.assign_to_employee.users.last_name }} 
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-6">
+                        Email : {{i.assign_to_employee.users.email }} 
+                    </div>
+                    <div class="col-6">
+                        Department : {{i.assign_to_employee.department }} 
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        Contact : {{i.assign_to_employee.contact_no }} 
+                    </div>
+                    <div class="col-6">
+                        Address : {{i.assign_to_employee.Address }} 
+                    </div>
+                </div>
+               
+            </div>
+            
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+
+<div id="zoomInModal-{{i.assign_to_assesment_employee.id}}" class="modal fade zoomIn" tabindex="-1" aria-labelledby="zoomInModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="zoomInModalLabel">Employee Code : {{i.assign_to_assesment_employee.emp_code}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-2">
+                    <div class="col-6">
+                      First Name : {{i.assign_to_assesment_employee.users.first_name }} 
+                    </div>
+                    <div class="col-6">
+                      Last Name : {{i.assign_to_assesment_employee.users.last_name }}
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-6">
+                      Email : {{i.assign_to_assesment_employee.users.email }} 
+                    </div>
+                    <div class="col-6">
+                        Department : {{i.assign_to_assesment_employee.department }}
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col-6">
+                      Contact :{{i.assign_to_assesment_employee.contact_no }}
+                    </div>
+                    <div class="col-6">
+                      Address :{{i.assign_to_assesment_employee.Address }}
+                    </div>
+                </div>
+                
+                
+            </div>
+           
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+
+<div id="zoomInModal-{{i.assign_to_sales_employee.id}}" class="modal fade zoomIn" tabindex="-1" aria-labelledby="zoomInModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="zoomInModalLabel">Employee Code : {{i.assign_to_sales_employee.emp_code}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
+                <div class="row mb-2">
+                    <div class="col-6">
+                      First Name : {{i.assign_to_sales_employee.users.first_name }} 
+                    </div>
+                    <div class="col-6">
+                      Last Name : {{i.assign_to_sales_employee.users.last_name }}
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col-6">
+                      Email : {{i.assign_to_sales_employee.users.email }}
+                    </div>
+                    <div class="col-6">
+                      Department : {{i.assign_to_sales_employee.department }}
+                    </div>
+                  </div>
+
+                  <div class="row mb-2">
+                    <div class="col-6">
+                      Contact :{{i.assign_to_sales_employee.contact_no }}
+                    </div>
+                    <div class="col-6">
+                      Address :{{i.assign_to_sales_employee.Address }}
+                    </div>
+                  </div>
+            </div>
+           
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<div id="zoomInModal-{{i.assign_to_documentation_employee.id}}" class="modal fade zoomIn" tabindex="-1" aria-labelledby="zoomInModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="zoomInModalLabel">Employee Code : {{i.assign_to_documentation_employee.emp_code}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-2">
+                    <div class="col-6">
+                      First Name : {{i.assign_to_documentation_employee.users.first_name }} 
+                    </div>
+                    <div class="col-6">
+                      Last Name : {{i.assign_to_documentation_employee.users.last_name }}
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-6">
+                      Email : {{i.assign_to_documentation_employee.users.email }}
+                    </div>
+                    <div class="col-6">
+                      Department : {{i.assign_to_documentation_employee.department }}
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-6">
+                      Contact :{{i.assign_to_documentation_employee.contact_no }}
+                    </div>
+                    <div class="col-6">
+                      Address :{{i.assign_to_documentation_employee.Address }}
+                    </div>
+                </div>
+            </div>
+           
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<div id="zoomInModal-{{i.assign_to_visa_team_employee.id}}" class="modal fade zoomIn" tabindex="-1" aria-labelledby="zoomInModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="zoomInModalLabel">Employee Code : {{i.assign_to_visa_team_employee.emp_code }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-2">
+                    <div class="col-6">
+                      First Name : {{i.assign_to_visa_team_employee.users.first_name }} 
+                    </div>
+                    <div class="col-6">
+                      Last Name : {{i.assign_to_visa_team_employee.users.last_name }}
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-6">
+                      Email : {{i.assign_to_visa_team_employee.users.email }}
+                    </div>
+                    <div class="col-6">
+                      Department : {{i.assign_to_visa_team_employee.department }}
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-6">
+                      Contact :{{i.assign_to_visa_team_employee.contact_no }}
+                    </div>
+                    <div class="col-6">
+                      Address :{{i.assign_to_visa_team_employee.Address }}
+                    </div>
+                </div>
+            </div>
+           
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<div id="zoomInModal-{{i.assign_to_agent.id}}" class="modal fade zoomIn" tabindex="-1" aria-labelledby="zoomInModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="zoomInModalLabel">Agent Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-2">
+                    <div class="col-6">
+                      First Name : {{i.assign_to_agent.users.first_name }} 
+                    </div>
+                    <div class="col-6">
+                      Last Name : {{i.assign_to_agent.users.last_name }}
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-6">
+                      Email : {{i.assign_to_agent.users.email }}
+                    </div>
+                    <div class="col-6">
+                      Organization Name : {{i.assign_to_agent.organization_name }}
+                    </div> 
+                </div>
+                  <div class="row mb-2">
+                    <div class="col-6">
+                      Contact :{{i.assign_to_agent.contact_no }}
+                    </div>
+                    <div class="col-6">
+                      Address :{{i.assign_to_agent.Address }}
+                    </div>
+                </div>
+            </div>
+           
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<div id="zoomInModal-{{i.assign_to_outsourcingagent.id}}" class="modal fade zoomIn" tabindex="-1" aria-labelledby="zoomInModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="zoomInModalLabel">Outsource Agent Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-2">
+                    <div class="col-6">
+                      First Name : {{i.assign_to_outsourcingagent.users.first_name }} 
+                    </div>
+                    <div class="col-6">
+                      Last Name : {{i.assign_to_outsourcingagent.users.last_name }}
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-6">
+                      Email : {{i.assign_to_outsourcingagent.users.email }}
+                    </div>
+                    <div class="col-6">
+                      Organization Name : {{i.assign_to_outsourcingagent.organization_name }}
+                    </div> 
+                </div>
+                  <div class="row mb-2">
+                    <div class="col-6">
+                      Contact :{{i.assign_to_outsourcingagent.contact_no }}
+                    </div>
+                    <div class="col-6">
+                      Address :{{i.assign_to_outsourcingagent.Address }}
+                    </div>
+                </div>
+            </div>
+           
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+
+
+
+{% comment %} 
+
+<div id="viewallnotes-{{i.id}}" class="modal fade zoomIn" tabindex="-1" aria-labelledby="zoomInModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="zoomInModalLabel">View All Notes</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <table>
+              <thead>
+              <tr>
+              <th scope="col">#</th>
+              <th>Created Date</th>
+              <th>Created By</th>
+              <th>IP Address</th>
+              <th>Description</th>
+              <th>Attachment</th>
+              </tr>
+              </thead>
+              <tbody>
+                  {% for note in i.notes_set.all %}
+              <tr>
+                  <td>{{forloop.counter}}</td>
+                  <td>{{note.created_date}}</td>
+                  <td>{{note.created_by}}</td>
+                  <td>{{note.ip_address}}</td>
+                  <td>{{note.notes}}</td>
+                  {% if note.file %}
+                  <td><a href="{{ note.file.url }}">{{ note.file.name|filename }}</a></td>
+              {% else %}
+                  <td>No attachment</td>
+              {% endif %}
+              </tr>
+              {% endfor %}
+              </tbody>
+              </table>
+          </div>
+         
+
+      </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div> {% endcomment %}
+

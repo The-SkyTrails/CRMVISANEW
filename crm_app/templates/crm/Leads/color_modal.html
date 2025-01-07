@@ -1,0 +1,39 @@
+{% load crispy_forms_tags %}
+
+<!-- Modal HTML Form -->
+<form hx-post="{{ request.path }}" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}' class="modal-content" enctype="multipart/form-data">
+    <!-- Modal Header -->
+    <div class="modal-header bg-light p-3">
+        <h5 class="modal-title" id="exampleModalLabel">Give Colour For Lead</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="modal-body">
+        <div class="row gy-4">
+            <div class="col-xxl-3 col-md-12">
+                <div class="mb-2">
+                    {% comment %} {% if enquiry.lead_status == "New Lead" %} {% endcomment %}
+                        <h6>Give Colour For Lead</h6>
+                        {% comment %} <textarea name="" id="" rows="4" cols="50"></textarea> {% endcomment %}
+                        {% comment %} <textarea class="form-control" aria-label="With textarea" rows="2" name="notes"></textarea> {% endcomment %}
+                        <select class="form-select" name="color_code" id="color_code">
+                   
+                            <option value="Grey" {% if enquiry.color_code == "Grey" %}selected{% endif %}>Grey</option>
+                            <option value="Blue" {% if enquiry.color_code == "Blue" %}selected{% endif %}>Blue</option>
+                            <option value="White" {% if enquiry.color_code == "White" %}selected{% endif %}>White</option>
+                            <option value="Red" {% if enquiry.color_code == "Red" %}selected{% endif %}>Red</option>
+                            <option value="Green" {% if enquiry.color_code == "Green" %}selected{% endif %}>Green</option>
+                        </select>
+
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Footer with Submit Button -->
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
