@@ -7,9 +7,9 @@ from .models import *
 
 class UserModel(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
-        (None, {'fields': ('user_type', 'is_login')}),  # Add is_login here
+        (None, {'fields': ('user_type', 'is_logged_in')}),  # Add is_login here
     )
-    list_display = UserAdmin.list_display + ('user_type', 'is_login')  # Add is_login to list display
+    list_display = UserAdmin.list_display + ('user_type', 'is_logged_in')  # Add is_login to list display
 
 class EmployeeAdmin(admin.ModelAdmin):
     list_display = ('users', 'emp_code', 'branch', 'department')  # Fields to display in the list view
@@ -19,7 +19,7 @@ class EmployeeAdmin(admin.ModelAdmin):
     list_per_page = 20  # Limit the number of records per page in the list view
 
 admin.site.register(CustomUser,UserModel)
-admin.site.register(SuperAdminHOD)
+admin.site.register(Admin)
 admin.site.register(VisaCountry)
 admin.site.register(VisaCategory)
 admin.site.register(DocumentCategory)
@@ -45,3 +45,6 @@ admin.site.register(Enquiry)
 admin.site.register(DocumentFiles)
 admin.site.register(Notes)
 admin.site.register(EnqAppointment)
+admin.site.register(TestScore)
+admin.site.register(Work_Experience)
+admin.site.register(Education_Summary)

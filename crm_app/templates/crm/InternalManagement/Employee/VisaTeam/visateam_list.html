@@ -1,7 +1,7 @@
 
 {% load static %}
 {% for i in page_obj %}
-<tr style="background-color: {% if i.color_code == 'Grey' %}#efe5e5{% elif i.color_code == 'Blue' %}#89CFF0{% elif i.color_code == 'White' %}#FAF9F6{% elif i.color_code == 'Red' %}#ff9090{% elif i.color_code == 'Green' %}#9cc599{% else %}Transparent{% endif %}; color: black;">
+<tr style="background-color: {% if i.color_code == 'Grey' %}#efe5e5{% elif i.color_code == 'Blue' %}#89CFF0{% elif i.color_code == 'White' %}#FAF9F6{% elif i.color_code == 'Red' %}#ff9090{% elif i.color_code == 'Green' %}#9cc599{% else %}Transparent{% endif %}; color: {% if i.color_code in 'Grey,Red,Blue,Green,White' %} black {% else %} inherit {% endif %};">
    <td>{{forloop.counter}}</td>
    <td>
       {% if i.file %}

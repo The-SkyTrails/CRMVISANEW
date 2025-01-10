@@ -7,10 +7,10 @@
          <div class="col-12">
             <div
                class="page-title-box d-sm-flex align-items-center justify-content-between bg-transparent">
-               <h4 class="mb-sm-0">Visa Country</h4>
+               <h4 class="mb-sm-0">Group Management</h4>
                <div class="page-title-right">
                   <ol class="breadcrumb m-0">
-                     <li class="breadcrumb-item"><a href="javascript: void(0);">Visa Country</a></li>
+                     <li class="breadcrumb-item"><a href="javascript: void(0);">Group</a></li>
                      <li class="breadcrumb-item active">List</li>
                   </ol>
                </div>
@@ -22,7 +22,7 @@
          <div class="col-lg-12">
             <div class="card">
                <div class="card-header">
-                  <h4 class="card-title mb-0">Add, Edit & Remove</h4>
+                  <h4 class="card-title mb-0">GROUP</h4>
                </div>
                <!-- end card header -->
                <div class="card-body">
@@ -46,7 +46,7 @@
                              
                               <div class="search-box ms-2">
                                  <input class="form-control" type="search" 
-                                    name="search" placeholder="Begin Typing To Search Users..." 
+                                    name="search" placeholder="Search Users" 
                                     hx-get="{% url "group_list" %}" 
                                     hx-trigger="input changed delay:500ms, search" 
                                     hx-target="#search-results" 
@@ -71,7 +71,7 @@
                                  <th>Group Name</th>   
                                  <th>Group Member</th>                           
                                  <th>Last Updated By</th>
-                                 <th>Created At</th>
+                                 
                                  <th>Last Updated On</th>
                                  <th>Action</th>
                               </tr>

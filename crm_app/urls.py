@@ -234,6 +234,9 @@ urlpatterns = [
    path("Uploaddocument/<int:id>/", upload_document, name="uploaddocument"),
    path("Delete/UploadFile/<int:id>", delete_docfile, name="docfile"),
    # path("enquiry_form4/<int:id>/", admindocument, name="enquiry_form4"),
+
+
+
    path('Lead/Load/',lead_load,name="lead_load"),
    path('All/Lead',all_lead,name="all_lead"),
    path('Enrolled/Lead',enrolled_lead,name="enrolled_lead"),
@@ -257,7 +260,18 @@ urlpatterns = [
    path("color_code/<int:id>/", color_code, name="color_code"),
 
    path("Enq/Appointment/Save/<int:id>/", appointment_Save, name="appointment_Save"),
+  
+   
+   # ------------------------- Lead Details --------------------------
+   path('personalInfo/<int:id>/',personal_info,name="personal_info"),
+   path('OtherDetails/<int:id>/',other_details,name="other_details"),
+   path("Test/Score/Delete/<int:id>/", delete_test_score, name="delete_test_score"),
+   path("Product/<int:id>/", editproduct_details, name="edit_product_details"),
+   path("Documents/enquiry/<int:id>/",enq_documents,name="enq_documents"),
    # ----------------------------------
+
+
+
    path('sweetalert',sweet_alert,name="sweetalert")
    
   

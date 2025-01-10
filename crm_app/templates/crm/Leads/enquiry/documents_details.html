@@ -3,12 +3,39 @@
 {% block main-content %}
 <div class="page-content">
    <div class="container-fluid">
+      {% include "crm/components/enquiry_Section.html" %}
       <div class="col-xxl-6 mb-5">
+         <div class="d-flex profile-wrapper">
+            <!-- Nav tabs -->
+            <ul class="nav nav-pills animation-nav profile-nav gap-2 gap-lg-3 flex-grow-1">
+                <li class="nav-item">
+                    <a class="nav-link fs-14 active" href="#">
+                        <i class="ri-airplay-fill d-inline-block d-md-none"></i> <span class="d-none d-md-inline-block">Personal Info</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fs-14"  href="{% url "other_details" enq.id %}">
+                        <i class="ri-list-unordered d-inline-block d-md-none"></i> <span class="d-none d-md-inline-block">Other Details</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fs-14"  href="{% url "edit_product_details" enq.id %}" >
+                        <i class="ri-price-tag-line d-inline-block d-md-none"></i> <span class="d-none d-md-inline-block">Product Selection</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fs-14" href="#">
+                        <i class="ri-folder-4-line d-inline-block d-md-none"></i> <span class="d-none d-md-inline-block">Documents</span>
+                    </a>
+                </li>
+            </ul>
+           
+        </div>
          <div class="card">
             <div class="card-body">
-               {% include "crm/base/multistep.html" %}
+               
                <div class="live-preview" hx-get="{% url "enquiry_details" enq.id   %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="search-results2">
-                   {% for document_category, documents in grouped_documents.items %}
+                  {% comment %} {% for document_category, documents in grouped_documents.items %}
                   <div class="accordion custom-accordionwithicon custom-accordion-border accordion-border-box accordion-success" id="testingg-{{ document_category.id }}">
                      <div class="accordion-item">
                         <h2 class="accordion-header" id="accordionborderedExample1">
@@ -108,7 +135,7 @@
                         </div>
                      </div>
                   </div>
-                  {% endfor %} 
+                  {% endfor %} {% endcomment %}
                </div>
             </div>
             <!-- end card-body -->

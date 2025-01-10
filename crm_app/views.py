@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from .forms import *
-# from datetime import datetime
-from datetime import datetime 
+from datetime import datetime
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
 from django.core.paginator import Paginator
@@ -56,9 +56,9 @@ def get_visa_team_employee():
 #     }
 #     return render(request,'crm/base/dashboard.html',context)
 
-import datetime
+from datetime import datetime
 def dashboard(request):
-    now = datetime.datetime.now()  # This will work correctly now
+    now = datetime.now()  # This will work correctly now
     hour = now.hour
     if 5 <= hour < 12:
         greeting = "Good Morning"
@@ -150,13 +150,13 @@ def visacountry_list(request):
    query = Q()
 
    for term in search_terms:
-        query &= Q(lastupdated_by__first_name__icontains=term) | Q(lastupdated_by__last_name__icontains=term) | Q(country__icontains=term) 
+        query &= Q(lastupdated_by__icontains=term) | Q(lastupdated_by__icontains=term) | Q(country__icontains=term) 
 
 
    admins = VisaCountry.objects.filter(query).order_by('-id')
   
    
-   paginator = Paginator(admins, 3)
+   paginator = Paginator(admins, 10)
    page_number = request.GET.get('page', 1)
    page_obj = paginator.get_page(page_number)
    context = {
@@ -211,7 +211,7 @@ def edit_visacountry(request, pk):
         
 
         if form.is_valid():
-            form.instance.lastupdated_by = request.user
+            form.instance.lastupdated_by = f"{request.user.first_name} {request.user.last_name}"
             form.save()
             
             return HttpResponse(status=204, headers={
@@ -274,13 +274,13 @@ def visacategory_list(request):
    query = Q()
 
    for term in search_terms:
-        query &= Q(lastupdated_by__first_name__icontains=term) | Q(lastupdated_by__last_name__icontains=term) | Q(visa_country_id__country__icontains=term) | Q(category__icontains=term) | Q(subcategory__icontains=term) 
+        query &= Q(lastupdated_by__icontains=term) | Q(lastupdated_by__icontains=term) | Q(visa_country_id__country__icontains=term) | Q(category__icontains=term) | Q(subcategory__icontains=term) 
 
 
    visacat = VisaCategory.objects.filter(query).order_by('-id')
   
    
-   paginator = Paginator(visacat, 3)
+   paginator = Paginator(visacat, 10)
    page_number = request.GET.get('page', 1)
    page_obj = paginator.get_page(page_number)
    context = {
@@ -341,7 +341,7 @@ def edit_visacategory(request, pk):
         
 
         if form.is_valid():
-            form.instance.lastupdated_by = request.user
+            form.instance.lastupdated_by = f"{request.user.first_name} {request.user.last_name}"
             form.save()
             
             return HttpResponse(status=204, headers={
@@ -405,13 +405,13 @@ def documentcategory_list(request):
    query = Q()
 
    for term in search_terms:
-        query &= Q(lastupdated_by__first_name__icontains=term) | Q(lastupdated_by__last_name__icontains=term) | Q(Document_category__icontains=term) 
+        query &= Q(lastupdated_by__icontains=term) | Q(lastupdated_by__icontains=term) | Q(Document_category__icontains=term) 
 
 
    visacat = DocumentCategory.objects.filter(query).order_by('-id')
   
    
-   paginator = Paginator(visacat, 3)
+   paginator = Paginator(visacat, 10)
    page_number = request.GET.get('page', 1)
    page_obj = paginator.get_page(page_number)
    context = {
@@ -472,7 +472,7 @@ def edit_documentcategory(request, pk):
         
 
         if form.is_valid():
-            form.instance.lastupdated_by = request.user
+            form.instance.lastupdated_by = f"{request.user.first_name} {request.user.last_name}"
             form.save()
             
             return HttpResponse(status=204, headers={
@@ -542,7 +542,7 @@ def documents_list(request):
    document = Document.objects.filter(query).order_by('-id')
   
    
-   paginator = Paginator(document, 3)
+   paginator = Paginator(document, 10)
    page_number = request.GET.get('page', 1)
    page_obj = paginator.get_page(page_number)
    context = {
@@ -673,7 +673,7 @@ def case_category_documents_list(request):
    casecategorydocument = CaseCategoryDocument.objects.filter(query).distinct().order_by('-id')
   
    
-   paginator = Paginator(casecategorydocument, 3)
+   paginator = Paginator(casecategorydocument, 10)
    page_number = request.GET.get('page', 1)
    page_obj = paginator.get_page(page_number)
    context = {
@@ -797,13 +797,13 @@ def visasubcategory_list(request):
    query = Q()
 
    for term in search_terms:
-        query &= Q(last_updated_by__first_name__icontains=term) | Q(last_updated_by__last_name__icontains=term) | Q(country_id__country__icontains=term) | Q(category_id__category__icontains=term) | Q(subcategory_name__subcategory__icontains=term) 
+        query &= Q(lastupdated_by__icontains=term) | Q(lastupdated_by__icontains=term) | Q(country_id__country__icontains=term) | Q(category_id__category__icontains=term) | Q(subcategory_name__subcategory__icontains=term) 
 
 
    visasubcat = VisaSubcategory.objects.filter(query).distinct().order_by('-id')
   
    
-   paginator = Paginator(visasubcat, 3)
+   paginator = Paginator(visasubcat, 10)
    page_number = request.GET.get('page', 1)
    page_obj = paginator.get_page(page_number)
    context = {
@@ -846,7 +846,7 @@ def visasubcategory(request):
             cgst=cgst,
             sgst=sgst,
             totalAmount=total,
-            last_updated_by=user,
+            lastupdated_by=f"{user.first_name}{user.last_name}",
         )
         pricing.save()
         return HttpResponse(status=204, headers={
@@ -951,7 +951,7 @@ def branch_list(request):
    branch = Branch.objects.filter(query).distinct().order_by('-id')
   
    
-   paginator = Paginator(branch, 3)
+   paginator = Paginator(branch, 10)
    page_number = request.GET.get('page', 1)
    page_obj = paginator.get_page(page_number)
    context = {
@@ -1075,7 +1075,7 @@ def group_list(request):
    
   
    
-   paginator = Paginator(group, 3)
+   paginator = Paginator(group, 10)
    page_number = request.GET.get('page', 1)
    page_obj = paginator.get_page(page_number)
    context = {
@@ -1133,7 +1133,7 @@ def edit_group(request, pk):
         
 
         if form.is_valid():
-            form.instance.lastupdated_by = request.user
+            form.instance.create_by = request.user
             form.save()
             
             return HttpResponse(status=204, headers={
@@ -1831,7 +1831,7 @@ def activity_log_view(request):
    
   
    
-   paginator = Paginator(group, 3)
+   paginator = Paginator(group, 10)
    page_number = request.GET.get('page', 1)
    page_obj = paginator.get_page(page_number)
    context = {
@@ -1985,7 +1985,7 @@ def employee_list(request):
    
   
    
-   paginator = Paginator(emp, 3)
+   paginator = Paginator(emp, 10)
    page_number = request.GET.get('page', 1)
    page_obj = paginator.get_page(page_number)
    context = {
@@ -2226,7 +2226,7 @@ def visa_team_list(request):
    
   
    
-   paginator = Paginator(emp, 3)
+   paginator = Paginator(emp, 10)
    page_number = request.GET.get('page', 1)
    page_obj = paginator.get_page(page_number)
    context = {
@@ -2344,9 +2344,10 @@ def agent_list(request):
         if end_date:
             # Use registeron__date lookup to filter only by date, ignoring time
             agents = agents.filter(registeron__date__lte=end_date)
+    agents = agents.order_by('-id')
 
     # Paginate the filtered queryset
-    paginator = Paginator(agents, 1)  # Adjust number of items per page if needed
+    paginator = Paginator(agents, 10)  # Adjust number of items per page if needed
     page_number = request.GET.get('page', 1)
     page_obj = paginator.get_page(page_number)
 
@@ -3361,7 +3362,7 @@ def admin_list(request):
         query &= Q(superadmin__first_name__icontains=term) | Q(superadmin__last_name__icontains=term) | Q(superadmin__email__icontains=term) | Q(mobile__icontains=term)
 
 
-   admins = SuperAdminHOD.objects.filter(query).order_by('-id')
+   admins = Admin.objects.filter(query).order_by('-id')
    
    paginator = Paginator(admins, 3)
    page_number = request.GET.get('page', 1)
@@ -3444,7 +3445,7 @@ def add_admin(request):
 
 def edit_admin(request, pk):
     admin = get_object_or_404(CustomUser, pk=pk)  # Fetch the admin instance to edit
-    super_admin_hod_instance = admin.superadminhod  # Get the related SuperAdminHOD instance
+    super_admin_hod_instance = admin.admin  # Get the related SuperAdminHOD instance
 
     if request.method == "POST":
         # Bind the form to the POST data and the admin instance
@@ -3455,8 +3456,8 @@ def edit_admin(request, pk):
             first_name = form.cleaned_data['first_name']
             last_name = form.cleaned_data['last_name']
             email = form.cleaned_data['email']
-            mobile = form.cleaned_data['mobile']
-            profile_pic = form.cleaned_data['profile_pic'] if form.cleaned_data['profile_pic'] else super_admin_hod_instance.profile_pic
+            mobile = form.cleaned_data['contact_no']
+            profile_pic = form.cleaned_data['profile_pic'] if form.cleaned_data['profile_pic'] else super_admin_hod_instance.file
             
             # Handle password separately
             password = form.cleaned_data['password']
@@ -4243,6 +4244,7 @@ from django.db.models import Prefetch
 
 def enquiry4(request, id):
     # Fetch the Enquiry object or return a 404 error
+    print("sooopppppppppppppppppppppp")
     enq = get_object_or_404(Enquiry, id=id)
 
     # Fetch DocumentFiles associated with the enquiry
@@ -4940,3 +4942,466 @@ def update_assigned_op(request, id):
         # redirect_url = redirect_to
         
         # return redirect(redirect_url)
+
+
+
+# def personal_info(request,id):
+#     enquiry = Enquiry.objects.get(id=id)
+#     context = {
+#         'enquiry':enquiry
+#     }
+#     # crm/Leads/add_lead1.html
+#     return render(request,'crm/Leads/enquiry/edit_personalinfo.html',context)
+
+
+from datetime import datetime
+
+def personal_info(request,id):
+    # enquiry = Enquiry.objects.get(id=id)
+    # context = {
+    #     'enquiry':enquiry
+    # }
+    enquiry = Enquiry.objects.get(id=id)
+    country = VisaCountry.objects.all()
+    category = VisaCategory.objects.all()
+    # notifications = Notification.objects.filter(lead_id=enquiry.id)
+    # for notification in notifications:
+    #     if not notification.is_seen:
+    #         notification.is_seen = True
+    #         notification.save()
+
+    context = {
+        "enquiry": enquiry,
+        "country": country,
+        "category": category,
+    }
+
+    if request.method == "POST":
+        print("oooggggggggggggggggg")
+        firstname = request.POST.get("firstname")
+        lastname = request.POST.get("lastname")
+        dob = request.POST.get("dob")
+        print("gggggggggg",firstname)
+        
+        try:
+            dob_obj = datetime.strptime(dob, "%Y-%m-%d").date()
+        except ValueError:
+            dob_obj = None
+
+        gender = request.POST.get("gender")
+        maritialstatus = request.POST.get("maritialstatus")
+        digitalsignature = request.FILES.get("digitalsignature")
+        spouse_name = request.POST.get("spouse_name")
+        spouse_no = request.POST.get("spouse_no")
+        spouse_email = request.POST.get("spouse_email")
+        spouse_passport = request.POST.get("spouse_passport")
+        spouse_dob = request.POST.get("spouse_dob")
+        spouse_relation = request.POST.get("spouse_relation")
+
+        spouse_name1 = request.POST.get("spouse_name1")
+        spouse_no1 = request.POST.get("spouse_no1")
+        spouse_email1 = request.POST.get("spouse_email1")
+        spouse_passport1 = request.POST.get("spouse_passport1")
+        spouse_dob1 = request.POST.get("spouse_dob1")
+        spouse_relation1 = request.POST.get("spouse_relation1")
+
+        spouse_name2 = request.POST.get("spouse_name2")
+        spouse_no2 = request.POST.get("spouse_no2")
+        spouse_email2 = request.POST.get("spouse_email2")
+        spouse_passport2 = request.POST.get("spouse_passport2")
+        spouse_dob2 = request.POST.get("spouse_dob2")
+        spouse_relation2 = request.POST.get("spouse_relation2")
+
+        spouse_name3 = request.POST.get("spouse_name3")
+        spouse_no3 = request.POST.get("spouse_no3")
+        spouse_email3 = request.POST.get("spouse_email3")
+        spouse_passport3 = request.POST.get("spouse_passport3")
+        spouse_dob3 = request.POST.get("spouse_dob3")
+        spouse_relation3 = request.POST.get("spouse_relation3")
+
+        spouse_name4 = request.POST.get("spouse_name4")
+        spouse_no4 = request.POST.get("spouse_no4")
+        spouse_email4 = request.POST.get("spouse_email4")
+        spouse_passport4 = request.POST.get("spouse_passport4")
+        spouse_dob4 = request.POST.get("spouse_dob4")
+        spouse_relation4 = request.POST.get("spouse_relation4")
+
+        spouse_name5 = request.POST.get("spouse_name5")
+        spouse_no5 = request.POST.get("spouse_no5")
+        spouse_email5 = request.POST.get("spouse_email5")
+        spouse_passport5 = request.POST.get("spouse_passport5")
+        spouse_dob5 = request.POST.get("spouse_dob5")
+        spouse_relation5 = request.POST.get("spouse_relation5")
+        refusal = request.POST.get("refusal")
+        if refusal == "on":
+            refusal = "True"
+        else :
+            refusal = "False"
+        refusal_country = request.POST.get("refusal_country")
+
+        try:
+            spouse_dob_obj = datetime.strptime(spouse_dob, "%Y-%m-%d").date()
+        except ValueError:
+            spouse_dob_obj = None
+
+        try:
+            spouse_dob_obj1 = datetime.strptime(spouse_dob1, "%Y-%m-%d").date()
+        except ValueError:
+            spouse_dob_obj1 = None
+
+        try:
+            spouse_dob_obj2 = datetime.strptime(spouse_dob2, "%Y-%m-%d").date()
+        except ValueError:
+            spouse_dob_obj2 = None
+
+        try:
+            spouse_dob_obj3 = datetime.strptime(spouse_dob3, "%Y-%m-%d").date()
+        except ValueError:
+            spouse_dob_obj3 = None
+
+        try:
+            spouse_dob_obj4 = datetime.strptime(spouse_dob4, "%Y-%m-%d").date()
+        except ValueError:
+            spouse_dob_obj4 = None
+
+        try:
+            spouse_dob_obj5 = datetime.strptime(spouse_dob5, "%Y-%m-%d").date()
+        except ValueError:
+            spouse_dob_obj5 = None
+
+        email = request.POST.get("email").lower()
+        contact = request.POST.get("contact")
+        address = request.POST.get("address")
+        city = request.POST.get("city")
+        state = request.POST.get("state")
+        Country = request.POST.get("Country")
+
+        emergencyname = request.POST.get("emergencyname")
+        emergencyphone = request.POST.get("emergencyphone")
+        emergencyemail = request.POST.get("emergencyemail")
+        applicantrelation = request.POST.get("applicantrelation")
+
+        passportnumber = request.POST.get("passportnumber")
+        issuedate = request.POST.get("issuedate")
+        try:
+            issuedate_obj = datetime.strptime(issuedate, "%Y-%m-%d").date()
+        except ValueError:
+            issuedate_obj = None
+
+        expirydate = request.POST.get("expirydate")
+        try:
+            expirydate_obj = datetime.strptime(expirydate, "%Y-%m-%d").date()
+        except ValueError:
+            expirydate_obj = None
+
+        issue_country = request.POST.get("issuecountry")
+        birthcity = request.POST.get("birthcity")
+        country_of_birth = request.POST.get("country_of_birth")
+
+        nationality = request.POST.get("nationality")
+        citizenship = request.POST.get("citizenships")
+        more_than_one_country = request.POST.get("more_than_one_country")
+        studyin_in_other_country = request.POST.get("studyin_in_other_country")
+
+        citizenstatus = request.POST.get("citizenstatus")
+        studystatus = request.POST.get("studystatus")
+
+        citizen = request.POST.get("citizen")
+
+        enquiry.FirstName = firstname
+        enquiry.LastName = lastname
+        enquiry.Dob = dob_obj
+        enquiry.Gender = gender
+        enquiry.marital_status = maritialstatus
+        if digitalsignature:
+            enquiry.digital_signature = digitalsignature
+        enquiry.spouse_name = spouse_name
+        enquiry.spouse_no = spouse_no
+        enquiry.spouse_email = spouse_email
+        enquiry.spouse_passport = spouse_passport
+        enquiry.spouse_dob = spouse_dob_obj
+        enquiry.spouse_relation = spouse_relation
+        enquiry.spouse_name1 = spouse_name1
+        enquiry.spouse_no1 = spouse_no1
+        enquiry.spouse_email1 = spouse_email1
+        enquiry.spouse_passport1 = spouse_passport1
+        enquiry.spouse_dob1 = spouse_dob_obj1
+        enquiry.spouse_relation1 = spouse_relation1
+
+        enquiry.spouse_name2 = spouse_name2
+        enquiry.spouse_no2 = spouse_no2
+        enquiry.spouse_email2 = spouse_email2
+        enquiry.spouse_passport2 = spouse_passport2
+        enquiry.spouse_dob2 = spouse_dob_obj2
+        enquiry.spouse_relation2 = spouse_relation2
+
+        enquiry.spouse_name3 = spouse_name3
+        enquiry.spouse_no3 = spouse_no3
+        enquiry.spouse_email3 = spouse_email3
+        enquiry.spouse_passport3 = spouse_passport3
+        enquiry.spouse_dob3 = spouse_dob_obj3
+        enquiry.spouse_relation3 = spouse_relation3
+
+        enquiry.spouse_name4 = spouse_name4
+        enquiry.spouse_no4 = spouse_no4
+        enquiry.spouse_email4 = spouse_email4
+        enquiry.spouse_passport4 = spouse_passport4
+        enquiry.spouse_dob4 = spouse_dob_obj4
+        enquiry.spouse_relation4 = spouse_relation4
+
+        enquiry.spouse_name5 = spouse_name5
+        enquiry.spouse_no5 = spouse_no5
+        enquiry.spouse_email5 = spouse_email5
+        enquiry.spouse_passport5 = spouse_passport5
+        enquiry.spouse_dob5 = spouse_dob_obj5
+        enquiry.spouse_relation5 = spouse_relation5
+        enquiry.email = email
+        enquiry.contact = contact
+        enquiry.Country = Country
+        enquiry.state = state
+        enquiry.city = city
+        enquiry.address = address
+
+        enquiry.passport_no = passportnumber
+        enquiry.issue_date = issuedate_obj
+        enquiry.expirty_Date = expirydate_obj
+        enquiry.issue_country = issue_country
+        enquiry.city_of_birth = birthcity
+        enquiry.country_of_birth = country_of_birth
+        enquiry.nationality = nationality
+        enquiry.citizenship = citizenship
+        enquiry.more_than_one_country = more_than_one_country
+        enquiry.studyin_in_other_country = studyin_in_other_country
+        enquiry.emergency_name = emergencyname
+        enquiry.emergency_phone = emergencyphone
+        if emergencyemail != "None":
+            enquiry.emergency_email = emergencyemail
+        enquiry.relation_With_applicant = applicantrelation
+        enquiry.refusal = refusal
+        enquiry.refusal_country = refusal_country
+        enquiry.save()
+        
+
+    return render(request,'crm/Leads/enquiry/edit_personalinfo.html',context)
+def other_details(request,id):
+    # enquiry = Enquiry.objects.get(id=id)
+    # context = {
+    #     'enquiry':enquiry
+    # }
+    enquiry = get_object_or_404(Enquiry, id=id)
+    education_summary = Education_Summary.objects.filter(enquiry_id=enquiry).first
+    work_exp = Work_Experience.objects.filter(enquiry_id=enquiry).first
+    bk_info = Background_Information.objects.filter(enquiry_id=enquiry).first
+
+    if request.method == "POST":
+        print("workinggg")
+        # Education Summary
+        education_summary, created = Education_Summary.objects.get_or_create(
+            enquiry_id=enquiry
+        )
+        education_summary.highest_level_education = request.POST.get(
+            "highest_education"
+        )
+        education_summary.grading_scheme = request.POST.get("gradingscheme")
+        education_summary.grade_avg = request.POST.get("gradeaverage")
+        education_summary.recent_college = request.POST.get("recent_college")
+        education_summary.country_of_education = request.POST.get("educationcountry")
+        education_summary.country_of_institution = request.POST.get("institutecountry")
+        education_summary.name_of_institution = request.POST.get("institutename")
+        education_summary.primary_language = request.POST.get("instructionlanguage")
+        education_summary.institution_from = request.POST.get("institutionfrom")
+        try:
+            education_summary.institution_from_obj = datetime.strptime(
+                education_summary.institution_from, "%Y-%m-%d"
+            ).date()
+        except ValueError:
+            education_summary.institution_from = None
+        education_summary.institution_to = request.POST.get("institutionto")
+        try:
+            education_summary.institution_to_obj = datetime.strptime(
+                education_summary.institution_to, "%Y-%m-%d"
+            ).date()
+        except ValueError:
+            education_summary.institution_to = None
+        education_summary.degree_Awarded = request.POST.get("degreeawarded")
+        education_summary.degree_Awarded_On = request.POST.get("degreeawardedon")
+        education_summary.save()
+
+        # Test Score
+        examtype = request.POST.get("examtype")
+        exam_date = request.POST.get("examdate")
+
+        try:
+            exam_date = datetime.strptime(exam_date, "%Y-%m-%d").date()
+        except ValueError:
+            exam_date = None
+        reading = request.POST.get("reading")
+        listening = request.POST.get("listening")
+        speaking = request.POST.get("speaking")
+        writing = request.POST.get("writing")
+        overall_score = request.POST.get("overallscore")
+
+        existing_test_score = TestScore.objects.filter(
+            exam_type=examtype, enquiry_id=enquiry
+        ).first()
+        if reading or exam_date or listening or speaking or writing or overall_score:
+            if existing_test_score is None:
+                test_scores = TestScore.objects.create(
+                    enquiry_id=enquiry,
+                    exam_type=examtype,
+                    exam_date=exam_date,
+                    reading=reading,
+                    listening=listening,
+                    speaking=speaking,
+                    writing=writing,
+                    overall_score=overall_score,
+                )
+
+            else:
+                existing_test_score.exam_date = exam_date
+                existing_test_score.reading = reading
+                existing_test_score.listening = listening
+                existing_test_score.speaking = speaking
+                existing_test_score.writing = writing
+                existing_test_score.overall_score = overall_score
+                existing_test_score.save()
+
+        # Handle Background Information
+        background_info, created = Background_Information.objects.get_or_create(
+            enquiry_id=enquiry
+        )
+        background_info.background_information = request.POST.get("australliabefore")
+        background_info.save()
+
+        # Handle Work Experience
+        work_exp, created = Work_Experience.objects.get_or_create(enquiry_id=enquiry)
+        work_exp.company_name = request.POST.get("companyname")
+        work_exp.designation = request.POST.get("designation")
+        work_exp.from_date = request.POST.get("fromdate")
+        try:
+            work_exp.from_date_obj = datetime.strptime(
+                work_exp.from_date, "%Y-%m-%d"
+            ).date()
+        except ValueError:
+            work_exp.from_date = None
+        work_exp.to_date = request.POST.get("todate")
+        try:
+            work_exp.to_date_obj = datetime.strptime(
+                work_exp.to_date, "%Y-%m-%d"
+            ).date()
+        except ValueError:
+            work_exp.to_date = None
+        work_exp.address = request.POST.get("address")
+        work_exp.city = request.POST.get("city")
+        work_exp.state = request.POST.get("state")
+        work_exp.describe = request.POST.get("workdetails")
+        work_exp.save()
+
+        return redirect("other_details", id=id)
+
+    test_scores = TestScore.objects.filter(enquiry_id=enquiry)
+
+    context = {
+        "enquiry": enquiry,
+        "test_scores": test_scores,
+        "education_summary": education_summary,
+        "work_exp": work_exp,
+        "bk_info": bk_info,
+    }
+
+    return render(request,'crm/Leads/enquiry/other_details.html',context)
+
+
+
+
+@login_required
+def delete_test_score(request, id):
+    print("okkkkk")
+    test_score = get_object_or_404(TestScore, id=id)
+    # test_score = TestScore.objects.get(id=id)
+    enquiry_id = test_score.enquiry_id.id
+    test_score.delete()
+    
+    return redirect("other_details", id=enquiry_id)
+
+
+
+
+@login_required
+def editproduct_details(request, id):
+    enquiry = Enquiry.objects.get(id=id)
+    country = VisaCountry.objects.all()
+    category = VisaCategory.objects.all()
+    product = Package.objects.all()
+    context = {
+        "enquiry": enquiry,
+        "country": country,
+        "category": category,
+        "product": product,
+    }
+
+    if request.method == "POST":
+        source = request.POST.get("source")
+        reference = request.POST.get("reference")
+        visatype = request.POST.get("visatype")
+        visacountry_id = request.POST.get("visacountry_id")
+        visacategory_id = request.POST.get("visacategory_id")
+        visasubcategory_id = request.POST.get("visasubcategory")
+        product_id = request.POST.get("Package")
+
+        visa_country = VisaCountry.objects.get(id=visacountry_id)
+        visa_category = VisaCategory.objects.get(id=visacategory_id)
+        visa_subcategory = VisaCategory.objects.get(id=visacategory_id)
+        package = Package.objects.get(id=product_id)
+
+        enquiry.Source = source
+        enquiry.Reference = reference
+        enquiry.Visa_type = visatype
+        enquiry.Visa_country = visa_country
+        enquiry.Visa_category = visa_category
+        enquiry.Visa_subcategory = visa_subcategory
+        enquiry.Package = package
+
+        enquiry.save()
+
+        return redirect("edit_product_details", id=id)
+
+    return render(request,"crm/Leads/enquiry/product_selection.html",context,)
+
+
+
+
+def enq_documents(request, id):
+    # Fetch the Enquiry object or return a 404 error
+    enq = get_object_or_404(Enquiry, id=id)
+
+    # Fetch DocumentFiles associated with the enquiry
+    doc_file = DocumentFiles.objects.filter(enquiry_id=enq)
+
+    # Prefetch related documents for case categories
+    case_categories = CaseCategoryDocument.objects.filter(country=enq.Visa_country).prefetch_related(
+        Prefetch(
+            "document",
+            queryset=Document.objects.select_related("document_category", "lastupdated_by"),
+        )
+    )
+
+    # Group documents by their category
+    grouped_documents = {}
+    for case_category in case_categories:
+        for document in case_category.document.all():
+            document_category = document.document_category
+            if document_category not in grouped_documents:
+                grouped_documents[document_category] = []
+            grouped_documents[document_category].append(document)
+
+    # Context for the template
+    expected_path = f"/enquiry/{enq.id}/"
+    context = {
+        "enq": enq,
+        "expected_path":expected_path
+        # "grouped_documents": grouped_documents,
+        # "doc_file": doc_file,
+    }
+
+    return render(request, 'crm/Leads/enquiry/documents_details.html', context)

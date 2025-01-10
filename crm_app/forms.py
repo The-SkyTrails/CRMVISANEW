@@ -56,7 +56,7 @@ class MovieForm(forms.ModelForm):
 
 
 class SuperAdminHODForm(forms.ModelForm):
-    mobile = forms.CharField(max_length=30, required=True)
+    contact_no = forms.CharField(max_length=30, required=True)
     profile_pic = forms.FileField(required=False, widget=forms.FileInput())
    
     class Meta:
@@ -69,8 +69,8 @@ class SuperAdminHODForm(forms.ModelForm):
 
         if user_instance:
             print("user instance....",user_instance)
-            self.fields['mobile'].initial = user_instance.mobile
-            self.fields['profile_pic'].initial = user_instance.profile_pic
+            self.fields['contact_no'].initial = user_instance.contact_no
+            self.fields['profile_pic'].initial = user_instance.file
 
 
 

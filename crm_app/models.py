@@ -11,28 +11,42 @@ import datetime
 class CustomUser(AbstractUser):
     user_type_data=(("1","HOD"),("2","Admin"),("3","Employee"),("4", "Agent"),("5", "Out Sourcing Agent"))
     user_type=models.CharField(default=1,choices=user_type_data,max_length=10)
-    is_login = models.BooleanField(default=False)
+    is_logged_in = models.BooleanField(default=False)
+
+    def generate_initials(self):
+        first_initial = self.first_name[0].upper() if self.first_name else ""
+        last_initial = self.last_name[0].upper() if self.last_name else ""
+        return f"{first_initial}{last_initial}"
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
 
 
-class SuperAdminHOD(models.Model):
-    superadmin=models.OneToOneField(CustomUser,on_delete=models.CASCADE)
-    mobile = models.CharField(max_length=12,null=True,blank=True)
-    profile_pic = models.FileField(upload_to="Admin/profile_pic/", null=True, blank=True)
-    created_at=models.DateTimeField(auto_now_add=True)
-    updated_at=models.DateTimeField(auto_now_add=True)
+# class SuperAdminHOD(models.Model):
+#     superadmin=models.OneToOneField(CustomUser,on_delete=models.CASCADE)
+#     mobile = models.CharField(max_length=12,null=True,blank=True)
+#     profile_pic = models.FileField(upload_to="Admin/profile_pic/", null=True, blank=True)
+#     created_at=models.DateTimeField(auto_now_add=True)
+#     updated_at=models.DateTimeField(auto_now_add=True)
 
+
+
+class Admin(models.Model):
+
+    users = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    department = models.CharField(max_length=50)
+    contact_no = models.CharField(max_length=10)
+    file = models.FileField(upload_to="Admin/profile_pic/", null=True, blank=True)
+    
 
 
 class VisaCountry(models.Model):
 
     country = models.CharField(max_length=100)
     created = models.DateTimeField(auto_now_add=True)
+    lastupdated_by = models.CharField(max_length=100, null=True, blank=True)
     last_updated_on = models.DateTimeField(auto_now=True)
-    lastupdated_by = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.SET_NULL)  # User who updated
 
     def __str__(self):
         return str(self.country)
@@ -43,9 +57,8 @@ class VisaCategory(models.Model):
     visa_country_id = models.ForeignKey(VisaCountry, on_delete=models.CASCADE)
     category = models.CharField(max_length=100)
     subcategory = models.CharField(max_length=100)
-    created = models.DateTimeField(auto_now_add=True)
+    lastupdated_by = models.CharField(max_length=100, null=True, blank=True)
     last_updated_on = models.DateTimeField(auto_now=True)
-    lastupdated_by = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.SET_NULL)  # User who updated
 
     class Meta:
         db_table = "VisaCategory"
@@ -54,13 +67,11 @@ class VisaCategory(models.Model):
         return f"{self.category} - {self.subcategory}"
 
 
-
 class DocumentCategory(models.Model):
 
     Document_category = models.CharField(max_length=200)
-    created = models.DateTimeField(auto_now_add=True)
+    lastupdated_by = models.CharField(max_length=100, null=True, blank=True)
     last_updated_on = models.DateTimeField(auto_now=True)
-    lastupdated_by = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.SET_NULL)  # User who updated
 
     def __str__(self):
         return self.Document_category
@@ -74,12 +85,10 @@ class Document(models.Model):
     lastupdated_by = models.ForeignKey(
         CustomUser, on_delete=models.CASCADE, null=True, blank=True
     )
-    created = models.DateTimeField(auto_now_add=True)
     last_updated_on = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.document_name
-
 
 
 
@@ -94,12 +103,10 @@ class CaseCategoryDocument(models.Model):
     last_updated_by = models.ForeignKey(
         CustomUser, on_delete=models.SET_NULL, null=True, blank=True
     )
-    created = models.DateTimeField(auto_now_add=True)
     last_updated_on = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.country} - {self.category}"
-
 
 
 class VisaSubcategory(models.Model):
@@ -116,10 +123,7 @@ class VisaSubcategory(models.Model):
     cgst = models.FloatField()
     sgst = models.FloatField()
     totalAmount = models.FloatField()
-    last_updated_by = models.ForeignKey(
-        CustomUser, on_delete=models.SET_NULL, null=True, blank=True
-    )
-    created = models.DateTimeField(auto_now_add=True)
+    lastupdated_by = models.CharField(max_length=100, null=True, blank=True)
     last_updated_on = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -130,25 +134,24 @@ class VisaSubcategory(models.Model):
 
 
 
+BRANCH_SOURCES = [
+    ("COCO", "Company Owned Company Operated"),
+    ("COFO", "Company Owned Franchise Operated"),
+    ("FOCO", "Franchise Owned Company Operated"),
+    ("FOFO", "Franchise Owned Franchise Operated"),
+]
+
 class Branch(models.Model):
-        
-    BRANCH_SOURCES = [
-        ("COCO", "Company Owned Company Operated"),
-        ("COFO", "Company Owned Franchise Operated"),
-        ("FOCO", "Franchise Owned Company Operated"),
-        ("FOFO", "Franchise Owned Franchise Operated"),
-    ]
+
     branch_name = models.CharField(max_length=20)
     branch_source = models.CharField(max_length=50, choices=BRANCH_SOURCES)
     last_updated_by = models.ForeignKey(
         CustomUser, on_delete=models.SET_NULL, null=True, blank=True
     )
-    created = models.DateTimeField(auto_now_add=True)
     last_updated_on = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.branch_name
-
 
 
 class Group(models.Model):
@@ -158,7 +161,6 @@ class Group(models.Model):
     create_by = models.ForeignKey(
         CustomUser, on_delete=models.SET_NULL, null=True, blank=True
     )
-    created = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -906,6 +908,72 @@ class DocumentFiles(models.Model):
 
 
 
+class Education_Summary(models.Model):
+
+    enquiry_id = models.ForeignKey(
+        Enquiry, on_delete=models.CASCADE, null=True, blank=True
+    )
+    country_of_education = models.CharField(max_length=100, null=True, blank=True)
+    highest_level_education = models.CharField(max_length=100, null=True, blank=True)
+    grading_scheme = models.CharField(max_length=100, null=True, blank=True)
+    grade_avg = models.CharField(max_length=100, null=True, blank=True)
+    recent_college = models.BooleanField(null=True, blank=True)
+    level_education = models.CharField(max_length=100, null=True, blank=True)
+    country_of_institution = models.CharField(max_length=100, null=True, blank=True)
+    name_of_institution = models.CharField(max_length=100, null=True, blank=True)
+    primary_language = models.CharField(max_length=100, null=True, blank=True)
+    institution_from = models.DateField(null=True, blank=True)
+    institution_to = models.DateField(null=True, blank=True)
+    degree_Awarded = models.CharField(max_length=100, null=True, blank=True)
+    degree_Awarded_On = models.CharField(max_length=100, null=True, blank=True)
+    Address = models.CharField(max_length=255, null=True, blank=True)
+    city = models.CharField(max_length=255, null=True, blank=True)
+    Province = models.CharField(max_length=100, null=True, blank=True)
+    zipcode = models.IntegerField(null=True, blank=True)
+
+
+exam_type = [
+    ("PTE", "PTE"),
+    ("TOEFL", "TOEFL"),
+    ("IELTS", "IELTS"),
+]
+
+class TestScore(models.Model):
+
+    enquiry_id = models.ForeignKey(
+        Enquiry, on_delete=models.CASCADE, null=True, blank=True
+    )
+    # candidates_name = models.CharField(max_length=100)
+    exam_type = models.CharField(
+        max_length=100, choices=exam_type, blank=True, null=True
+    )
+    exam_date = models.DateField(blank=True, null=True)
+    reading = models.IntegerField(blank=True)
+    listening = models.IntegerField(blank=True)
+    speaking = models.IntegerField(blank=True)
+    writing = models.IntegerField(blank=True)
+    overall_score = models.IntegerField(blank=True)
+
+
+class Background_Information(models.Model):
+
+    enquiry_id = models.ForeignKey(Enquiry, on_delete=models.CASCADE)
+    background_information = models.CharField(max_length=244, blank=True, null=True)
+
+
+class Work_Experience(models.Model):
+
+    enquiry_id = models.ForeignKey(Enquiry, on_delete=models.CASCADE)
+    company_name = models.CharField(max_length=244, null=True, blank=True)
+    designation = models.CharField(max_length=244, null=True, blank=True)
+    from_date = models.DateField(null=True, blank=True)
+    to_date = models.DateField(null=True, blank=True)
+    address = models.CharField(max_length=244, null=True, blank=True)
+    city = models.CharField(max_length=100, null=True, blank=True)
+    state = models.CharField(max_length=100, null=True, blank=True)
+    describe = models.TextField(null=True, blank=True)
+
+
 # @receiver(post_save, sender=CustomUser)
 # def create_user_profile(sender, instance, created, **kwargs):
 #     if created:
@@ -955,7 +1023,7 @@ class DocumentFiles(models.Model):
 def create_user_profile(sender,instance,created,**kwargs):
     if created:
         if instance.user_type=="2":
-            SuperAdminHOD.objects.create(superadmin=instance)
+            Admin.objects.create(users=instance)
         # if instance.user_type==2:
         #     Staffs.objects.create(admin=instance,address="")
         if instance.user_type=="3":
@@ -969,7 +1037,7 @@ def create_user_profile(sender,instance,created,**kwargs):
 def save_user_profile(sender,instance,**kwargs):
     if instance.user_type=="2":
         
-        instance.superadminhod.save()
+        instance.admin.save()
     # if instance.user_type==2:
     #     instance.staffs.save()
     if instance.user_type=="3":
