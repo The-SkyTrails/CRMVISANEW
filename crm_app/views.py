@@ -4617,17 +4617,23 @@ def lead_load(request):
    
    return render(request,'crm/Leads/lead_load.html')
 
+
+
 def all_lead(request):
+    
     
    search_query = request.GET.get('search', '')
    search_terms = search_query.split()
    query  = Q(archive=False)
    for term in search_terms:
     
-        query &= Q(lastupdated_by__first_name__icontains=term) | Q(lastupdated_by__last_name__icontains=term) | Q(country__icontains=term) 
+        # query &= Q(lastupdated_by__first_name__icontains=term) | Q(lastupdated_by__last_name__icontains=term) | Q(country__icontains=term) 
+        query &= Q(FirstName__icontains=term) | Q(LastName__icontains=term) | Q(enquiry_number__icontains=term) | Q(passport_no__icontains=term) | Q(registered_on__icontains=term) | Q(Visa_country__country__icontains=term) | Q(Visa_type__icontains=term) | Q(created_by__username__icontains=term) | Q(Visa_category__category__icontains=term) | (Q(assign_to_agent__users__first_name__icontains=term) |  # Both First Name
+     Q(assign_to_agent__users__last_name__icontains=term)) | (Q(assign_to_outsourcingagent__users__first_name__icontains=term) |  Q(assign_to_outsourcingagent__users__last_name__icontains=term)) |   Q(Dob__icontains=term)
 
    all_lead = Enquiry.objects.filter(query).order_by("-id")
-   paginator = Paginator(all_lead, 3)
+   
+   paginator = Paginator(all_lead, 5)
    page_number = request.GET.get('page', 1)
    page_obj = paginator.get_page(page_number)
    context = {
@@ -4637,11 +4643,78 @@ def all_lead(request):
    }
    
    return render(request,'crm/Leads/all_lead.html',context)
+def get_agent():
+    return Agent.objects.all()
 
+
+def get_outsourcepartner():
+    return OutSourcingAgent.objects.all()
 
 def enrolled_lead(request):
+
+
+    excluded_statuses = ["Accept","Reject"]
+    lead = [status for status in leads_status if status[0] not in excluded_statuses]
+    enquiry = Enquiry.objects.filter(lead_status="Enrolled").order_by("-id")
+
+    search_query = request.GET.get('query', '')
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+
+    queries = Q(lead_status="Enrolled") & Q(archive=False)
+    if search_query:
+        search_parts = search_query.split()
+        for part in search_parts:
+            # queries &= Q(FirstName__icontains=part) | Q(LastName__icontains=part) | Q(enquiry_number__icontains=part) | Q(passport_no__icontains=part) | Q(registered_on__icontains=part) | Q(Visa_country__country__icontains=part) | Q(Visa_type__icontains=part) | Q(created_by__username__icontains=part) | Q(Visa_category__category__icontains=part)
+            queries &= Q(FirstName__icontains=part) | Q(LastName__icontains=part) | Q(enquiry_number__icontains=part) | Q(passport_no__icontains=part) | Q(registered_on__icontains=part) | Q(Visa_country__country__icontains=part) | Q(Visa_type__icontains=part) | Q(created_by__username__icontains=part) | Q(Visa_category__category__icontains=part) | (Q(assign_to_agent__users__first_name__icontains=part) |  # Both First Name                                                                                                                                                                                                                                                                                                                                                              
+            Q(assign_to_agent__users__last_name__icontains=part)) | (Q(assign_to_outsourcingagent__users__first_name__icontains=part) |  Q(assign_to_outsourcingagent__users__last_name__icontains=part)) |   Q(Dob__icontains=part)
+
+    if start_date:
+        start_date = parse_date(start_date)
+        queries &= Q(registered_on__date__gte=start_date)
+
+    if end_date:
+        end_date = parse_date(end_date)
+        queries &= Q(registered_on__date__lte=end_date)
+
+
+
+
+    enquiry_list = Enquiry.objects.filter(queries).order_by("-id")
+
+    paginator = Paginator(enquiry_list, 10)
+    page_number = request.GET.get('page')
+    
+    
+    page = paginator.get_page(page_number)
+
+    presales_employees = get_presale_employee()
+    sales_employees = get_sale_employee()
+    documentation_employees = get_documentation_team_employee()
+    visa_team = get_visa_team_employee()
+    assesment_employee = get_assesment_employee()
+    agent = get_agent()
+    outsourcepartner = get_outsourcepartner()
+
+    context = {
+        # "enquiry": enquiry,
+        "presales_employees": presales_employees,
+        "sales_employees": sales_employees,
+        "documentation_employees": documentation_employees,
+        "visa_team": visa_team,
+        "assesment_employee": assesment_employee,
+        "agent": agent,
+        "outsourcepartner": outsourcepartner,
+        "lead": lead,
+        "page": page,
+        # "base_url":base_url,
+        "search_query":search_query,
+        'start_date': start_date,
+        'end_date': end_date
+    }
+    print("start deta..................",start_date )
    
-   return render(request,'crm/Leads/enrolled_lead.html')
+    return render(request,'crm/Leads/enrolled_lead.html',context)
 
 
 
