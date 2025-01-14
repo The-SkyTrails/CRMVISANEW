@@ -66,7 +66,13 @@
        </div>
     </th> {% endcomment %}
     <td class="id"><a href="apps-ecommerce-order-details.html" class="fw-medium link-primary">{{forloop.counter}}</a></td>
-    <td class="customer_name">Edit</td>
+    <td class="customer_name">
+     
+      <a data-bs-toggle="offcanvas" href="#offcanvasExample-{{i.id}}" class="text-primary d-inline-block" aria-controls="offcanvasExample">
+        <i class="ri-eye-fill fs-16"></i>
+        </a>
+      {% include "crm/Leads/enquiry/lead_offcanvas_details.html" %}
+    </td>
     <td class="product_name">{{i.enquiry_number}}</td>
     <td class="date">{{i.FirstName}} {{i.LastName}} </td>
     <td class="amount">{{i.Dob}}</td>

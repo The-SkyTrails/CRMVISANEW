@@ -52,7 +52,8 @@
                     <div class="col-auto">
                         <div class="avatar-circle d-flex justify-content-center align-items-center rounded-circle" 
                              style="width: 100px; height: 100px; background-color: var(--avatar-bg);">
-                            <span class="text-center fw-bold" style="color: var(--avatar-text);">JJDDDD</span>
+                            <span class="text-center fw-bold" style="color: var(--avatar-text);">{% if is_document %}{{ enq.generate_initials }}{% endif %}{{ enquiry.generate_initials }}</span>
+                            
                         </div>
                     </div>
         
@@ -60,16 +61,17 @@
                     <div class="col">
                         <div class="row">
                             <div class="col-md-6">
-                                <p class="mb-1"><strong>Case No. :</strong> 103</p>
-                                <p class="mb-1"><strong>Name:</strong> jkjkl jkj</p>
-                                <p class="mb-1"><strong>Visa Country:</strong> Australia</p>
-                                <p class="mb-1"><strong>Package Name:</strong> fasdf</p>
+        
+                                <p class="mb-1"><strong>Case No :</strong> {% if is_document %} {{enq.enquiry_number}}{% endif %} {{enquiry.enquiry_number}}</p>
+                                <p class="mb-1"><strong>Name:</strong> {% if is_document %}{{enq.FirstName}} {{enq.LastName}}{% endif %} {{enquiry.FirstName}} {{enquiry.LastName}}</p>
+                                <p class="mb-1"><strong>Visa Country:</strong> {% if is_document %}{{enq.Visa_country}}{% endif %} {{enquiry.Visa_country}}</p>
+                                <p class="mb-1"><strong>Package Name:</strong> {% if is_document %}{{enq.Package}}{% endif %} {{enquiry.Package}}</p>
                             </div>
                             <div class="col-md-6">
-                                <p class="mb-1"><strong>Assigned to Employee (PreSales/Assessment):</strong> ahsas alamm</p>
-                                <p class="mb-1"><strong>Assigned to Employee (Sales):</strong> -</p>
-                                <p class="mb-1"><strong>Assigned to Employee (Documentation):</strong> -</p>
-                                <p class="mb-1"><strong>Assigned to Employee (Visa Team):</strong> suman kumari</p>
+                                <p class="mb-1"><strong>Assigned to Employee (PreSales/Assessment):</strong>  {% if is_document %}{{ enq.assign_to_employee.users }}{% endif %} {{ enquiry.assign_to_employee.users }}</p>
+                                <p class="mb-1"><strong>Assigned to Employee (Sales):</strong> {% if is_document %} {{ enq.assign_to_sales_employee.users }}{% endif %} {{ enquiry.assign_to_sales_employee.users }}</p>
+                                <p class="mb-1"><strong>Assigned to Employee (Documentation):</strong> {% if is_document %}{{ enq.assign_to_documentation_employee.users }}{% endif %} {{ enquiry.assign_to_documentation_employee.users }}</p>
+                                <p class="mb-1"><strong>Assigned to Employee (Visa Team):</strong> {% if is_document %}{{ enq.assign_to_visa_team_employee.users }}{% endif %}{{ enquiry.assign_to_visa_team_employee.users }}</p>
                             </div>
                         </div>
                     </div>

@@ -5472,7 +5472,8 @@ def enq_documents(request, id):
     expected_path = f"/enquiry/{enq.id}/"
     context = {
         "enq": enq,
-        "expected_path":expected_path
+        "expected_path":expected_path,
+        "is_document" : True
         # "grouped_documents": grouped_documents,
         # "doc_file": doc_file,
     }
