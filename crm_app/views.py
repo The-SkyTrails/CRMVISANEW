@@ -5479,3 +5479,21 @@ def enq_documents(request, id):
     }
 
     return render(request, 'crm/Leads/enquiry/documents_details.html', context)
+
+
+
+@login_required
+def delete_and_archive(request, id):
+    instance = get_object_or_404(Enquiry, id=id)
+
+    instance.archive = True
+    instance.save()
+    return HttpResponse(status=204, headers={
+                'HX-Trigger': json.dumps({
+                    "movieListChanged":None,
+                    "showMessage":f"Lead Deleted !!"
+
+                    })
+                })
+    # return redirect("admin_new_leads_details")
+

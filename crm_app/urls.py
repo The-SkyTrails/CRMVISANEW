@@ -268,6 +268,8 @@ urlpatterns = [
    path("Test/Score/Delete/<int:id>/", delete_test_score, name="delete_test_score"),
    path("Product/<int:id>/", editproduct_details, name="edit_product_details"),
    path("Documents/enquiry/<int:id>/",enq_documents,name="enq_documents"),
+
+   path("delete_and_archive/<int:id>/", delete_and_archive, name="delete_and_archive"),
    # ----------------------------------
 
 
