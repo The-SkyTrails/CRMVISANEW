@@ -258,11 +258,11 @@
      
      {% if page_obj.has_previous %}
      {% comment %} <a class="page-item pagination-prev" href="?page=1{% if search_query %}&search={{ search_query }}{% endif %}">First</a> {% endcomment %}
-     <a class="page-item pagination-prev" hx-get="{% url 'enrolled_lead' %}?page=1{% if search_query %}&search={{ search_query }}{% endif %}" hx-target="#enrollsearch-results">
+     <a class="page-item pagination-prev" hx-get="{% url 'lead_inprocess' %}?page=1{% if search_query %}&search={{ search_query }}{% endif %}" hx-target="#inprocesssearch-results">
        First
     </a>
 
-     <a class="page-item pagination-prev" hx-get="{% url 'enrolled_lead' %}?page={{ page_obj.previous_page_number }}&search={{ search_query }}" hx-target="#enrollsearch-results">
+     <a class="page-item pagination-prev" hx-get="{% url 'lead_inprocess' %}?page={{ page_obj.previous_page_number }}&search={{ search_query }}" hx-target="#inprocesssearch-results">
         Previous
      </a>
      {% endif %}
@@ -276,7 +276,7 @@
                  </li> <!-- Current page -->
               {% else %}
               <li class="page-item">
-                 <a class="page-link" hx-get="{% url 'enrolled_lead' %}?page={{ num }}&search={{ search_query }}" hx-target="#enrollsearch-results">{{ num }}</a>
+                 <a class="page-link" hx-get="{% url 'lead_inprocess' %}?page={{ num }}&search={{ search_query }}" hx-target="#inprocesssearch-results">{{ num }}</a>
              </li>
              {% endif %}
 
@@ -285,7 +285,7 @@
          {% if page_obj.paginator.num_pages > 3 %}
          <li class="page-item"><span class="page-link">...</span></li>
          <li class="page-item {% if page_obj.number == page_obj.paginator.num_pages %}active{% endif %}">
-           <a class="page-link" hx-get="{% url 'enrolled_lead' %}?page={{ page_obj.paginator.num_pages }}&search={{ search_query }}" hx-target="#enrollsearch-results">{{ page_obj.paginator.num_pages }}</a>
+           <a class="page-link" hx-get="{% url 'lead_inprocess' %}?page={{ page_obj.paginator.num_pages }}&search={{ search_query }}" hx-target="#inprocesssearch-results">{{ page_obj.paginator.num_pages }}</a>
          </li>
        
          {% endif %}
@@ -293,7 +293,7 @@
 
      <!-- Next Page Button -->
      {% if page_obj.has_next %}
-     <a class="page-item pagination-next" hx-get="{% url 'enrolled_lead' %}?page={{ page_obj.next_page_number }}&search={{ search_query }}" hx-target="#enrollsearch-results">
+     <a class="page-item pagination-next" hx-get="{% url 'lead_inprocess' %}?page={{ page_obj.next_page_number }}&search={{ search_query }}" hx-target="#inprocesssearch-results">
         Next
      </a>
      {% endif %}
