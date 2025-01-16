@@ -146,7 +146,9 @@ def visacountry_list(request):
    
    search_query = request.GET.get('search', '')
    
+   
    search_terms = search_query.split()
+   
    query = Q()
 
    for term in search_terms:
@@ -4650,24 +4652,91 @@ def get_agent():
 def get_outsourcepartner():
     return OutSourcingAgent.objects.all()
 
+# def enrolled_lead(request):
+   
+    
+#     excluded_statuses = ["Accept","Reject"]
+#     lead = [status for status in leads_status if status[0] not in excluded_statuses]
+#     enquiry = Enquiry.objects.filter(lead_status="Enrolled").order_by("-id")
+
+#     search_query = request.GET.get('query', '')
+#     print('searchhhh queryss')
+   
+#     start_date = request.GET.get('start_date')
+#     end_date = request.GET.get('end_date')
+
+#     queries = Q(lead_status="Enrolled") & Q(archive=False)
+#     if search_query:
+#         search_parts = search_query.split()
+#         print("search queryyyyy",search_parts)
+#         for part in search_parts:
+#             # queries &= Q(FirstName__icontains=part) | Q(LastName__icontains=part) | Q(enquiry_number__icontains=part) | Q(passport_no__icontains=part) | Q(registered_on__icontains=part) | Q(Visa_country__country__icontains=part) | Q(Visa_type__icontains=part) | Q(created_by__username__icontains=part) | Q(Visa_category__category__icontains=part)
+#             queries &= Q(FirstName__icontains=part) | Q(LastName__icontains=part) | Q(enquiry_number__icontains=part) | Q(passport_no__icontains=part) | Q(registered_on__icontains=part) | Q(Visa_country__country__icontains=part) | Q(Visa_type__icontains=part) | Q(created_by__username__icontains=part) | Q(Visa_category__category__icontains=part) | (Q(assign_to_agent__users__first_name__icontains=part) |  # Both First Name                                                                                                                                                                                                                                                                                                                                                              
+#             Q(assign_to_agent__users__last_name__icontains=part)) | (Q(assign_to_outsourcingagent__users__first_name__icontains=part) |  Q(assign_to_outsourcingagent__users__last_name__icontains=part)) |   Q(Dob__icontains=part)
+
+#     if start_date:
+#         start_date = parse_date(start_date)
+#         queries &= Q(registered_on__date__gte=start_date)
+
+#     if end_date:
+#         end_date = parse_date(end_date)
+#         queries &= Q(registered_on__date__lte=end_date)
+
+
+
+
+#     enquiry_list = Enquiry.objects.filter(queries).order_by("-id")
+
+#     paginator = Paginator(enquiry_list, 10)
+#     page_number = request.GET.get('page')
+    
+    
+#     page = paginator.get_page(page_number)
+
+#     presales_employees = get_presale_employee()
+#     sales_employees = get_sale_employee()
+#     documentation_employees = get_documentation_team_employee()
+#     visa_team = get_visa_team_employee()
+#     assesment_employee = get_assesment_employee()
+#     agent = get_agent()
+#     outsourcepartner = get_outsourcepartner()
+
+#     context = {
+#         # "enquiry": enquiry,
+#         "presales_employees": presales_employees,
+#         "sales_employees": sales_employees,
+#         "documentation_employees": documentation_employees,
+#         "visa_team": visa_team,
+#         "assesment_employee": assesment_employee,
+#         "agent": agent,
+#         "outsourcepartner": outsourcepartner,
+#         "lead": lead,
+#         "page_obj": page,
+#         # "base_url":base_url,
+#         "search_query":search_query,
+#         'start_date': start_date,
+#         'end_date': end_date
+#     }
+    
+   
+#     return render(request,'crm/Leads/enrolled_lead.html',context)
+
+
 def enrolled_lead(request):
+    search_query = request.GET.get('search', '')  # 'search' ko 'query' se replace karen
+   
 
-
-    excluded_statuses = ["Accept","Reject"]
-    lead = [status for status in leads_status if status[0] not in excluded_statuses]
-    enquiry = Enquiry.objects.filter(lead_status="Enrolled").order_by("-id")
-
-    search_query = request.GET.get('query', '')
-    start_date = request.GET.get('start_date')
-    end_date = request.GET.get('end_date')
-
+    # Aapke existing query logic ko aap jese hain waisa use kar sakte hain
     queries = Q(lead_status="Enrolled") & Q(archive=False)
     if search_query:
         search_parts = search_query.split()
+       
         for part in search_parts:
-            # queries &= Q(FirstName__icontains=part) | Q(LastName__icontains=part) | Q(enquiry_number__icontains=part) | Q(passport_no__icontains=part) | Q(registered_on__icontains=part) | Q(Visa_country__country__icontains=part) | Q(Visa_type__icontains=part) | Q(created_by__username__icontains=part) | Q(Visa_category__category__icontains=part)
-            queries &= Q(FirstName__icontains=part) | Q(LastName__icontains=part) | Q(enquiry_number__icontains=part) | Q(passport_no__icontains=part) | Q(registered_on__icontains=part) | Q(Visa_country__country__icontains=part) | Q(Visa_type__icontains=part) | Q(created_by__username__icontains=part) | Q(Visa_category__category__icontains=part) | (Q(assign_to_agent__users__first_name__icontains=part) |  # Both First Name                                                                                                                                                                                                                                                                                                                                                              
-            Q(assign_to_agent__users__last_name__icontains=part)) | (Q(assign_to_outsourcingagent__users__first_name__icontains=part) |  Q(assign_to_outsourcingagent__users__last_name__icontains=part)) |   Q(Dob__icontains=part)
+            queries &= Q(FirstName__icontains=part) | Q(LastName__icontains=part) | Q(enquiry_number__icontains=part) | Q(passport_no__icontains=part) | Q(registered_on__icontains=part) | Q(Visa_country__country__icontains=part) | Q(Visa_type__icontains=part) | Q(created_by__username__icontains=part) | Q(Visa_category__category__icontains=part)
+
+    # Start date and end date logic (same as existing)
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
 
     if start_date:
         start_date = parse_date(start_date)
@@ -4677,17 +4746,175 @@ def enrolled_lead(request):
         end_date = parse_date(end_date)
         queries &= Q(registered_on__date__lte=end_date)
 
-
-
-
     enquiry_list = Enquiry.objects.filter(queries).order_by("-id")
 
     paginator = Paginator(enquiry_list, 10)
     page_number = request.GET.get('page')
-    
-    
     page = paginator.get_page(page_number)
 
+    context = {
+        "page_obj": page,
+        "search_query": search_query,
+        'start_date': start_date,
+        'end_date': end_date
+    }
+
+    return render(request, 'crm/Leads/enrolled_lead.html', context)
+
+
+
+# def lead_cancel(request):
+#     excluded_statuses = ["Accept","Reject"]
+#     lead = [status for status in leads_status if status[0] not in excluded_statuses]
+   
+#     search_query = request.GET.get('query', '')
+#     start_date = request.GET.get('start_date')
+#     end_date = request.GET.get('end_date')
+
+#     queries = Q(archive=True)
+#     if search_query:
+#         search_parts = search_query.split()
+#         for part in search_parts:
+#             # queries &= Q(FirstName__icontains=part) | Q(LastName__icontains=part) | Q(enquiry_number__icontains=part) | Q(passport_no__icontains=part) | Q(registered_on__icontains=part) | Q(Visa_country__country__icontains=part) | Q(Visa_type__icontains=part) | Q(created_by__username__icontains=part) | Q(Visa_category__category__icontains=part)
+#             queries &= Q(FirstName__icontains=part) | Q(LastName__icontains=part) | Q(enquiry_number__icontains=part) | Q(passport_no__icontains=part) | Q(registered_on__icontains=part) | Q(Visa_country__country__icontains=part) | Q(Visa_type__icontains=part) | Q(created_by__username__icontains=part) | Q(Visa_category__category__icontains=part) | (Q(assign_to_agent__users__first_name__icontains=part) |  # Both First Name                                                                                                                                                                                                                                                                                                                                                              
+#             Q(assign_to_agent__users__last_name__icontains=part)) | (Q(assign_to_outsourcingagent__users__first_name__icontains=part) |  Q(assign_to_outsourcingagent__users__last_name__icontains=part)) |   Q(Dob__icontains=part)
+
+#     if start_date:
+#         start_date = parse_date(start_date)
+#         queries &= Q(registered_on__date__gte=start_date)
+
+#     if end_date:
+#         end_date = parse_date(end_date)
+#         queries &= Q(registered_on__date__lte=end_date)
+
+
+
+
+#     enquiry_list = Enquiry.objects.filter(queries).order_by("-id")
+   
+#     paginator = Paginator(enquiry_list, 10)
+#     page_number = request.GET.get('page')
+    
+    
+#     page = paginator.get_page(page_number)
+
+  
+#     visa_team = get_visa_team_employee()
+    
+#     agent = get_agent()
+#     outsourcepartner = get_outsourcepartner()
+
+#     context = {
+#         # "enquiry": enquiry,
+       
+#         "visa_team": visa_team,
+        
+#         "agent": agent,
+#         "outsourcepartner": outsourcepartner,
+#         "lead": lead,
+#         "page_obj": page,
+#         # "base_url":base_url,
+#         "search_query":search_query,
+#         'start_date': start_date,
+#         'end_date': end_date
+#     }
+#     print("start deta..................",start_date )
+   
+   
+#     return render(request,'crm/Leads/lead_cancel.html',context)
+
+
+def lead_cancel(request):
+    excluded_statuses = ["Accept", "Reject"]
+    lead = [status for status in leads_status if status[0] not in excluded_statuses]
+    
+    # Get the search query
+    search_query = request.GET.get('search', '')  # Here 'search' is used instead of 'query'
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+
+    # Define the base query
+    queries = Q(archive=True)
+    
+    # Add search filter to the query if there's a search term
+    if search_query:
+        search_parts = search_query.split()
+        for part in search_parts:
+            queries &= Q(FirstName__icontains=part) | Q(LastName__icontains=part) | Q(enquiry_number__icontains=part) | Q(passport_no__icontains=part) | Q(registered_on__icontains=part) | Q(Visa_country__country__icontains=part) | Q(Visa_type__icontains=part) | Q(created_by__username__icontains=part) | Q(Visa_category__category__icontains=part) | (Q(assign_to_agent__users__first_name__icontains=part) | Q(assign_to_agent__users__last_name__icontains=part)) | (Q(assign_to_outsourcingagent__users__first_name__icontains=part) | Q(assign_to_outsourcingagent__users__last_name__icontains=part)) | Q(Dob__icontains=part)
+
+    # Add date filters to the query if provided
+    if start_date:
+        start_date = parse_date(start_date)
+        queries &= Q(registered_on__date__gte=start_date)
+
+    if end_date:
+        end_date = parse_date(end_date)
+        queries &= Q(registered_on__date__lte=end_date)
+
+    # Fetch the filtered enquiry list
+    enquiry_list = Enquiry.objects.filter(queries).order_by("-id")
+    
+    # Pagination
+    paginator = Paginator(enquiry_list, 10)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+
+    # Context to render
+    visa_team = get_visa_team_employee()
+    agent = get_agent()
+    outsourcepartner = get_outsourcepartner()
+
+    context = {
+        "visa_team": visa_team,
+        "agent": agent,
+        "outsourcepartner": outsourcepartner,
+        "lead": lead,
+        "page_obj": page,
+        "search_query": search_query,
+        'start_date': start_date,
+        'end_date': end_date
+    }
+   
+    return render(request, 'crm/Leads/lead_cancel.html', context)
+
+
+def lead_active(request):
+   
+    excluded_statuses = ["Accept", "Reject"]
+    lead = [status for status in leads_status if status[0] not in excluded_statuses]
+    
+    # Get the search query
+    search_query = request.GET.get('search', '')  # Here 'search' is used instead of 'query'
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+
+    # Define the base query
+    queries = Q(lead_status="Active") | Q(lead_status="PreEnrolled")
+    
+    # Add search filter to the query if there's a search term
+    if search_query:
+        search_parts = search_query.split()
+        for part in search_parts:
+            queries &= Q(FirstName__icontains=part) | Q(LastName__icontains=part) | Q(enquiry_number__icontains=part) | Q(passport_no__icontains=part) | Q(registered_on__icontains=part) | Q(Visa_country__country__icontains=part) | Q(Visa_type__icontains=part) | Q(created_by__username__icontains=part) | Q(Visa_category__category__icontains=part) | (Q(assign_to_agent__users__first_name__icontains=part) | Q(assign_to_agent__users__last_name__icontains=part)) | (Q(assign_to_outsourcingagent__users__first_name__icontains=part) | Q(assign_to_outsourcingagent__users__last_name__icontains=part)) | Q(Dob__icontains=part)
+
+    # Add date filters to the query if provided
+    if start_date:
+        start_date = parse_date(start_date)
+        queries &= Q(registered_on__date__gte=start_date)
+
+    if end_date:
+        end_date = parse_date(end_date)
+        queries &= Q(registered_on__date__lte=end_date)
+
+    # Fetch the filtered enquiry list
+    enquiry_list = Enquiry.objects.filter(queries).order_by("-id")
+    
+    # Pagination
+    paginator = Paginator(enquiry_list, 10)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+
+    # Context to render
     presales_employees = get_presale_employee()
     sales_employees = get_sale_employee()
     documentation_employees = get_documentation_team_employee()
@@ -4697,7 +4924,6 @@ def enrolled_lead(request):
     outsourcepartner = get_outsourcepartner()
 
     context = {
-        # "enquiry": enquiry,
         "presales_employees": presales_employees,
         "sales_employees": sales_employees,
         "documentation_employees": documentation_employees,
@@ -4706,31 +4932,77 @@ def enrolled_lead(request):
         "agent": agent,
         "outsourcepartner": outsourcepartner,
         "lead": lead,
-        "page": page,
-        # "base_url":base_url,
-        "search_query":search_query,
+        "page_obj": page,
+        "search_query": search_query,
         'start_date': start_date,
         'end_date': end_date
     }
-    print("start deta..................",start_date )
    
-    return render(request,'crm/Leads/enrolled_lead.html',context)
-
-
-
-def lead_cancel(request):
    
-   return render(request,'crm/Leads/lead_cancel.html')
-
-
-
-def lead_active(request):
-   
-   return render(request,'crm/Leads/active_lead.html')
+    return render(request,'crm/Leads/active_lead.html',context)
 
 def lead_inprocess(request):
    
-   return render(request,'crm/Leads/inprocess_lead.html')
+    excluded_statuses = ["Accept", "Reject"]
+    lead = [status for status in leads_status if status[0] not in excluded_statuses]
+    
+    # Get the search query
+    search_query = request.GET.get('search', '')  # Here 'search' is used instead of 'query'
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+
+    # Define the base query
+    queries = Q(lead_status="Active") | Q(lead_status="PreEnrolled")
+    
+    # Add search filter to the query if there's a search term
+    if search_query:
+        search_parts = search_query.split()
+        for part in search_parts:
+            queries &= Q(FirstName__icontains=part) | Q(LastName__icontains=part) | Q(enquiry_number__icontains=part) | Q(passport_no__icontains=part) | Q(registered_on__icontains=part) | Q(Visa_country__country__icontains=part) | Q(Visa_type__icontains=part) | Q(created_by__username__icontains=part) | Q(Visa_category__category__icontains=part) | (Q(assign_to_agent__users__first_name__icontains=part) | Q(assign_to_agent__users__last_name__icontains=part)) | (Q(assign_to_outsourcingagent__users__first_name__icontains=part) | Q(assign_to_outsourcingagent__users__last_name__icontains=part)) | Q(Dob__icontains=part)
+
+    # Add date filters to the query if provided
+    if start_date:
+        start_date = parse_date(start_date)
+        queries &= Q(registered_on__date__gte=start_date)
+
+    if end_date:
+        end_date = parse_date(end_date)
+        queries &= Q(registered_on__date__lte=end_date)
+
+    # Fetch the filtered enquiry list
+    enquiry_list = Enquiry.objects.filter(queries).order_by("-id")
+    
+    # Pagination
+    paginator = Paginator(enquiry_list, 10)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+
+    # Context to render
+    presales_employees = get_presale_employee()
+    sales_employees = get_sale_employee()
+    documentation_employees = get_documentation_team_employee()
+    visa_team = get_visa_team_employee()
+    assesment_employee = get_assesment_employee()
+    agent = get_agent()
+    outsourcepartner = get_outsourcepartner()
+
+    context = {
+        "presales_employees": presales_employees,
+        "sales_employees": sales_employees,
+        "documentation_employees": documentation_employees,
+        "visa_team": visa_team,
+        "assesment_employee": assesment_employee,
+        "agent": agent,
+        "outsourcepartner": outsourcepartner,
+        "lead": lead,
+        "page_obj": page,
+        "search_query": search_query,
+        'start_date': start_date,
+        'end_date': end_date
+    }
+   
+   
+    return render(request,'crm/Leads/inprocess_lead.html',context)
 
 def lead_appointment(request):
    
@@ -5497,3 +5769,19 @@ def delete_and_archive(request, id):
                 })
     # return redirect("admin_new_leads_details")
 
+
+@login_required
+def restore(request, id):
+    instance = get_object_or_404(Enquiry, id=id)
+
+    instance.archive = False
+    instance.save()
+    return HttpResponse(status=204, headers={
+                'HX-Trigger': json.dumps({
+                    "movieListChanged":None,
+                    "showMessage":f"Lead Restore !!"
+
+                    })
+                })
+
+    # return redirect("Archive_list")

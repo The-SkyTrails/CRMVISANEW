@@ -169,11 +169,7 @@
                               <table class="table table-nowrap align-middle" id="orderTable">
                                  <thead class="text-muted table-light">
                                     <tr class="text-uppercase">
-                                       {% comment %} <th scope="col" style="width: 25px;">
-                                          <div class="form-check">
-                                             <input class="form-check-input" type="checkbox" id="checkAll" value="option">
-                                          </div>
-                                       </th> {% endcomment %}
+                                       
                                        <th>SR NO</th>
                                        <th>ACTION</th>
                                        <th>ENQUIRY No.</th>
@@ -230,39 +226,66 @@
 
 
                         <div class="tab-pane " id="lead-enrolled" role="tabpanel">
+                           <div class="col-sm">
+                              <div class="d-flex justify-content-sm-end">
+                                
+                                 <div class="search-box ms-2">
+                                   
+                                       <input class="form-control" type="search" name="search" placeholder="Search Users..." 
+                                          hx-get="{% url 'enrolled_lead' %}" 
+                                          hx-trigger="input changed delay:500ms, search" 
+                                          hx-target="#enrollsearch-results" 
+                                          hx-indicator=".htmx-indicator">
+
+                                   
+                                    <i class="ri-search-line search-icon"></i>
+                                 </div>
+                              </div>
+                           </div>
                           
-                            <div class="table-responsive table-card mb-1">
+                            <div class="table-responsive table-card mb-1 mt-2">
                                <table class="table table-nowrap align-middle" id="orderTable">
                                   <thead class="text-muted table-light">
                                      <tr class="text-uppercase">
-                                        <th scope="col" style="width: 25px;">
-                                           <div class="form-check">
-                                              <input class="form-check-input" type="checkbox" id="checkAll" value="option">
-                                           </div>
-                                        </th>
-                                        <th class="sort" data-sort="id">Order ID</th>
-                                        <th class="sort" data-sort="customer_name">Customer</th>
-                                        <th class="sort" data-sort="product_name">Product</th>
-                                        <th class="sort" data-sort="date">Order Date</th>
-                                        <th class="sort" data-sort="amount">Amount</th>
-                                        <th class="sort" data-sort="payment">Payment Method</th>
-                                        <th class="sort" data-sort="status">Delivery Status</th>
-                                        <th class="sort" data-sort="city">Action</th>
+                                        
+                                       <th>SR NO</th>
+                                       <th>ACTION</th>
+                                       <th>ENQUIRY No.</th>
+                                       <th>Name</th>
+                                       <th>DOB</th>
+                                       <th>Passport No</th>
+                                       <th>Registered ON.</th>
+                                       <th>Updated on</th>
+                                       <th>VISA COUNTRY</th>
+                                       <th>VISA Category - SUB CATEGORY</th>
+                                       <th>VISA TYPE</th>
+                                       <th>Package Name</th>
+                                       <th>CREATED BY</th>
+                                       <th>Assigned TO</th>
+                                       <th>Update Assigned To</th>
+                                       <th>Assign to Agent/OP</th>
+                                       <th>LEAD status</th>
+                                       <th>Lead Updated</th>
+                                       <th>Appointment</th>
+                                       <th>Appointment Status</th>
+                                       <th>NOTES</th>
+                                       <th>Colour Code</th>
+                                       <th>ACTION</th>
                                      </tr>
                                   </thead>
-                                  <tbody class="list form-check-all"  hx-get="{% url "enrolled_lead" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="search-results">
+                                  <tbody class="list form-check-all"  hx-get="{% url "enrolled_lead" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="enrollsearch-results">
                                      <tr>
                                          <td>
-                                            <button type="button" class="btn btn-outline-warning btn-load">
-                                               <span class="d-flex align-items-center">
-                                                   <span class="flex-grow-1 me-2">
-                                                      Enrolled
-                                                   </span>
-                                                   <span class="spinner-grow flex-shrink-0" role="status">
-                                                       <span class="visually-hidden">Loading...</span>
-                                                   </span>
-                                               </span>
-                                             </button>
+                                          <button type="button" class="btn btn-outline-warning btn-load">
+                                             <span class="d-flex align-items-center">
+                                                 <span class="flex-grow-1 me-2">
+                                                     Loading...
+                                                 </span>
+                                                 <span class="spinner-grow flex-shrink-0" role="status">
+                                                     <span class="visually-hidden">Loading...</span>
+                                                 </span>
+                                             </span>
+                                         </button>
                                          
                                          </td>
                                      </tr>
@@ -291,26 +314,54 @@
                         <!-- end tab pane -->
                         <div class="tab-pane" id="lead-cancel" role="tabpanel">
 
-                            <div class="table-responsive table-card mb-1">
+                           <div class="col-sm">
+                              <div class="d-flex justify-content-sm-end">
+                                
+                                 <div class="search-box ms-2">
+                                   
+                                       <input class="form-control" type="search" name="search" placeholder="Search Users..." 
+                                          hx-get="{% url 'lead_cancel' %}" 
+                                          hx-trigger="input changed delay:500ms, search" 
+                                          hx-target="#cancelsearch-results" 
+                                          hx-indicator=".htmx-indicator">
+
+                                   
+                                    <i class="ri-search-line search-icon"></i>
+                                 </div>
+                              </div>
+                           </div>
+
+                            <div class="table-responsive table-card mb-1 mt-2">
                                 <table class="table table-nowrap align-middle" id="orderTable">
                                    <thead class="text-muted table-light">
                                       <tr class="text-uppercase">
-                                         <th scope="col" style="width: 25px;">
-                                            <div class="form-check">
-                                               <input class="form-check-input" type="checkbox" id="checkAll" value="option">
-                                            </div>
-                                         </th>
-                                         <th class="sort" data-sort="id">Order ID</th>
-                                         <th class="sort" data-sort="customer_name">Customer</th>
-                                         <th class="sort" data-sort="product_name">Product</th>
-                                         <th class="sort" data-sort="date">Order Date</th>
-                                         <th class="sort" data-sort="amount">Amount</th>
-                                         <th class="sort" data-sort="payment">Payment Method</th>
-                                         <th class="sort" data-sort="status">Delivery Status</th>
-                                         <th class="sort" data-sort="city">Action</th>
+                                         
+                                       <th>SR NO</th>
+                                       <th>ACTION</th>
+                                       <th>ENQUIRY No.</th>
+                                       <th>Name</th>
+                                       <th>DOB</th>
+                                       <th>Passport No</th>
+                                       <th>Registered ON.</th>
+                                       <th>Updated on</th>
+                                       <th>VISA COUNTRY</th>
+                                       <th>VISA Category - SUB CATEGORY</th>
+                                       <th>VISA TYPE</th>
+                                       <th>Package Name</th>
+                                       <th>CREATED BY</th>
+                                       <th>Assigned TO</th>
+                                      
+                                       
+                                       <th>LEAD status</th>
+                                       
+                                      
+                                       
+                                       <th>NOTES</th>
+                                       
+                                       <th>ACTION</th>
                                       </tr>
                                    </thead>
-                                   <tbody class="list form-check-all"  hx-get="{% url "lead_cancel" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="search-results">
+                                   <tbody class="list form-check-all"  hx-get="{% url "lead_cancel" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="cancelsearch-results">
                                       <tr>
                                           <td>
                                              <button type="button" class="btn btn-outline-warning btn-load">
@@ -336,17 +387,7 @@
                                    </div>
                                 </div>
                              </div>
-                             <div class="d-flex justify-content-end">
-                                <div class="pagination-wrap hstack gap-2">
-                                   <a class="page-item pagination-prev disabled" href="#">
-                                   Previous
-                                   </a>
-                                   <ul class="pagination listjs-pagination mb-0"></ul>
-                                   <a class="page-item pagination-next" href="#">
-                                   Next
-                                   </a>
-                                </div>
-                             </div>
+                          
                            
                         </div>
                         <!-- end tab pane -->
@@ -355,19 +396,29 @@
                                 <table class="table table-nowrap align-middle" id="orderTable">
                                    <thead class="text-muted table-light">
                                       <tr class="text-uppercase">
-                                         <th scope="col" style="width: 25px;">
-                                            <div class="form-check">
-                                               <input class="form-check-input" type="checkbox" id="checkAll" value="option">
-                                            </div>
-                                         </th>
-                                         <th class="sort" data-sort="id">Order ID</th>
-                                         <th class="sort" data-sort="customer_name">Customer</th>
-                                         <th class="sort" data-sort="product_name">Product</th>
-                                         <th class="sort" data-sort="date">Order Date</th>
-                                         <th class="sort" data-sort="amount">Amount</th>
-                                         <th class="sort" data-sort="payment">Payment Method</th>
-                                         <th class="sort" data-sort="status">Delivery Status</th>
-                                         <th class="sort" data-sort="city">Action</th>
+                                       <th>SR NO</th>
+                                       <th>ACTION</th>
+                                       <th>ENQUIRY No.</th>
+                                       <th>Name</th>
+                                       <th>DOB</th>
+                                       <th>Passport No</th>
+                                       <th>Registered ON.</th>
+                                       <th>Updated on</th>
+                                       <th>VISA COUNTRY</th>
+                                       <th>VISA Category - SUB CATEGORY</th>
+                                       <th>VISA TYPE</th>
+                                       <th>Package Name</th>
+                                       <th>CREATED BY</th>
+                                       <th>Assigned TO</th>
+                                       <th>Update Assigned To</th>
+                                       
+                                       <th>LEAD status</th>
+                                       <th>Lead Updated</th>
+                                       <th>Appointment</th>
+                                       <th>Appointment Status</th>
+                                       <th>NOTES</th>
+                                       <th>Colour Code</th>
+                                       <th>ACTION</th>
                                       </tr>
                                    </thead>
                                    <tbody class="list form-check-all"  hx-get="{% url "lead_active" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="search-results">
@@ -396,17 +447,7 @@
                                    </div>
                                 </div>
                              </div>
-                             <div class="d-flex justify-content-end">
-                                <div class="pagination-wrap hstack gap-2">
-                                   <a class="page-item pagination-prev disabled" href="#">
-                                   Previous
-                                   </a>
-                                   <ul class="pagination listjs-pagination mb-0"></ul>
-                                   <a class="page-item pagination-next" href="#">
-                                   Next
-                                   </a>
-                                </div>
-                             </div>
+                            
                         </div>
 
                         {% comment %} ------------------------- Inprocess --------------- {% endcomment %}
@@ -415,19 +456,29 @@
                                 <table class="table table-nowrap align-middle" id="orderTable">
                                    <thead class="text-muted table-light">
                                       <tr class="text-uppercase">
-                                         <th scope="col" style="width: 25px;">
-                                            <div class="form-check">
-                                               <input class="form-check-input" type="checkbox" id="checkAll" value="option">
-                                            </div>
-                                         </th>
-                                         <th class="sort" data-sort="id">Order ID</th>
-                                         <th class="sort" data-sort="customer_name">Customer</th>
-                                         <th class="sort" data-sort="product_name">Product</th>
-                                         <th class="sort" data-sort="date">Order Date</th>
-                                         <th class="sort" data-sort="amount">Amount</th>
-                                         <th class="sort" data-sort="payment">Payment Method</th>
-                                         <th class="sort" data-sort="status">Delivery Status</th>
-                                         <th class="sort" data-sort="city">Action</th>
+                                       <th>SR NO</th>
+                                       <th>ACTION</th>
+                                       <th>ENQUIRY No.</th>
+                                       <th>Name</th>
+                                       <th>DOB</th>
+                                       <th>Passport No</th>
+                                       <th>Registered ON.</th>
+                                       <th>Updated on</th>
+                                       <th>VISA COUNTRY</th>
+                                       <th>VISA Category - SUB CATEGORY</th>
+                                       <th>VISA TYPE</th>
+                                       <th>Package Name</th>
+                                       <th>CREATED BY</th>
+                                       <th>Assigned TO</th>
+                                       <th>Update Assigned To</th>
+                                       
+                                       <th>LEAD status</th>
+                                       <th>Lead Updated</th>
+                                       <th>Appointment</th>
+                                       <th>Appointment Status</th>
+                                       <th>NOTES</th>
+                                       <th>Colour Code</th>
+                                       <th>ACTION</th>
                                       </tr>
                                    </thead>
                                    <tbody class="list form-check-all"  hx-get="{% url "lead_inprocess" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="search-results">

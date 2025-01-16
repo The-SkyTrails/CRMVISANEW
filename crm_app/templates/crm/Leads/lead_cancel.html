@@ -1,34 +1,255 @@
-<tr>
-    <th scope="row">
-       <div class="form-check">
-          <input class="form-check-input" type="checkbox" name="checkAll" value="option1">
-       </div>
-    </th>
-    <td class="id"><a href="apps-ecommerce-order-details.html" class="fw-medium link-primary">#VZ2101 Cancel</a></td>
-    <td class="customer_name">Frank Hook</td>
-    <td class="product_name">Puma Tshirt</td>
-    <td class="date">20 Dec, 2021, <small class="text-muted">02:21 AM</small></td>
-    <td class="amount">$654</td>
-    <td class="payment">Mastercard</td>
-    <td class="status"><span class="badge bg-warning-subtle text-warning text-uppercase">Pending</span>
-    </td>
-    <td>
-       <ul class="list-inline hstack gap-2 mb-0">
-          <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="View">
-             <a href="apps-ecommerce-order-details.html" class="text-primary d-inline-block">
-             <i class="ri-eye-fill fs-16"></i>
-             </a>
-          </li>
-          <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Edit">
-             <a href="#showModal" data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn">
-             <i class="ri-pencil-fill fs-16"></i>
-             </a>
-          </li>
-          <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Remove">
-             <a class="text-danger d-inline-block remove-item-btn" data-bs-toggle="modal" href="#deleteOrder">
-             <i class="ri-delete-bin-5-fill fs-16"></i>
-             </a>
-          </li>
-       </ul>
-    </td>
- </tr>
+<style>
+   .cursor-pointer:hover {
+   transform: scale(1.05);
+   transition: transform 0.2s ease-in-out;
+   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+   background-color:rgb(120, 179, 241);
+} 
+
+/* Custom Styling for Clickable Items */
+.clickable-item {
+   transition: all 0.3s ease;
+   padding: 10px 15px;
+   {% comment %} background-color: #f8f9fa; {% endcomment %}
+   border-radius: 8px;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   margin-bottom: 12px;
+}
+
+{% comment %} .clickable-item:hover {
+   background-color: #007bff;
+   color: white;
+   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+} {% endcomment %}
+
+.clickable-item i {
+   font-size: 1.5rem;
+   margin-right: 10px;
+}
+
+.clickable-item strong {
+   font-weight: bold;
+}
+
+.clickable-item .badge {
+   font-size: 12px;
+   background-color: #17a2b8;
+   color: white;
+}
+
+.clickable-item .text-muted {
+   font-size: 13px;
+   color: rgba(0, 0, 0, 0.6);
+}
+{% comment %} 
+.clickable-items-container {
+   max-height: 150px; /* Set the height limit */
+   overflow-y: auto;  /* Enable vertical scrolling */
+   padding-right: 10px; /* Prevent overlap with scrollbar */
+ }
+ 
+ .clickable-item {
+   margin-bottom: 8px; /* Space between items */
+ } {% endcomment %}
+ 
+
+
+</style>
+{% for i in page_obj %}
+
+<tr id="enquiry-{{ i.id }}" class="{% if i.color_code == 'Blue'  or i.color_code == 'Grey' or i.color_code == 'White' or i.color_code == 'Red' or i.color_code == 'Green' %}text-dark{% endif %}" style="background-color: {% if i.color_code == 'Grey' %}#efe5e5{% elif i.color_code == 'Blue' %}#89CFF0{% elif i.color_code == 'White' %}#FAF9F6{% elif i.color_code == 'Red' %}#ff9090{% elif i.color_code == 'Green' %}#9cc599{% else %}Transparent{% endif %};">
+   {% comment %} <th scope="row">
+      <div class="form-check">
+         <input class="form-check-input" type="checkbox" name="checkAll" value="option1">
+      </div>
+   </th> {% endcomment %}
+   <td class="id"><a href="apps-ecommerce-order-details.html" class="fw-medium link-primary">{{forloop.counter}}</a></td>
+   <td class="customer_name">
+    
+     <a data-bs-toggle="offcanvas" href="#offcanvasExample-{{i.id}}" class="text-primary d-inline-block" aria-controls="offcanvasExample">
+       <i class="ri-eye-fill fs-16"></i>
+       </a>
+     {% include "crm/Leads/enquiry/lead_offcanvas_details.html" %}
+   </td>
+   <td class="product_name">{{i.enquiry_number}}</td>
+   <td class="date">{{i.FirstName}} {{i.LastName}} </td>
+   <td class="amount">{{i.Dob}}</td>
+   <td class="payment">{{i.passport_no}}</td>
+   <td>{{i.registered_on}}</td>
+   <td>{{i.last_updated_on}}</td>
+   <td>{{i.Visa_country}}</td>
+   <td>{{i.Visa_category}}</td>
+   <td>{{i.Visa_type}}</td>
+   <td>{{i.Package}}</td>
+   <td>{{i.created_by}}</td>
+   
+   
+   <td>
+   <div class="clickable-items-container px-3 simplebar-scrollable-y">
+     {% if i.assign_to_employee %}
+    
+     <div class="clickable-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#zoomInModal-{{ i.assign_to_employee.id }}" >
+       <i class=" ri-map-pin-user-fill"></i> <!-- Bootstrap Icon for person -->
+       <strong>{{ i.assign_to_employee.users.first_name }} {{ i.assign_to_employee.emp_code }}</strong>
+       <span class="text-muted">({{ i.assign_to_employee.department }})</span>
+       <span class="badge bg-info ms-2" >View Details</span>
+   </div>
+ {% endif %}
+ {% if i.assign_to_assesment_employee %}
+     <div class="clickable-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#zoomInModal-{{i.assign_to_assesment_employee.id}}">
+       <i class=" ri-map-pin-user-fill"></i>
+       <strong>{{ i.assign_to_assesment_employee.users.first_name }} {{ i.assign_to_assesment_employee.users.last_name }}</strong>
+       <span class="text-muted">({{ i.assign_to_assesment_employee.department }})</span>
+       <span class="badge bg-info ms-2" >View Details</span>
+   </div>
+ {% endif %}
+ {% if i.assign_to_sales_employee %}
+     <div class="clickable-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#zoomInModal-{{i.assign_to_sales_employee.id}}">
+       <i class=" ri-map-pin-user-fill"></i>
+       <strong>{{i.assign_to_sales_employee.users.first_name }} {{i.assign_to_sales_employee.users.last_name}} ({{i.assign_to_sales_employee.department}})</strong>
+       <span class="text-muted">({{ i.assign_to_sales_employee.department }})</span>
+       <span class="badge bg-info ms-2" >View Details</span>
+   </div>
+ {% endif %}
+ {% if i.assign_to_documentation_employee %}
+     
+     <div class="clickable-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#zoomInModal-{{i.assign_to_documentation_employee.id}}">
+       <i class=" ri-map-pin-user-fill"></i>
+       <strong>{{i.assign_to_documentation_employee.users.first_name }} {{i.assign_to_documentation_employee.users.last_name}} </strong>
+       <span class="text-muted">({{ i.assign_to_documentation_employee.department }})</span>
+       <span class="badge bg-info ms-2" >View Details</span>
+   </div>
+ {% endif %}
+ {% if i.assign_to_visa_team_employee %}
+     <div class="clickable-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#zoomInModal-{{i.assign_to_visa_team_employee.id}}">
+       <i class=" ri-map-pin-user-fill"></i>
+       <strong>{{i.assign_to_visa_team_employee.users.first_name }} {{i.assign_to_visa_team_employee.users.last_name}} </strong>
+       <span class="text-muted">({{ i.assign_to_visa_team_employee.department }})</span>
+       <span class="badge bg-info ms-2" >View Details</span>
+     </div>
+ {% endif %}
+
+ {% if i.assign_to_agent %}
+     <div class="clickable-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#zoomInModal-{{i.assign_to_agent.id}}">
+       <i class=" ri-map-pin-user-fill"></i>
+       <strong>{{i.assign_to_agent.users.first_name }} {{i.assign_to_agent.users.last_name}} </strong>
+       <span class="text-muted">(Agent)</span>
+       <span class="badge bg-info ms-2" >View Details</span>
+     </div>
+ {% endif %}
+ {% if i.assign_to_outsourcingagent %}
+     <div class="clickable-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#zoomInModal-{{i.assign_to_outsourcingagent.id}}">
+       <i class=" ri-map-pin-user-fill"></i>
+       <strong>{{i.assign_to_outsourcingagent.users.first_name }} {{i.assign_to_outsourcingagent.users.last_name}} </strong>
+       <span class="text-muted">(OP)</span>
+       <span class="badge bg-info ms-2" >View Details</span>
+     </div>
+ {% endif %}
+   </div>
+</td>
+{% comment %} {% include "crm/Leads/enquiry/view_assign_users_modal.html" %} {% endcomment %}
+  
+   <td class="status"><span class="badge border border-secondary text-secondary text-uppercase">{{i.lead_status}}</span></td>
+  
+   <td>
+     
+     <div>
+       <span class="text-muted">
+         {% with i.notes_set.last as last_note %}
+           {% if last_note %}
+           {{ last_note.notes|truncatewords:3 }}
+           {% else %}
+                 No notes available.
+           {% endif %}
+       {% endwith %}
+       </span>
+     </div>
+     <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" data-bs-target="#viewallnotes-{{i.id}}" ><i class="ri-eye-fill fs-16"></i> View Notes</button>
+     {% comment %} <button type="button" class="btn btn-success " data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">Large Modal</button> {% endcomment %}
+     
+{% include "crm/Leads/enquiry/view_notes_modal.html" %}
+
+   </td>
+   
+   <td>
+      <ul class="list-inline hstack gap-2 mb-0">
+        
+         
+         <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Remove">
+           
+            {% comment %} <a class="text-danger d-inline-block remove-item-btn" data-bs-toggle="modal" href="javascript:void(0);" hx-delete="{% url 'delete_and_archive' i.id %}" 
+            hx-confirm="Do you want to delete ?" hx-target="#enquiry-{{ i.id }}"  hx-swap="outerHTML"  hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}'>
+            <i class="ri-delete-bin-5-fill fs-16"></i>
+            </a> {% endcomment %}
+            <button class="btn btn-sm btn-info remove-item-btn" 
+          hx-get="{% url 'restore' i.id %}" 
+          
+          hx-target="#enquiry-{{ i.id }}"
+          hx-swap="outerHTML"
+          hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}'>
+     Restore
+  </button>  
+            {% comment %} <a class="text-danger d-inline-block remove-item-btn" data-bs-toggle="modal" href="#deleteOrder">
+            <i class="ri-delete-bin-5-fill fs-16"></i>
+            </a> {% endcomment %}
+         </li>
+      </ul>
+   </td>
+   
+</tr>
+
+
+
+{% endfor %}
+
+
+<div class="d-flex justify-content-end">
+  <div class="pagination-wrap hstack gap-2" style="width: 2px;">
+     
+     {% if page_obj.has_previous %}
+     {% comment %} <a class="page-item pagination-prev" href="?page=1{% if search_query %}&search={{ search_query }}{% endif %}">First</a> {% endcomment %}
+     <a class="page-item pagination-prev" hx-get="{% url 'lead_cancel' %}?page=1{% if search_query %}&search={{ search_query }}{% endif %}" hx-target="#cancelsearch-results">
+       First
+    </a>
+
+     <a class="page-item pagination-prev" hx-get="{% url 'lead_cancel' %}?page={{ page_obj.previous_page_number }}&search={{ search_query }}" hx-target="#cancelsearch-results">
+        Previous
+     </a>
+     {% endif %}
+
+     <!-- Numbered Page Links -->
+     <ul class="pagination listjs-pagination mb-0">
+         {% for num in page_obj.paginator.page_range|slice:":3" %}
+             {% if page_obj.number == num %}
+                 <li class="page-item active">
+                     <a class="page-link" href="javascript:void(0);">{{ num }}</a>
+                 </li> <!-- Current page -->
+              {% else %}
+              <li class="page-item">
+                 <a class="page-link" hx-get="{% url 'lead_cancel' %}?page={{ num }}&search={{ search_query }}" hx-target="#cancelsearch-results">{{ num }}</a>
+             </li>
+             {% endif %}
+
+            
+         {% endfor %}
+         {% if page_obj.paginator.num_pages > 3 %}
+         <li class="page-item"><span class="page-link">...</span></li>
+         <li class="page-item {% if page_obj.number == page_obj.paginator.num_pages %}active{% endif %}">
+           <a class="page-link" hx-get="{% url 'lead_cancel' %}?page={{ page_obj.paginator.num_pages }}&search={{ search_query }}" hx-target="#cancelsearch-results">{{ page_obj.paginator.num_pages }}</a>
+         </li>
+       
+         {% endif %}
+     </ul>
+
+     <!-- Next Page Button -->
+     {% if page_obj.has_next %}
+     <a class="page-item pagination-next" hx-get="{% url 'lead_cancel' %}?page={{ page_obj.next_page_number }}&search={{ search_query }}" hx-target="#cancelsearch-results">
+        Next
+     </a>
+     {% endif %}
+  </div>
+</div>
+
+

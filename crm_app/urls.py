@@ -270,6 +270,7 @@ urlpatterns = [
    path("Documents/enquiry/<int:id>/",enq_documents,name="enq_documents"),
 
    path("delete_and_archive/<int:id>/", delete_and_archive, name="delete_and_archive"),
+   path("restore/<int:id>/", restore, name="restore"),
    # ----------------------------------
 
 
