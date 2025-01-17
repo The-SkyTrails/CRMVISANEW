@@ -4748,7 +4748,7 @@ def enrolled_lead(request):
 
     enquiry_list = Enquiry.objects.filter(queries).order_by("-id")
 
-    paginator = Paginator(enquiry_list, 10)
+    paginator = Paginator(enquiry_list, 5)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
 
@@ -5069,20 +5069,270 @@ def lead_appointment(request):
     return render(request,'crm/Leads/appointment_lead.html',context)
 
 def result_awaited(request):
+
+
+    
    
-   return render(request,'crm/Leads/result_awaited.html')
+    excluded_statuses = ["Accept", "Reject"]
+    lead = [status for status in leads_status if status[0] not in excluded_statuses]
+    
+    # Get the search query
+    search_query = request.GET.get('search', '')  # Here 'search' is used instead of 'query'
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+
+    # Define the base query
+    queries = Q(lead_status="Result Awaited") 
+    
+    # Add search filter to the query if there's a search term
+    if search_query:
+        search_parts = search_query.split()
+        for part in search_parts:
+            queries &= Q(FirstName__icontains=part) | Q(LastName__icontains=part) | Q(enquiry_number__icontains=part) | Q(passport_no__icontains=part) | Q(registered_on__icontains=part) | Q(Visa_country__country__icontains=part) | Q(Visa_type__icontains=part) | Q(created_by__username__icontains=part) | Q(Visa_category__category__icontains=part) | (Q(assign_to_agent__users__first_name__icontains=part) | Q(assign_to_agent__users__last_name__icontains=part)) | (Q(assign_to_outsourcingagent__users__first_name__icontains=part) | Q(assign_to_outsourcingagent__users__last_name__icontains=part)) | Q(Dob__icontains=part)
+
+    # Add date filters to the query if provided
+    if start_date:
+        start_date = parse_date(start_date)
+        queries &= Q(registered_on__date__gte=start_date)
+
+    if end_date:
+        end_date = parse_date(end_date)
+        queries &= Q(registered_on__date__lte=end_date)
+
+    # Fetch the filtered enquiry list
+    enquiry_list = Enquiry.objects.filter(queries).order_by("-id")
+    
+    # Pagination
+    paginator = Paginator(enquiry_list, 10)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+
+    # Context to render
+    presales_employees = get_presale_employee()
+    sales_employees = get_sale_employee()
+    documentation_employees = get_documentation_team_employee()
+    visa_team = get_visa_team_employee()
+    assesment_employee = get_assesment_employee()
+    agent = get_agent()
+    outsourcepartner = get_outsourcepartner()
+
+    context = {
+        "presales_employees": presales_employees,
+        "sales_employees": sales_employees,
+        "documentation_employees": documentation_employees,
+        "visa_team": visa_team,
+        "assesment_employee": assesment_employee,
+        "agent": agent,
+        "outsourcepartner": outsourcepartner,
+        "lead": lead,
+        "page_obj": page,
+        "search_query": search_query,
+        'start_date': start_date,
+        'end_date': end_date
+    }
+   
+
+    
+   
+   
+    return render(request,'crm/Leads/result_awaited.html',context)
 
 def lead_new(request):
+
+    
+    excluded_statuses = ["Accept", "Reject"]
+    lead = [status for status in leads_status if status[0] not in excluded_statuses]
+    
+    # Get the search query
+    search_query = request.GET.get('search', '')  # Here 'search' is used instead of 'query'
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+
+    # Define the base query
+    queries = Q(lead_status="New Lead")
+    
+    # Add search filter to the query if there's a search term
+    if search_query:
+        search_parts = search_query.split()
+        for part in search_parts:
+            queries &= Q(FirstName__icontains=part) | Q(LastName__icontains=part) | Q(enquiry_number__icontains=part) | Q(passport_no__icontains=part) | Q(registered_on__icontains=part) | Q(Visa_country__country__icontains=part) | Q(Visa_type__icontains=part) | Q(created_by__username__icontains=part) | Q(Visa_category__category__icontains=part) | (Q(assign_to_agent__users__first_name__icontains=part) | Q(assign_to_agent__users__last_name__icontains=part)) | (Q(assign_to_outsourcingagent__users__first_name__icontains=part) | Q(assign_to_outsourcingagent__users__last_name__icontains=part)) | Q(Dob__icontains=part)
+
+    # Add date filters to the query if provided
+    if start_date:
+        start_date = parse_date(start_date)
+        queries &= Q(registered_on__date__gte=start_date)
+
+    if end_date:
+        end_date = parse_date(end_date)
+        queries &= Q(registered_on__date__lte=end_date)
+
+    # Fetch the filtered enquiry list
+    enquiry_list = Enquiry.objects.filter(queries).order_by("-id")
+    print("ggggggggggg",enquiry_list.count())
+    
+    # Pagination
+    paginator = Paginator(enquiry_list, 5)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+
+    # Context to render
+    presales_employees = get_presale_employee()
+    sales_employees = get_sale_employee()
+    documentation_employees = get_documentation_team_employee()
+    visa_team = get_visa_team_employee()
+    assesment_employee = get_assesment_employee()
+    agent = get_agent()
+    outsourcepartner = get_outsourcepartner()
+
+    context = {
+        "presales_employees": presales_employees,
+        "sales_employees": sales_employees,
+        "documentation_employees": documentation_employees,
+        "visa_team": visa_team,
+        "assesment_employee": assesment_employee,
+        "agent": agent,
+        "outsourcepartner": outsourcepartner,
+        "lead": lead,
+        "page_obj": page,
+        "search_query": search_query,
+        'start_date': start_date,
+        'end_date': end_date
+    }
    
-   return render(request,'crm/Leads/new_lead.html')
+
+    
+
+
+   
+    return render(request,'crm/Leads/new_lead.html',context)
 
 def lead_approved(request):
    
-   return render(request,'crm/Leads/lead_approved.html')
+   
+   
+    excluded_statuses = ["Accept", "Reject"]
+    lead = [status for status in leads_status if status[0] not in excluded_statuses]
+    
+    # Get the search query
+    search_query = request.GET.get('search', '')  # Here 'search' is used instead of 'query'
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+
+    # Define the base query
+    queries = Q(lead_status="Approved") 
+    
+    # Add search filter to the query if there's a search term
+    if search_query:
+        search_parts = search_query.split()
+        for part in search_parts:
+            queries &= Q(FirstName__icontains=part) | Q(LastName__icontains=part) | Q(enquiry_number__icontains=part) | Q(passport_no__icontains=part) | Q(registered_on__icontains=part) | Q(Visa_country__country__icontains=part) | Q(Visa_type__icontains=part) | Q(created_by__username__icontains=part) | Q(Visa_category__category__icontains=part) | (Q(assign_to_agent__users__first_name__icontains=part) | Q(assign_to_agent__users__last_name__icontains=part)) | (Q(assign_to_outsourcingagent__users__first_name__icontains=part) | Q(assign_to_outsourcingagent__users__last_name__icontains=part)) | Q(Dob__icontains=part)
+
+    # Add date filters to the query if provided
+    if start_date:
+        start_date = parse_date(start_date)
+        queries &= Q(registered_on__date__gte=start_date)
+
+    if end_date:
+        end_date = parse_date(end_date)
+        queries &= Q(registered_on__date__lte=end_date)
+
+    # Fetch the filtered enquiry list
+    enquiry_list = Enquiry.objects.filter(queries).order_by("-id")
+    
+    # Pagination
+    paginator = Paginator(enquiry_list, 5)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+
+    # Context to render
+    presales_employees = get_presale_employee()
+    sales_employees = get_sale_employee()
+    documentation_employees = get_documentation_team_employee()
+    visa_team = get_visa_team_employee()
+    assesment_employee = get_assesment_employee()
+    agent = get_agent()
+    outsourcepartner = get_outsourcepartner()
+
+    context = {
+        "presales_employees": presales_employees,
+        "sales_employees": sales_employees,
+        "documentation_employees": documentation_employees,
+        "visa_team": visa_team,
+        "assesment_employee": assesment_employee,
+        "agent": agent,
+        "outsourcepartner": outsourcepartner,
+        "lead": lead,
+        "page_obj": page,
+        "search_query": search_query,
+        'start_date': start_date,
+        'end_date': end_date
+    }
+   
+   
+    return render(request,'crm/Leads/lead_approved.html',context)
 
 def lead_completed(request):
+    
    
-   return render(request,'crm/Leads/lead_completed.html')
+    excluded_statuses = ["Accept", "Reject"]
+    lead = [status for status in leads_status if status[0] not in excluded_statuses]
+    
+    # Get the search query
+    search_query = request.GET.get('search', '')  # Here 'search' is used instead of 'query'
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+
+    # Define the base query
+    queries = Q(lead_status="Ready To Collection") 
+    
+    # Add search filter to the query if there's a search term
+    if search_query:
+        search_parts = search_query.split()
+        for part in search_parts:
+            queries &= Q(FirstName__icontains=part) | Q(LastName__icontains=part) | Q(enquiry_number__icontains=part) | Q(passport_no__icontains=part) | Q(registered_on__icontains=part) | Q(Visa_country__country__icontains=part) | Q(Visa_type__icontains=part) | Q(created_by__username__icontains=part) | Q(Visa_category__category__icontains=part) | (Q(assign_to_agent__users__first_name__icontains=part) | Q(assign_to_agent__users__last_name__icontains=part)) | (Q(assign_to_outsourcingagent__users__first_name__icontains=part) | Q(assign_to_outsourcingagent__users__last_name__icontains=part)) | Q(Dob__icontains=part)
+
+    # Add date filters to the query if provided
+    if start_date:
+        start_date = parse_date(start_date)
+        queries &= Q(registered_on__date__gte=start_date)
+
+    if end_date:
+        end_date = parse_date(end_date)
+        queries &= Q(registered_on__date__lte=end_date)
+
+    # Fetch the filtered enquiry list
+    enquiry_list = Enquiry.objects.filter(queries).order_by("-id")
+    
+    # Pagination
+    paginator = Paginator(enquiry_list, 5)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+
+    # Context to render
+    presales_employees = get_presale_employee()
+    sales_employees = get_sale_employee()
+    documentation_employees = get_documentation_team_employee()
+    visa_team = get_visa_team_employee()
+    assesment_employee = get_assesment_employee()
+    agent = get_agent()
+    outsourcepartner = get_outsourcepartner()
+
+    context = {
+        "presales_employees": presales_employees,
+        "sales_employees": sales_employees,
+        "documentation_employees": documentation_employees,
+        "visa_team": visa_team,
+        "assesment_employee": assesment_employee,
+        "agent": agent,
+        "outsourcepartner": outsourcepartner,
+        "lead": lead,
+        "page_obj": page,
+        "search_query": search_query,
+        'start_date': start_date,
+        'end_date': end_date
+    }
+   
+    return render(request,'crm/Leads/lead_completed.html',context)
 
 
 

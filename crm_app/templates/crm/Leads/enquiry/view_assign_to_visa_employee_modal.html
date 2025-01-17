@@ -1,0 +1,39 @@
+
+<div id="visa-{{i.assign_to_visa_team_employee.id}}" class="modal fade zoomIn" tabindex="-1" aria-labelledby="zoomInModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="zoomInModalLabel">Employee Code : {{i.assign_to_visa_team_employee.emp_code }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-2">
+                    <div class="col-6">
+                      First Name : {{i.assign_to_visa_team_employee.users.first_name }} 
+                    </div>
+                    <div class="col-6">
+                      Last Name : {{i.assign_to_visa_team_employee.users.last_name }}
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-6">
+                      Email : {{i.assign_to_visa_team_employee.users.email }}
+                    </div>
+                    <div class="col-6">
+                      Department : {{i.assign_to_visa_team_employee.department }}
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-6">
+                      Contact :{{i.assign_to_visa_team_employee.contact_no }}
+                    </div>
+                    <div class="col-6">
+                      Address :{{i.assign_to_visa_team_employee.Address }}
+                    </div>
+                </div>
+            </div>
+           
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>

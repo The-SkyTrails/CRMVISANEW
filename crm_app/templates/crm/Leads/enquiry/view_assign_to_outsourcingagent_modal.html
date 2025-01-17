@@ -1,0 +1,39 @@
+
+<div id="outsource-{{i.assign_to_outsourcingagent.id}}" class="modal fade zoomIn" tabindex="-1" aria-labelledby="zoomInModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="zoomInModalLabel">Outsource Agent Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-2">
+                    <div class="col-6">
+                      First Name : {{i.assign_to_outsourcingagent.users.first_name }} 
+                    </div>
+                    <div class="col-6">
+                      Last Name : {{i.assign_to_outsourcingagent.users.last_name }}
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-6">
+                      Email : {{i.assign_to_outsourcingagent.users.email }}
+                    </div>
+                    <div class="col-6">
+                      Organization Name : {{i.assign_to_outsourcingagent.organization_name }}
+                    </div> 
+                </div>
+                  <div class="row mb-2">
+                    <div class="col-6">
+                      Contact :{{i.assign_to_outsourcingagent.contact_no }}
+                    </div>
+                    <div class="col-6">
+                      Address :{{i.assign_to_outsourcingagent.Address }}
+                    </div>
+                </div>
+            </div>
+           
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>

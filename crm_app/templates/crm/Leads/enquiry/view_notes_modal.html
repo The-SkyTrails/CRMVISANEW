@@ -25,7 +25,7 @@
 
 <div id="viewallnotes-{{i.id}}" class="modal fade zoomIn" tabindex="-1" aria-labelledby="zoomInModalLabel" aria-hidden="true" style="display: none;">
   <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
+      <div class="modal-content" style="width: 120rem;">
           <div class="modal-header">
               <h5 class="modal-title" id="zoomInModalLabel">View All Notes</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -56,6 +56,60 @@
                     {% else %}
                         <td>No attachment</td> 
                     {% endif %}
+                  </tr>
+                {% endfor %}
+               
+              </tbody>
+            </table>
+          </div>
+         
+
+      </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div> 
+
+<div id="appointmentModal-{{i.id}}" class="modal fade zoomIn" tabindex="-1" aria-labelledby="zoomInModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" style="width: 120rem;">
+          <div class="modal-header">
+              <h5 class="modal-title" id="zoomInModalLabel">Appointment Details</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-12 col-md-12">
+                  <div class="form-group">
+                      <div class="control-label mb-10">
+                          <span class="sub-text d-flex">Enquiry No : {{i.enquiry_number}}
+                              <div class="ml-1" id="currentDateTime"></div>
+                          </span>
+                          <span class="sub-text d-flex">Client Name : {{i.FirstName}} {{i.LastName}}
+                              {% comment %} <div class="ml-1">Admin </div> {% endcomment %}
+                          </span>
+                      </div>
+                  </div>
+              </div>
+            </div>
+            <table class="table">
+              <thead>
+                <tr>
+
+                  {% comment %} <th scope="col">#</th> {% endcomment %}
+                  <th>Appointment Date</th>
+                  <th>Appointment Time</th>
+                  <th>Description</th>
+                  <th>Created Date</th>
+                  <th>Created By</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for appointment in i.enqappointment_set.all %}
+                  <tr>
+                    <td>{{appointment.date}}</td>
+                    <td>{{appointment.time}}</td>
+                    <td>{{appointment.description}}</td>
+                    <td>{{appointment.created_date|date:"b. d, Y"}}</td>
+                    <td>{{appointment.created_by}}</td>
                   </tr>
                 {% endfor %}
                

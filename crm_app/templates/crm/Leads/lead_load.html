@@ -299,17 +299,7 @@
                                   </div>
                                </div>
                             </div>
-                            <div class="d-flex justify-content-end">
-                               <div class="pagination-wrap hstack gap-2">
-                                  <a class="page-item pagination-prev disabled" href="#">
-                                  Previous
-                                  </a>
-                                  <ul class="pagination listjs-pagination mb-0"></ul>
-                                  <a class="page-item pagination-next" href="#">
-                                  Next
-                                  </a>
-                               </div>
-                            </div>
+                            
                          </div>
                         <!-- end tab pane -->
                         <div class="tab-pane" id="lead-cancel" role="tabpanel">
@@ -392,7 +382,23 @@
                         </div>
                         <!-- end tab pane -->
                         <div class="tab-pane" id="lead-active" role="tabpanel">
-                            <div class="table-responsive table-card mb-1">
+                           <div class="col-sm">
+                              <div class="d-flex justify-content-sm-end">
+                                
+                                 <div class="search-box ms-2">
+                                   
+                                       <input class="form-control" type="search" name="search" placeholder="Search" 
+                                          hx-get="{% url 'lead_active' %}" 
+                                          hx-trigger="input changed delay:500ms, search" 
+                                          hx-target="#activesearch-results" 
+                                          hx-indicator=".htmx-indicator">
+
+                                   
+                                    <i class="ri-search-line search-icon"></i>
+                                 </div>
+                              </div>
+                           </div>
+                            <div class="table-responsive table-card mb-1 mt-2">
                                 <table class="table table-nowrap align-middle" id="orderTable">
                                    <thead class="text-muted table-light">
                                       <tr class="text-uppercase">
@@ -421,7 +427,7 @@
                                        <th>ACTION</th>
                                       </tr>
                                    </thead>
-                                   <tbody class="list form-check-all"  hx-get="{% url "lead_active" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="search-results">
+                                   <tbody class="list form-check-all"  hx-get="{% url "lead_active" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="activesearch-results">
                                       <tr>
                                           <td>
                                              <button type="button" class="btn btn-outline-warning btn-load">
@@ -546,7 +552,7 @@
                                  </div>
                               </div>
                            </div>
-                            <div class="table-responsive table-card mb-1">
+                            <div class="mt-2 table-responsive table-card mb-1">
                                 <table class="table table-nowrap align-middle" id="orderTable">
                                    <thead class="text-muted table-light">
                                       <tr class="text-uppercase">
@@ -602,46 +608,65 @@
                                    </div>
                                 </div>
                              </div>
-                             <div class="d-flex justify-content-end">
-                                <div class="pagination-wrap hstack gap-2">
-                                   <a class="page-item pagination-prev disabled" href="#">
-                                   Previous
-                                   </a>
-                                   <ul class="pagination listjs-pagination mb-0"></ul>
-                                   <a class="page-item pagination-next" href="#">
-                                   Next
-                                   </a>
-                                </div>
-                             </div>
+                            
                         </div>
                         {% comment %} ------------------------- Result Awaited --------------- {% endcomment %}
                         <div class="tab-pane" id="Result-awaited" role="tabpanel">
-                            <div class="table-responsive table-card mb-1">
+                           <div class="col-sm">
+                              <div class="d-flex justify-content-sm-end">
+                                
+                                 <div class="search-box ms-2">
+                                   
+                                       <input class="form-control" type="search" name="search" placeholder="Search..." 
+                                          hx-get="{% url 'result_awaited' %}" 
+                                          hx-trigger="input changed delay:500ms, search" 
+                                          hx-target="#awaitedsearch-results" 
+                                          hx-indicator=".htmx-indicator">
+
+                                   
+                                    <i class="ri-search-line search-icon"></i>
+                                 </div>
+                              </div>
+                           </div>
+
+                            
+                           <div class="table-responsive table-card mb-1 mt-2">
                                 <table class="table table-nowrap align-middle" id="orderTable">
                                    <thead class="text-muted table-light">
-                                      <tr class="text-uppercase">
-                                         <th scope="col" style="width: 25px;">
-                                            <div class="form-check">
-                                               <input class="form-check-input" type="checkbox" id="checkAll" value="option">
-                                            </div>
-                                         </th>
-                                         <th class="sort" data-sort="id">Order ID</th>
-                                         <th class="sort" data-sort="customer_name">Customer</th>
-                                         <th class="sort" data-sort="product_name">Product</th>
-                                         <th class="sort" data-sort="date">Order Date</th>
-                                         <th class="sort" data-sort="amount">Amount</th>
-                                         <th class="sort" data-sort="payment">Payment Method</th>
-                                         <th class="sort" data-sort="status">Delivery Status</th>
-                                         <th class="sort" data-sort="city">Action</th>
+                                    <tr class="text-uppercase">
+                                         
+                                       <th>SR NO</th>
+                                       <th>ACTION</th>
+                                       <th>ENQUIRY No.</th>
+                                       <th>Name</th>
+                                       <th>DOB</th>
+                                       <th>Passport No</th>
+                                       <th>Registered ON.</th>
+                                       <th>Updated on</th>
+                                       <th>VISA COUNTRY</th>
+                                       <th>VISA Category - SUB CATEGORY</th>
+                                       <th>VISA TYPE</th>
+                                       <th>Package Name</th>
+                                       <th>CREATED BY</th>
+                                       <th>Assigned TO</th>
+                                       <th>Update Assigned To</th>
+                                       
+                                       <th>LEAD status</th>
+                                       <th>Lead Updated</th>
+                                       <th>Appointment</th>
+                                       <th>Appointment Status</th>
+                                       <th>NOTES</th>
+                                       <th>Colour Code</th>
+                                       <th>ACTION</th>
                                       </tr>
                                    </thead>
-                                   <tbody class="list form-check-all"  hx-get="{% url "result_awaited" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="search-results">
+                                   <tbody class="list form-check-all"  hx-get="{% url "result_awaited" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="awaitedsearch-results">
                                       <tr>
                                           <td>
                                              <button type="button" class="btn btn-outline-warning btn-load">
                                                 <span class="d-flex align-items-center">
                                                     <span class="flex-grow-1 me-2">
-                                                      Result-awaited
+                                                      Loading...
                                                     </span>
                                                     <span class="spinner-grow flex-shrink-0" role="status">
                                                         <span class="visually-hidden">Loading...</span>
@@ -676,32 +701,59 @@
                         {% comment %} ------------------------- lEAD New --------------- {% endcomment %}
 
                         <div class="tab-pane" id="lead-new" role="tabpanel">
-                            <div class="table-responsive table-card mb-1">
+                           <div class="col-sm">
+                              <div class="d-flex justify-content-sm-end">
+                                
+                                 <div class="search-box ms-2">
+                                   
+                                       <input class="form-control" type="search" name="search" placeholder="Search" 
+                                          hx-get="{% url 'lead_new' %}" 
+                                          hx-trigger="input changed delay:500ms, search" 
+                                          hx-target="#newsearch-results" 
+                                          hx-indicator=".htmx-indicator">
+
+                                   
+                                    <i class="ri-search-line search-icon"></i>
+                                 </div>
+                              </div>
+                           </div>
+                            <div class="table-responsive table-card mb-1 mt-2">
                                 <table class="table table-nowrap align-middle" id="orderTable">
                                    <thead class="text-muted table-light">
-                                      <tr class="text-uppercase">
-                                         <th scope="col" style="width: 25px;">
-                                            <div class="form-check">
-                                               <input class="form-check-input" type="checkbox" id="checkAll" value="option">
-                                            </div>
-                                         </th>
-                                         <th class="sort" data-sort="id">Order ID</th>
-                                         <th class="sort" data-sort="customer_name">Customer</th>
-                                         <th class="sort" data-sort="product_name">Product</th>
-                                         <th class="sort" data-sort="date">Order Date</th>
-                                         <th class="sort" data-sort="amount">Amount</th>
-                                         <th class="sort" data-sort="payment">Payment Method</th>
-                                         <th class="sort" data-sort="status">Delivery Status</th>
-                                         <th class="sort" data-sort="city">Action</th>
+                                    <tr class="text-uppercase">
+                                         
+                                       <th>SR NO</th>
+                                       <th>ACTION</th>
+                                       <th>ENQUIRY No.</th>
+                                       <th>Name</th>
+                                       <th>DOB</th>
+                                       <th>Passport No</th>
+                                       <th>Registered ON.</th>
+                                       <th>Updated on</th>
+                                       <th>VISA COUNTRY</th>
+                                       <th>VISA Category - SUB CATEGORY</th>
+                                       <th>VISA TYPE</th>
+                                       <th>Package Name</th>
+                                       <th>CREATED BY</th>
+                                       <th>Assigned TO</th>
+                                       <th>Update Assigned To</th>
+                                       
+                                       <th>LEAD status</th>
+                                       <th>Lead Updated</th>
+                                       <th>Appointment</th>
+                                       <th>Appointment Status</th>
+                                       <th>NOTES</th>
+                                       <th>Colour Code</th>
+                                       <th>ACTION</th>
                                       </tr>
                                    </thead>
-                                   <tbody class="list form-check-all"  hx-get="{% url "lead_new" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="search-results">
+                                   <tbody class="list form-check-all"  hx-get="{% url "lead_new" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="newsearch-results">
                                       <tr>
                                           <td>
                                              <button type="button" class="btn btn-outline-warning btn-load">
                                                 <span class="d-flex align-items-center">
                                                     <span class="flex-grow-1 me-2">
-                                                       New
+                                                       Loading...
                                                     </span>
                                                     <span class="spinner-grow flex-shrink-0" role="status">
                                                         <span class="visually-hidden">Loading...</span>
@@ -721,49 +773,65 @@
                                    </div>
                                 </div>
                              </div>
-                             <div class="d-flex justify-content-end">
-                                <div class="pagination-wrap hstack gap-2">
-                                   <a class="page-item pagination-prev disabled" href="#">
-                                   Previous
-                                   </a>
-                                   <ul class="pagination listjs-pagination mb-0"></ul>
-                                   <a class="page-item pagination-next" href="#">
-                                   Next
-                                   </a>
-                                </div>
-                             </div>
+                             
                         </div>
                         
                         
                         {% comment %} ------------------------- lEAD Approved --------------- {% endcomment %}
 
                         <div class="tab-pane" id="lead-approved" role="tabpanel">
-                            <div class="table-responsive table-card mb-1">
+                           <div class="col-sm">
+                              <div class="d-flex justify-content-sm-end">
+                                
+                                 <div class="search-box ms-2">
+                                   
+                                       <input class="form-control" type="search" name="search" placeholder="Search" 
+                                          hx-get="{% url 'lead_approved' %}" 
+                                          hx-trigger="input changed delay:500ms, search" 
+                                          hx-target="#approvedsearch-results" 
+                                          hx-indicator=".htmx-indicator">
+
+                                   
+                                    <i class="ri-search-line search-icon"></i>
+                                 </div>
+                              </div>
+                           </div>
+                            <div class="table-responsive table-card mb-1 mt-2">
                                 <table class="table table-nowrap align-middle" id="orderTable">
                                    <thead class="text-muted table-light">
                                       <tr class="text-uppercase">
-                                         <th scope="col" style="width: 25px;">
-                                            <div class="form-check">
-                                               <input class="form-check-input" type="checkbox" id="checkAll" value="option">
-                                            </div>
-                                         </th>
-                                         <th class="sort" data-sort="id">Order ID</th>
-                                         <th class="sort" data-sort="customer_name">Customer</th>
-                                         <th class="sort" data-sort="product_name">Product</th>
-                                         <th class="sort" data-sort="date">Order Date</th>
-                                         <th class="sort" data-sort="amount">Amount</th>
-                                         <th class="sort" data-sort="payment">Payment Method</th>
-                                         <th class="sort" data-sort="status">Delivery Status</th>
-                                         <th class="sort" data-sort="city">Action</th>
+                                       <th>SR NO</th>
+                                       <th>ACTION</th>
+                                       <th>ENQUIRY No.</th>
+                                       <th>Name</th>
+                                       <th>DOB</th>
+                                       <th>Passport No</th>
+                                       <th>Registered ON.</th>
+                                       <th>Updated on</th>
+                                       <th>VISA COUNTRY</th>
+                                       <th>VISA Category - SUB CATEGORY</th>
+                                       <th>VISA TYPE</th>
+                                       <th>Package Name</th>
+                                       <th>CREATED BY</th>
+                                       <th>Assigned TO</th>
+                                       <th>Update Assigned To</th>
+                                       
+                                       <th>LEAD status</th>
+                                       <th>Lead Updated</th>
+                                       <th>Appointment</th>
+                                       <th>Appointment Status</th>
+                                       <th>NOTES</th>
+                                       <th>Colour Code</th>
+                                       <th>ACTION</th>
                                       </tr>
                                    </thead>
-                                   <tbody class="list form-check-all"  hx-get="{% url "lead_approved" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="search-results">
+                                   <tbody class="list form-check-all"  hx-get="{% url "lead_approved" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="approvedsearch-results">
                                       <tr>
                                           <td>
                                              <button type="button" class="btn btn-outline-warning btn-load">
                                                 <span class="d-flex align-items-center">
                                                     <span class="flex-grow-1 me-2">
-                                                       Approved
+                                                       Loading...
                                                     </span>
                                                     {% comment %} <span class="spinner-grow flex-shrink-0" role="status">
                                                         <span class="visually-hidden">Loading...</span>
@@ -783,52 +851,68 @@
                                    </div>
                                 </div>
                              </div>
-                             <div class="d-flex justify-content-end">
-                                <div class="pagination-wrap hstack gap-2">
-                                   <a class="page-item pagination-prev disabled" href="#">
-                                   Previous
-                                   </a>
-                                   <ul class="pagination listjs-pagination mb-0"></ul>
-                                   <a class="page-item pagination-next" href="#">
-                                   Next
-                                   </a>
-                                </div>
-                             </div>
+                             
                         </div>
                         {% comment %} ------------------------- lEAD Completed --------------- {% endcomment %}
 
                         <div class="tab-pane" id="lead-completed" role="tabpanel">
-                            <div class="table-responsive table-card mb-1">
+                           <div class="col-sm">
+                              <div class="d-flex justify-content-sm-end">
+                                
+                                 <div class="search-box ms-2">
+                                   
+                                       <input class="form-control" type="search" name="search" placeholder="Search" 
+                                          hx-get="{% url 'lead_completed' %}" 
+                                          hx-trigger="input changed delay:500ms, search" 
+                                          hx-target="#completedsearch-results" 
+                                          hx-indicator=".htmx-indicator">
+
+                                   
+                                    <i class="ri-search-line search-icon"></i>
+                                 </div>
+                              </div>
+                           </div>
+                            <div class="table-responsive table-card mb-1 mt-2">
                                 <table class="table table-nowrap align-middle" id="orderTable">
                                    <thead class="text-muted table-light">
                                       <tr class="text-uppercase">
-                                         <th scope="col" style="width: 25px;">
-                                            <div class="form-check">
-                                               <input class="form-check-input" type="checkbox" id="checkAll" value="option">
-                                            </div>
-                                         </th>
-                                         <th class="sort" data-sort="id">Order ID</th>
-                                         <th class="sort" data-sort="customer_name">Customer</th>
-                                         <th class="sort" data-sort="product_name">Product</th>
-                                         <th class="sort" data-sort="date">Order Date</th>
-                                         <th class="sort" data-sort="amount">Amount</th>
-                                         <th class="sort" data-sort="payment">Payment Method</th>
-                                         <th class="sort" data-sort="status">Delivery Status</th>
-                                         <th class="sort" data-sort="city">Action</th>
+                                       <th>SR NO</th>
+                                       <th>ACTION</th>
+                                       <th>ENQUIRY No.</th>
+                                       <th>Name</th>
+                                       <th>DOB</th>
+                                       <th>Passport No</th>
+                                       <th>Registered ON.</th>
+                                       <th>Updated on</th>
+                                       <th>VISA COUNTRY</th>
+                                       <th>VISA Category - SUB CATEGORY</th>
+                                       <th>VISA TYPE</th>
+                                       <th>Package Name</th>
+                                       <th>CREATED BY</th>
+                                       <th>Assigned TO</th>
+                                       <th>Update Assigned To</th>
+                                       
+                                       <th>LEAD status</th>
+                                       <th>Lead Updated</th>
+                                       <th>Appointment</th>
+                                       <th>Appointment Status</th>
+                                       <th>NOTES</th>
+                                       <th>Colour Code</th>
+                                       <th>ACTION</th>
                                       </tr>
                                    </thead>
-                                   <tbody class="list form-check-all"  hx-get="{% url "lead_completed" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="search-results">
+                                   <tbody class="list form-check-all"  hx-get="{% url "lead_completed" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="completedsearch-results">
                                       <tr>
                                           <td>
                                              <button type="button" class="btn btn-outline-warning btn-load">
                                                 <span class="d-flex align-items-center">
-                                                    <span class="flex-grow-1 me-2">
-                                                       Completed
-                                                    </span>
-                                                    {% comment %} <span class="spinner-grow flex-shrink-0" role="status">
-                                                        <span class="visually-hidden">Loading...</span>
-                                                    </span> {% endcomment %}
-                                                </span>
+                                                   <span class="flex-grow-1 me-2">
+                                                     Loading...
+                                                   </span>
+                                                   <span class="spinner-grow flex-shrink-0" role="status">
+                                                       <span class="visually-hidden">Loading...</span>
+                                                   </span>
+                                               </span>
                                               </button>
                                           
                                           </td>
@@ -843,17 +927,7 @@
                                    </div>
                                 </div>
                              </div>
-                             <div class="d-flex justify-content-end">
-                                <div class="pagination-wrap hstack gap-2">
-                                   <a class="page-item pagination-prev disabled" href="#">
-                                   Previous
-                                   </a>
-                                   <ul class="pagination listjs-pagination mb-0"></ul>
-                                   <a class="page-item pagination-next" href="#">
-                                   Next
-                                   </a>
-                                </div>
-                             </div>
+                           
                         </div>
                         <!-- end tab pane -->
                      </div>

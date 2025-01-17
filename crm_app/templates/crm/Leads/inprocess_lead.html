@@ -65,7 +65,7 @@
          <input class="form-check-input" type="checkbox" name="checkAll" value="option1">
       </div>
    </th> {% endcomment %}
-   <td class="id"><a href="apps-ecommerce-order-details.html" class="fw-medium link-primary">{{forloop.counter}}</a></td>
+   <td class="id"><a href="#" class="fw-medium link-primary">{{forloop.counter}}</a></td>
    <td class="customer_name">
     
      <a data-bs-toggle="offcanvas" href="#offcanvasExample-{{i.id}}" class="text-primary d-inline-block" aria-controls="offcanvasExample">
@@ -90,7 +90,7 @@
    <div class="clickable-items-container px-3 simplebar-scrollable-y">
      {% if i.assign_to_employee %}
     
-     <div class="clickable-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#zoomInModal-{{ i.assign_to_employee.id }}" >
+     <div class="clickable-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#assign-{{ i.assign_to_employee.id }}" >
        <i class=" ri-map-pin-user-fill"></i> <!-- Bootstrap Icon for person -->
        <strong>{{ i.assign_to_employee.users.first_name }} {{ i.assign_to_employee.emp_code }}</strong>
        <span class="text-muted">({{ i.assign_to_employee.department }})</span>
@@ -98,7 +98,7 @@
    </div>
  {% endif %}
  {% if i.assign_to_assesment_employee %}
-     <div class="clickable-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#zoomInModal-{{i.assign_to_assesment_employee.id}}">
+     <div class="clickable-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#assesment-{{i.assign_to_assesment_employee.id}}">
        <i class=" ri-map-pin-user-fill"></i>
        <strong>{{ i.assign_to_assesment_employee.users.first_name }} {{ i.assign_to_assesment_employee.users.last_name }}</strong>
        <span class="text-muted">({{ i.assign_to_assesment_employee.department }})</span>
@@ -106,7 +106,7 @@
    </div>
  {% endif %}
  {% if i.assign_to_sales_employee %}
-     <div class="clickable-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#zoomInModal-{{i.assign_to_sales_employee.id}}">
+     <div class="clickable-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#sales-{{i.assign_to_sales_employee.id}}">
        <i class=" ri-map-pin-user-fill"></i>
        <strong>{{i.assign_to_sales_employee.users.first_name }} {{i.assign_to_sales_employee.users.last_name}} ({{i.assign_to_sales_employee.department}})</strong>
        <span class="text-muted">({{ i.assign_to_sales_employee.department }})</span>
@@ -115,7 +115,7 @@
  {% endif %}
  {% if i.assign_to_documentation_employee %}
      
-     <div class="clickable-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#zoomInModal-{{i.assign_to_documentation_employee.id}}">
+     <div class="clickable-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#document-{{i.assign_to_documentation_employee.id}}">
        <i class=" ri-map-pin-user-fill"></i>
        <strong>{{i.assign_to_documentation_employee.users.first_name }} {{i.assign_to_documentation_employee.users.last_name}} </strong>
        <span class="text-muted">({{ i.assign_to_documentation_employee.department }})</span>
@@ -123,7 +123,7 @@
    </div>
  {% endif %}
  {% if i.assign_to_visa_team_employee %}
-     <div class="clickable-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#zoomInModal-{{i.assign_to_visa_team_employee.id}}">
+     <div class="clickable-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#visa-{{i.assign_to_visa_team_employee.id}}">
        <i class=" ri-map-pin-user-fill"></i>
        <strong>{{i.assign_to_visa_team_employee.users.first_name }} {{i.assign_to_visa_team_employee.users.last_name}} </strong>
        <span class="text-muted">({{ i.assign_to_visa_team_employee.department }})</span>
@@ -132,7 +132,7 @@
  {% endif %}
 
  {% if i.assign_to_agent %}
-     <div class="clickable-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#zoomInModal-{{i.assign_to_agent.id}}">
+     <div class="clickable-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#agent-{{i.assign_to_agent.id}}">
        <i class=" ri-map-pin-user-fill"></i>
        <strong>{{i.assign_to_agent.users.first_name }} {{i.assign_to_agent.users.last_name}} </strong>
        <span class="text-muted">(Agent)</span>
@@ -140,7 +140,7 @@
      </div>
  {% endif %}
  {% if i.assign_to_outsourcingagent %}
-     <div class="clickable-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#zoomInModal-{{i.assign_to_outsourcingagent.id}}">
+     <div class="clickable-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#outsource-{{i.assign_to_outsourcingagent.id}}">
        <i class=" ri-map-pin-user-fill"></i>
        <strong>{{i.assign_to_outsourcingagent.users.first_name }} {{i.assign_to_outsourcingagent.users.last_name}} </strong>
        <span class="text-muted">(OP)</span>
@@ -149,7 +149,7 @@
  {% endif %}
    </div>
 </td>
-{% include "crm/Leads/enquiry/view_assign_users_modal.html" %}
+{% comment %} {% include "crm/Leads/enquiry/view_assign_users_modal.html" %} {% endcomment %}
    <td>
      <button type="button" class="btn rounded-pill btn-primary waves-effect waves-light"  hx-get="{% url 'update_assign_employee' i.id%}"  hx-target="#dialog" hx-trigger="click">
          Assigned
@@ -245,6 +245,14 @@
          </li>
       </ul>
    </td>
+
+   {% include "crm/Leads/enquiry/view_assign_to_presale_employee_modal.html" %}
+   {% include "crm/Leads/enquiry/view_assign_to_agent_modal.html" %}
+   {% include "crm/Leads/enquiry/view_assign_to_assesment_employee_modal.html" %}
+   {% include "crm/Leads/enquiry/view_assign_to_sales_employee_modal.html" %}
+   {% include "crm/Leads/enquiry/view_assign_to_documentation_employee_modal.html" %}
+   {% include "crm/Leads/enquiry/view_assign_to_visa_employee_modal.html" %}
+   {% include "crm/Leads/enquiry/view_assign_to_outsourcingagent_modal.html" %}
    
 </tr>
 
