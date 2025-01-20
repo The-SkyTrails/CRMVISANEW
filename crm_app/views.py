@@ -66,9 +66,15 @@ def dashboard(request):
         greeting = "Good Afternoon"
     else:
         greeting = "Good Evening"
+    package = Package.objects.filter(approval="Yes").order_by("-last_updated_on")[
+            :10
+        ]
+    print("packagesss",package)
     
     context = {
-        'greeting': greeting
+        'greeting': greeting,
+        'package': package,
+
     }
     return render(request, 'crm/base/dashboard.html', context)
 
@@ -4621,30 +4627,80 @@ def lead_load(request):
 
 
 
+# def all_lead(request):
+    
+    
+#    search_query = request.GET.get('search', '')
+#    search_terms = search_query.split()
+#    query  = Q(archive=False)
+#    for term in search_terms:
+    
+#         # query &= Q(lastupdated_by__first_name__icontains=term) | Q(lastupdated_by__last_name__icontains=term) | Q(country__icontains=term) 
+#         query &= Q(FirstName__icontains=term) | Q(LastName__icontains=term) | Q(enquiry_number__icontains=term) | Q(passport_no__icontains=term) | Q(registered_on__icontains=term) | Q(Visa_country__country__icontains=term) | Q(Visa_type__icontains=term) | Q(created_by__username__icontains=term) | Q(Visa_category__category__icontains=term) | (Q(assign_to_agent__users__first_name__icontains=term) |  # Both First Name
+#      Q(assign_to_agent__users__last_name__icontains=term)) | (Q(assign_to_outsourcingagent__users__first_name__icontains=term) |  Q(assign_to_outsourcingagent__users__last_name__icontains=term)) |   Q(Dob__icontains=term)
+
+#    all_lead = Enquiry.objects.filter(query).order_by("-id")
+   
+#    paginator = Paginator(all_lead, 5)
+#    page_number = request.GET.get('page', 1)
+#    page_obj = paginator.get_page(page_number)
+#    context = {
+#        'page_obj' : page_obj,
+#        'search_query':search_query,
+      
+#    }
+   
+#    return render(request,'crm/Leads/all_lead.html',context)
+
 def all_lead(request):
     
+    user = request.user  # Current logged-in user
     
-   search_query = request.GET.get('search', '')
-   search_terms = search_query.split()
-   query  = Q(archive=False)
-   for term in search_terms:
-    
-        # query &= Q(lastupdated_by__first_name__icontains=term) | Q(lastupdated_by__last_name__icontains=term) | Q(country__icontains=term) 
-        query &= Q(FirstName__icontains=term) | Q(LastName__icontains=term) | Q(enquiry_number__icontains=term) | Q(passport_no__icontains=term) | Q(registered_on__icontains=term) | Q(Visa_country__country__icontains=term) | Q(Visa_type__icontains=term) | Q(created_by__username__icontains=term) | Q(Visa_category__category__icontains=term) | (Q(assign_to_agent__users__first_name__icontains=term) |  # Both First Name
-     Q(assign_to_agent__users__last_name__icontains=term)) | (Q(assign_to_outsourcingagent__users__first_name__icontains=term) |  Q(assign_to_outsourcingagent__users__last_name__icontains=term)) |   Q(Dob__icontains=term)
+    search_query = request.GET.get('search', '')
+    search_terms = search_query.split()
+    query = Q(archive=False)  # Base query
 
-   all_lead = Enquiry.objects.filter(query).order_by("-id")
-   
-   paginator = Paginator(all_lead, 5)
-   page_number = request.GET.get('page', 1)
-   page_obj = paginator.get_page(page_number)
-   context = {
-       'page_obj' : page_obj,
-       'search_query':search_query,
-      
-   }
-   
-   return render(request,'crm/Leads/all_lead.html',context)
+    # Filter by user_type
+    if user.user_type == '2':  # Admin
+        
+        pass  # No additional filter required, show all leads
+    elif user.user_type == '3':  # Employee
+        
+        query &= Q(assign_to_employee=user.employee) | Q(created_by=user)
+    elif user.user_type == '4':  # Agent
+        query &= Q(assign_to_agent=user.agent) | Q(created_by=user)
+    elif user.user_type == '5':  # Outsourcing Agent
+        query &= Q(assign_to_outsourcingagent=user.outsourcingagent) | Q(created_by=user)
+
+    search_fields = [
+        'FirstName', 'LastName', 'enquiry_number', 'passport_no', 'registered_on',
+        'Visa_country__country', 'Visa_type', 'created_by__username',
+        'Visa_category__category', 'assign_to_agent__users__first_name',
+        'assign_to_agent__users__last_name', 'assign_to_outsourcingagent__users__first_name',
+        'assign_to_outsourcingagent__users__last_name', 'Dob'
+    ]
+    # Apply search filter
+    for term in search_terms:
+        search_filter = Q()
+        for field in search_fields:
+            search_filter |= Q(**{f"{field}__icontains": term}) 
+        query &= search_filter
+        
+
+    # Fetch and paginate leads
+    all_lead = Enquiry.objects.filter(query).order_by("-id")
+    paginator = Paginator(all_lead, 5)
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'page_obj': page_obj,
+        'search_query': search_query,
+        
+    }
+    return render(request, 'crm/Leads/all_lead.html', context)
+
+
 def get_agent():
     return Agent.objects.all()
 
@@ -4722,19 +4778,93 @@ def get_outsourcepartner():
 #     return render(request,'crm/Leads/enrolled_lead.html',context)
 
 
-def enrolled_lead(request):
-    search_query = request.GET.get('search', '')  # 'search' ko 'query' se replace karen
+# def enrolled_lead(request):
+#     search_query = request.GET.get('search', '')  # 'search' ko 'query' se replace karen
    
+
+#     # Aapke existing query logic ko aap jese hain waisa use kar sakte hain
+#     queries = Q(lead_status="Enrolled") & Q(archive=False)
+
+    
+#     if search_query:
+#         search_parts = search_query.split()
+       
+#         for part in search_parts:
+#             queries &= Q(FirstName__icontains=part) | Q(LastName__icontains=part) | Q(enquiry_number__icontains=part) | Q(passport_no__icontains=part) | Q(registered_on__icontains=part) | Q(Visa_country__country__icontains=part) | Q(Visa_type__icontains=part) | Q(created_by__username__icontains=part) | Q(Visa_category__category__icontains=part)
+
+#     # Start date and end date logic (same as existing)
+#     start_date = request.GET.get('start_date')
+#     end_date = request.GET.get('end_date')
+
+#     if start_date:
+#         start_date = parse_date(start_date)
+#         queries &= Q(registered_on__date__gte=start_date)
+
+#     if end_date:
+#         end_date = parse_date(end_date)
+#         queries &= Q(registered_on__date__lte=end_date)
+
+#     enquiry_list = Enquiry.objects.filter(queries).order_by("-id")
+
+#     paginator = Paginator(enquiry_list, 5)
+#     page_number = request.GET.get('page')
+#     page = paginator.get_page(page_number)
+
+#     context = {
+#         "page_obj": page,
+#         "search_query": search_query,
+#         'start_date': start_date,
+#         'end_date': end_date
+#     }
+
+#     return render(request, 'crm/Leads/enrolled_lead.html', context)
+
+
+
+
+def enrolled_lead(request):
+    user = request.user
+    search_query = request.GET.get('search', '')  # 'search' ko 'query' se replace karen
 
     # Aapke existing query logic ko aap jese hain waisa use kar sakte hain
     queries = Q(lead_status="Enrolled") & Q(archive=False)
-    if search_query:
-        search_parts = search_query.split()
-       
-        for part in search_parts:
-            queries &= Q(FirstName__icontains=part) | Q(LastName__icontains=part) | Q(enquiry_number__icontains=part) | Q(passport_no__icontains=part) | Q(registered_on__icontains=part) | Q(Visa_country__country__icontains=part) | Q(Visa_type__icontains=part) | Q(created_by__username__icontains=part) | Q(Visa_category__category__icontains=part)
 
-    # Start date and end date logic (same as existing)
+    # User ke type ke hisaab se queries ko modify karen
+    if user.user_type == '3':  # Integer comparison
+        emp = user.employee
+        dep = emp.department
+
+        # Department ke basis par queries ko filter karen
+        if dep == "Presales":
+            queries &= (Q(assign_to_employee=user.employee) | Q(created_by=user))
+        elif dep == "Sales":
+            queries &= (Q(assign_to_sales_employee=user.employee) | Q(created_by=user))
+        elif dep == "Documentation":
+            queries &= (Q(assign_to_documentation_employee=user.employee) | Q(created_by=user))
+        elif dep == "Visa Team":
+            queries &= (Q(assign_to_visa_team_employee=user.employee) | Q(created_by=user))
+        elif dep == "Assesment":
+            queries &= (Q(assign_to_assesment_employee=user.employee) | Q(created_by=user))
+        else:
+            queries &= Q(created_by=user)
+
+    # Search query ke basis par filter lagayen
+    if search_query:
+        search_parts = search_query.split()  # Split the search string into parts
+        search_filter = Q()
+        for part in search_parts:
+            search_filter |= Q(FirstName__icontains=part)
+            search_filter |= Q(LastName__icontains=part)
+            search_filter |= Q(enquiry_number__icontains=part)
+            search_filter |= Q(passport_no__icontains=part)
+            search_filter |= Q(registered_on__icontains=part)
+            search_filter |= Q(Visa_country__country__icontains=part)
+            search_filter |= Q(Visa_type__icontains=part)
+            search_filter |= Q(created_by__username__icontains=part)
+            search_filter |= Q(Visa_category__category__icontains=part)
+        queries &= search_filter  # Apply the search filter to existing queries
+
+    # Start date aur end date logic
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
 
@@ -4746,21 +4876,22 @@ def enrolled_lead(request):
         end_date = parse_date(end_date)
         queries &= Q(registered_on__date__lte=end_date)
 
+    # Filtered enquiry list ko fetch karein
     enquiry_list = Enquiry.objects.filter(queries).order_by("-id")
 
+    # Pagination logic
     paginator = Paginator(enquiry_list, 5)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
 
     context = {
-        "page_obj": page,
-        "search_query": search_query,
-        'start_date': start_date,
-        'end_date': end_date
+        "page_obj": page,  # Paginated enquiry list
+        "search_query": search_query,  # Search query to prefill the input box
+        'start_date': start_date,  # Pre-fill the start date input
+        'end_date': end_date  # Pre-fill the end date input
     }
 
     return render(request, 'crm/Leads/enrolled_lead.html', context)
-
 
 
 # def lead_cancel(request):
@@ -4879,7 +5010,7 @@ def lead_cancel(request):
 
 
 def lead_active(request):
-   
+    user = request.user
     excluded_statuses = ["Accept", "Reject"]
     lead = [status for status in leads_status if status[0] not in excluded_statuses]
     
@@ -4890,6 +5021,27 @@ def lead_active(request):
 
     # Define the base query
     queries = Q(lead_status="Active") | Q(lead_status="PreEnrolled")
+
+
+    # User ke type ke hisaab se queries ko modify karen
+    if user.user_type == '3':  # Integer comparison
+        emp = user.employee
+        dep = emp.department
+
+        # Department ke basis par queries ko filter karen
+        if dep == "Presales":
+            queries = Q(assign_to_employee=user.employee) & Q(lead_status="Active") | Q(lead_status="PreEnrolled")| Q(created_by=user) & Q(lead_status="Active") | Q(lead_status="PreEnrolled")
+        elif dep == "Sales":
+            queries = Q(assign_to_sales_employee=user.employee) & Q(lead_status="Active") | Q(lead_status="PreEnrolled")| Q(created_by=user) & Q(lead_status="Active") | Q(lead_status="PreEnrolled")
+        elif dep == "Documentation":
+            queries = Q(assign_to_documentation_employee=user.employee) & Q(lead_status="Active") | Q(lead_status="PreEnrolled")| Q(created_by=user) & Q(lead_status="Active") | Q(lead_status="PreEnrolled")
+        elif dep == "Visa Team":
+            queries = Q(assign_to_visa_team_employee=user.employee) & Q(lead_status="Active") | Q(lead_status="PreEnrolled")| Q(created_by=user) & Q(lead_status="Active") | Q(lead_status="PreEnrolled")
+        elif dep == "Assesment":
+            queries = Q(assign_to_assesment_employee=user.employee) & Q(lead_status="Active") | Q(lead_status="PreEnrolled")| Q(created_by=user) & Q(lead_status="Active") | Q(lead_status="PreEnrolled")
+        else:
+            queries &= Q(created_by=user)
+
     
     # Add search filter to the query if there's a search term
     if search_query:
@@ -4942,7 +5094,7 @@ def lead_active(request):
     return render(request,'crm/Leads/active_lead.html',context)
 
 def lead_inprocess(request):
-   
+    user = request.user
     excluded_statuses = ["Accept", "Reject"]
     lead = [status for status in leads_status if status[0] not in excluded_statuses]
     
@@ -4953,6 +5105,28 @@ def lead_inprocess(request):
 
     # Define the base query
     queries = Q(lead_status="Inprocess") | Q(lead_status="Ready To Submit")
+
+    
+    # User ke type ke hisaab se queries ko modify karen
+    if user.user_type == '3':  # Integer comparison
+        emp = user.employee
+        dep = emp.department
+
+        # Department ke basis par queries ko filter karen
+        if dep == "Presales":
+            queries = Q(assign_to_employee=user.employee) & Q(lead_status="Inprocess") | Q(lead_status="PreEnrolled")| Q(created_by=user) & Q(lead_status="Inprocess") | Q(lead_status="PreEnrolled")
+        elif dep == "Sales":
+            queries = Q(assign_to_sales_employee=user.employee) & Q(lead_status="Inprocess") | Q(lead_status="Ready To Submit")| Q(created_by=user) & Q(lead_status="Inprocess") | Q(lead_status="Ready To Submit")
+        elif dep == "Documentation":
+            queries = Q(assign_to_documentation_employee=user.employee) & Q(lead_status="Inprocess") | Q(lead_status="Ready To Submit")| Q(created_by=user) & Q(lead_status="Inprocess") | Q(lead_status="Ready To Submit")
+        elif dep == "Visa Team":
+            queries = Q(assign_to_visa_team_employee=user.employee) & Q(lead_status="Inprocess") | Q(lead_status="Ready To Submit")| Q(created_by=user) & Q(lead_status="Inprocess") | Q(lead_status="Ready To Submit")
+        elif dep == "Assesment":
+            queries = Q(assign_to_assesment_employee=user.employee) & Q(lead_status="Inprocess") | Q(lead_status="Ready To Submit")| Q(created_by=user) & Q(lead_status="Inprocess") | Q(lead_status="Ready To Submit")
+        else:
+            queries &= Q(created_by=user)
+
+    
     
     # Add search filter to the query if there's a search term
     if search_query:
@@ -5006,7 +5180,7 @@ def lead_inprocess(request):
 
 def lead_appointment(request):
     
-   
+    user = request.user
     excluded_statuses = ["Accept", "Reject"]
     lead = [status for status in leads_status if status[0] not in excluded_statuses]
     
@@ -5017,6 +5191,27 @@ def lead_appointment(request):
 
     # Define the base query
     queries = Q(lead_status="Appointment") 
+
+    
+    # User ke type ke hisaab se queries ko modify karen
+    if user.user_type == '3':  # Integer comparison
+        emp = user.employee
+        dep = emp.department
+
+        # Department ke basis par queries ko filter karen
+        if dep == "Presales":
+            queries = Q(assign_to_employee=user.employee) & Q(lead_status="Ready To Collection") | Q(lead_status="Appointment")| Q(created_by=user) & Q(lead_status="Ready To Collection") | Q(lead_status="Appointment")
+        elif dep == "Sales":
+            queries = Q(assign_to_sales_employee=user.employee) & Q(lead_status="Ready To Collection") | Q(lead_status="Appointment")| Q(created_by=user) & Q(lead_status="Ready To Collection") | Q(lead_status="Appointment")
+        elif dep == "Documentation":
+            queries = Q(assign_to_documentation_employee=user.employee) & Q(lead_status="Ready To Collection") | Q(lead_status="Appointment")| Q(created_by=user) & Q(lead_status="Ready To Collection") | Q(lead_status="Appointment")
+        elif dep == "Visa Team":
+            queries = Q(assign_to_visa_team_employee=user.employee) & Q(lead_status="Ready To Collection") | Q(lead_status="Appointment")| Q(created_by=user) & Q(lead_status="Ready To Collection") | Q(lead_status="Appointment")
+        elif dep == "Assesment":
+            queries = Q(assign_to_assesment_employee=user.employee) & Q(lead_status="Ready To Collection") | Q(lead_status="Appointment")| Q(created_by=user) & Q(lead_status="Ready To Collection") | Q(lead_status="Appointment")
+        else:
+            queries &= Q(created_by=user)
+
     
     # Add search filter to the query if there's a search term
     if search_query:
@@ -5139,7 +5334,7 @@ def result_awaited(request):
 
 def lead_new(request):
 
-    
+    user = request.user
     excluded_statuses = ["Accept", "Reject"]
     lead = [status for status in leads_status if status[0] not in excluded_statuses]
     
@@ -5150,6 +5345,28 @@ def lead_new(request):
 
     # Define the base query
     queries = Q(lead_status="New Lead")
+
+    
+    # User ke type ke hisaab se queries ko modify karen
+    if user.user_type == '3':  # Integer comparison
+        emp = user.employee
+        dep = emp.department
+
+        # Department ke basis par queries ko filter karen
+        if dep == "Presales":
+            queries = Q(assign_to_employee=user.employee) & Q(lead_status="New Lead") | Q(created_by=user) & Q(lead_status="New Lead") 
+        elif dep == "Sales":
+            queries = Q(assign_to_sales_employee=user.employee) & Q(lead_status="New Lead") | Q(created_by=user) & Q(lead_status="New Lead") 
+        elif dep == "Documentation":
+            queries = Q(assign_to_documentation_employee=user.employee) & Q(lead_status="New Lead") | Q(created_by=user) & Q(lead_status="New Lead") 
+        elif dep == "Visa Team":
+            queries = Q(assign_to_visa_team_employee=user.employee) & Q(lead_status="New Lead") | Q(created_by=user) & Q(lead_status="New Lead") 
+        elif dep == "Assesment":
+            queries = Q(assign_to_assesment_employee=user.employee) & Q(lead_status="New Lead") | Q(created_by=user) & Q(lead_status="New Lead") 
+        else:
+            queries &= Q(created_by=user)
+
+    
     
     # Add search filter to the query if there's a search term
     if search_query:
@@ -5209,7 +5426,7 @@ def lead_new(request):
 def lead_approved(request):
    
    
-   
+    user = request.user
     excluded_statuses = ["Accept", "Reject"]
     lead = [status for status in leads_status if status[0] not in excluded_statuses]
     
@@ -5220,6 +5437,28 @@ def lead_approved(request):
 
     # Define the base query
     queries = Q(lead_status="Approved") 
+
+    
+    # User ke type ke hisaab se queries ko modify karen
+    if user.user_type == '3':  # Integer comparison
+        emp = user.employee
+        dep = emp.department
+
+        # Department ke basis par queries ko filter karen
+        if dep == "Presales":
+            queries = Q(assign_to_employee=user.employee) & Q(lead_status="Approved") | Q(created_by=user) & Q(lead_status="Approved") 
+        elif dep == "Sales":
+            queries = Q(assign_to_sales_employee=user.employee) & Q(lead_status="Approved") | Q(created_by=user) & Q(lead_status="Approved") 
+        elif dep == "Documentation":
+            queries = Q(assign_to_documentation_employee=user.employee) & Q(lead_status="Approved") | Q(created_by=user) & Q(lead_status="Approved") 
+        elif dep == "Visa Team":
+            queries = Q(assign_to_visa_team_employee=user.employee) & Q(lead_status="Approved") | Q(created_by=user) & Q(lead_status="Approved") 
+        elif dep == "Assesment":
+            queries = Q(assign_to_assesment_employee=user.employee) & Q(lead_status="Approved") | Q(created_by=user) & Q(lead_status="Approved") 
+        else:
+            queries &= Q(created_by=user)
+
+    
     
     # Add search filter to the query if there's a search term
     if search_query:
@@ -5273,7 +5512,7 @@ def lead_approved(request):
 
 def lead_completed(request):
     
-   
+    user = request.user
     excluded_statuses = ["Accept", "Reject"]
     lead = [status for status in leads_status if status[0] not in excluded_statuses]
     
@@ -5284,6 +5523,29 @@ def lead_completed(request):
 
     # Define the base query
     queries = Q(lead_status="Ready To Collection") 
+
+
+    
+    # User ke type ke hisaab se queries ko modify karen
+    if user.user_type == '3':  # Integer comparison
+        emp = user.employee
+        dep = emp.department
+
+        # Department ke basis par queries ko filter karen
+        if dep == "Presales":
+            queries = Q(assign_to_employee=user.employee) & Q(lead_status="Ready To Collection") | Q(created_by=user) & Q(lead_status="Ready To Collection") 
+        elif dep == "Sales":
+            queries = Q(assign_to_sales_employee=user.employee) & Q(lead_status="Ready To Collection") | Q(created_by=user) & Q(lead_status="Ready To Collection") 
+        elif dep == "Documentation":
+            queries = Q(assign_to_documentation_employee=user.employee) & Q(lead_status="Ready To Collection") | Q(created_by=user) & Q(lead_status="Ready To Collection") 
+        elif dep == "Visa Team":
+            queries = Q(assign_to_visa_team_employee=user.employee) & Q(lead_status="Ready To Collection") | Q(created_by=user) & Q(lead_status="Ready To Collection") 
+        elif dep == "Assesment":
+            queries = Q(assign_to_assesment_employee=user.employee) & Q(lead_status="Ready To Collection") | Q(created_by=user) & Q(lead_status="Ready To Collection") 
+        else:
+            queries &= Q(created_by=user)
+
+    
     
     # Add search filter to the query if there's a search term
     if search_query:

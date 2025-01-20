@@ -1,4 +1,5 @@
 {% extends "crm/base/base.html" %}
+{% load user_roles %}
 {% load sweetify %}
 {% sweetify %}
 {% block main-content %}
@@ -57,7 +58,7 @@
                                     class="badge bg-primary-subtle text-primary align-middle rounded-pill ms-1">12</span>
                                  </a>
                               </li>
-
+                              {% if user|has_access:"2,3" %}
                               <li class="nav-item">
                                 <a class="nav-link fw-semibold" data-bs-toggle="tab"
                                    href="#lead-enrolled" role="tab">
@@ -65,8 +66,9 @@
                                    class="badge bg-info-subtle text-info align-middle rounded-pill ms-1">5</span>
                                 </a>
                              </li>
+                             {% endif %}
 
-
+                             {% if user|is_admin %}
                               <li class="nav-item">
                                  <a class="nav-link fw-semibold" data-bs-toggle="tab"
                                     href="#lead-cancel" role="tab">
@@ -74,7 +76,8 @@
                                     class="badge bg-danger-subtle text-danger align-middle rounded-pill ms-1">5</span>
                                  </a>
                               </li>
-                             
+                              {% endif %}
+                              {% if user|has_access:"2,3" %}
                               <li class="nav-item">
                                  <a class="nav-link fw-semibold" data-bs-toggle="tab"
                                     href="#lead-active" role="tab">
@@ -96,6 +99,8 @@
                                  class="badge bg-danger-subtle text-danger align-middle rounded-pill ms-1">5</span>
                                  </a>
                               </li>
+                              {% endif %}
+                              {% if user|is_admin %}
                               <li class="nav-item">
                                  <a class="nav-link fw-semibold" data-bs-toggle="tab"
                                     href="#Result-awaited" role="tab">
@@ -103,6 +108,8 @@
                                  class="badge bg-white-subtle text-white align-middle rounded-pill ms-1">5</span>
                                  </a>
                               </li>
+                              {% endif %}
+                              {% if user|has_access:"2,3" %}
                               <li class="nav-item">
                                  <a class="nav-link fw-semibold" data-bs-toggle="tab"
                                     href="#lead-new" role="tab">
@@ -124,6 +131,7 @@
                                  class="badge bg-success-subtle text-success align-middle rounded-pill ms-1">5</span>
                                  </a>
                               </li>
+                              {% endif %}
                            </ul>
                         </div>
                         <div class="col-auto">
@@ -356,12 +364,14 @@
                                           <td>
                                              <button type="button" class="btn btn-outline-warning btn-load">
                                                 <span class="d-flex align-items-center">
-                                                    <span class="flex-grow-1 me-2">
-                                                       Cancel
-                                                    </span>
-                                                    <span class="spinner-grow flex-shrink-0" role="status">
-                                                        <span class="visually-hidden">Loading...</span>
-                                                    </span>
+                                                   <span class="d-flex align-items-center">
+                                                      <span class="flex-grow-1 me-2">
+                                                          Loading...
+                                                      </span>
+                                                      <span class="spinner-grow flex-shrink-0" role="status">
+                                                          <span class="visually-hidden">Loading...</span>
+                                                      </span>
+                                                  </span>
                                                 </span>
                                               </button>
                                           
@@ -432,13 +442,13 @@
                                           <td>
                                              <button type="button" class="btn btn-outline-warning btn-load">
                                                 <span class="d-flex align-items-center">
-                                                    <span class="flex-grow-1 me-2">
-                                                       Active
-                                                    </span>
-                                                    {% comment %} <span class="spinner-grow flex-shrink-0" role="status">
-                                                        <span class="visually-hidden">Loading...</span>
-                                                    </span> {% endcomment %}
-                                                </span>
+                                                   <span class="flex-grow-1 me-2">
+                                                       Loading...
+                                                   </span>
+                                                   <span class="spinner-grow flex-shrink-0" role="status">
+                                                       <span class="visually-hidden">Loading...</span>
+                                                   </span>
+                                               </span>
                                               </button>
                                           
                                           </td>
@@ -510,13 +520,13 @@
                                           <td>
                                              <button type="button" class="btn btn-outline-warning btn-load">
                                                 <span class="d-flex align-items-center">
-                                                    <span class="flex-grow-1 me-2">
-                                                       Inprocess
-                                                    </span>
-                                                    <span class="spinner-grow flex-shrink-0" role="status">
-                                                        <span class="visually-hidden">Loading...</span>
-                                                    </span>
-                                                </span>
+                                                   <span class="flex-grow-1 me-2">
+                                                       Loading...
+                                                   </span>
+                                                   <span class="spinner-grow flex-shrink-0" role="status">
+                                                       <span class="visually-hidden">Loading...</span>
+                                                   </span>
+                                               </span>
                                               </button>
                                           
                                           </td>

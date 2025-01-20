@@ -81,11 +81,11 @@
                      </li>
                     
                      
-                     <li class="nav-item">
+                     {% comment %} <li class="nav-item">
                         <a href="{% url "add_agent" %}" class="nav-link"
                            data-key="t-basic"> Meeting Appointment
                         </a>
-                     </li>
+                     </li> {% endcomment %}
                   </ul>
                </div>
             </li>
@@ -196,7 +196,8 @@
             {% endif %}
             {% if user|is_admin %}
             <li class="nav-item">
-               <a class="nav-link menu-link" href="#sidebarPages" data-bs-toggle="collapse" role="button"
+               <a class="nav-link m
+               u-link" href="#sidebarPages" data-bs-toggle="collapse" role="button"
                   aria-expanded="false" aria-controls="sidebarPages">
                <i class="ri-pages-line"></i> <span data-key="t-pages">Master Module</span>
                </a>
