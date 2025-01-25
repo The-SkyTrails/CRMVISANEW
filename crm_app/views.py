@@ -145,6 +145,7 @@ def dashboard(request):
     agent_ranking = None
     outsourcing_agent_ranking = None
     employee_data = None
+    latest_news = [] 
 
     if user_type == "2":  # Admin
         latest_news = News.objects.order_by("-created_at")[:10]
