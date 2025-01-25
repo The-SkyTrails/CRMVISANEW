@@ -21,6 +21,38 @@
          </div>
       </div>
       <!-- end page title -->
+      {% if user|has_access:"3,4,5" %}
+      <div class="marque card" >
+          <marquee behavior="" direction="">
+         {% if latest_news %}
+         {% for newsItem in latest_news %}
+         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M18.0002 3.99693V16.0726C18.0002 16.2558 17.9496 16.4354 17.854 16.5917C17.7583 16.7481 17.6213 16.8752 17.458 16.959C17.2946 17.0428 17.1113 17.0802 16.928 17.067C16.7448 17.0537 16.5687 16.9905 16.4192 16.8841L11.0001 13.0253V7.04427L16.4192 3.18551C16.5687 3.0791 16.7448 3.01582 16.928 3.0026C17.1113 2.98938 17.2946 3.02674 17.458 3.11057C17.6213 3.1944 17.7583 3.32147 17.854 3.47783C17.9496 3.63419 18.0002 3.81379 18.0002 3.99693Z" fill="url(#paint0_linear_688_204)"></path>
+            <path d="M10.0001 6.04743H5.00003C4.46959 6.04743 3.96087 6.25748 3.58579 6.63136C3.21072 7.00525 3 7.51235 3 8.04111V12.0285C3 12.5572 3.21072 13.0643 3.58579 13.4382C3.96087 13.8121 4.46959 14.0221 5.00003 14.0221V19.0063C5.00003 19.5351 5.21075 20.0422 5.58582 20.4161C5.9609 20.79 6.46962 21 7.00006 21H8.00007C8.53051 21 9.03923 20.79 9.41431 20.4161C9.78938 20.0422 10.0001 19.5351 10.0001 19.0063V6.04743ZM7.00006 19.0063V14.0221H8.00007V19.0063H7.00006Z" fill="url(#paint1_linear_688_204)"></path>
+            <path d="M19.0002 7.22669V12.8429C19.5846 12.6394 20.0909 12.2598 20.4492 11.7566C20.8075 11.2535 21 10.6518 21 10.0348C21 9.41778 20.8075 8.81605 20.4492 8.31293C20.0909 7.80981 19.5846 7.4302 19.0002 7.22669Z" fill="url(#paint2_linear_688_204)"></path>
+            <defs>
+               <linearGradient id="paint0_linear_688_204" x1="12" y1="3" x2="12" y2="21" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#00B0D2"></stop>
+                  <stop offset="1" stop-color="#1959DB"></stop>
+               </linearGradient>
+               <linearGradient id="paint1_linear_688_204" x1="12" y1="3" x2="12" y2="21" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#00B0D2"></stop>
+                  <stop offset="1" stop-color="#1959DB"></stop>
+               </linearGradient>
+               <linearGradient id="paint2_linear_688_204" x1="12" y1="3" x2="12" y2="21" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#00B0D2"></stop>
+                  <stop offset="1" stop-color="#1959DB"></stop>
+               </linearGradient>
+            </defs>
+         </svg>
+         {{ newsItem.news }} <span style="margin-right: 20px;"></span>
+         {% endfor %}
+         {% else %}
+         Waiting for news...
+         {% endif %}
+      </marquee>
+      </div>
+      {% endif %}
       <div class="row">
          <div class="col">
             <div class="h-100">

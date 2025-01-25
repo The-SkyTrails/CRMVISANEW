@@ -172,7 +172,10 @@ def dashboard(request):
         ).order_by('-enquiry_count')
 
     elif user_type == "3":  # Employee
+        print("ggoooooooooooo")
         latest_news = News.objects.filter(employee=True).order_by("-created_at")[:10]  # Employee-specific news
+        print("nooooo",latest_news)
+
         # employee_data = Enquiry.objects.filter(
         #     assign_to_employee=request.user
         # ).order_by('-created_at')[:10]  # Fetch employee-specific enquiries
@@ -200,6 +203,13 @@ def dashboard(request):
     }
     return render(request, 'crm/base/dashboard.html', context)
 
+
+def maintanance(request):
+    return render(request, 'crm/base/maintanance.html')
+
+def comingsoon(request):
+    
+    return render(request, 'crm/base/comingsoon.html')
 
 def add_todo(request):
     
