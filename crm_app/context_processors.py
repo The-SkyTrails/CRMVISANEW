@@ -1,5 +1,7 @@
 from .models import *
 from django.db.models import Q
+from datetime import datetime, timedelta 
+from django.utils.timezone import make_aware
 
 def faq_count(request):
     # Initialize a dictionary to store all counts
@@ -18,6 +20,13 @@ def faq_count(request):
         "result_awaited_count": 0,
         "completed_count": 0,
         "leadresult_count": 0,
+        "agents_added_today_count": 0,
+        "total_agents_registered_by_user": 0,
+        "agent_count": 0,
+        "outsourceagent_count": 0,
+        "lead_count": 0,
+        "leadaccept_count_agent": 0,
+        "agents": 0,
     }
 
     user = request.user
@@ -53,13 +62,51 @@ def faq_count(request):
             counts['leadresult_count'] = Enquiry.objects.filter(lead_status="Approved",archive = False).count()
 
 
-            print("hello admin ji",counts)
-
+            
         # FAQ count for authenticated users
+
+        if user.user_type == "3":
+            today = datetime.now().date()
+            start_of_day = make_aware(datetime.combine(today, datetime.min.time()))
+            counts["agents_added_today_count"] = Agent.objects.filter(
+            registeron__gte=start_of_day,
+            registerdby=user
+            ).count()
+            counts["total_agents_registered_by_user"] = Agent.objects.filter(
+            registerdby=user
+            ).count()
+            counts["agent_count"] = Agent.objects.filter(
+                Q(registerdby=user)
+                | Q(assign_employee=user)
+            ).count
+
+            counts["outsourceagent_count"] = OutSourcingAgent.objects.filter(
+                registerdby=user
+            ).count
+        
+        if user.user_type == "4":
+
+            counts["agents"] = Agent.objects.get(users=user)
+
+            
+            counts["lead_count"] = Enquiry.objects.filter( Q(created_by=user)
+            | Q(assign_to_agent=user.agent),archive = False).count()
+
+            counts["leadaccept_count_agent"] = Enquiry.objects.filter(Q(assign_to_agent=user.agent) & Q(lead_status="Enrolled") | Q(lead_status="Appointment") | Q(lead_status="Inprocess") | Q(lead_status="Ready To Submit") | Q(lead_status="Ready To Collection") | Q(lead_status="Result") | Q(lead_status="Delivery") |  Q(created_by=user) & Q(lead_status="Enrolled") | Q(lead_status="Appointment") | Q(lead_status="Inprocess") | Q(lead_status="Ready To Submit") | Q(lead_status="Ready To Collection") | Q(lead_status="Result") | Q(lead_status="Delivery")).count()
+        
+        if user.user_type == '5': 
+            counts["agents"] = OutSourcingAgent.objects.get(users=user)
+            counts["lead_count"] = Enquiry.objects.filter( Q(created_by=user)
+            | Q(assign_to_outsourcingagent=user.outsourcingagent),archive = False).count()
+
+            counts["leadaccept_count_agent"] = Enquiry.objects.filter(Q(assign_to_outsourcingagent=user.outsourcingagent) & Q(lead_status="Enrolled") | Q(lead_status="Appointment") | Q(lead_status="Inprocess") | Q(lead_status="Ready To Submit") | Q(lead_status="Ready To Collection") | Q(lead_status="Result") | Q(lead_status="Delivery") |  Q(created_by=user) & Q(lead_status="Enrolled") | Q(lead_status="Appointment") | Q(lead_status="Inprocess") | Q(lead_status="Ready To Submit") | Q(lead_status="Ready To Collection") | Q(lead_status="Result") | Q(lead_status="Delivery")).count()
+             
+            
+            
         counts["faq_count"] = FAQ.objects.filter(answer__exact="").exclude(
             answer__isnull=True
         ).count()
-        print("countingsss", counts["faq_count"])
+        
 
     return counts
 

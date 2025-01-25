@@ -1,0 +1,81 @@
+
+
+  {% load static %}
+  {% for i in todo %}
+  <tr id="i-{{ i.pk }}">
+      
+      <td >{{forloop.counter}}</td>
+     
+   
+      <td>{{i.description}}</td>
+      
+     
+      
+      
+      
+      <td>
+         <div class="d-flex gap-2">
+            <div class="edit">
+               <button class="btn btn-sm btn-primary edit-item-btn" hx-get="{% url 'edit_todo' pk=i.pk %}" hx-target="#dialog">Edit</button>
+               
+            </div>
+            <div class="remove">
+              <button class="btn btn-sm btn-danger remove-item-btn" 
+           hx-delete="{% url 'delete_todo' pk=i.pk %}" 
+           hx-confirm="Do you want to delete ?"
+           hx-target="#i-{{ i.pk }}"
+           hx-swap="outerHTML"
+           hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}'>
+      Remove
+   </button>  
+            </div>
+         </div>
+      </td>
+  </tr>
+  {% endfor %}
+
+  
+  <div class="d-flex justify-content-end">
+   <div class="pagination-wrap hstack gap-2" style="width: 2px;">
+      <!-- Previous Page Button -->
+      {% if page_obj.has_previous %}
+      <a class="page-item pagination-prev" href="?page=1{% if search_query %}&search={{ search_query }}{% endif %}">First</a>
+
+      <a class="page-item pagination-prev" hx-get="{% url 'visacountry_list' %}?page={{ page_obj.previous_page_number }}&search={{ search_query }}" hx-target="#search-results">
+         Previous
+      </a>
+      {% endif %}
+
+      <!-- Numbered Page Links -->
+      <ul class="pagination listjs-pagination mb-0">
+          {% for num in page_obj.paginator.page_range|slice:":3" %}
+              {% if page_obj.number == num %}
+                  <li class="page-item active">
+                      <a class="page-link" href="javascript:void(0);">{{ num }}</a>
+                  </li> <!-- Current page -->
+               {% else %}
+               <li class="page-item">
+                  <a class="page-link" hx-get="{% url 'visacountry_list' %}?page={{ num }}&search={{ search_query }}" hx-target="#search-results">{{ num }}</a>
+              </li>
+              {% endif %}
+
+             
+          {% endfor %}
+          {% if page_obj.paginator.num_pages > 3 %}
+          <li class="page-item"><span class="page-link">...</span></li>
+          <li class="page-item {% if page_obj.number == page_obj.paginator.num_pages %}active{% endif %}">
+            <a class="page-link" hx-get="{% url 'visacountry_list' %}?page={{ page_obj.paginator.num_pages }}&search={{ search_query }}" hx-target="#search-results">{{ page_obj.paginator.num_pages }}</a>
+          </li>
+        
+          {% endif %}
+      </ul>
+
+      <!-- Next Page Button -->
+      {% if page_obj.has_next %}
+      <a class="page-item pagination-next" hx-get="{% url 'visacountry_list' %}?page={{ page_obj.next_page_number }}&search={{ search_query }}" hx-target="#search-results">
+         Next
+      </a>
+      {% endif %}
+   </div>
+</div>
+

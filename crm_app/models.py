@@ -974,6 +974,13 @@ class Work_Experience(models.Model):
     describe = models.TextField(null=True, blank=True)
 
 
+
+class Todo(models.Model):
+
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    description = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now=True)
+
 # @receiver(post_save, sender=CustomUser)
 # def create_user_profile(sender, instance, created, **kwargs):
 #     if created:

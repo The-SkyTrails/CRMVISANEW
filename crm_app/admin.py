@@ -5,6 +5,7 @@ from .models import *
 # Register your models here.
 
 
+
 class UserModel(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
         (None, {'fields': ('user_type', 'is_logged_in')}),  # Add is_login here
@@ -48,3 +49,4 @@ admin.site.register(EnqAppointment)
 admin.site.register(TestScore)
 admin.site.register(Work_Experience)
 admin.site.register(Education_Summary)
+admin.site.register(Todo)

@@ -16,7 +16,8 @@ from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Max
 import requests
-
+from django.db.models import Count
+from django.utils import timezone
 from django.views.generic import (
     CreateView,
     ListView,
@@ -56,9 +57,74 @@ def get_visa_team_employee():
 #     }
 #     return render(request,'crm/base/dashboard.html',context)
 
+
 from datetime import datetime
+
+# def dashboard(request):
+#     now = datetime.now()  # This will work correctly now
+#     hour = now.hour
+#     if 5 <= hour < 12:
+#         greeting = "Good Morning"
+#     elif 12 <= hour < 16:
+#         greeting = "Good Afternoon"
+#     else:
+#         greeting = "Good Evening"
+#     package = Package.objects.filter(approval="Yes").order_by("-last_updated_on")[
+#             :10
+#         ]
+#     print("packagesss",package)
+
+#     agent_ranking = Enquiry.objects.filter(
+            
+#             lead_status="Ready To Collection",
+#             assign_to_agent__isnull=False
+#         ).values(
+#             'assign_to_agent__id', 
+#             'assign_to_agent__users__first_name', 
+#             'assign_to_agent__users__last_name'
+#         ).annotate(
+#             enquiry_count=Count('id')
+#         ).order_by('-enquiry_count')
+
+#     outsourcing_agent_ranking = Enquiry.objects.filter(
+#         lead_status="Ready To Collection",
+#         assign_to_outsourcingagent__isnull=False
+#     ).values(
+#         'assign_to_outsourcingagent__id', 
+#         'assign_to_outsourcingagent__users__first_name', 
+#         'assign_to_outsourcingagent__users__last_name'
+#     ).annotate(
+#         enquiry_count=Count('id')
+#     ).order_by('-enquiry_count')
+
+#     story = SuccessStory.objects.all()
+#     latest_news = News.objects.order_by("-created_at")[:10]
+#     faq = FAQ.objects.exclude(answer__isnull=True).exclude(answer__exact="")
+#     todo = Todo.objects.filter(user=request.user).order_by("-id")
+     
+        
+    
+#     context = {
+#         'greeting': greeting,
+#         'package': package,
+#         'agent_ranking': agent_ranking,
+#         'outsourceagent_ranking': outsourcing_agent_ranking,
+#         'story': story,
+#         'latest_news': latest_news,
+#         'faq':faq,
+#         'todo':todo,
+
+#     }
+#     return render(request, 'crm/base/dashboard.html', context)
+
+
+
+from django.db.models import Count
+from datetime import datetime
+
 def dashboard(request):
-    now = datetime.now()  # This will work correctly now
+    # Greeting based on time of day
+    now = datetime.now()
     hour = now.hour
     if 5 <= hour < 12:
         greeting = "Good Morning"
@@ -66,19 +132,155 @@ def dashboard(request):
         greeting = "Good Afternoon"
     else:
         greeting = "Good Evening"
-    package = Package.objects.filter(approval="Yes").order_by("-last_updated_on")[
-            :10
-        ]
-    print("packagesss",package)
     
+    # Common data for all users
+    package = Package.objects.filter(approval="Yes").order_by("-last_updated_on")[:10]
+    
+    faq = FAQ.objects.exclude(answer__isnull=True).exclude(answer__exact="")
+    story = SuccessStory.objects.all()
+    todo = Todo.objects.filter(user=request.user).order_by("-id")
+    
+    # User-specific data
+    user_type = request.user.user_type
+    agent_ranking = None
+    outsourcing_agent_ranking = None
+    employee_data = None
+
+    if user_type == "2":  # Admin
+        latest_news = News.objects.order_by("-created_at")[:10]
+        agent_ranking = Enquiry.objects.filter(
+            lead_status="Ready To Collection",
+            assign_to_agent__isnull=False
+        ).values(
+            'assign_to_agent__id', 
+            'assign_to_agent__users__first_name', 
+            'assign_to_agent__users__last_name'
+        ).annotate(
+            enquiry_count=Count('id')
+        ).order_by('-enquiry_count')
+
+        outsourcing_agent_ranking = Enquiry.objects.filter(
+            lead_status="Ready To Collection",
+            assign_to_outsourcingagent__isnull=False
+        ).values(
+            'assign_to_outsourcingagent__id', 
+            'assign_to_outsourcingagent__users__first_name', 
+            'assign_to_outsourcingagent__users__last_name'
+        ).annotate(
+            enquiry_count=Count('id')
+        ).order_by('-enquiry_count')
+
+    elif user_type == "3":  # Employee
+        latest_news = News.objects.filter(employee=True).order_by("-created_at")[:10]  # Employee-specific news
+        # employee_data = Enquiry.objects.filter(
+        #     assign_to_employee=request.user
+        # ).order_by('-created_at')[:10]  # Fetch employee-specific enquiries
+
+    elif user_type == "4":  # Agent
+        latest_news = News.objects.filter(agent__in=[True]).order_by("-created_at")[:10]
+        # agent_ranking = Enquiry.objects.filter(
+        #     assign_to_agent=request.user.agent_profile  # Assuming `agent_profile` links to Agent
+        # ).order_by('-created_at')[:10]  # Fetch agent-specific enquiries
+
+    elif user_type == "5":  # Outsourcing Agent
+        latest_news = News.objects.filter(outsource_Agent__in=[True]).order_by("-created_at")[:10]
+
+    # Context setup
     context = {
         'greeting': greeting,
         'package': package,
-
+        'agent_ranking': agent_ranking,
+        'outsourceagent_ranking': outsourcing_agent_ranking,
+        'employee_data': employee_data,
+        'story': story,
+        'latest_news': latest_news,
+        'faq': faq,
+        'todo': todo,
     }
     return render(request, 'crm/base/dashboard.html', context)
 
 
+def add_todo(request):
+    
+    description = request.POST.get("todoDescription")
+
+    try:
+        # Assuming you have a Task model with 'title' and 'description' fields
+        task = Todo.objects.create(user=request.user, description=description)
+        return HttpResponse(status=204, headers={
+                    'HX-Trigger': json.dumps({
+                        "movieListChanged": None,
+                        "showMessage": f"New Task Added !!"
+                    })
+                })
+
+        
+    except Exception as e:
+        pass
+
+    return render(request,'crm/Todo/add_todo.html')
+
+
+def todo_list(request):
+ 
+   todo = Todo.objects.filter(user=request.user).order_by("-id")
+ 
+   context = {
+       'todo' : todo,
+   
+   }
+   return render(request,'crm/Todo/todo_list.html',context)
+
+
+
+
+def edit_todo(request, pk):
+    todo = get_object_or_404(Todo, pk=pk)  # Fetch the admin instance to edit
+    
+
+    if request.method == "POST":
+        description = request.POST.get("todoDescription")
+        todo.description = description
+        todo.save()
+        # Bind the form to the POST data and the admin instance
+        
+
+        
+            
+        return HttpResponse(status=204, headers={
+            'HX-Trigger': json.dumps({
+                "movieListChanged":None,
+                "showMessage":f"Task Updated !!"
+
+                })
+            })
+    context = {
+        'todo':todo
+    }
+    
+
+    
+    return render(request, 'crm/Todo/add_todo.html',context)
+
+
+
+def delete_todo(request, pk):
+    try:
+        todo = get_object_or_404(Todo, pk=pk)
+        todo.delete()  # This will also delete the associated SuperAdminHOD because of cascade delete
+        return HttpResponse(
+        status=204,
+        headers={
+            'HX-Trigger': json.dumps({
+                "movieListChanged": None,
+                "showMessage": f"Task Deleted !!"
+            })
+        })
+
+        
+    except CustomUser.DoesNotExist:
+        return HttpResponseNotFound("Todo not found")
+    
 
 class CustomLoginView(LoginView):
     template_name = 'crm/login.html'
@@ -99,20 +301,59 @@ def signup(request):
 
 
 
+# def profile(request):
+
+
+#     user = request.user
+#     context = {
+#         'user': user,  # User details ko context mein pass karna
+#     }
+#     if user.user_type == '2':  # HOD
+#         try:
+            
+#             superadmin_data = Admin.objects.get(users=user)
+#             print('sonaaa',superadmin_data)
+#             context['superadmin'] = superadmin_data
+#         except Admin.DoesNotExist:
+#             context['superadmin'] = None
+#     elif user.user_type == '3':  # Employee
+#         try:
+#             employee_data = Employee.objects.get(users=user)
+#             context['employee'] = employee_data
+#         except Employee.DoesNotExist:
+#             context['employee'] = None
+    
+#     elif user.user_type == '4':  # Agent
+#         try:
+#             agent_data = Agent.objects.get(users=user)
+#             context['agent'] = agent_data
+#         except Agent.DoesNotExist:
+#             context['agent'] = None
+#     elif user.user_type == '5':  # Agent
+#         try:
+#             agent_data = OutSourcingAgent.objects.get(users=user)
+#             context['agent'] = agent_data
+#         except Agent.DoesNotExist:
+#             context['agent'] = None
+
+#     return render(request,'crm/profile.html')
+
+
+
 def profile(request):
-
-
     user = request.user
     context = {
         'user': user,  # User details ko context mein pass karna
     }
+    
     if user.user_type == '2':  # HOD
         try:
-            
-            superadmin_data = SuperAdminHOD.objects.get(superadmin=user)
+            superadmin_data = Admin.objects.get(users=user)
+            print('sonaaa', superadmin_data)
             context['superadmin'] = superadmin_data
-        except SuperAdminHOD.DoesNotExist:
+        except Admin.DoesNotExist:
             context['superadmin'] = None
+
     elif user.user_type == '3':  # Employee
         try:
             employee_data = Employee.objects.get(users=user)
@@ -126,17 +367,24 @@ def profile(request):
             context['agent'] = agent_data
         except Agent.DoesNotExist:
             context['agent'] = None
-    elif user.user_type == '5':  # Agent
+    
+    elif user.user_type == '5':  # OutSourcing Agent
         try:
-            agent_data = OutSourcingAgent.objects.get(users=user)
-            context['agent'] = agent_data
-        except Agent.DoesNotExist:
-            context['agent'] = None
+            outsourcing_agent_data = OutSourcingAgent.objects.get(users=user)
+            context['outsourcing_agent'] = outsourcing_agent_data  # Naming it distinctly to avoid confusion
+        except OutSourcingAgent.DoesNotExist:
+            context['outsourcing_agent'] = None
 
-    return render(request,'crm/profile.html')
+    return render(request, 'crm/profile.html', context)  # context ko pass karna bhoolna mat
+
 
 def profile_setting(request):
-   return render(request,'crm/profile_setting.html')
+   user = request.user
+   user_type = user.get_user_type_display()
+   context = {
+       'user_type':user_type
+   }
+   return render(request,'crm/profile_setting.html',context)
 
 
 
@@ -6357,3 +6605,29 @@ def restore(request, id):
                 })
 
     # return redirect("Archive_list")
+
+
+
+
+def create_report(request):
+    
+    notes = request.POST.get("notes")
+    user = request.user
+
+    try:
+        # Assuming you have a Task model with 'title' and 'description' fields
+        report = Report.objects.create(
+            user=user, notes=notes, created_at=timezone.now()
+        )
+        return HttpResponse(status=204, headers={
+                    'HX-Trigger': json.dumps({
+                        "movieListChanged": None,
+                        "showMessage": f"Complain Added Successfully & Sent To Admin. !!"
+                    })
+                })
+
+        
+    except Exception as e:
+        pass
+
+    return render(request,'crm/Report/add_report.html')

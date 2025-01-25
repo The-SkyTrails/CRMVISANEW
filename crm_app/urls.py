@@ -9,6 +9,12 @@ from .forms import LoginForm
 urlpatterns = [
     
    path('dashboard/', dashboard,name="dashboard"),
+   path('Add/Todo/',add_todo,name="add_todo"),
+   path('Todo/List',todo_list,name="todo_list"),
+   path('Edit/Todo/<int:pk>/',edit_todo,name="edit_todo"),
+   path('Todo/Delete/<int:pk>/', delete_todo, name="delete_todo"),
+
+   
    path('signup/', signup,name="signup"),
    # path('', auth_views.LoginView.as_view(template_name='crm/login.html',authentication_form=LoginForm), name='login'),
    path('', CustomLoginView.as_view(authentication_form=LoginForm), name='login'),
@@ -204,6 +210,9 @@ urlpatterns = [
    # ------------------------- Report --------------------------
    
    
+   path("create_report/", create_report, name="create_report"),
+
+
    path('Report/Load/',report_load,name="report_load"),
    path('Report/List',report_list,name="report_list"),
 
@@ -271,8 +280,7 @@ urlpatterns = [
 
    path("delete_and_archive/<int:id>/", delete_and_archive, name="delete_and_archive"),
    path("restore/<int:id>/", restore, name="restore"),
-   # ----------------------------------
-
+   # ----------------------------------Report --------------
 
 
    path('sweetalert',sweet_alert,name="sweetalert")

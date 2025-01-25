@@ -1,0 +1,28 @@
+{% load crispy_forms_tags %}
+<form hx-post="{{ request.path }}" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}' class="modal-content" enctype="multipart/form-data">
+   
+    <div class="modal-header bg-light p-3">
+        <h5 class="modal-title" id="exampleModalLabel">Report Against RM</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+    </div>
+    
+    <div class="modal-body">
+
+        <!-- Display non-field form errors -->
+        
+        
+        <!-- Render the form -->
+        <div class="form-group">
+            {% comment %} {{ form|crispy }} {% endcomment %}
+            <label for="basiInput" class="form-label">Notes</label>
+            <input type="text" class="form-control" name="notes" required>
+        </div>
+
+        <!-- Display individual field errors -->
+      
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
