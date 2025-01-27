@@ -9,7 +9,7 @@ from .forms import LoginForm
 urlpatterns = [
     
    path('dashboard/', dashboard,name="dashboard"),
-   path('', maintanance,name="maintanance"),
+   # path('', maintanance,name="maintanance"),
    path('Comingsoon/', comingsoon,name="comingsoon"),
 
 
@@ -23,7 +23,7 @@ urlpatterns = [
    
    path('signup/', signup,name="signup"),
    # path('', auth_views.LoginView.as_view(template_name='crm/login.html',authentication_form=LoginForm), name='login'),
-   # path('', CustomLoginView.as_view(authentication_form=LoginForm), name='login'),
+   path('', CustomLoginView.as_view(authentication_form=LoginForm), name='login'),
    path('logout/',auth_views.LogoutView.as_view(next_page='login'),name="logout"),
    path('profile/', profile,name="profile"),
    path('profile/Setting/', profile_setting,name="profile_setting"),
