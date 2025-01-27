@@ -6642,3 +6642,14 @@ def create_report(request):
         pass
 
     return render(request,'crm/Report/add_report.html')
+
+
+
+
+
+def Packageshare(request,pk):
+    package = Package.objects.get(id=pk)
+    context = {
+        'package':package
+        }
+    return render(request,'crm/product-details.html',context)
