@@ -1025,6 +1025,49 @@ class Todo(models.Model):
 
 
 
+TYPE_CHOICES = [("Appointment", "Appointment"), ("Contact Us", "Contact Us")]
+
+
+class Booking(models.Model):
+
+    email = models.EmailField()
+    fullname = models.CharField(max_length=100)
+    contact_number = models.CharField(max_length=15)
+    departure_city = models.CharField(max_length=100)
+    number_of_people = models.PositiveIntegerField()
+    departure_date = models.DateField()
+
+
+
+class FrontWebsiteEnquiry(models.Model):
+
+    name = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    phone = models.CharField(max_length=15)
+    appointment_date = models.DateTimeField(auto_created=False, null=True, blank=True)
+    type = models.CharField(
+        max_length=20,
+        choices=TYPE_CHOICES,
+        default="Appointment",
+        null=True,
+        blank=True,
+    )
+    country_name = models.ForeignKey(
+        VisaCountry, on_delete=models.SET_NULL, null=True, blank=True
+    )
+    category_name = models.ForeignKey(
+        VisaCategory, on_delete=models.SET_NULL, null=True, blank=True
+    )
+    message = models.TextField(null=True, blank=True)
+    image = models.FileField(upload_to="frontwebsiteenquiry/", null=True, blank=True)
+    last_updated_by = models.ForeignKey(
+        CustomUser, on_delete=models.SET_NULL, null=True, blank=True
+    )
+    last_updated_on = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
 
 @receiver(post_save,sender=CustomUser)
 def create_user_profile(sender,instance,created,**kwargs):

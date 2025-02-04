@@ -126,6 +126,7 @@ def dashboard(request):
     # Greeting based on time of day
     now = datetime.now()
     hour = now.hour
+   
     if 5 <= hour < 12:
         greeting = "Good Morning"
     elif 12 <= hour < 16:
