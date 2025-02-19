@@ -289,6 +289,8 @@ urlpatterns = [
 
    path('sweetalert',sweet_alert,name="sweetalert"),
    path("packages/share/<int:pk>/", Packageshare, name="package_share"),
+
+   path("Check/Status/",check_status,name="check_status"),
    
   
     

@@ -34,6 +34,7 @@ from django.utils.dateparse import parse_date
 from .models import Agent
 from .filters import AgentFilter,OutSourceAgentFilter
 from django.db.models import Prefetch
+from .filters import EnquiryFilter
 
 
 
@@ -6654,3 +6655,26 @@ def Packageshare(request,pk):
         'package':package
         }
     return render(request,'crm/product-details.html',context)
+
+
+
+
+
+
+
+def check_status(request):
+    enq_num = request.GET.get('enquiry_number')
+    if enq_num:
+        enquiry_filter = EnquiryFilter(request.GET, queryset=Enquiry.objects.all())
+        enq_exists = enquiry_filter.qs.exists()
+    else:
+        enquiry_filter = EnquiryFilter(queryset=Enquiry.objects.none())
+        enq_exists = False
+        
+    context = {
+        'form': enquiry_filter.form,
+        'enq': enquiry_filter.qs,
+        'enq_exists': enq_exists,
+    }
+    return render(request, "check_status.html", context)
+

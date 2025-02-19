@@ -1,5 +1,5 @@
 import django_filters
-from .models import Agent,OutSourcingAgent
+from .models import Agent,OutSourcingAgent,Enquiry
 from django import forms
 
 class AgentFilter(django_filters.FilterSet):
@@ -15,3 +15,12 @@ class OutSourceAgentFilter(django_filters.FilterSet):
     class Meta:
         model = OutSourcingAgent
         fields = ('start_date','end_date')
+
+
+
+
+
+class EnquiryFilter(django_filters.FilterSet):
+    class Meta:
+        model = Enquiry
+        fields = ['enquiry_number']
