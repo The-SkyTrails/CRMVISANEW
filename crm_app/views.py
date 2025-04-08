@@ -6678,3 +6678,4 @@ def check_status(request):
     }
     return render(request, "check_status.html", context)
 
+

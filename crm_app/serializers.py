@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.contrib.auth import authenticate
 from .models import (
     Booking,
     FrontWebsiteEnquiry,
@@ -6,7 +7,10 @@ from .models import (
     VisaCategory,
     Package,
     Enquiry,
-    DocumentFiles
+    DocumentFiles,
+    CustomUser,
+    Admin,
+    Employee
 )
 
 
@@ -100,3 +104,51 @@ class CaseCategoryDocumentSerializer(serializers.ModelSerializer):
     def get_document_categories(self, obj):
         categories = DocumentCategory.objects.all()
         return DocumentCategorySerializer(categories, many=True).data
+
+
+
+
+
+
+# ----------------- Login ------------------------
+
+
+class UserLoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField(write_only=True)
+
+    def validate(self, data):
+        username = data.get("username")
+        print("usernamee",username)
+        password = data.get("password")
+
+        if username and password:
+            user = authenticate(username=username, password=password)
+            if user:
+                if not user.is_active:
+                    raise serializers.ValidationError("User is deactivated.")
+                data["user"] = user
+            else:
+                raise serializers.ValidationError("Invalid credentials.")
+        else:
+            raise serializers.ValidationError("Both fields are required.")
+        return data
+
+
+
+class CustomUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'user_type']
+
+
+class AdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Admin
+        fields = ['department', 'contact_no', 'file']
+
+
+class EmployeeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Employee
+        fields = '__all__'
