@@ -6679,3 +6679,43 @@ def check_status(request):
     return render(request, "check_status.html", context)
 
 
+
+
+from django.http import JsonResponse
+from cashfree_pg.models.create_order_request import CreateOrderRequest
+from cashfree_pg.api_client import Cashfree
+from cashfree_pg.models.customer_details import CustomerDetails
+from cashfree_pg.models.order_meta import OrderMeta
+import uuid
+
+def generate_cashfree_token(request):
+    if request.method == "POST":
+        try:
+            Cashfree.XClientId = ""
+            Cashfree.XClientSecret = ""
+            Cashfree.XEnvironment = Cashfree.SANDBOX
+            x_api_version = "2025-01-01"
+
+            order_id = f"order_{uuid.uuid4().hex[:10]}"
+            customerDetails = CustomerDetails(
+                customer_id="user_123",
+                customer_phone="9999999999",
+                customer_email="test@example.com"
+            )
+
+            createOrderRequest = CreateOrderRequest(
+                order_id=order_id,
+                order_amount=1.00,
+                order_currency="INR",
+                customer_details=customerDetails
+            )
+
+            orderMeta = OrderMeta()
+            orderMeta.return_url = f"https://www.cashfree.com/devstudio/preview/pg/mobile/android?order_id={order_id}"
+            createOrderRequest.order_meta = orderMeta
+
+            api_response = Cashfree().PGCreateOrder(x_api_version, createOrderRequest, None, None)
+            return JsonResponse({"payment_session_id": api_response.data.payment_session_id})
+
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)

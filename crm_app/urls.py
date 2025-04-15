@@ -25,6 +25,7 @@ urlpatterns = [
    path('logout/',auth_views.LogoutView.as_view(next_page='login'),name="logout"),
    path('profile/', profile,name="profile"),
    path('profile/Setting/', profile_setting,name="profile_setting"),
+   path("generate-cashfree-token/", generate_cashfree_token, name="generate_cashfree_token"),
 
    # ------------------------- VISA COUNTRY --------------------------
 
