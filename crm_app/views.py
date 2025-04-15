@@ -35,7 +35,7 @@ from .models import Agent
 from .filters import AgentFilter,OutSourceAgentFilter
 from django.db.models import Prefetch
 from .filters import EnquiryFilter
-
+from rest_framework_simplejwt.tokens import RefreshToken
 
 
 def get_visa_team_employee():
@@ -294,14 +294,30 @@ def delete_todo(request, pk):
     except CustomUser.DoesNotExist:
         return HttpResponseNotFound("Todo not found")
     
-
+   
 class CustomLoginView(LoginView):
     template_name = 'crm/login.html'
-    
+
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return redirect('dashboard')  # Redirect to the dashboard if user is logged in
+            return redirect('dashboard')
         return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        """Yeh method tab call hota hai jab login successful ho"""
+        response = super().form_valid(form)
+
+        # JWT Token generate karo
+        user = self.request.user
+        refresh = RefreshToken.for_user(user)
+        access_token = str(refresh.access_token)
+
+        # Token ko session me store karo
+        self.request.session['access_token'] = access_token
+
+        return response
+
+
 
 
 
@@ -6677,8 +6693,6 @@ def check_status(request):
         'enq_exists': enq_exists,
     }
     return render(request, "check_status.html", context)
-
-
 
 
 from django.http import JsonResponse
