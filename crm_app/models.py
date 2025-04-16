@@ -1074,13 +1074,13 @@ class Wallet(models.Model):
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        name = ""
-        if self.agent:
-            name = f"{self.agent.users.first_name} {self.agent.users.last_name}"
-        elif self.outsourceagent:
-            name = f"{self.outsourceagent.users.first_name} {self.outsourceagent.users.last_name}"
-        return f"{name} - ₹{self.amount} on {self.created_at.date()}"
+    # def __str__(self):
+    #     name = ""
+    #     if self.agent:
+    #         name = f"{self.agent.users.first_name} {self.agent.users.last_name}"
+    #     elif self.outsourceagent:
+    #         name = f"{self.outsourceagent.users.first_name} {self.outsourceagent.users.last_name}"
+    #     return f"{name} - ₹{self.amount} on {self.created_at.date()}"
 
 class RechargeHistory(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
