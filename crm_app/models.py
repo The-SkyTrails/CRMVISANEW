@@ -1067,6 +1067,36 @@ class FrontWebsiteEnquiry(models.Model):
 
     def __str__(self):
         return self.name
+    
+
+class Wallet(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        name = ""
+        if self.agent:
+            name = f"{self.agent.users.first_name} {self.agent.users.last_name}"
+        elif self.outsourceagent:
+            name = f"{self.outsourceagent.users.first_name} {self.outsourceagent.users.last_name}"
+        return f"{name} - ₹{self.amount} on {self.created_at.date()}"
+
+class RechargeHistory(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    transaction_id = models.CharField(max_length=100, unique=True)
+    status = models.CharField(max_length=50, choices=[
+        ('SUCCESS', 'SUCCESS'),
+        ('FAILED', 'FAILED'),
+        ('PENDING', 'PENDING')
+    ])
+    payment_mode = models.CharField(max_length=50, null=True, blank=True)
+    reference_id = models.CharField(max_length=100, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user} - ₹{self.amount} ({self.status})"
 
 
 @receiver(post_save,sender=CustomUser)

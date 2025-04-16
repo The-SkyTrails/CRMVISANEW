@@ -10,7 +10,8 @@ from .models import (
     DocumentFiles,
     CustomUser,
     Admin,
-    Employee
+    Employee,
+    Wallet
 )
 
 
@@ -152,3 +153,9 @@ class EmployeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
         fields = '__all__'
+
+
+class WalletSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Wallet
+        fields = ['balance', 'updated_at']

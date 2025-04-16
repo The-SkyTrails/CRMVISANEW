@@ -16,7 +16,8 @@ from .models import (
     DocumentFiles,
     CaseCategoryDocument,
     Admin, 
-    Employee
+    Employee,
+    Wallet
 )
 from .serializers import (
     BookingSerializer,
@@ -30,7 +31,8 @@ from .serializers import (
     UserLoginSerializer,
     CustomUserSerializer, 
     AdminSerializer, 
-    EmployeeSerializer
+    EmployeeSerializer,
+    WalletSerializer
 )
 from rest_framework.viewsets import ViewSet, ModelViewSet
 
@@ -241,3 +243,12 @@ class UserProfileView(APIView):
         }
 
         return Response(data)
+
+
+class WalletAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        wallet, created = Wallet.objects.get_or_create(user=request.user)
+        serializer = WalletSerializer(wallet)
+        return Response(serializer.data)

@@ -805,12 +805,412 @@
                      class="align-middle">Lock screen</span></a> {% endcomment %}
                   <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i
                      class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span
-                     class="align-middle">Logoutttt</span></a>
+                     class="align-middle">Logout</span></a>
                      <form action="{% url "logout" %}"  method="POST" id="logout-form" style="display: none;">
                      {% csrf_token %}
                      </form>
+
+                     
                     
                </div>
+               <div class="row">
+                  <div class="col-lg-12">
+                      <div class="card">
+                          <div class="card-header align-items-center d-flex">
+                              <h4 class="card-title mb-0 flex-grow-1">Optional Sizes</h4>
+                              <div class="flex-shrink-0">
+                                  <div class="form-check form-switch form-switch-right form-switch-md">
+                                      <label for="optional-sizes" class="form-label text-muted">Show Code</label>
+                                      <input class="form-check-input code-switcher" type="checkbox" id="optional-sizes">
+                                  </div>
+                              </div>
+                          </div><!-- end card header -->
+
+                          <div class="card-body">
+                              <p class="text-muted">Use <code>modal-fullscreen</code>, <code>modal-xl</code>, <code>modal-lg</code>, or <code>modal-sm</code> class to modal-dialog class to set different size modal respectively.</p>
+                              <div class="live-preview">
+                                  <div>
+                                      <div class="hstack flex-wrap gap-2">
+                                          <!-- Fullscreen modal -->
+                                          <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target=".exampleModalFullscreen">Fullscreen Modal</button>
+
+                                          <!-- Extra Large modal -->
+                                          <button type="button" class="btn btn-info " data-bs-toggle="modal" data-bs-target=".bs-example-modal-xl">Extra large Modal</button>
+
+                                          <!-- Large modal -->
+                                          <button type="button" class="btn btn-success " data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">Large Modal</button>
+
+                                          <!-- Small modal -->
+                                          <button type="button" class="btn btn-danger " data-bs-toggle="modal" data-bs-target=".bs-example-modal-sm">Small Modal</button>
+                                      </div>
+
+                                      <!-- Full screen modal content -->
+                                      <div class="modal fade exampleModalFullscreen" tabindex="-1" aria-labelledby="exampleModalFullscreenLabel" aria-hidden="true">
+                                          <div class="modal-dialog modal-fullscreen">
+                                              <div class="modal-content">
+                                                  <div class="modal-header">
+                                                      <h5 class="modal-title" id="exampleModalFullscreenLabel">Fullscreen
+                                                          Modal Heading</h5>
+                                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                  </div>
+                                                  <div class="modal-body">
+                                                      <h6 class="fs-15">Give your text a good structure</h6>
+                                                      <div class="d-flex">
+                                                          <div class="flex-shrink-0">
+                                                              <i class="ri-checkbox-circle-fill text-success"></i>
+                                                          </div>
+                                                          <div class="flex-grow-1 ms-2">
+                                                              <p class="text-muted mb-0">Raw denim you probably haven't heard of them jean shorts Austin.
+                                                                  Nesciunt tofu stumptown aliqua, retro synth master cleanse.</p>
+                                                          </div>
+                                                      </div>
+                                                      <div class="d-flex mt-2">
+                                                          <div class="flex-shrink-0">
+                                                              <i class="ri-checkbox-circle-fill text-success"></i>
+                                                          </div>
+                                                          <div class="flex-grow-1 ms-2 ">
+                                                              <p class="text-muted mb-0">Too much or too little spacing, as in the example below, can make things unpleasant for the reader. The goal is to make your text as comfortable to read as possible. </p>
+                                                          </div>
+                                                      </div>
+                                                      <div class="d-flex mt-2">
+                                                          <div class="flex-shrink-0">
+                                                              <i class="ri-checkbox-circle-fill text-success"></i>
+                                                          </div>
+                                                          <div class="flex-grow-1 ms-2 ">
+                                                              <p class="text-muted mb-0">In some designs, you might adjust your tracking to create a certain artistic effect. It can also help you fix fonts that are poorly spaced to begin with.</p>
+                                                          </div>
+                                                      </div>
+                                                      <div class="d-flex mt-2">
+                                                          <div class="flex-shrink-0">
+                                                              <i class="ri-checkbox-circle-fill text-success"></i>
+                                                          </div>
+                                                          <div class="flex-grow-1 ms-2 ">
+                                                              <p class="text-muted mb-0">For that very reason, I went on a quest and spoke to many different professional graphic designers and asked them what graphic design tips they live.</p>
+                                                          </div>
+                                                      </div>
+                                                      <div class="d-flex mt-2">
+                                                          <div class="flex-shrink-0">
+                                                              <i class="ri-checkbox-circle-fill text-success"></i>
+                                                          </div>
+                                                          <div class="flex-grow-1 ms-2 ">
+                                                              <p class="text-muted mb-0">You've probably heard that opposites attract. The same is true for fonts. Don't be afraid to combine font styles that are different but complementary, like sans serif with serif, short with tall, or decorative with simple. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR.</p>
+                                                          </div>
+                                                      </div>
+                                                      <div class="d-flex mt-2">
+                                                          <div class="flex-shrink-0">
+                                                              <i class="ri-checkbox-circle-fill text-success"></i>
+                                                          </div>
+                                                          <div class="flex-grow-1 ms-2 ">
+                                                              <p class="text-muted mb-0">For that very reason, I went on a quest and spoke to many different professional graphic designers and asked them what graphic design tips they live.</p>
+                                                          </div>
+                                                      </div>
+                                                      <h6 class="fs-16 my-3">Graphic Design</h6>
+                                                      <div class="d-flex mt-2">
+                                                          <div class="flex-shrink-0">
+                                                              <i class="ri-checkbox-circle-fill text-success"></i>
+                                                          </div>
+                                                          <div class="flex-grow-1 ms-2 ">
+                                                              <p class="text-muted mb-0">Opposites attract, and that’s a fact. It’s in our nature to be interested in the unusual, and that’s why using contrasting colors in Graphic Design is a must. It’s eye-catching, it makes a statement, it’s impressive graphic design. Increase or decrease the letter spacing depending.</p>
+                                                          </div>
+                                                      </div>
+                                                      <div class="d-flex mt-2">
+                                                          <div class="flex-shrink-0">
+                                                              <i class="ri-checkbox-circle-fill text-success"></i>
+                                                          </div>
+                                                          <div class="flex-grow-1 ms-2 ">
+                                                              <p class="text-muted mb-0">Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater.</p>
+                                                          </div>
+                                                      </div>
+                                                      <div class="d-flex mt-2">
+                                                          <div class="flex-shrink-0">
+                                                              <i class="ri-checkbox-circle-fill text-success"></i>
+                                                          </div>
+                                                          <div class="flex-grow-1 ms-2 ">
+                                                              <p class="text-muted mb-0">Just like in the image where we talked about using multiple fonts, you can see that the background in this graphic design is blurred. Whenever you put text on top of an image, it’s important that your viewers can understand.</p>
+                                                          </div>
+                                                      </div>
+                                                      <div class="d-flex mt-2">
+                                                          <div class="flex-shrink-0">
+                                                              <i class="ri-checkbox-circle-fill text-success"></i>
+                                                          </div>
+                                                          <div class="flex-grow-1 ms-2 ">
+                                                              <p class="text-muted mb-0">Keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater.</p>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                                  <div class="modal-footer">
+                                                      <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</a>
+                                                      <button type="button" class="btn btn-primary ">Save changes</button>
+                                                  </div>
+                                              </div><!-- /.modal-content -->
+                                          </div><!-- /.modal-dialog -->
+                                      </div><!-- /.modal -->
+
+                                      <!--  Extra Large modal example -->
+                                      <div class="modal fade bs-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+                                          <div class="modal-dialog modal-xl">
+                                              <div class="modal-content">
+                                                  <div class="modal-header">
+                                                      <h5 class="modal-title" id="myExtraLargeModalLabel">Extra large
+                                                          modal</h5>
+                                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                  </div>
+                                                  <div class="modal-body">
+                                                      <h6 class="fs-15">Give your text a good structure</h6>
+                                                      <div class="d-flex">
+                                                          <div class="flex-shrink-0">
+                                                              <i class="ri-checkbox-circle-fill text-success"></i>
+                                                          </div>
+                                                          <div class="flex-grow-1 ms-2">
+                                                              <p class="text-muted mb-0">Raw denim you probably haven't heard of them jean shorts Austin.
+                                                                  Nesciunt tofu stumptown aliqua, retro synth master cleanse.</p>
+                                                          </div>
+                                                      </div>
+                                                      <div class="d-flex mt-2">
+                                                          <div class="flex-shrink-0">
+                                                              <i class="ri-checkbox-circle-fill text-success"></i>
+                                                          </div>
+                                                          <div class="flex-grow-1 ms-2 ">
+                                                              <p class="text-muted mb-0">Too much or too little spacing, as in the example below, can make things unpleasant for the reader. The goal is to make your text as comfortable to read as possible. </p>
+                                                          </div>
+                                                      </div>
+                                                      <div class="d-flex mt-2">
+                                                          <div class="flex-shrink-0">
+                                                              <i class="ri-checkbox-circle-fill text-success"></i>
+                                                          </div>
+                                                          <div class="flex-grow-1 ms-2 ">
+                                                              <p class="text-muted mb-0">In some designs, you might adjust your tracking to create a certain artistic effect. It can also help you fix fonts that are poorly spaced to begin with.</p>
+                                                          </div>
+                                                      </div>
+                                                      <div class="d-flex mt-2">
+                                                          <div class="flex-shrink-0">
+                                                              <i class="ri-checkbox-circle-fill text-success"></i>
+                                                          </div>
+                                                          <div class="flex-grow-1 ms-2 ">
+                                                              <p class="text-muted mb-0">For that very reason, I went on a quest and spoke to many different professional graphic designers and asked them what graphic design tips they live.</p>
+                                                          </div>
+                                                      </div>
+                                                      <div class="d-flex mt-2">
+                                                          <div class="flex-shrink-0">
+                                                              <i class="ri-checkbox-circle-fill text-success"></i>
+                                                          </div>
+                                                          <div class="flex-grow-1 ms-2 ">
+                                                              <p class="text-muted mb-0">You've probably heard that opposites attract. The same is true for fonts. Don't be afraid to combine font styles that are different but complementary, like sans serif with serif, short with tall, or decorative with simple. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR.</p>
+                                                          </div>
+                                                      </div>
+                                                      <div class="d-flex mt-2">
+                                                          <div class="flex-shrink-0">
+                                                              <i class="ri-checkbox-circle-fill text-success"></i>
+                                                          </div>
+                                                          <div class="flex-grow-1 ms-2 ">
+                                                              <p class="text-muted mb-0">For that very reason, I went on a quest and spoke to many different professional graphic designers and asked them what graphic design tips they live.</p>
+                                                          </div>
+                                                      </div>
+                                                      <h6 class="fs-16 my-3">Graphic Design</h6>
+                                                      <div class="d-flex mt-2">
+                                                          <div class="flex-shrink-0">
+                                                              <i class="ri-checkbox-circle-fill text-success"></i>
+                                                          </div>
+                                                          <div class="flex-grow-1 ms-2 ">
+                                                              <p class="text-muted mb-0">Opposites attract, and that’s a fact. It’s in our nature to be interested in the unusual, and that’s why using contrasting colors in Graphic Design is a must. It’s eye-catching, it makes a statement, it’s impressive graphic design. Increase or decrease the letter spacing depending.</p>
+                                                          </div>
+                                                      </div>
+                                                      <div class="d-flex mt-2">
+                                                          <div class="flex-shrink-0">
+                                                              <i class="ri-checkbox-circle-fill text-success"></i>
+                                                          </div>
+                                                          <div class="flex-grow-1 ms-2 ">
+                                                              <p class="text-muted mb-0">Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater.</p>
+                                                          </div>
+                                                      </div>
+                                                      <div class="d-flex mt-2">
+                                                          <div class="flex-shrink-0">
+                                                              <i class="ri-checkbox-circle-fill text-success"></i>
+                                                          </div>
+                                                          <div class="flex-grow-1 ms-2 ">
+                                                              <p class="text-muted mb-0">Just like in the image where we talked about using multiple fonts, you can see that the background in this graphic design is blurred. Whenever you put text on top of an image, it’s important that your viewers can understand.</p>
+                                                          </div>
+                                                      </div>
+                                                      <div class="d-flex mt-2">
+                                                          <div class="flex-shrink-0">
+                                                              <i class="ri-checkbox-circle-fill text-success"></i>
+                                                          </div>
+                                                          <div class="flex-grow-1 ms-2 ">
+                                                              <p class="text-muted mb-0">Keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater.</p>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                                  <div class="modal-footer">
+                                                      <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</a>
+                                                      <button type="button" class="btn btn-primary ">Save changes</button>
+                                                  </div>
+                                              </div><!-- /.modal-content -->
+                                          </div><!-- /.modal-dialog -->
+                                      </div><!-- /.modal -->
+
+                                      <!--  Large modal example -->
+                                      <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                          <div class="modal-dialog modal-lg">
+                                              <div class="modal-content">
+                                                  <div class="modal-header">
+                                                      <h5 class="modal-title" id="myLargeModalLabel">Large modal</h5>
+                                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                  </div>
+                                                  <div class="modal-body">
+                                                      <h6 class="fs-15">Give your text a good structure</h6>
+                                                      <div class="d-flex">
+                                                          <div class="flex-shrink-0">
+                                                              <i class="ri-checkbox-circle-fill text-success"></i>
+                                                          </div>
+                                                          <div class="flex-grow-1 ms-2">
+                                                              <p class="text-muted mb-0">Raw denim you probably haven't heard of them jean shorts Austin.
+                                                                  Nesciunt tofu stumptown aliqua, retro synth master cleanse.</p>
+                                                          </div>
+                                                      </div>
+                                                      <div class="d-flex mt-2">
+                                                          <div class="flex-shrink-0">
+                                                              <i class="ri-checkbox-circle-fill text-success"></i>
+                                                          </div>
+                                                          <div class="flex-grow-1 ms-2 ">
+                                                              <p class="text-muted mb-0">Too much or too little spacing, as in the example below, can make things unpleasant for the reader. The goal is to make your text as comfortable to read as possible. </p>
+                                                          </div>
+                                                      </div>
+                                                      <div class="d-flex mt-2">
+                                                          <div class="flex-shrink-0">
+                                                              <i class="ri-checkbox-circle-fill text-success"></i>
+                                                          </div>
+                                                          <div class="flex-grow-1 ms-2 ">
+                                                              <p class="text-muted mb-0">In some designs, you might adjust your tracking to create a certain artistic effect. It can also help you fix fonts that are poorly spaced to begin with.</p>
+                                                          </div>
+                                                      </div>
+                                                      <div class="d-flex mt-2">
+                                                          <div class="flex-shrink-0">
+                                                              <i class="ri-checkbox-circle-fill text-success"></i>
+                                                          </div>
+                                                          <div class="flex-grow-1 ms-2 ">
+                                                              <p class="text-muted mb-0">For that very reason, I went on a quest and spoke to many different professional graphic designers and asked them what graphic design tips they live.</p>
+                                                          </div>
+                                                      </div>
+                                                      <div class="d-flex mt-2">
+                                                          <div class="flex-shrink-0">
+                                                              <i class="ri-checkbox-circle-fill text-success"></i>
+                                                          </div>
+                                                          <div class="flex-grow-1 ms-2 ">
+                                                              <p class="text-muted mb-0">You've probably heard that opposites attract. The same is true for fonts. Don't be afraid to combine font styles that are different but complementary, like sans serif with serif, short with tall, or decorative with simple. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR.</p>
+                                                          </div>
+                                                      </div>
+                                                      <div class="d-flex mt-2">
+                                                          <div class="flex-shrink-0">
+                                                              <i class="ri-checkbox-circle-fill text-success"></i>
+                                                          </div>
+                                                          <div class="flex-grow-1 ms-2 ">
+                                                              <p class="text-muted mb-0">For that very reason, I went on a quest and spoke to many different professional graphic designers and asked them what graphic design tips they live.</p>
+                                                          </div>
+                                                      </div>
+                                                      <h6 class="fs-16 my-3">Graphic Design</h6>
+                                                      <div class="d-flex mt-2">
+                                                          <div class="flex-shrink-0">
+                                                              <i class="ri-checkbox-circle-fill text-success"></i>
+                                                          </div>
+                                                          <div class="flex-grow-1 ms-2 ">
+                                                              <p class="text-muted mb-0">Opposites attract, and that’s a fact. It’s in our nature to be interested in the unusual, and that’s why using contrasting colors in Graphic Design is a must. It’s eye-catching, it makes a statement, it’s impressive graphic design. Increase or decrease the letter spacing depending.</p>
+                                                          </div>
+                                                      </div>
+                                                      <div class="d-flex mt-2">
+                                                          <div class="flex-shrink-0">
+                                                              <i class="ri-checkbox-circle-fill text-success"></i>
+                                                          </div>
+                                                          <div class="flex-grow-1 ms-2 ">
+                                                              <p class="text-muted mb-0">Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater.</p>
+                                                          </div>
+                                                      </div>
+                                                      <div class="d-flex mt-2">
+                                                          <div class="flex-shrink-0">
+                                                              <i class="ri-checkbox-circle-fill text-success"></i>
+                                                          </div>
+                                                          <div class="flex-grow-1 ms-2 ">
+                                                              <p class="text-muted mb-0">Just like in the image where we talked about using multiple fonts, you can see that the background in this graphic design is blurred. Whenever you put text on top of an image, it’s important that your viewers can understand.</p>
+                                                          </div>
+                                                      </div>
+                                                      <div class="d-flex mt-2">
+                                                          <div class="flex-shrink-0">
+                                                              <i class="ri-checkbox-circle-fill text-success"></i>
+                                                          </div>
+                                                          <div class="flex-grow-1 ms-2 ">
+                                                              <p class="text-muted mb-0">Keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater.</p>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                                  <div class="modal-footer">
+                                                      <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</a>
+                                                      <button type="button" class="btn btn-primary ">Save changes</button>
+                                                  </div>
+                                              </div><!-- /.modal-content -->
+                                          </div><!-- /.modal-dialog -->
+                                      </div><!-- /.modal -->
+
+                                      <!--  Small modal example -->
+                                      <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                                          <div class="modal-dialog modal-sm">
+                                              <div class="modal-content">
+                                                  <div class="modal-header">
+                                                      <h5 class="modal-title" id="mySmallModalLabel">Small modal</h5>
+                                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                      </button>
+                                                  </div>
+                                                  <div class="modal-body">
+                                                      <h6 class="fs-15">Give your text a good structure</h6>
+                                                      <div class="d-flex">
+                                                          <div class="flex-shrink-0">
+                                                              <i class="ri-checkbox-circle-fill text-success"></i>
+                                                          </div>
+                                                          <div class="flex-grow-1 ms-2">
+                                                              <p class="text-muted mb-0">Raw denim you probably haven't heard of them jean shorts Austin.
+                                                                  Nesciunt tofu stumptown aliqua, retro synth master cleanse.</p>
+                                                          </div>
+                                                      </div>
+                                                      <div class="d-flex mt-2">
+                                                          <div class="flex-shrink-0">
+                                                              <i class="ri-checkbox-circle-fill text-success"></i>
+                                                          </div>
+                                                          <div class="flex-grow-1 ms-2 ">
+                                                              <p class="text-muted mb-0">Too much or too little spacing, as in the example below, can make things unpleasant for the reader. The goal is to make your text as comfortable to read as possible. </p>
+                                                          </div>
+                                                      </div>
+                                                      <div class="d-flex mt-2">
+                                                          <div class="flex-shrink-0">
+                                                              <i class="ri-checkbox-circle-fill text-success"></i>
+                                                          </div>
+                                                          <div class="flex-grow-1 ms-2 ">
+                                                              <p class="text-muted mb-0">In some designs, you might adjust your tracking to create a certain artistic effect. It can also help you fix fonts that are poorly spaced to begin with.</p>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                                  <div class="modal-footer">
+                                                      <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</a>
+                                                      <button type="button" class="btn btn-primary ">Save changes</button>
+                                                  </div>
+                                              </div><!-- /.modal-content -->
+                                          </div><!-- /.modal-dialog -->
+                                      </div><!-- /.modal -->
+                                  </div>
+                              </div>
+                              <div class="d-none code-view">
+                                  <pre class="language-markup">
+<code>&lt;!-- Optional Modal Sizes --&gt;
+&lt;div class=&quot;modal-dialog modal-fullscreen&quot;&gt;...&lt;/div&gt;</code>
+
+<code>&lt;div class=&quot;modal-dialog modal-xl&quot;&gt;...&lt;/div&gt;</code>
+
+<code>&lt;div class=&quot;modal-dialog modal-lg&quot;&gt;...&lt;/div&gt;</code>
+
+<code>&lt;div class=&quot;modal-dialog modal-sm&quot;&gt;...&lt;/div&gt;</code></pre>
+                              </div>
+                          </div><!-- end card-body -->
+                      </div><!-- end card -->
+                  </div>
+                  <!--end col-->
+              </div>
             </div>
          </div>
       </div>
