@@ -1081,18 +1081,22 @@ class Wallet(models.Model):
     #     elif self.outsourceagent:
     #         name = f"{self.outsourceagent.users.first_name} {self.outsourceagent.users.last_name}"
     #     return f"{name} - ₹{self.amount} on {self.created_at.date()}"
-
+    
 class RechargeHistory(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    transaction_id = models.CharField(max_length=100, unique=True)
+
+    # Cashfree se yeh 3 field aa sakti hain
+    order_id = models.CharField(max_length=100, null=True, blank=True)  # optional
+    transaction_id = models.CharField(max_length=100, unique=True)  # Usually payment_session_id or txn_id
+    
+
     status = models.CharField(max_length=50, choices=[
         ('SUCCESS', 'SUCCESS'),
         ('FAILED', 'FAILED'),
         ('PENDING', 'PENDING')
     ])
     payment_mode = models.CharField(max_length=50, null=True, blank=True)
-    reference_id = models.CharField(max_length=100, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
