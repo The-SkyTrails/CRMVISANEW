@@ -245,6 +245,17 @@ class UserProfileView(APIView):
         return Response(data)
 
 
+# class WalletAPIView(APIView):
+#     permission_classes = [IsAuthenticated]
+
+#     def get(self, request):
+#         wallet, created = Wallet.objects.get_or_create(user=request.user)
+#         serializer = WalletSerializer(wallet)
+#         return Response(serializer.data)
+
+
+from decimal import Decimal
+
 class WalletAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -252,3 +263,20 @@ class WalletAPIView(APIView):
         wallet, created = Wallet.objects.get_or_create(user=request.user)
         serializer = WalletSerializer(wallet)
         return Response(serializer.data)
+
+    def put(self, request):
+        wallet, created = Wallet.objects.get_or_create(user=request.user)
+        new_balance = request.data.get("balance")
+
+        try:
+            new_balance = Decimal(new_balance)
+        except:
+            return Response({"error": "Invalid balance value"}, status=status.HTTP_400_BAD_REQUEST)
+
+        if new_balance < 0:
+            return Response({"error": "Balance can't be negative"}, status=status.HTTP_400_BAD_REQUEST)
+
+        wallet.balance = new_balance
+        wallet.save()
+
+        return Response({"message": "Balance updated", "balance": wallet.balance})
