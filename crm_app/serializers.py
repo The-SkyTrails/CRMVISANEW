@@ -11,7 +11,8 @@ from .models import (
     CustomUser,
     Admin,
     Employee,
-    Wallet
+    Wallet,
+    RechargeHistory
 )
 
 
@@ -159,3 +160,11 @@ class WalletSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wallet
         fields = ['balance', 'updated_at']
+
+
+
+class RechargeHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RechargeHistory
+        fields = '__all__'
+        read_only_fields = ['user', 'created_at']

@@ -17,7 +17,9 @@ from .models import (
     CaseCategoryDocument,
     Admin, 
     Employee,
-    Wallet
+    Wallet,
+    RechargeHistory
+    
 )
 from .serializers import (
     BookingSerializer,
@@ -32,7 +34,8 @@ from .serializers import (
     CustomUserSerializer, 
     AdminSerializer, 
     EmployeeSerializer,
-    WalletSerializer
+    WalletSerializer,
+    RechargeHistorySerializer
 )
 from rest_framework.viewsets import ViewSet, ModelViewSet
 
@@ -283,3 +286,16 @@ class WalletAPIView(APIView):
             "message": f"Balance incremented by {increment_amount}",
             "new_balance": wallet.balance
         })
+
+    
+
+
+class RechargeHistoryCreateAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        serializer = RechargeHistorySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user)  # user ko yahan assign kar rahe
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
