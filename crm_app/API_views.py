@@ -266,17 +266,20 @@ class WalletAPIView(APIView):
 
     def put(self, request):
         wallet, created = Wallet.objects.get_or_create(user=request.user)
-        new_balance = request.data.get("balance")
+        increment_amount = request.data.get("balance")
 
         try:
-            new_balance = Decimal(new_balance)
+            increment_amount = Decimal(increment_amount)
         except:
             return Response({"error": "Invalid balance value"}, status=status.HTTP_400_BAD_REQUEST)
 
-        if new_balance < 0:
-            return Response({"error": "Balance can't be negative"}, status=status.HTTP_400_BAD_REQUEST)
+        if increment_amount < 0:
+            return Response({"error": "Amount must be positive"}, status=status.HTTP_400_BAD_REQUEST)
 
-        wallet.balance = new_balance
+        wallet.balance += increment_amount
         wallet.save()
 
-        return Response({"message": "Balance updated", "balance": wallet.balance})
+        return Response({
+            "message": f"Balance incremented by {increment_amount}",
+            "new_balance": wallet.balance
+        })
