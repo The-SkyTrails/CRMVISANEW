@@ -1072,7 +1072,9 @@ class FrontWebsiteEnquiry(models.Model):
 class Wallet(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    type = models.CharField(max_length=100)
     updated_at = models.DateTimeField(auto_now=True)
+    booking_id = models.CharField(max_length=100)
 
     # def __str__(self):
     #     name = ""

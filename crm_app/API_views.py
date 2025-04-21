@@ -287,6 +287,39 @@ class WalletAPIView(APIView):
             "new_balance": wallet.balance
         })
 
+    def patch(self, request):
+        wallet, created = Wallet.objects.get_or_create(user=request.user)
+        decrement_amount = request.data.get("balance")
+        dec_type = request.data.get("type")
+        booking_id = request.data.get("booking_id")
+        
+        print("decremeenttt",decrement_amount)
+
+        try:
+            decrement_amount = Decimal(decrement_amount)
+        except:
+            return Response({"error": "Invalid balance value"}, status=status.HTTP_400_BAD_REQUEST)
+
+        if decrement_amount < 0:
+            return Response({"error": "Amount must be positive"}, status=status.HTTP_400_BAD_REQUEST)
+
+        if wallet.balance < decrement_amount:
+            return Response({"error": "Insufficient balance"}, status=status.HTTP_400_BAD_REQUEST)
+
+        wallet.balance -= decrement_amount
+        wallet.type = dec_type
+        wallet.booking_id = booking_id
+        
+        wallet.save()
+
+        return Response({
+            "message": f"Balance decremented by {decrement_amount}",
+            "new_balance": wallet.balance,
+            "type": wallet.type,
+            "booking_id": wallet.booking_id,
+            
+        })
+
     
 
 
