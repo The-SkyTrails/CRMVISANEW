@@ -1090,7 +1090,7 @@ class RechargeHistory(models.Model):
 
     # Cashfree se yeh 3 field aa sakti hain
     order_id = models.CharField(max_length=100, null=True, blank=True)  # optional
-    transaction_id = models.CharField(max_length=100, unique=True)  # Usually payment_session_id or txn_id
+    transaction_id = models.CharField(max_length=255, unique=True)  # Usually payment_session_id or txn_id
     
 
     status = models.CharField(max_length=50, choices=[

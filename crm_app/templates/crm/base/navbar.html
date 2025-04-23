@@ -6,10 +6,11 @@
       <!-- Dark Logo-->
       <a href="index.html" class="logo logo-dark">
       <span class="logo-sm">
-      <img src="{% static "assets/images/logo-sm.png" %}" alt="" height="22">
+      {% comment %} <img src="{% static "assets/images/logo-sm.png" %}" alt="" height="22"> {% endcomment %}
       </span>
       <span class="logo-lg">
-      <img src="{% static "assets/images/logo-dark.png" %}" alt="" height="17">
+         {% comment %} <img src="{% static "assets/images/crmlogonew.png" %}" alt="" height="45"> {% endcomment %}
+      {% comment %} <img src="{% static "assets/images/logo-dark.png" %}" alt="" height="17"> {% endcomment %}
       </span>
       </a>
       <!-- Light Logo-->
@@ -359,6 +360,17 @@
                </div>
             </li>
             {% endif %}
+
+            <li class="nav-item">
+               <a class="nav-link menu-link"  href="{% url "recharge_history" %}">
+               <i class="ri-pencil-ruler-2-line"></i> <span data-key="t-widgets">Recharge History</span>
+               </a>
+            </li>
+            <li class="nav-item">
+               <a class="nav-link menu-link"  href="{% url "wallet_history" %}">
+               <i class="ri-pencil-ruler-2-line"></i> <span data-key="t-widgets">Wallet History</span>
+               </a>
+            </li>
 
             {% if request.user.is_authenticated %}
             {% with request.session.access_token as token %}

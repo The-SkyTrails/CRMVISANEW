@@ -36,7 +36,7 @@ from .filters import AgentFilter,OutSourceAgentFilter
 from django.db.models import Prefetch
 from .filters import EnquiryFilter
 from rest_framework_simplejwt.tokens import RefreshToken
-
+from decimal import Decimal
 
 def get_visa_team_employee():
     return Employee.objects.filter(department="Visa Team")
@@ -6694,7 +6694,7 @@ def check_status(request):
     }
     return render(request, "check_status.html", context)
 
-
+from decouple import config
 from django.http import JsonResponse
 from cashfree_pg.models.create_order_request import CreateOrderRequest
 from cashfree_pg.api_client import Cashfree
@@ -6702,34 +6702,154 @@ from cashfree_pg.models.customer_details import CustomerDetails
 from cashfree_pg.models.order_meta import OrderMeta
 import uuid
 
+# def generate_cashfree_token(request):
+#     if request.method == "POST":
+#         user = request.user
+#         print("usersss type",user.user_type)
+#         phone = ""
+#         if user.user_type == '2':
+#             phone = user.admin.contact_no
+#         if user.user_type == '3':
+#             phone = user.employee.contact_no
+#         if user.user_type == '4':
+#             phone = user.agent.contact_no
+#         if user.user_type == '5':
+#             phone = user.outsourcingagent.contact_no
+        
+#         print("phoneee",phone)
+
+#         try:
+#             Cashfree.XClientId = config("CASHFREE_Client_ID")
+#             Cashfree.XClientSecret = config("CASHFREE_Client_Secret")
+#             Cashfree.XEnvironment = Cashfree.SANDBOX
+#             x_api_version = "2025-01-01"
+
+#             order_id = f"order_{uuid.uuid4().hex[:10]}"
+#             customerDetails = CustomerDetails(
+#                 customer_id= str(user.id),
+#                 customer_phone=phone,
+#                 customer_email= user.email
+#             )
+
+#             createOrderRequest = CreateOrderRequest(
+#                 order_id=order_id,
+#                 order_amount=1.00,
+#                 order_currency="INR",
+#                 customer_details=customerDetails
+#             )
+
+#             orderMeta = OrderMeta()
+#             orderMeta.return_url = f"https://www.cashfree.com/devstudio/preview/pg/mobile/android?order_id={order_id}"
+#             createOrderRequest.order_meta = orderMeta
+
+#             api_response = Cashfree().PGCreateOrder(x_api_version, createOrderRequest, None, None)
+#             return JsonResponse({"payment_session_id": api_response.data.payment_session_id})
+
+#         except Exception as e:
+#             return JsonResponse({"error": str(e)}, status=400)
+
+
+
+import json
 def generate_cashfree_token(request):
     if request.method == "POST":
         try:
-            Cashfree.XClientId = ""
-            Cashfree.XClientSecret = ""
+            # Parse JSON body to get amount
+            body = json.loads(request.body)
+            amount = float(body.get("amount", 0))
+            transaction_id = body.get("transaction_id") 
+            print("bodyyyyyyyyyyyyyy",body)
+            print("transaction_id",transaction_id)
+
+            if amount <= 0:
+                return JsonResponse({"error": "Invalid amount"}, status=400)
+
+            user = request.user
+            print("usersss type", user.user_type)
+            phone = ""
+
+            if user.user_type == '2':
+                phone = user.admin.contact_no
+            if user.user_type == '3':
+                phone = user.employee.contact_no
+            if user.user_type == '4':
+                phone = user.agent.contact_no
+            if user.user_type == '5':
+                phone = user.outsourcingagent.contact_no
+
+            print("phoneee", phone)
+
+            Cashfree.XClientId = config("CASHFREE_Client_ID")
+            Cashfree.XClientSecret = config("CASHFREE_Client_Secret")
             Cashfree.XEnvironment = Cashfree.SANDBOX
             x_api_version = "2025-01-01"
 
             order_id = f"order_{uuid.uuid4().hex[:10]}"
             customerDetails = CustomerDetails(
-                customer_id="user_123",
-                customer_phone="9999999999",
-                customer_email="test@example.com"
+                customer_id=str(user.id),
+                customer_phone=phone,
+                customer_email=user.email
             )
 
             createOrderRequest = CreateOrderRequest(
                 order_id=order_id,
-                order_amount=1.00,
+                order_amount=amount,  # ✅ Set dynamic amount here
                 order_currency="INR",
                 customer_details=customerDetails
             )
 
             orderMeta = OrderMeta()
-            orderMeta.return_url = f"https://www.cashfree.com/devstudio/preview/pg/mobile/android?order_id={order_id}"
+            
+            orderMeta.return_url = "https://crm.theskytrails.com/dashboard/"
             createOrderRequest.order_meta = orderMeta
 
             api_response = Cashfree().PGCreateOrder(x_api_version, createOrderRequest, None, None)
+
+            RechargeHistory.objects.create(
+                user=user,
+                amount=Decimal(str(amount)),
+                order_id=order_id,
+                transaction_id= api_response.data.payment_session_id,  # Will update after success
+                status="SUCCESS"
+            )
+
+            # wallet_history = Wallet.objects.get(user=user)
+            # wallet_history.balance += amount
+            # wallet_history.save()
+            wallet_history, created = Wallet.objects.get_or_create(
+            user=user,
+            defaults={
+                "balance": Decimal(str(amount)),  # ✅ Set only for first-time wallet
+                "type": "Cashfree",
+                "booking_id": "",  # Set if needed
+            }
+        )
+
+            if not created:
+                print("ooooooooooooooooo")
+                wallet_history.balance += Decimal(str(amount))  # ✅ Add only if wallet already existed
+                print("ppppppppppppppppp")
+                wallet_history.save()
             return JsonResponse({"payment_session_id": api_response.data.payment_session_id})
 
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
+
+
+def recharge_history(request):
+    
+    recharge = RechargeHistory.objects.filter(user=request.user)
+    context = {
+        'recharge':recharge
+    }
+    print("recharge",recharge)
+    return render(request,'crm/RechargeHistory/recharge_history.html',context)
+
+
+
+def wallet_history(request):
+    Wallet_history = Wallet.objects.filter(user=request.user)
+    context = {
+        'wallet':Wallet_history
+    }
+    return render(request,'crm/RechargeHistory/wallet_history.html',context)

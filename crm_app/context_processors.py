@@ -2,6 +2,7 @@ from .models import *
 from django.db.models import Q
 from datetime import datetime, timedelta 
 from django.utils.timezone import make_aware
+from decimal import Decimal
 
 def faq_count(request):
     # Initialize a dictionary to store all counts
@@ -31,6 +32,12 @@ def faq_count(request):
 
     user = request.user
     if user.is_authenticated:
+        try:
+            wallet = Wallet.objects.get(user=user)
+            counts["wallet_balance"] = wallet.balance
+            
+        except Wallet.DoesNotExist:
+            counts["wallet_balance"] = Decimal("0.00")
         if user.user_type == "2":  # Example: Check for specific user type
             counts["agent_count"] = Agent.objects.all().count()
             counts["outsourceagent_count"] = OutSourcingAgent.objects.all().count()
@@ -106,6 +113,8 @@ def faq_count(request):
         counts["faq_count"] = FAQ.objects.filter(answer__exact="").exclude(
             answer__isnull=True
         ).count()
+
+        
         
 
     return counts

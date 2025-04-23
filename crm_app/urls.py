@@ -292,6 +292,15 @@ urlpatterns = [
    path("packages/share/<int:pk>/", Packageshare, name="package_share"),
 
    path("Check/Status/",check_status,name="check_status"),
+
+
+   
+   # ------------------------- VISA TEAM Employee --------------------------
+
+   
+   path("recharge/history",recharge_history,name="recharge_history"),
+   path("wallet/history",wallet_history,name="wallet_history"),
+
    
    
   

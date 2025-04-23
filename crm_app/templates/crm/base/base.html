@@ -1,7 +1,7 @@
 {% load static %}
 <!doctype html>
-<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg"
-   data-sidebar-image="none" data-bs-theme="dark" data-body-image="img-1" data-preloader="disable">
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="light" data-sidebar-size="lg"
+   data-sidebar-image="none" data-bs-theme="light" data-body-image="img-1" data-preloader="disable">
    <head>
       <meta charset="utf-8">
       {% comment %} <title>Dashboard | Velzon - Admin & Dashboard Template</title> {% endcomment %}
@@ -97,6 +97,33 @@
             <i class='mdi mdi-spin mdi-cog-outline fs-22'></i>
          </div>
       </div>
+       <!--  Small modal example -->
+       <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+         <div class="modal-dialog modal-sm">
+            <form action="" method="POST" id="rechargeForm">
+             <div class="modal-content">
+                 <div class="modal-header">
+                     <h5 class="modal-title" id="mySmallModalLabel">Recharge</h5>
+                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                     </button>
+                 </div>
+                 <div class="modal-body">
+                   
+                     
+                     <div class="d-flex mt-2">
+                        {% comment %} <input type="text" class="form-control" placeholder="Enter Amount" required> {% endcomment %}
+                        <input type="text" id="amountInput" class="form-control" placeholder="Enter Amount" required>
+
+                     </div>
+                 </div>
+                 <div class="modal-footer">
+                     <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</a>
+                     <button type="submit" id="rechargeBtn" class="btn btn-primary ">Submit</button>
+                 </div>
+             </div><!-- /.modal-content -->
+            </form>
+         </div><!-- /.modal-dialog -->
+     </div><!-- /.modal -->
       <!-- Theme Settings -->
       {% include "crm/base/theme.html" %}
       <!-- JAVASCRIPT -->
@@ -205,18 +232,47 @@
 
     {% load sweetify %}
     {% sweetify %}
+   
     <script>
-      const cashfree = Cashfree({
-          mode: "sandbox",
-      });
-      document.getElementById("rechargeBtn").addEventListener("click", () => {
-         console.log("workinggg")
-          let checkoutOptions = {
-              paymentSessionId: "session_va855fOWHCdMThIuEAbC8Ijr_82z3Sjdz_tzQYMUNDghVqu4Uugt_LRU8zelYZh5oHOz6eePi9smUG",
-              redirectTarget: "_self",
-          };
-          cashfree.checkout(checkoutOptions);
+      const cashfree = Cashfree({ mode: "sandbox" });
+  
+      document.getElementById("rechargeBtn").addEventListener("click", function (e) {
+          e.preventDefault();
+  
+          const amount = document.getElementById("amountInput").value;
+  
+          // Validate amount
+          if (!amount || isNaN(amount) || parseFloat(amount) <= 0) {
+              alert("Please enter a valid amount.");
+              return;
+          }
+  
+          // Send amount to backend via fetch
+          fetch("{% url 'generate_cashfree_token' %}", {
+              method: "POST",
+              headers: {
+                  "X-CSRFToken": "{{ csrf_token }}",
+                  "Content-Type": "application/json"
+              },
+              body: JSON.stringify({ amount: amount })
+          })
+          .then(res => res.json())
+          .then(data => {
+              if (data.payment_session_id) {
+                  cashfree.checkout({
+                      paymentSessionId: data.payment_session_id,
+                      redirectTarget: "_self"
+                  });
+              } else {
+                  alert("Error: " + (data.error || "Unable to get session ID"));
+              }
+          })
+          .catch(err => {
+              console.error("Fetch error:", err);
+              alert("Something went wrong while processing your request.");
+          });
       });
   </script>
+    
    </body>
 </html>

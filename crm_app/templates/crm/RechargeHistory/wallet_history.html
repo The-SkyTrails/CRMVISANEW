@@ -1,0 +1,93 @@
+{% extends "crm/base/base.html" %}
+{% load sweetify %}
+{% sweetify %}
+{% block main-content %}
+<div class="page-content">
+   <div class="container-fluid">
+      <!-- start page title -->
+      <div class="row">
+         <div class="col-12">
+            <div
+               class="page-title-box d-sm-flex align-items-center justify-content-between bg-transparent">
+               <h4 class="mb-sm-0">Wallet History</h4>
+               <div class="page-title-right">
+                  <ol class="breadcrumb m-0">
+                     <li class="breadcrumb-item"><a href="javascript: void(0);">Wallet</a></li>
+                     <li class="breadcrumb-item active">History</li>
+                  </ol>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- end page title -->
+      <div class="row">
+         <div class="col-lg-12">
+            <div class="card">
+               <div class="card-header">
+                  <h4 class="card-title mb-0">WALLET HISTORY</h4>
+               </div>
+               <!-- end card header -->
+               <div class="card-body">
+                  <div class="listjs-table" id="customerList">
+                    
+                     <div class="table-responsive table-card mt-3 mb-1">
+                        <table class="table align-middle table-nowrap table-bordered border-secondary" id="customerTable" >
+                           <thead class="table-light">
+                              <tr>
+                                 {% comment %} <th>
+                                    <div class="form-check">
+                                       <input class="form-check-input" type="checkbox"
+                                          id="checkAll" value="option">
+                                    </div>
+                                 </th> {% endcomment %}
+                                 <th>S.No.</th>
+                                 <th>Balance</th>
+                                 <th>Type</th>
+                                 <th>Updated At</th>
+                                 <th>Booking ID</th>
+                                 
+                                
+                              </tr>
+                           </thead>
+                           <tbody class="list form-check-all">
+                           {% comment %} <tbody class="list form-check-all" hx-trigger="load,  movieListChanged from:body" hx-get="{% url 'admin_list' %}" hx-target="this" id="search-results"> {% endcomment %}
+                              {% for i in wallet %}
+                              <tr>
+                                 <td>{{forloop.counter}}</td>
+                                 <td>{{i.balance}}</td>
+                                 <td>{{i.type}}</td>
+                                 <td>{{i.updated_at}}</td>
+                                 <td>{{i.booking_id}}</td>                          
+                                 
+                              </tr>
+                              {% endfor %}
+                           </tbody>
+                        </table>
+                        
+                      
+                     </div>
+                  </div>
+      
+               </div>
+               <!-- end card -->
+            </div>
+            <!-- end col -->
+         </div>
+         <!-- end col -->
+      </div>
+      <!-- end row -->
+      <!-- end row -->
+      {% comment %} {% include "crm/SuperAdmin/add_admin.html" %} {% endcomment %}
+      
+      <!-- Modal -->
+      
+      <!--end modal -->
+
+     
+   </div>
+   <!-- container-fluid -->
+</div>
+
+
+
+{% endblock main-content %}
