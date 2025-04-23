@@ -99,9 +99,9 @@
                                                 </div>
                                                 {% endfor %}
                                                 
-                                                <div class="float-end">
+                                                {% comment %} <div class="float-end">
                                                     <a href="auth-pass-reset-cover.html" class="text-muted">Forgot password?</a>
-                                                </div>
+                                                </div> {% endcomment %}
                                                 
                                                 <div class="mt-4">
                                                     <button class="btn btn-primary w-100" type="submit">Sign In</button>
@@ -113,9 +113,9 @@
                                                 <p class="alert alert-danger my-3">{{error}}</p>
                                             {% endfor %}
                                         {% endif %}
-                                        <div class="mt-5 text-center">
+                                        {% comment %} <div class="mt-5 text-center">
                                             <p class="mb-0">Don't have an account ? <a href="auth-signup-cover.html" class="fw-semibold text-primary text-decoration-underline"> Signup</a> </p>
-                                        </div>
+                                        </div> {% endcomment %}
                                     </div>
                                 </div>
                                 <!-- end col -->
