@@ -568,14 +568,14 @@
                               <div class="flex-shrink-0">
                                  <h5 class="text-danger fs-14 mb-0">
                                     <i class="ri-arrow-right-down-line fs-13 align-middle"></i>
-                                    Rs 100
+                                    Rs {{wallet_balance}}
                                  </h5>
                               </div>
                            </div>
                            <div class="d-flex align-items-end justify-content-between mt-4">
                               <div>
                                  <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span
-                                    class="counter-value" data-target="100">Rs 100</span></h4>
+                                    class="counter-value" data-target="{{ wallet_balance }}">Rs {{wallet_balance}}</span></h4>
                                  {% comment %} <a href="{% url "lead_load" %}" class="text-decoration-underline">View all Leads</a> {% endcomment %}
                               </div>
                               
