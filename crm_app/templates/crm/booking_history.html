@@ -1,0 +1,92 @@
+{% extends "crm/base/base.html" %}
+
+{% block main-content %}
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            
+            <!--end col-->
+
+           
+            <div class="col-xxl-6">
+                <h5 class="mb-3">Arrow Nav tabs</h5>
+                <div class="card">
+                    <div class="card-body">
+                        <p class="text-muted">Use <code>arrow-navtabs </code>class to create arrow nav tabs.</p>
+                        <ul class="nav nav-pills arrow-navtabs nav-success bg-light mb-3" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-bs-toggle="tab" href="#flight" role="tab">
+                                    <span class="d-block d-sm-none"><i class="mdi mdi-home-variant"></i></span>
+                                    <span class="d-none d-sm-block">Flight</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#bus" role="tab">
+                                    <span class="d-block d-sm-none"><i class="mdi mdi-account"></i></span>
+                                    <span class="d-none d-sm-block">Bus</span>
+                                </a>
+                            </li>
+                            {% comment %} <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#arrow-contact" role="tab">
+                                    <span class="d-block d-sm-none"><i class="mdi mdi-email"></i></span>
+                                    <span class="d-none d-sm-block">Contact</span>
+                                </a>
+                            </li> {% endcomment %}
+                        </ul>
+                        <!-- Tab panes -->
+                        <div class="tab-content text-muted">
+                            <div class="tab-pane active" id="flight" role="tabpanel">
+                                <div class="table-responsive">
+                                    <table class="table mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Booking Id</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">Destination</th>
+                                                <th scope="col">PNR</th>
+                                                <th scope="col">Passenger Details</th>
+                                                <th scope="col">Contact No</th>
+                                                <th scope="col">Airline Name</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% if bookings %}
+                                                {% for booking in bookings %}
+                                                    <tr>
+                                                        <th scope="row">{{ forloop.counter }}</th>
+                                                        <td>{{ booking.booking_id }}</td>
+                                                        <td>{{ booking.status }}</td>
+                                                        <td>{{ booking.destination }}</td>
+                                                        <td>{{ booking.pnr }}</td>
+                                                        <td>
+                                                            {% for passenger in booking.passenger_details %}
+                                                                {{ passenger.name }} ({{ passenger.gender }})<br>
+                                                            {% endfor %}
+                                                        </td>
+                                                        <td>{{ booking.contact_no }}</td>
+                                                        <td>{{ booking.airline_name }}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            {% else %}
+                                                <tr>
+                                                    <td colspan="8" class="text-center">No bookings found.</td>
+                                                </tr>
+                                            {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div><!-- end card-body -->
+                </div><!-- end card -->
+            </div>
+            <!--end col-->
+        </div>
+    </div>
+</div>
+
+{% endblock main-content %}
+

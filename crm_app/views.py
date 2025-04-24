@@ -143,6 +143,7 @@ def dashboard(request):
     todo = Todo.objects.filter(user=request.user).order_by("-id")
     
     # User-specific data
+   
     user_type = request.user.user_type
     agent_ranking = None
     outsourcing_agent_ranking = None
@@ -6853,3 +6854,20 @@ def wallet_history(request):
         'wallet':Wallet_history
     }
     return render(request,'crm/RechargeHistory/wallet_history.html',context)
+
+
+
+def booking_history(request):
+    user_id = request.user.id
+    page = request.GET.get('page', 1)
+    limit = 3
+    url = f"https://st-backend-rzu7.onrender.com/skytrails/crmagent/flightbookings?userId={user_id}&page={page}&limit={limit}"
+    response = requests.get(url)
+    data = response.json()
+    bookings = data.get("data", [])
+    meta = data.get("meta", {})
+    context = {
+        "bookings": bookings,
+        "meta": meta,
+    }
+    return render(request,'crm/booking_history.html',context)

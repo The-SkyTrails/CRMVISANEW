@@ -301,6 +301,8 @@ urlpatterns = [
    path("recharge/history",recharge_history,name="recharge_history"),
    path("wallet/history",wallet_history,name="wallet_history"),
 
+   path("booking/history",booking_history,name="booking_history"),
+
    
    
   
