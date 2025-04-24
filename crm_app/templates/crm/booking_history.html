@@ -56,17 +56,15 @@
                                                 {% for booking in bookings %}
                                                     <tr>
                                                         <th scope="row">{{ forloop.counter }}</th>
-                                                        <td>{{ booking.booking_id }}</td>
-                                                        <td>{{ booking.status }}</td>
+                                                        <td>{{ booking.bookingId }}</td>
+                                                        <td>{{ booking.bookingStatus }}</td>
                                                         <td>{{ booking.destination }}</td>
                                                         <td>{{ booking.pnr }}</td>
                                                         <td>
-                                                            {% for passenger in booking.passenger_details %}
-                                                                {{ passenger.name }} ({{ passenger.gender }})<br>
-                                                            {% endfor %}
+                                                            {{booking.passengerDetails.firstName}} {{booking.passengerDetails.lastName}}
                                                         </td>
-                                                        <td>{{ booking.contact_no }}</td>
-                                                        <td>{{ booking.airline_name }}</td>
+                                                        <td>{{ booking.passengerDetails.ContactNo }}</td>
+                                                        <td>{{ booking.passengerDetails.airlineDetails }}</td>
                                                     </tr>
                                                 {% endfor %}
                                             {% else %}
