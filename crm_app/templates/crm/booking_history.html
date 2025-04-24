@@ -61,10 +61,12 @@
                                                         <td>{{ booking.destination }}</td>
                                                         <td>{{ booking.pnr }}</td>
                                                         <td>
-                                                            {{booking.passengerDetails.firstName}} {{booking.passengerDetails.lastName}}
+                                                            {{ booking.passengerDetails.0.firstName }} {{ booking.passengerDetails.0.lastName }}
                                                         </td>
-                                                        <td>{{ booking.passengerDetails.ContactNo }}</td>
-                                                        <td>{{ booking.passengerDetails.airlineDetails }}</td>
+                                                        <td>{{ booking.passengerDetails.0.ContactNo }}</td>
+                                                        <td> {% for airline in booking.airlineDetails %}
+                                                            {{ airline.Airline.AirlineName }} ({{ airline.Airline.FlightNumber }})<br>
+                                                        {% endfor %}</td>
                                                     </tr>
                                                 {% endfor %}
                                             {% else %}
