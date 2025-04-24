@@ -6857,17 +6857,38 @@ def wallet_history(request):
 
 
 
+# def booking_history(request):
+#     user_id = request.user.id
+#     page = request.GET.get('page', 1)
+#     limit = 3
+#     url = f"https://st-backend-rzu7.onrender.com/skytrails/crmagent/flightbookings?userId={user_id}&page={page}&limit={limit}"
+#     response = requests.get(url)
+#     data = response.json()
+#     bookings = data.get("data", [])
+#     meta = data.get("meta", {})
+#     context = {
+#         "bookings": bookings,
+#         "meta": meta,
+#     }
+#     return render(request,'crm/booking_history.html',context)
+
+
 def booking_history(request):
     user_id = request.user.id
-    page = request.GET.get('page', 1)
+    page = int(request.GET.get('page', 1))  # Ensure page is integer
     limit = 3
     url = f"https://st-backend-rzu7.onrender.com/skytrails/crmagent/flightbookings?userId={user_id}&page={page}&limit={limit}"
     response = requests.get(url)
     data = response.json()
     bookings = data.get("data", [])
     meta = data.get("meta", {})
+
+    # 👇 Create list of page numbers for pagination in HTML
+    total_pages = list(range(1, int(meta.get("totalPages", 1)) + 1))
+
     context = {
         "bookings": bookings,
         "meta": meta,
+        "total_pages": total_pages,
     }
-    return render(request,'crm/booking_history.html',context)
+    return render(request, 'crm/booking_history.html', context)
