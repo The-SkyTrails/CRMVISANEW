@@ -64,9 +64,10 @@
                                                             {{ booking.passengerDetails.0.firstName }} {{ booking.passengerDetails.0.lastName }}
                                                         </td>
                                                         <td>{{ booking.passengerDetails.0.ContactNo }}</td>
-                                                        <td> {% for airline in booking.airlineDetails %}
+                                                        <td>{{booking.airlineDetails.0.AirlineName}}</td>
+                                                        {% comment %} <td> {% for airline in booking.airlineDetails %}
                                                             {{ airline.Airline.AirlineName }} ({{ airline.Airline.FlightNumber }})<br>
-                                                        {% endfor %}</td>
+                                                        {% endfor %}</td> {% endcomment %}
                                                     </tr>
                                                 {% endfor %}
                                             {% else %}
