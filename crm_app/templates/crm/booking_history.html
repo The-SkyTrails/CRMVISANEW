@@ -64,9 +64,11 @@
                                                             {{ booking.passengerDetails.0.firstName }} {{ booking.passengerDetails.0.lastName }}
                                                         </td>
                                                         <td>{{ booking.passengerDetails.0.ContactNo }}</td>
-                                                        <td> {% for airline in booking.airlineDetails %}
-                                                            {{ airline.Airline.AirlineName }} ({{ airline.Airline.FlightNumber }})<br>
-                                                        {% endfor %}</td>
+                                                        <td>
+                                                            {% for airline in booking.airlineDetails %}
+                                                                {{ airline.Airline.AirlineName }} ({{ airline.Airline.FlightNumber }})<br>
+                                                            {% endfor %}
+                                                        </td>
                                                     </tr>
                                                 {% endfor %}
                                             {% else %}
@@ -76,56 +78,41 @@
                                             {% endif %}
                                         </tbody>
                                     </table>
-
-                                    <div class="d-flex justify-content-end">
-                                        <div class="pagination-wrap hstack gap-2" style="width: 2px;">
-                                           
-                                           {% if meta.page > 1 %}
-                                           <a class="page-item pagination-prev" href="?page=1">
-                                             First
-                                           </a>
-                                     
-                                           <a class="page-item pagination-prev" href="?page={{ meta.page|add:'-1' }}">
-                                              Previous
-                                           </a>
-                                           {% endif %}
-                                     
-                                           <!-- Numbered Page Links -->
-                                           <ul class="pagination listjs-pagination mb-0">
-                                               {% for num in total_pages|slice:":3" %}
-                                                   {% if meta.page == num %}
-                                                       <li class="page-item active">
-                                                           <a class="page-link" href="javascript:void(0);">{{ num }}</a>
-                                                       </li>
-                                                   {% else %}
-                                                       <li class="page-item">
-                                                           <a class="page-link" href="?page={{ num }}">{{ num }}</a>
-                                                       </li>
-                                                   {% endif %}
-                                               {% endfor %}
-                                     
-                                               {% if total_pages|length > 3 %}
-                                               <li class="page-item"><span class="page-link">...</span></li>
-                                               <li class="page-item {% if meta.page == meta.totalPages %}active{% endif %}">
-                                                 <a class="page-link" href="?page={{ meta.totalPages }}">{{ meta.totalPages }}</a>
-                                               </li>
-                                               {% endif %}
-                                           </ul>
-                                     
-                                           <!-- Next Page Button -->
-                                           {% if meta.page < meta.totalPages %}
-                                           <a class="page-item pagination-next" href="?page={{ meta.page|add:'1' }}">
-                                              Next
-                                           </a>
-                                           {% endif %}
-                                        </div>
-                                     </div>
-                                     
+                                </div> <!-- 📦 End table-responsive -->
+                        
+                                <!-- ✅ Move Pagination OUTSIDE table-responsive -->
+                                <div class="d-flex justify-content-end mt-3">
+                                    <div class="pagination-wrap hstack gap-2">
+                                        {% if meta.page > 1 %}
+                                            <a class="page-item pagination-prev" href="?page=1">First</a>
+                                            <a class="page-item pagination-prev" href="?page={{ meta.page|add:'-1' }}">Previous</a>
+                                        {% endif %}
+                        
+                                        <ul class="pagination listjs-pagination mb-0">
+                                            {% for num in total_pages|slice:":3" %}
+                                                {% if meta.page == num %}
+                                                    <li class="page-item active"><a class="page-link" href="javascript:void(0);">{{ num }}</a></li>
+                                                {% else %}
+                                                    <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                                                {% endif %}
+                                            {% endfor %}
+                        
+                                            {% if total_pages|length > 3 %}
+                                                <li class="page-item"><span class="page-link">...</span></li>
+                                                <li class="page-item {% if meta.page == meta.totalPages %}active{% endif %}">
+                                                    <a class="page-link" href="?page={{ meta.totalPages }}">{{ meta.totalPages }}</a>
+                                                </li>
+                                            {% endif %}
+                                        </ul>
+                        
+                                        {% if meta.page < meta.totalPages %}
+                                            <a class="page-item pagination-next" href="?page={{ meta.page|add:'1' }}">Next</a>
+                                        {% endif %}
+                                    </div>
                                 </div>
-                                
                             </div>
-                            
                         </div>
+                        
                         
                     </div><!-- end card-body -->
                 </div><!-- end card -->
