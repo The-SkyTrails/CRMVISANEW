@@ -82,34 +82,40 @@
                         
                                 <!-- ✅ Move Pagination OUTSIDE table-responsive -->
                                 <div class="d-flex justify-content-end mt-3">
-                                    <div class="pagination-wrap hstack gap-2">
+                                    <ul class="pagination listjs-pagination mb-0">
+                                
                                         {% if meta.page > 1 %}
-                                            <a class="page-item pagination-prev" href="?page=1">First</a>
-                                            <a class="page-item pagination-prev" href="?page={{ meta.page|add:'-1' }}">Previous</a>
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page=1">First</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ meta.page|add:'-1' }}">Previous</a>
+                                            </li>
                                         {% endif %}
-                        
-                                        <ul class="pagination listjs-pagination mb-0">
-                                            {% for num in total_pages|slice:":3" %}
-                                                {% if meta.page == num %}
-                                                    <li class="page-item active"><a class="page-link" href="javascript:void(0);">{{ num }}</a></li>
-                                                {% else %}
-                                                    <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
-                                                {% endif %}
-                                            {% endfor %}
-                        
-                                            {% if total_pages|length > 3 %}
-                                                <li class="page-item"><span class="page-link">...</span></li>
-                                                <li class="page-item {% if meta.page == meta.totalPages %}active{% endif %}">
-                                                    <a class="page-link" href="?page={{ meta.totalPages }}">{{ meta.totalPages }}</a>
-                                                </li>
+                                
+                                        {% for num in total_pages|slice:":3" %}
+                                            {% if meta.page == num %}
+                                                <li class="page-item active"><a class="page-link" href="javascript:void(0);">{{ num }}</a></li>
+                                            {% else %}
+                                                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
                                             {% endif %}
-                                        </ul>
-                        
-                                        {% if meta.page < meta.totalPages %}
-                                            <a class="page-item pagination-next" href="?page={{ meta.page|add:'1' }}">Next</a>
+                                        {% endfor %}
+                                
+                                        {% if total_pages|length > 3 %}
+                                            <li class="page-item"><span class="page-link">...</span></li>
+                                            <li class="page-item {% if meta.page == meta.totalPages %}active{% endif %}">
+                                                <a class="page-link" href="?page={{ meta.totalPages }}">{{ meta.totalPages }}</a>
+                                            </li>
                                         {% endif %}
-                                    </div>
+                                
+                                        {% if meta.page < meta.totalPages %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ meta.page|add:'1' }}">Next</a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
                                 </div>
+                                
                             </div>
                         </div>
                         
