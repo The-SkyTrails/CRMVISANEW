@@ -6873,6 +6873,7 @@ def wallet_history(request):
 #     return render(request,'crm/booking_history.html',context)
 
 
+
 def booking_history(request):
     
     user_id = request.user.id
