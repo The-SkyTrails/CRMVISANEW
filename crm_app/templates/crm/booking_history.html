@@ -10,10 +10,10 @@
 
            
             <div class="col-xxl-6">
-                <h5 class="mb-3">Arrow Nav tabs</h5>
+                <h5 class="mb-3">Booking History</h5>
                 <div class="card">
                     <div class="card-body">
-                        <p class="text-muted">Use <code>arrow-navtabs </code>class to create arrow nav tabs.</p>
+                        {% comment %} <p class="text-muted">Use <code>arrow-navtabs </code>class to create arrow nav tabs.</p> {% endcomment %}
                         <ul class="nav nav-pills arrow-navtabs nav-success bg-light mb-3" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active" data-bs-toggle="tab" href="#flight" role="tab">
@@ -127,7 +127,99 @@
                                 </div>
                                 
                             </div>
+
+                            <div class="tab-pane" id="bus" role="tabpanel">
+                                <div class="table-responsive">
+                                    <table class="table mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Booking Id</th>
+                                                <th>Status</th>
+                                                <th>Origin</th>
+                                                <th>Destination</th>
+                                                <th>Passenger Name</th>
+                                                <th>Contact No</th>
+                                                <th>Airline Details</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% if bus_bookings %}
+                                                {% for booking in bus_bookings %}
+                                                    <tr>
+                                                        <th>{{ forloop.counter }}</th>
+                                                        <td>{{ booking.bookingId }}</td>
+                                                        <td>{{ booking.bookingStatus }}</td>
+                                                        <td>{{ booking.origin }}</td>
+                                                        <td>{{ booking.destination }}</td>
+                                                        <td>
+                                                            {{ booking.passengerDetails.0.firstName }} {{ booking.passengerDetails.0.lastName }}
+                                                        </td>
+                                                        <td>{{ booking.passengerDetails.0.ContactNo }}</td>
+                                                        <td>
+                                                            {% for airline in booking.airlineDetails %}
+                                                                {{ airline.Airline.AirlineName }} ({{ airline.Airline.FlightNumber }})<br>
+                                                            {% endfor %}
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            {% else %}
+                                                <tr>
+                                                    <td colspan="8" class="text-center">No bookings found.</td>
+                                                </tr>
+                                            {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div> <!-- 📦 End table-responsive -->
+                            
+                                <!-- ✅ Pagination Bus ka -->
+                                <div class="d-flex justify-content-end mt-3">
+                                    <ul class="pagination listjs-pagination mb-0">
+                                
+                                        {% with bus_meta.page|add:"-0" as current_page %}
+                                            {% if current_page > 1 %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?bus_page=1">First</a>
+                                                </li>
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?bus_page={{ current_page|add:"-1" }}">Previous</a>
+                                                </li>
+                                            {% endif %}
+                                        {% endwith %}
+                            
+                                        {% for num in bus_total_pages|slice:":10" %}
+                                            {% if bus_meta.page == num %}
+                                                <li class="page-item active"><a class="page-link" href="javascript:void(0);">{{ num }}</a></li>
+                                            {% else %}
+                                                <li class="page-item"><a class="page-link" href="?bus_page={{ num }}">{{ num }}</a></li>
+                                            {% endif %}
+                                        {% endfor %}
+                            
+                                        {% if bus_total_pages|length > 10 %}
+                                            <li class="page-item"><span class="page-link">...</span></li>
+                                            <li class="page-item {% if bus_meta.page == bus_meta.totalPages %}active{% endif %}">
+                                                <a class="page-link" href="?bus_page={{ bus_meta.totalPages }}">{{ bus_meta.totalPages }}</a>
+                                            </li>
+                                        {% endif %}
+                            
+                                        {% with bus_meta.page as page %}
+                                            {% with bus_meta.totalPages as total %}
+                                                {% if page|add:"-0" < total|add:"-0" %}
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="?bus_page={{ page|add:'1' }}">Next</a>
+                                                    </li>
+                                                {% endif %}
+                                            {% endwith %}
+                                        {% endwith %}
+                            
+                                    </ul>
+                                </div>
+                            
+                            </div>
+                            
                         </div>
+
+                        
                         
                         
                     </div><!-- end card-body -->
