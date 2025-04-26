@@ -112,13 +112,16 @@
                                             </li>
                                         {% endif %}
                                 
-                                        {% with meta.page|add:"-0" as current_page meta.totalPages|add:"-0" as total_pages %}
-                                            {% if current_page < total_pages %}
-                                                <li class="page-item">
-                                                    <a class="page-link" href="?page={{ current_page|add:'1' }}">Next</a>
-                                                </li>
-                                            {% endif %}
+                                        {% with meta.page as page %}
+                                            {% with meta.totalPages as total %}
+                                                {% if page|add:"-0" < total|add:"-0" %}
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="?page={{ page|add:'1' }}">Next</a>
+                                                    </li>
+                                                {% endif %}
+                                            {% endwith %}
                                         {% endwith %}
+
 
                                     </ul>
                                 </div>
