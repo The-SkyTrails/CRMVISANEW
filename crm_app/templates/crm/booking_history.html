@@ -94,7 +94,7 @@
                                                 </li>
                                             {% endif %}
                                         {% endwith %}
-                                        
+
 
                                 
                                         {% for num in total_pages|slice:":3" %}
@@ -112,11 +112,14 @@
                                             </li>
                                         {% endif %}
                                 
-                                        {% if meta.page < meta.totalPages %}
-                                            <li class="page-item">
-                                                <a class="page-link" href="?page={{ meta.page|add:'1' }}">Next</a>
-                                            </li>
-                                        {% endif %}
+                                        {% with meta.page|add:"-0" as current_page meta.totalPages|add:"-0" as total_pages %}
+                                            {% if current_page < total_pages %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?page={{ current_page|add:'1' }}">Next</a>
+                                                </li>
+                                            {% endif %}
+                                        {% endwith %}
+
                                     </ul>
                                 </div>
                                 
