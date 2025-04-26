@@ -6874,12 +6874,14 @@ def wallet_history(request):
 
 
 def booking_history(request):
+    
     user_id = request.user.id
     page = int(request.GET.get('page', 1))  # Ensure page is integer
     limit = 3
     url = f"https://st-backend-rzu7.onrender.com/skytrails/crmagent/flightbookings?userId={user_id}&page={page}&limit={limit}"
     response = requests.get(url)
     data = response.json()
+    print("Dataaaaaaaaaaaaa",data)
     bookings = data.get("data", [])
     meta = data.get("meta", {})
 

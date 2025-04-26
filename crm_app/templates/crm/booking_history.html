@@ -84,14 +84,25 @@
                                 <div class="d-flex justify-content-end mt-3">
                                     <ul class="pagination listjs-pagination mb-0">
                                 
-                                        {% if meta.page > 1 %}
+                                        {% comment %} {% if meta.page > 1 %}
                                             <li class="page-item">
                                                 <a class="page-link" href="?page=1">First</a>
                                             </li>
                                             <li class="page-item">
                                                 <a class="page-link" href="?page={{ meta.page|add:'-1' }}">Previous</a>
                                             </li>
-                                        {% endif %}
+                                        {% endif %} {% endcomment %}
+                                        {% with meta.page|add:"-0" as current_page %}
+    {% if current_page > 1 %}
+        <li class="page-item">
+            <a class="page-link" href="?page=1">First</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ current_page|add:"-1" }}">Previous</a>
+        </li>
+    {% endif %}
+{% endwith %}
+
                                 
                                         {% for num in total_pages|slice:":3" %}
                                             {% if meta.page == num %}
