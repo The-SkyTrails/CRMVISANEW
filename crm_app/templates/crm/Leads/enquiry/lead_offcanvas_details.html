@@ -1,3 +1,4 @@
+{% load user_roles %}
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample-{{i.id}}" aria-labelledby="offcanvasExample" style="width: 40rem;">
     <div class="offcanvas-header border-bottom">
         <h5 class="offcanvas-title" id="offcanvasRightLabel">Lead Preview</h5>
@@ -18,6 +19,7 @@
 
 
           <div class="container">
+            {% if request.user|has_access:"2,3" %}
             <div class="row h-100">
                 <div class="col-lg-4 col-md-6">
                     <div class="card">
@@ -94,6 +96,7 @@
                 </div><!-- end col -->
                
             </div>
+            {% endif %}
             <div class="details-section mb-4">
                 <h5 >Lead Status: <span class="lead-status text-success">{{i.lead_status}}</span></h5>
             </div>

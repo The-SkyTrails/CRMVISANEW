@@ -6760,8 +6760,7 @@ def generate_cashfree_token(request):
             body = json.loads(request.body)
             amount = float(body.get("amount", 0))
             transaction_id = body.get("transaction_id") 
-            print("bodyyyyyyyyyyyyyy",body)
-            print("transaction_id",transaction_id)
+            
 
             if amount <= 0:
                 return JsonResponse({"error": "Invalid amount"}, status=400)
@@ -6779,7 +6778,7 @@ def generate_cashfree_token(request):
             if user.user_type == '5':
                 phone = user.outsourcingagent.contact_no
 
-            print("phoneee", phone)
+           
 
             Cashfree.XClientId = config("CASHFREE_Client_ID")
             Cashfree.XClientSecret = config("CASHFREE_Client_Secret")
@@ -6806,6 +6805,7 @@ def generate_cashfree_token(request):
             createOrderRequest.order_meta = orderMeta
 
             api_response = Cashfree().PGCreateOrder(x_api_version, createOrderRequest, None, None)
+            print("helloooooooooooooooooo",api_response.data)
 
             RechargeHistory.objects.create(
                 user=user,

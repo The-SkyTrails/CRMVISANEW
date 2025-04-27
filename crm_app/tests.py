@@ -14,7 +14,7 @@ data = {
     "destination": "919135219071",
     "userName": "theskytrail 8413",
     "templateParams": [
-        "Qamar sala kamina kutta "
+        "for testing "
     ],
     "source": "new-landing-page form",
     "media": {

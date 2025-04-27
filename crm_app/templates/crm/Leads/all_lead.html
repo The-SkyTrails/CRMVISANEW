@@ -1,3 +1,4 @@
+{% load user_roles %}
 <style>
     .cursor-pointer:hover {
     transform: scale(1.05);
@@ -77,8 +78,7 @@
     <td class="date">{{i.FirstName}} {{i.LastName}} </td>
     <td class="amount">{{i.Dob}}</td>
     <td class="payment">{{i.passport_no}}</td>
-    <td>{{i.registered_on}}</td>
-    <td>{{i.last_updated_on}}</td>
+    
     <td>{{i.Visa_country}}</td>
     <td>{{i.Visa_category}}</td>
     <td>{{i.Visa_type}}</td>
@@ -150,12 +150,16 @@
     </div>
 </td>
 {% comment %} {% include "crm/Leads/enquiry/view_assign_users_modal.html" %} {% endcomment %}
+{% if request.user|has_access:"2,3" %}
     <td>
       <button type="button" class="btn rounded-pill btn-primary waves-effect waves-light"  hx-get="{% url 'update_assign_employee' i.id%}"  hx-target="#dialog" hx-trigger="click">
           Assigned
          </button>
     </td>
-    <td>
+ 
+  
+  
+   <td>
       <div class="mb-2">
         <button type="button" class="btn  btn-success waves-effect waves-light"  hx-get="{% url 'update_assigned_agent' i.id%}"  hx-target="#dialog" hx-trigger="click">
           Assigned To Agent
@@ -167,11 +171,14 @@
           Assigned To OP
          </button>
       </div>
-    </td>
+    </td> 
+    {% endif %}
     <td class="status"><span class="badge border border-secondary text-secondary text-uppercase">{{i.lead_status}}</span></td>
+    {% if request.user|has_access:"2,3" %}
     <td>
       <button type="button" class="btn btn-outline-danger waves-effect waves-light" hx-get="{% url 'lead_updated' i.id%}" hx-target="#dialog" hx-trigger="click">Update</button>
     </td>
+    {% endif %}
     <td>
       
 
@@ -230,6 +237,9 @@
       
     {% endif %}
     </td>
+    
+    <td>{{i.registered_on}}</td>
+    <td>{{i.last_updated_on}}</td>
     <td>
        <ul class="list-inline hstack gap-2 mb-0">
          
@@ -257,6 +267,7 @@
           </li>
        </ul>
     </td>
+
 
     {% include "crm/Leads/enquiry/view_assign_to_presale_employee_modal.html" %}
     {% include "crm/Leads/enquiry/view_assign_to_agent_modal.html" %}

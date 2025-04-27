@@ -378,10 +378,35 @@
             </li>{% endcomment %}
 
             <li class="nav-item">
-               <a class="nav-link menu-link"  href="{% url "visa_history" %}">
-               <i class="ri-pencil-ruler-2-line"></i> <span data-key="t-widgets">Visa History</span>
+               <a class="nav-link menu-link" href="#lead" data-bs-toggle="collapse" role="button"
+                  aria-expanded="false" aria-controls="lead">
+               <i class="ri-account-circle-line"></i> <span
+                  data-key="t-authentication"> Visa Details</span>
                </a>
+               <div class="collapse menu-dropdown" id="lead">
+                  <ul class="nav nav-sm flex-column">
+                    
+                     
+                     <li class="nav-item">
+                        <a class="nav-link menu-link"  href="https://b2bnww.netlify.app/visa">
+                           <i class="ri-pencil-ruler-2-line"></i> Visa
+                           </a>
+                       
+                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link menu-link"  href="{% url "visa_history" %}">
+                           <i class="ri-pencil-ruler-2-line"></i> Visa History
+                           </a>
+                       
+                     </li>
+                    
+                     
+                    
+                  </ul>
+               </div>
             </li>
+
+           
 
             {% if request.user.is_authenticated %}
             {% with request.session.access_token as token %}

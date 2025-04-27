@@ -1,5 +1,6 @@
 {% extends "crm/base/base.html" %}
 {% load user_roles %}
+{% load user_roles %}
 {% load sweetify %}
 {% sweetify %}
 {% block main-content %}
@@ -63,8 +64,9 @@
                               <li class="nav-item">
                                 <a class="nav-link fw-semibold" data-bs-toggle="tab"
                                    href="#lead-enrolled" role="tab">
-                                Enrolled <span
-                                   class="badge bg-info-subtle text-info align-middle rounded-pill ms-1">5</span>
+                                Enrolled
+                                 {% comment %} <span
+                                   class="badge bg-info-subtle text-info align-middle rounded-pill ms-1">5</span> {% endcomment %}
                                 </a>
                              </li>
                              {% endif %}
@@ -73,8 +75,9 @@
                               <li class="nav-item">
                                  <a class="nav-link fw-semibold" data-bs-toggle="tab"
                                     href="#lead-cancel" role="tab">
-                                 Cancel <span
-                                    class="badge bg-danger-subtle text-danger align-middle rounded-pill ms-1">5</span>
+                                 Cancel 
+                                 {% comment %} <span
+                                    class="badge bg-danger-subtle text-danger align-middle rounded-pill ms-1">5</span> {% endcomment %}
                                  </a>
                               </li>
                               {% endif %}
@@ -82,22 +85,25 @@
                               <li class="nav-item">
                                  <a class="nav-link fw-semibold" data-bs-toggle="tab"
                                     href="#lead-active" role="tab">
-                                 Active<span
-                                 class="badge bg-danger-subtle text-danger align-middle rounded-pill ms-1">5</span>
+                                 Active
+                                 {% comment %} <span
+                                 class="badge bg-danger-subtle text-danger align-middle rounded-pill ms-1">5</span> {% endcomment %}
                                  </a>
                               </li>
                               <li class="nav-item">
                                  <a class="nav-link fw-semibold" data-bs-toggle="tab"
                                     href="#lead-inporcess" role="tab">
-                                    Inprocess<span
-                                 class="badge bg-danger-subtle text-danger align-middle rounded-pill ms-1">5</span>
+                                    Inprocess
+                                    {% comment %} <span
+                                 class="badge bg-danger-subtle text-danger align-middle rounded-pill ms-1">5</span> {% endcomment %}
                                  </a>
                               </li>
                               <li class="nav-item">
                                  <a class="nav-link fw-semibold" data-bs-toggle="tab"
                                     href="#lead-Appointment" role="tab">
-                                    Appointment<span
-                                 class="badge bg-danger-subtle text-danger align-middle rounded-pill ms-1">5</span>
+                                    Appointment
+                                    {% comment %} <span
+                                 class="badge bg-danger-subtle text-danger align-middle rounded-pill ms-1">5</span> {% endcomment %}
                                  </a>
                               </li>
                               {% endif %}
@@ -105,8 +111,9 @@
                               <li class="nav-item">
                                  <a class="nav-link fw-semibold" data-bs-toggle="tab"
                                     href="#Result-awaited" role="tab">
-                                    Result Awaited<span
-                                 class="badge bg-white-subtle text-white align-middle rounded-pill ms-1">5</span>
+                                    Result Awaited
+                                    {% comment %} <span
+                                 class="badge bg-white-subtle text-white align-middle rounded-pill ms-1">5</span> {% endcomment %}
                                  </a>
                               </li>
                               {% endif %}
@@ -114,22 +121,25 @@
                               <li class="nav-item">
                                  <a class="nav-link fw-semibold" data-bs-toggle="tab"
                                     href="#lead-new" role="tab">
-                                    New<span
-                                 class="badge bg-info-subtle text-info align-middle rounded-pill ms-1">5</span>
+                                    New
+                                    {% comment %} <span
+                                 class="badge bg-info-subtle text-info align-middle rounded-pill ms-1">5</span> {% endcomment %}
                                  </a>
                               </li>
                               <li class="nav-item">
                                  <a class="nav-link fw-semibold" data-bs-toggle="tab"
                                     href="#lead-approved" role="tab">
-                                    Approved<span
-                                 class="badge bg-warning-subtle text-warning align-middle rounded-pill ms-1">5</span>
+                                    Approved
+                                    {% comment %} <span
+                                 class="badge bg-warning-subtle text-warning align-middle rounded-pill ms-1">5</span> {% endcomment %}
                                  </a>
                               </li>
                               <li class="nav-item">
                                  <a class="nav-link fw-semibold" data-bs-toggle="tab"
                                     href="#lead-completed" role="tab">
-                                    Completed<span
-                                 class="badge bg-success-subtle text-success align-middle rounded-pill ms-1">5</span>
+                                    Completed
+                                    {% comment %} <span
+                                 class="badge bg-success-subtle text-success align-middle rounded-pill ms-1">5</span> {% endcomment %}
                                  </a>
                               </li>
                               {% endif %}
@@ -163,7 +173,7 @@
                               <div class="col-sm-6 d-flex justify-content-end">
                                   <div class="search-box ms-2">
                                       <input class="form-control" type="search" 
-                                          name="search" placeholder="Begin Typing To Search Users..." 
+                                          name="search" placeholder="Search" 
                                           hx-get="{% url 'all_lead' %}" 
                                           hx-trigger="input changed delay:500ms, search" 
                                           hx-target="#search-results" 
@@ -185,22 +195,32 @@
                                        <th>Name</th>
                                        <th>DOB</th>
                                        <th>Passport No</th>
-                                       <th>Registered ON.</th>
-                                       <th>Updated on</th>
+                                       
                                        <th>VISA COUNTRY</th>
                                        <th>VISA Category - SUB CATEGORY</th>
                                        <th>VISA TYPE</th>
                                        <th>Package Name</th>
                                        <th>CREATED BY</th>
+                                       {% if request.user|has_access:"2,3" %}
                                        <th>Assigned TO</th>
+                                       {% endif %}
+                                       
+                                       
                                        <th>Update Assigned To</th>
+                                       {% if request.user|has_access:"2,3" %}
                                        <th>Assign to Agent/OP</th>
+                                       {% endif %}
                                        <th>LEAD status</th>
+                                       {% if request.user|has_access:"2,3" %}
                                        <th>Lead Updated</th>
+                                       {% endif %}
                                        <th>Appointment</th>
                                        <th>Appointment Status</th>
                                        <th>NOTES</th>
                                        <th>Colour Code</th>
+                           
+                                       <th>Registered ON.</th>
+                                       <th>Updated on</th>
                                        <th>ACTION</th>
                                     </tr>
                                  </thead>
