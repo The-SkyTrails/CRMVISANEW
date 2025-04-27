@@ -530,7 +530,8 @@
 
 .main-content {
 	-webkit-transition: all .1s ease-out;
-	transition: all .1s ease-out
+	transition: all .1s ease-out;
+	overflow-x: hidden;
 }
 
 @media (min-width:768px) {

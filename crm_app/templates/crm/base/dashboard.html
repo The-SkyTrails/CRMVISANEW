@@ -6,7 +6,7 @@
 <div class="page-content" id="abc">
    <div class="container-fluid">
       <!-- start page title -->
-      <div class="row">
+      <!-- <div class="row">
          <div class="col-12">
             <div
                class="page-title-box d-sm-flex align-items-center justify-content-between bg-transparent">
@@ -19,818 +19,1860 @@
                </div>
             </div>
          </div>
-      </div>
+      </div> -->
       <!-- end page title -->
-      {% if user|has_access:"3,4,5" %}
-      <div class="marque card" >
-          <marquee behavior="" direction="">
-         {% if latest_news %}
-         {% for newsItem in latest_news %}
-         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M18.0002 3.99693V16.0726C18.0002 16.2558 17.9496 16.4354 17.854 16.5917C17.7583 16.7481 17.6213 16.8752 17.458 16.959C17.2946 17.0428 17.1113 17.0802 16.928 17.067C16.7448 17.0537 16.5687 16.9905 16.4192 16.8841L11.0001 13.0253V7.04427L16.4192 3.18551C16.5687 3.0791 16.7448 3.01582 16.928 3.0026C17.1113 2.98938 17.2946 3.02674 17.458 3.11057C17.6213 3.1944 17.7583 3.32147 17.854 3.47783C17.9496 3.63419 18.0002 3.81379 18.0002 3.99693Z" fill="url(#paint0_linear_688_204)"></path>
-            <path d="M10.0001 6.04743H5.00003C4.46959 6.04743 3.96087 6.25748 3.58579 6.63136C3.21072 7.00525 3 7.51235 3 8.04111V12.0285C3 12.5572 3.21072 13.0643 3.58579 13.4382C3.96087 13.8121 4.46959 14.0221 5.00003 14.0221V19.0063C5.00003 19.5351 5.21075 20.0422 5.58582 20.4161C5.9609 20.79 6.46962 21 7.00006 21H8.00007C8.53051 21 9.03923 20.79 9.41431 20.4161C9.78938 20.0422 10.0001 19.5351 10.0001 19.0063V6.04743ZM7.00006 19.0063V14.0221H8.00007V19.0063H7.00006Z" fill="url(#paint1_linear_688_204)"></path>
-            <path d="M19.0002 7.22669V12.8429C19.5846 12.6394 20.0909 12.2598 20.4492 11.7566C20.8075 11.2535 21 10.6518 21 10.0348C21 9.41778 20.8075 8.81605 20.4492 8.31293C20.0909 7.80981 19.5846 7.4302 19.0002 7.22669Z" fill="url(#paint2_linear_688_204)"></path>
-            <defs>
-               <linearGradient id="paint0_linear_688_204" x1="12" y1="3" x2="12" y2="21" gradientUnits="userSpaceOnUse">
-                  <stop stop-color="#00B0D2"></stop>
-                  <stop offset="1" stop-color="#1959DB"></stop>
-               </linearGradient>
-               <linearGradient id="paint1_linear_688_204" x1="12" y1="3" x2="12" y2="21" gradientUnits="userSpaceOnUse">
-                  <stop stop-color="#00B0D2"></stop>
-                  <stop offset="1" stop-color="#1959DB"></stop>
-               </linearGradient>
-               <linearGradient id="paint2_linear_688_204" x1="12" y1="3" x2="12" y2="21" gradientUnits="userSpaceOnUse">
-                  <stop stop-color="#00B0D2"></stop>
-                  <stop offset="1" stop-color="#1959DB"></stop>
-               </linearGradient>
-            </defs>
-         </svg>
-         {{ newsItem.news }} <span style="margin-right: 20px;"></span>
-         {% endfor %}
-         {% else %}
-         Waiting for news...
-         {% endif %}
-      </marquee>
-      </div>
+      {% if user|is_admin %}
+      <div class="news-ticker-section">
+        <!-- Custom CSS for News Ticker -->
+        <style>
+            .news-ticker-section {
+                margin-bottom: 2rem;
+            }
+            
+            .news-ticker-card {
+                border: none;
+                border-radius: 12px;
+                overflow: hidden;
+                background: linear-gradient(135deg, #1959DB 0%, #00B0D2 100%);
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+                position: relative;
+                padding: 0.75rem 1.5rem;
+            }
+            
+            /* .news-ticker-card::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 2px;
+                background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0) 100%);
+                animation: shine 3s infinite;
+            } */
+            
+            @keyframes shine {
+                0% { transform: translateX(-100%); }
+                100% { transform: translateX(100%); }
+            }
+            
+            .news-ticker {
+                display: flex;
+                align-items: center;
+                color: white;
+                font-size: 1rem;
+                font-weight: 500;
+                overflow: hidden;
+                position: relative;
+                height: 40px;
+            }
+            
+            .news-ticker-content {
+                display: flex;
+                align-items: center;
+                position: absolute;
+                white-space: nowrap;
+                animation: ticker 60s linear infinite;
+            }
+            
+            @keyframes ticker {
+                0% { transform: translateX(100%); }
+                100% { transform: translateX(-100%); }
+            }
+            
+            .news-item {
+                display: flex;
+                align-items: center;
+                margin-right: 3rem;
+            }
+            
+            .news-icon {
+                width: 24px;
+                height: 24px;
+                margin-right: 1rem;
+                flex-shrink: 0;
+                filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+            }
+            
+            .no-news {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                color: rgba(255,255,255,0.8);
+                font-style: italic;
+            }
+            
+            .news-ticker:hover .news-ticker-content {
+                animation-play-state: paused;
+            }
+            
+            /* Responsive adjustments */
+            @media (max-width: 767px) {
+                .news-ticker-card {
+                    padding: 0.75rem 1rem;
+                    border-radius: 8px;
+                }
+                
+                .news-ticker {
+                    font-size: 0.9rem;
+                    height: 36px;
+                }
+                
+                .news-icon {
+                    width: 20px;
+                    height: 20px;
+                    margin-right: 0.75rem;
+                }
+            }
+        </style>
+    
+        <div class="news-ticker-card card">
+            <div class="news-ticker">
+                {% if latest_news %}
+                <div class="news-ticker-content">
+                    {% for newsItem in latest_news %}
+                    <div class="news-item">
+                        <svg class="news-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
+                            <path d="M18.0002 3.99693V16.0726C18.0002 16.2558 17.9496 16.4354 17.854 16.5917C17.7583 16.7481 17.6213 16.8752 17.458 16.959C17.2946 17.0428 17.1113 17.0802 16.928 17.067C16.7448 17.0537 16.5687 16.9905 16.4192 16.8841L11.0001 13.0253V7.04427L16.4192 3.18551C16.5687 3.0791 16.7448 3.01582 16.928 3.0026C17.1113 2.98938 17.2946 3.02674 17.458 3.11057C17.6213 3.1944 17.7583 3.32147 17.854 3.47783C17.9496 3.63419 18.0002 3.81379 18.0002 3.99693Z"></path>
+                            <path d="M10.0001 6.04743H5.00003C4.46959 6.04743 3.96087 6.25748 3.58579 6.63136C3.21072 7.00525 3 7.51235 3 8.04111V12.0285C3 12.5572 3.21072 13.0643 3.58579 13.4382C3.96087 13.8121 4.46959 14.0221 5.00003 14.0221V19.0063C5.00003 19.5351 5.21075 20.0422 5.58582 20.4161C5.9609 20.79 6.46962 21 7.00006 21H8.00007C8.53051 21 9.03923 20.79 9.41431 20.4161C9.78938 20.0422 10.0001 19.5351 10.0001 19.0063V6.04743ZM7.00006 19.0063V14.0221H8.00007V19.0063H7.00006Z"></path>
+                            <path d="M19.0002 7.22669V12.8429C19.5846 12.6394 20.0909 12.2598 20.4492 11.7566C20.8075 11.2535 21 10.6518 21 10.0348C21 9.41778 20.8075 8.81605 20.4492 8.31293C20.0909 7.80981 19.5846 7.4302 19.0002 7.22669Z"></path>
+                        </svg>
+                        {{ newsItem.news }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="no-news">
+                    <svg class="news-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="rgba(255,255,255,0.8)">
+                        <path d="M18.0002 3.99693V16.0726C18.0002 16.2558 17.9496 16.4354 17.854 16.5917C17.7583 16.7481 17.6213 16.8752 17.458 16.959C17.2946 17.0428 17.1113 17.0802 16.928 17.067C16.7448 17.0537 16.5687 16.9905 16.4192 16.8841L11.0001 13.0253V7.04427L16.4192 3.18551C16.5687 3.0791 16.7448 3.01582 16.928 3.0026C17.1113 2.98938 17.2946 3.02674 17.458 3.11057C17.6213 3.1944 17.7583 3.32147 17.854 3.47783C17.9496 3.63419 18.0002 3.81379 18.0002 3.99693Z"></path>
+                        <path d="M10.0001 6.04743H5.00003C4.46959 6.04743 3.96087 6.25748 3.58579 6.63136C3.21072 7.00525 3 7.51235 3 8.04111V12.0285C3 12.5572 3.21072 13.0643 3.58579 13.4382C3.96087 13.8121 4.46959 14.0221 5.00003 14.0221V19.0063C5.00003 19.5351 5.21075 20.0422 5.58582 20.4161C5.9609 20.79 6.46962 21 7.00006 21H8.00007C8.53051 21 9.03923 20.79 9.41431 20.4161C9.78938 20.0422 10.0001 19.5351 10.0001 19.0063V6.04743ZM7.00006 19.0063V14.0221H8.00007V19.0063H7.00006Z"></path>
+                        <path d="M19.0002 7.22669V12.8429C19.5846 12.6394 20.0909 12.2598 20.4492 11.7566C20.8075 11.2535 21 10.6518 21 10.0348C21 9.41778 20.8075 8.81605 20.4492 8.31293C20.0909 7.80981 19.5846 7.4302 19.0002 7.22669Z"></path>
+                    </svg>
+                    Waiting for news updates...
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
       {% endif %}
       <div class="row">
          <div class="col">
             <div class="h-100">
-               <div class="row mb-3 pb-1">
-                  <div class="col-12">
-                     <div class="d-flex align-items-lg-center flex-lg-row flex-column">
-                        <div class="flex-grow-1">
-                           <h4 class="fs-16 mb-1">{{greeting}}, {{request.user.first_name}}!</h4>
-                           <p class="text-muted mb-0">Here's what's happening with your store
-                              today.
-                           </p>
+                <div class="greeting-section">
+                    <!-- Custom CSS for Greeting Section -->
+                    <style>
+                        .greeting-section {
+                            margin-bottom: 2rem;
+                            padding-bottom: 1rem;
+                        }
+                        
+                        .greeting-container {
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                            flex-wrap: wrap;
+                            gap: 1rem;
+                        }
+                        
+                        .greeting-content {
+                            flex: 1;
+                            min-width: 300px;
+                        }
+                        
+                        .greeting-title {
+                            font-family: 'Inter', sans-serif;
+                            font-weight: 600;
+                            font-size: 1.75rem;
+                            color: var(--dark-color);
+                            margin-bottom: 0.5rem;
+                            line-height: 1.3;
+                            position: relative;
+                            display: inline-block;
+                        }
+                        
+                        .greeting-title::after {
+                            content: "";
+                            position: absolute;
+                            bottom: -5px;
+                            left: 0;
+                            width: 50px;
+                            height: 3px;
+                            background: var(--primary-color);
+                            border-radius: 3px;
+                        }
+                        
+                        .greeting-subtitle {
+                            font-size: 1.1rem;
+                            color: var(--secondary-color);
+                            margin-bottom: 0;
+                            font-weight: 400;
+                            opacity: 0.9;
+                        }
+                        
+                        /* Animation for greeting */
+                        @keyframes fadeIn {
+                            from { opacity: 0; transform: translateY(10px); }
+                            to { opacity: 1; transform: translateY(0); }
+                        }
+                        
+                        .greeting-content {
+                            animation: fadeIn 0.6s ease-out forwards;
+                        }
+                        
+                        /* Responsive adjustments */
+                        @media (max-width: 768px) {
+                            .greeting-title {
+                                font-size: 1.5rem;
+                            }
+                            
+                            .greeting-subtitle {
+                                font-size: 1rem;
+                            }
+                        }
+                    </style>
+                
+                    <div class="col-12">
+                        <div class="greeting-container">
+                            <div class="greeting-content">
+                                <h1 class="greeting-title">{{greeting}}, {{request.user.first_name}}!</h1>
+                                <p class="greeting-subtitle">Here's what's happening with your store today.</p>
+                            </div>
                         </div>
-                       
-                     </div>
-                     <!-- end card header -->
-                  </div>
-                  <!--end col-->
-               </div>
+                    </div>
+                    <!--end col-->
+                </div>
                <!--end row-->
                {% if user|is_admin %}
                <div class="row">
-                  <div class="col-xl-3 col-md-6" data-aos="fade-right" data-aos-offset="300" data-aos-easing="ease-in-sine">
-                     <!-- card -->
-                     <div class="card card-animate">
-                        <div class="card-body">
-                           <div class="d-flex align-items-center">
-                              <div class="flex-grow-1 overflow-hidden">
-                                 <p
-                                    class="text-uppercase fw-medium text-muted text-truncate mb-0">
-                                    New
-                                 </p>
+                  <!-- Custom CSS for the cards -->
+                  <style>
+                      :root {
+                          --primary-color: #4361ee;
+                          --secondary-color: #3f37c9;
+                          --accent-color: #4895ef;
+                          --light-gray: #f8f9fa;
+                          --dark-color: #212529;
+                          --card-shadow: 0 4px 20px rgba(67, 97, 238, 0.1);
+                          --card-hover-shadow: 0 8px 30px rgba(67, 97, 238, 0.2);
+                      }
+              
+                      .stat-card {
+                          border: none;
+                          border-radius: 15px;
+                          overflow: hidden;
+                          transition: all 0.3s ease;
+                          position: relative;
+                          background: white;
+                          box-shadow: var(--card-shadow);
+                          margin-bottom: 24px;
+                          border: 1px solid lightgray;
+                      }
+              
+                      .stat-card:hover {
+                          transform: translateY(-5px);
+                          box-shadow: var(--card-hover-shadow);
+                      }
+              
+                      .stat-card::before {
+                          content: "";
+                          position: absolute;
+                          top: -50px;
+                          right: -50px;
+                          width: 100px;
+                          height: 100px;
+                          border-radius: 50%;
+                          background: rgba(67, 97, 238, 0.05);
+                          z-index: 0;
+                      }
+              
+                      .stat-card::after {
+                          content: "";
+                          position: absolute;
+                          bottom: -30px;
+                          left: -30px;
+                          width: 70px;
+                          height: 70px;
+                          border-radius: 50%;
+                          background: rgba(67, 97, 238, 0.05);
+                          z-index: 0;
+                      }
+              
+                      .stat-card .card-body {
+                          position: relative;
+                          z-index: 1;
+                          padding: 1.5rem;
+                      }
+              
+                      .stat-card .card-icon {
+                          width: 50px;
+                          height: 50px;
+                          display: flex;
+                          align-items: center;
+                          justify-content: center;
+                          border-radius: 12px;
+                          font-size: 24px;
+                          margin-bottom: 15px;
+                          color: white;
+                      }
+              
+                      .stat-card .card-title {
+                          font-size: 14px;
+                          text-transform: uppercase;
+                          letter-spacing: 0.5px;
+                          color: #6c757d;
+                          margin-bottom: 8px;
+                          font-weight: 500;
+                      }
+              
+                      .stat-card .card-value {
+                          font-size: 26px;
+                          font-weight: 700;
+                          color: var(--dark-color);
+                          margin-bottom: 10px;
+                          font-family: 'Orbitron', sans-serif;
+                      }
+              
+                      .stat-card .card-link {
+                          color: var(--primary-color);
+                          text-decoration: none;
+                          font-size: 13px;
+                          transition: all 0.3s;
+                          display: inline-flex;
+                          align-items: center;
+                      }
+              
+                      .stat-card .card-link:hover {
+                          color: var(--secondary-color);
+                          text-decoration: underline;
+                      }
+              
+                      .stat-card .card-link i {
+                          margin-left: 5px;
+                          transition: transform 0.3s;
+                      }
+              
+                      .stat-card .card-link:hover i {
+                          transform: translateX(3px);
+                      }
+              
+                      .stat-card .trend-indicator {
+                          display: flex;
+                          align-items: center;
+                          font-size: 13px;
+                          margin-left: auto;
+                          gap: 5px;
+                      }
+              
+                      .trend-up {
+                          color: #0acf97;
+                      }
+              
+                      .trend-down {
+                          color: #fa5c7c;
+                      }
+              
+                      .trend-neutral {
+                          color: #ffbc00;
+                      }
+              
+                      /* Specific card colors */
+                      .card-new .card-icon { background: linear-gradient(135deg, #fa5c7c 0%, #f5306e 100%); }
+                      .card-active .card-icon { background: linear-gradient(135deg, #0acf97 0%, #04a777 100%); }
+                      .card-archive .card-icon { background: linear-gradient(135deg, #727cf5 0%, #5a66f3 100%); }
+                      .card-inprocess .card-icon { background: linear-gradient(135deg, #ffbc00 0%, #f9a602 100%); }
+                      .card-appointment .card-icon { background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%); }
+                      .card-enrolled .card-icon { background: linear-gradient(135deg, #39afd1 0%, #2c9fbf 100%); }
+                      .card-result-awaited .card-icon { background: linear-gradient(135deg, #e83e8c 0%, #d62f7c 100%); }
+                      .card-completed .card-icon { background: linear-gradient(135deg, #02a8b5 0%, #018e99 100%); }
+                      .card-approved .card-icon { background: linear-gradient(135deg, #6fd96f 0%, #5ac85a 100%); }
+                      .card-agent .card-icon { background: linear-gradient(135deg, #5b69bc 0%, #4a57ad 100%); }
+                      .card-employee .card-icon { background: linear-gradient(135deg, #fd7e14 0%, #f56e00 100%); }
+                  </style>
+              
+                  <!-- New Leads Card -->
+                  <div class="col-xl-3 col-md-6" data-aos="fade-right" data-aos-offset="100" data-aos-easing="ease-in-sine">
+                      <div class="stat-card card-new">
+                          <div class="card-body">
+                              <div class="card-icon">
+                                  <i class="fas fa-plus-circle"></i>
                               </div>
-                              <div class="flex-shrink-0">
-                                 <h5 class="text-danger fs-14 mb-0">
-                                    <i class="ri-arrow-right-down-line fs-13 align-middle"></i>
-                                    {{leadnew_count }}
-                                 </h5>
+                              <h5 class="card-title">New Leads</h5>
+                              <h3 class="card-value">{{ leadnew_count }}</h3>
+                              <div class="d-flex align-items-center">
+                                  <a href="{% url "lead_load" %}" class="card-link">
+                                      View All Leads <i class="fas fa-arrow-right"></i>
+                                  </a>
+                                  <span class="trend-indicator trend-down">
+                                      <i class="fas fa-arrow-down"></i> {{ leadnew_count }}
+                                  </span>
                               </div>
-                              
-                           </div>
-                           <div class="d-flex align-items-end justify-content-between mt-4">
-                              <div>
-                                 <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span
-                                    class="counter-value" data-target="{{ leadnew_count }}">{{leadnew_count }}</span>
-                                 </h4>
-                                 <a href="{% url "lead_load" %}" class="text-decoration-underline">View All Leads
-                                 </a>
-                              </div>
-                              {% comment %} <div class="avatar-sm flex-shrink-0">
-                                 <span class="avatar-title bg-primary-subtle rounded fs-3">
-                                 <i class="bx bx-dollar-circle text-primary"></i>
-                                 </span>
-                              </div> {% endcomment %}
-                           </div>
-                        </div>
-                        <!-- end card body -->
-                     </div>
-                     <!-- end card -->
+                          </div>
+                      </div>
                   </div>
-                  <!-- end col -->
-                  <div class="col-xl-3 col-md-6" data-aos="fade-right" data-aos-offset="300" data-aos-easing="ease-in-sine">
-                     <!-- card -->
-                     <div class="card card-animate">
-                        <div class="card-body">
-                           <div class="d-flex align-items-center">
-                              <div class="flex-grow-1 overflow-hidden">
-                                 <p
-                                    class="text-uppercase fw-medium text-muted text-truncate mb-0">
-                                    Active
-                                 </p>
+              
+                  <!-- Active Leads Card -->
+                  <div class="col-xl-3 col-md-6" data-aos="fade-right" data-aos-offset="100" data-aos-easing="ease-in-sine">
+                      <div class="stat-card card-active">
+                          <div class="card-body">
+                              <div class="card-icon">
+                                  <i class="fas fa-bolt"></i>
                               </div>
-                              <div class="flex-shrink-0">
-                                 <h5 class="text-danger fs-14 mb-0">
-                                    <i class="ri-arrow-right-down-line fs-13 align-middle"></i>
-                                    {{leadpending_count}}
-                                 </h5>
+                              <h5 class="card-title">Active Leads</h5>
+                              <h3 class="card-value">{{ leadpending_count }}</h3>
+                              <div class="d-flex align-items-center">
+                                  <a href="{% url "lead_load" %}" class="card-link">
+                                      View All Leads <i class="fas fa-arrow-right"></i>
+                                  </a>
+                                  <span class="trend-indicator trend-down">
+                                      <i class="fas fa-arrow-down"></i> {{ leadpending_count }}
+                                  </span>
                               </div>
-                           </div>
-                           <div class="d-flex align-items-end justify-content-between mt-4">
-                              <div>
-                                 <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span
-                                    class="counter-value" data-target="{{leadpending_count}}">{{leadpending_count}}</span></h4>
-                                 <a href="{% url "lead_load" %}" class="text-decoration-underline">View all Leads</a>
-                              </div>
-                              
-                           </div>
-                        </div>
-                        <!-- end card body -->
-                     </div>
-                     <!-- end card -->
+                          </div>
+                      </div>
                   </div>
-                  <!-- end col -->
-                  <div class="col-xl-3 col-md-6" data-aos="fade-left" data-aos-offset="300" data-aos-easing="ease-in-sine">
-                     <!-- card -->
-                     <div class="card card-animate">
-                        <div class="card-body">
-                           <div class="d-flex align-items-center">
-                              <div class="flex-grow-1 overflow-hidden">
-                                 <p
-                                    class="text-uppercase fw-medium text-muted text-truncate mb-0">
-                                    Archive
-                                 </p>
+              
+                  <!-- Archive Leads Card -->
+                  <div class="col-xl-3 col-md-6" data-aos="fade-left" data-aos-offset="100" data-aos-easing="ease-in-sine">
+                      <div class="stat-card card-archive">
+                          <div class="card-body">
+                              <div class="card-icon">
+                                  <i class="fas fa-archive"></i>
                               </div>
-                              <div class="flex-shrink-0">
-                                 <h5 class="text-success fs-14 mb-0">
-                                    <i class="ri-arrow-right-up-line fs-13 align-middle"></i>
-                                    {{leadarchive_count}}
-                                 </h5>
+                              <h5 class="card-title">Archive Leads</h5>
+                              <h3 class="card-value">{{ leadarchive_count }}</h3>
+                              <div class="d-flex align-items-center">
+                                  <a href="{% url "lead_load" %}" class="card-link">
+                                      View All Leads <i class="fas fa-arrow-right"></i>
+                                  </a>
+                                  <span class="trend-indicator trend-up">
+                                      <i class="fas fa-arrow-up"></i> {{ leadarchive_count }}
+                                  </span>
                               </div>
-                           </div>
-                           <div class="d-flex align-items-end justify-content-between mt-4">
-                              <div>
-                                 <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span
-                                    class="counter-value" data-target="{{leadarchive_count}}">{{leadarchive_count}}</span>
-                                 </h4>
-                                 <a href="{% url "lead_load" %}" class="text-decoration-underline">View All Leads</a>
-                              </div>
-                             
-                           </div>
-                        </div>
-                        <!-- end card body -->
-                     </div>
-                     <!-- end card -->
+                          </div>
+                      </div>
                   </div>
-                  <!-- end col -->
-                  <div class="col-xl-3 col-md-6" data-aos="fade-left" data-aos-offset="300" data-aos-easing="ease-in-sine">
-                     <!-- card -->
-                     <div class="card card-animate">
-                        <div class="card-body">
-                           <div class="d-flex align-items-center">
-                              <div class="flex-grow-1 overflow-hidden">
-                                 <p
-                                    class="text-uppercase fw-medium text-muted text-truncate mb-0">
-                                    InPROCESS
-                                 </p>
+              
+                  <!-- InProcess Leads Card -->
+                  <div class="col-xl-3 col-md-6" data-aos="fade-left" data-aos-offset="100" data-aos-easing="ease-in-sine">
+                      <div class="stat-card card-inprocess">
+                          <div class="card-body">
+                              <div class="card-icon">
+                                  <i class="fas fa-cogs"></i>
                               </div>
-                              <div class="flex-shrink-0">
-                                 <h5 class="text-warning fs-14 mb-0">
-                                    <i class="ri-arrow-right-up-line fs-13 align-middle"></i>
-                                    {{leadinprocess_count}}
-                                 </h5>
-                                 
+                              <h5 class="card-title">InProcess Leads</h5>
+                              <h3 class="card-value">{{ leadinprocess_count }}</h3>
+                              <div class="d-flex align-items-center">
+                                  <a href="{% url "lead_load" %}" class="card-link">
+                                      View All Leads <i class="fas fa-arrow-right"></i>
+                                  </a>
+                                  <span class="trend-indicator trend-up">
+                                      <i class="fas fa-arrow-up"></i> {{ leadinprocess_count }}
+                                  </span>
                               </div>
-                           </div>
-                           <div class="d-flex align-items-end justify-content-between mt-4">
-                              <div>
-                                 <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span
-                                    class="counter-value" data-target="{{leadinprocess_count}}">{{leadinprocess_count}}</span>
-                                 </h4>
-                                 <a href="{% url "lead_load" %}" class="text-decoration-underline">View All Leads</a>
-                              </div>
-                              
-                           </div>
-                        </div>
-                        <!-- end card body -->
-                     </div>
-                     <!-- end card -->
+                          </div>
+                      </div>
                   </div>
-                  <!-- end col -->
-               </div>
-               <div class="row">
+              
+                  <!-- Appointment Leads Card -->
                   <div class="col-xl-3 col-md-6" data-aos="fade-right" data-aos-easing="ease-in-sine">
-                     <!-- card -->
-                     <div class="card card-animate">
-                        <div class="card-body">
-                           <div class="d-flex align-items-center">
-                              <div class="flex-grow-1 overflow-hidden">
-                                 <p
-                                    class="text-uppercase fw-medium text-muted text-truncate mb-0">
-                                    Appointment
-                                 </p>
+                      <div class="stat-card card-appointment">
+                          <div class="card-body">
+                              <div class="card-icon">
+                                  <i class="fas fa-calendar-check"></i>
                               </div>
-                              <div class="flex-shrink-0">
-                                 <h5 class="text-success fs-14 mb-0">
-                                    <i class="ri-arrow-right-up-line fs-13 align-middle"></i>
-                                    {{leadappoint_count}}
-                                 </h5>
+                              <h5 class="card-title">Appointment</h5>
+                              <h3 class="card-value">{{ leadappoint_count }}</h3>
+                              <div class="d-flex align-items-center">
+                                  <a href="{% url "lead_load" %}" class="card-link">
+                                      View All Leads <i class="fas fa-arrow-right"></i>
+                                  </a>
+                                  <span class="trend-indicator trend-up">
+                                      <i class="fas fa-arrow-up"></i> {{ leadappoint_count }}
+                                  </span>
                               </div>
-                           </div>
-                           <div class="d-flex align-items-end justify-content-between mt-4">
-                              <div>
-                                 <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span
-                                    class="counter-value" data-target="{{leadappoint_count}}">{{leadappoint_count}}</span>
-                                 </h4>
-                                 <a href="{% url "lead_load" %}" class="text-decoration-underline">View All Leads
-                                 </a>
-                              </div>
-                              
-                           </div>
-                        </div>
-                        <!-- end card body -->
-                     </div>
-                     <!-- end card -->
+                          </div>
+                      </div>
                   </div>
-                  <!-- end col -->
+              
+                  <!-- Enrolled Leads Card -->
                   <div class="col-xl-3 col-md-6" data-aos="fade-right" data-aos-easing="ease-in-sine">
-                     <!-- card -->
-                     <div class="card card-animate">
-                        <div class="card-body">
-                           <div class="d-flex align-items-center">
-                              <div class="flex-grow-1 overflow-hidden">
-                                 <p
-                                    class="text-uppercase fw-medium text-muted text-truncate mb-0">
-                                    enrolled
-                                 </p>
+                      <div class="stat-card card-enrolled">
+                          <div class="card-body">
+                              <div class="card-icon">
+                                  <i class="fas fa-user-graduate"></i>
                               </div>
-                              <div class="flex-shrink-0">
-                                 <h5 class="text-danger fs-14 mb-0">
-                                    <i class="ri-arrow-right-down-line fs-13 align-middle"></i>
-                                    {{leadaccept_count}}
-                                 </h5>
+                              <h5 class="card-title">Enrolled</h5>
+                              <h3 class="card-value">{{ leadaccept_count }}</h3>
+                              <div class="d-flex align-items-center">
+                                  <a href="{% url "lead_load" %}" class="card-link">
+                                      View All Leads <i class="fas fa-arrow-right"></i>
+                                  </a>
+                                  <span class="trend-indicator trend-down">
+                                      <i class="fas fa-arrow-down"></i> {{ leadaccept_count }}
+                                  </span>
                               </div>
-                           </div>
-                           <div class="d-flex align-items-end justify-content-between mt-4">
-                              <div>
-                                 <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span
-                                    class="counter-value" data-target="{{leadaccept_count}}">{{leadaccept_count}}</span></h4>
-                                 <a href="{% url "lead_load" %}" class="text-decoration-underline">View all Leads</a>
-                              </div>
-                              
-                           </div>
-                        </div>
-                        <!-- end card body -->
-                     </div>
-                     <!-- end card -->
+                          </div>
+                      </div>
                   </div>
-                  <!-- end col -->
+              
+                  <!-- Result Awaited Card -->
                   <div class="col-xl-3 col-md-6" data-aos="fade-left" data-aos-easing="ease-in-sine">
-                     <!-- card -->
-                     <div class="card card-animate">
-                        <div class="card-body">
-                           <div class="d-flex align-items-center">
-                              <div class="flex-grow-1 overflow-hidden">
-                                 <p
-                                    class="text-uppercase fw-medium text-muted text-truncate mb-0">
-                                    Result Awaited
-                                 </p>
+                      <div class="stat-card card-result-awaited">
+                          <div class="card-body">
+                              <div class="card-icon">
+                                  <i class="fas fa-clock"></i>
                               </div>
-                              <div class="flex-shrink-0">
-                                 <h5 class="text-success fs-14 mb-0">
-                                    <i class="ri-arrow-right-up-line fs-13 align-middle"></i>
-                                    {{result_awaited_count}}
-                                 </h5>
+                              <h5 class="card-title">Result Awaited</h5>
+                              <h3 class="card-value">{{ result_awaited_count }}</h3>
+                              <div class="d-flex align-items-center">
+                                  <a href="{% url "lead_load" %}" class="card-link">
+                                      View All Leads <i class="fas fa-arrow-right"></i>
+                                  </a>
+                                  <span class="trend-indicator trend-up">
+                                      <i class="fas fa-arrow-up"></i> {{ result_awaited_count }}
+                                  </span>
                               </div>
-                           </div>
-                           <div class="d-flex align-items-end justify-content-between mt-4">
-                              <div>
-                                 <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span
-                                    class="counter-value" data-target="{{result_awaited_count}}">{{result_awaited_count}}</span>
-                                 </h4>
-                                 <a href="{% url "lead_load" %}" class="text-decoration-underline">View All Leads</a>
-                              </div>
-                              
-                           </div>
-                        </div>
-                        <!-- end card body -->
-                     </div>
-                     <!-- end card -->
+                          </div>
+                      </div>
                   </div>
-                  <!-- end col -->
+              
+                  <!-- Completed Card -->
                   <div class="col-xl-3 col-md-6" data-aos="fade-left" data-aos-easing="ease-in-sine">
-                     <!-- card -->
-                     <div class="card card-animate">
-                        <div class="card-body">
-                           <div class="d-flex align-items-center">
-                              <div class="flex-grow-1 overflow-hidden">
-                                 <p
-                                    class="text-uppercase fw-medium text-muted text-truncate mb-0">
-                                    Completed
-                                 </p>
+                      <div class="stat-card card-completed">
+                          <div class="card-body">
+                              <div class="card-icon">
+                                  <i class="fas fa-check-circle"></i>
                               </div>
-                              <div class="flex-shrink-0">
-                                 <h5 class="text-info fs-14 mb-0">
-                                    <i class="ri-arrow-right-up-line fs-13 align-middle"></i>
-                                    {{completed_count}}
-                                 </h5>
-                                 
+                              <h5 class="card-title">Completed</h5>
+                              <h3 class="card-value">{{ completed_count }}</h3>
+                              <div class="d-flex align-items-center">
+                                  <a href="{% url "lead_load" %}" class="card-link">
+                                      View All Leads <i class="fas fa-arrow-right"></i>
+                                  </a>
+                                  <span class="trend-indicator trend-up">
+                                      <i class="fas fa-arrow-up"></i> {{ completed_count }}
+                                  </span>
                               </div>
-                           </div>
-                           <div class="d-flex align-items-end justify-content-between mt-4">
-                              <div>
-                                 <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span
-                                    class="counter-value" data-target="{{completed_count}}">{{completed_count}}</span>
-                                 </h4>
-                                 <a href="{% url "lead_load" %}" class="text-decoration-underline">View All Leads</a>
-                              </div>
-                             
-                           </div>
-                        </div>
-                        <!-- end card body -->
-                     </div>
-                     <!-- end card -->
+                          </div>
+                      </div>
                   </div>
-                  <!-- end col -->
-               </div>
-               <div class="row">
+              
+                  <!-- Approved Card -->
                   <div class="col-xl-3 col-md-6" data-aos="fade-right" data-aos-easing="ease-in-sine">
-                     <!-- card -->
-                     <div class="card card-animate">
-                        <div class="card-body">
-                           <div class="d-flex align-items-center">
-                              <div class="flex-grow-1 overflow-hidden">
-                                 <p
-                                    class="text-uppercase fw-medium text-muted text-truncate mb-0">
-                                    Approved
-                                 </p>
+                      <div class="stat-card card-approved">
+                          <div class="card-body">
+                              <div class="card-icon">
+                                  <i class="fas fa-thumbs-up"></i>
                               </div>
-                              <div class="flex-shrink-0">
-                                 <h5 class="text-success fs-14 mb-0">
-                                    <i class="ri-arrow-right-up-line fs-13 align-middle"></i>
-                                    {{leadresult_count}}
-                                 </h5>
+                              <h5 class="card-title">Approved</h5>
+                              <h3 class="card-value">{{ leadresult_count }}</h3>
+                              <div class="d-flex align-items-center">
+                                  <a href="{% url "lead_load" %}" class="card-link">
+                                      View All Leads <i class="fas fa-arrow-right"></i>
+                                  </a>
+                                  <span class="trend-indicator trend-up">
+                                      <i class="fas fa-arrow-up"></i> {{ leadresult_count }}
+                                  </span>
                               </div>
-                           </div>
-                           <div class="d-flex align-items-end justify-content-between mt-4">
-                              <div>
-                                 <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span
-                                    class="counter-value" data-target="{{leadresult_count}}">{{leadresult_count}}</span>
-                                 </h4>
-                                 <a href="{% url "lead_load" %}" class="text-decoration-underline">View All Leads</a>
-                              </div>
-                             
-                           </div>
-                        </div>
-                        <!-- end card body -->
-                     </div>
-                     <!-- end card -->
+                          </div>
+                      </div>
                   </div>
+              
+                  <!-- Agent/OP Card -->
                   <div class="col-xl-3 col-md-6" data-aos="fade-right" data-aos-easing="ease-in-sine">
-                     <!-- card -->
-                     <div class="card card-animate">
-                        <div class="card-body">
-                           <div class="d-flex align-items-center">
-                              <div class="flex-grow-1 overflow-hidden">
-                                 <p
-                                    class="text-uppercase fw-medium text-muted text-truncate mb-0">
-                                    Agent/OP
-                                 </p>
+                      <div class="stat-card card-agent">
+                          <div class="card-body">
+                              <div class="card-icon">
+                                  <i class="fas fa-user-tie"></i>
                               </div>
-                              <div class="flex-shrink-0">
-                                 <h5 class="text-success fs-14 mb-0">
-                                    <i class="ri-arrow-right-up-line fs-13 align-middle"></i>
-                                    {{total_agent_count}}
-                                 </h5>
+                              <h5 class="card-title">Agent/OP</h5>
+                              <h3 class="card-value">{{ total_agent_count }}</h3>
+                              <div class="d-flex align-items-center">
+                                  <a href="{% url "agent_load" %}" class="card-link">
+                                      View All Agents <i class="fas fa-arrow-right"></i>
+                                  </a>
+                                  <span class="trend-indicator trend-up">
+                                      <i class="fas fa-arrow-up"></i> {{ total_agent_count }}
+                                  </span>
                               </div>
-                           </div>
-                           <div class="d-flex align-items-end justify-content-between mt-4">
-                              <div>
-                                 <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span
-                                    class="counter-value" data-target="{{total_agent_count}}">{{total_agent_count}}</span>
-                                 </h4>
-                                 <a href="{% url "agent_load" %}" class="text-decoration-underline">View All Agent</a>
-                              </div>
-                             
-                           </div>
-                        </div>
-                        <!-- end card body -->
-                     </div>
-                     <!-- end card -->
+                          </div>
+                      </div>
                   </div>
-                  <!-- end col -->
+              
+                  <!-- Employee Card -->
                   <div class="col-xl-3 col-md-6" data-aos="fade-left" data-aos-easing="ease-in-sine">
-                     <!-- card -->
-                     <div class="card card-animate">
-                        <div class="card-body">
-                           <div class="d-flex align-items-center">
-                              <div class="flex-grow-1 overflow-hidden">
-                                 <p
-                                    class="text-uppercase fw-medium text-muted text-truncate mb-0">
-                                    Employee
-                                 </p>
+                      <div class="stat-card card-employee">
+                          <div class="card-body">
+                              <div class="card-icon">
+                                  <i class="fas fa-users"></i>
                               </div>
-                              <div class="flex-shrink-0">
-                                 <h5 class="text-primary fs-14 mb-0">
-                                    <i class="ri-arrow-right-up-line fs-13 align-middle"></i>
-                                    {{employee_count}}
-                                 </h5>
-                                 
+                              <h5 class="card-title">Employee</h5>
+                              <h3 class="card-value">{{ employee_count }}</h3>
+                              <div class="d-flex align-items-center">
+                                  <a href="{% url "employee_load" %}" class="card-link">
+                                      View All Employees <i class="fas fa-arrow-right"></i>
+                                  </a>
+                                  <span class="trend-indicator trend-up">
+                                      <i class="fas fa-arrow-up"></i> {{ employee_count }}
+                                  </span>
                               </div>
-                           </div>
-                           <div class="d-flex align-items-end justify-content-between mt-4">
-                              <div>
-                                 <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span
-                                    class="counter-value" data-target="{{employee_count}}">{{employee_count}}</span>
-                                 </h4>
-                                 <a href="{% url "employee_load" %}" class="text-decoration-underline">View All Employee</a>
-                              </div>
-                              
-                           </div>
-                        </div>
-                        <!-- end card body -->
-                     </div>
-                     <!-- end card -->
+                          </div>
+                      </div>
                   </div>
-                  <!-- end col -->
-               </div>
+              </div>
                {% endif %}
 
-               {% if user|is_employee  %}
-               <a href="{% url "agent_load" %}" class="link-success">View All Agent/OutSource Agent <i class="ri-arrow-right-line align-middle"></i></a>
-               <div class="row">
-                  <div class="col-xl-12">
-                      <div class="card crm-widget">
-                          <div class="card-body p-0">
-                              <div class="row row-cols-md-3 row-cols-1">
-                                  <div class="col col-lg border-end">
-                                      <div class="py-4 px-3">
-                                          <h5 class="text-muted text-uppercase fs-13">Today's Agent <i class="ri-arrow-up-circle-line text-success fs-18 float-end align-middle"></i>
-                                          </h5>
-                                          <div class="d-flex align-items-center">
-                                              <div class="flex-shrink-0">
-                                                  <i class="ri-shield-user-line display-6 text-muted"></i>
-                                              </div>
-                                              <div class="flex-grow-1 ms-3">
-                                                  <h2 class="mb-0"><span class="counter-value" data-target="{{agents_added_today_count}}">{{agents_added_today_count}}</span></h2>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div><!-- end col -->
-                                  <div class="col col-lg border-end">
-                                      <div class="mt-3 mt-md-0 py-4 px-3">
-                                          <h5 class="text-muted text-uppercase fs-13">Total Agent <i class="ri-arrow-up-circle-line text-success fs-18 float-end align-middle"></i></h5>
-                                          <div class="d-flex align-items-center">
-                                              <div class="flex-shrink-0">
-                                                  <i class="ri-shield-user-line display-6 text-muted"></i>
-                                              </div>
-                                              <div class="flex-grow-1 ms-3">
-                                                  <h2 class="mb-0"><span class="counter-value" data-target="{{total_agents_registered_by_user}}">{{total_agents_registered_by_user}}</span></h2>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div><!-- end col -->
-                                  <div class="col col-lg border-end">
-                                      <div class="mt-3 mt-md-0 py-4 px-3">
-                                          <h5 class="text-muted text-uppercase fs-13">
-                                             Total Agent/Assign Agent <i class="ri-arrow-down-circle-line text-danger fs-18 float-end align-middle"></i>
-                                          </h5>
-                                          <div class="d-flex align-items-center">
-                                              <div class="flex-shrink-0">
-                                                  <i class="ri-shield-user-line display-6 text-muted"></i>
-                                              </div>
-                                              <div class="flex-grow-1 ms-3">
-                                                  <h2 class="mb-0"><span class="counter-value" data-target="{{agent_count}}">{{agent_count}}</span></h2>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div><!-- end col -->
-                                  <div class="col col-lg border-end">
-                                      <div class="mt-3 mt-lg-0 py-4 px-3">
-                                          <h5 class="text-muted text-uppercase fs-13">
-                                             Total OutSource Agents <i class="ri-arrow-up-circle-line text-success fs-18 float-end align-middle"></i>
-                                          </h5>
-                                          <div class="d-flex align-items-center">
-                                              <div class="flex-shrink-0">
-                                                  <i class="ri-shield-user-line display-6 text-muted"></i>
-                                              </div>
-                                              <div class="flex-grow-1 ms-3">
-                                                  <h2 class="mb-0"><span class="counter-value" data-target="{{outsourceagent_count}}">{{outsourceagent_count}}</span></h2>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div><!-- end col -->
-                                  
-                              </div><!-- end row -->
-                          </div><!-- end card body -->
-                      </div><!-- end card -->
-                  </div><!-- end col -->
-              </div><!-- end row -->
-
+               {% if user|is_employee %}
+               <div class="row agent-stats-section">
+                  <!-- Custom CSS -->
+                  <style>
+                      :root {
+                          --primary-color: #4361ee;
+                          --secondary-color: #3f37c9;
+                          --accent-color: #4895ef;
+                          --light-gray: #f8f9fa;
+                          --dark-color: #212529;
+                          --card-shadow: 0 4px 20px rgba(67, 97, 238, 0.1);
+                          --card-hover-shadow: 0 8px 30px rgba(67, 97, 238, 0.2);
+                      }
+              
+                      .agent-stats-section {
+                          margin-bottom: 2rem;
+                      }
+              
+                      .agent-stats-section .card-link {
+                          display: inline-block;
+                          color: var(--primary-color);
+                          text-decoration: none;
+                          font-size: 15px;
+                          margin-bottom: 20px;
+                          transition: all 0.3s;
+                          font-weight: 500;
+                      }
+              
+                      .agent-stats-section .card-link:hover {
+                          color: var(--secondary-color);
+                          text-decoration: underline;
+                      }
+              
+                      .agent-stats-section .card-link i {
+                          margin-left: 5px;
+                          transition: transform 0.3s;
+                      }
+              
+                      .agent-stats-section .card-link:hover i {
+                          transform: translateX(3px);
+                      }
+              
+                      .stat-card {
+                          border: none;
+                          border-radius: 15px;
+                          overflow: hidden;
+                          transition: all 0.3s ease;
+                          position: relative;
+                          background: white;
+                          box-shadow: var(--card-shadow);
+                          margin-bottom: 24px;
+                          height: 100%;
+                          border: 1px solid lightgray;
+                      }
+              
+                      .stat-card:hover {
+                          transform: translateY(-5px);
+                          box-shadow: var(--card-hover-shadow);
+                      }
+              
+                      .stat-card::before {
+                          content: "";
+                          position: absolute;
+                          top: -50px;
+                          right: -50px;
+                          width: 100px;
+                          height: 100px;
+                          border-radius: 50%;
+                          background: rgba(67, 97, 238, 0.05);
+                          z-index: 0;
+                      }
+              
+                      .stat-card::after {
+                          content: "";
+                          position: absolute;
+                          bottom: -30px;
+                          left: -30px;
+                          width: 70px;
+                          height: 70px;
+                          border-radius: 50%;
+                          background: rgba(67, 97, 238, 0.05);
+                          z-index: 0;
+                      }
+              
+                      .stat-card .card-body {
+                          position: relative;
+                          z-index: 1;
+                          padding: 1.5rem;
+                      }
+              
+                      .stat-card .card-icon {
+                          width: 50px;
+                          height: 50px;
+                          display: flex;
+                          align-items: center;
+                          justify-content: center;
+                          border-radius: 12px;
+                          font-size: 24px;
+                          margin-bottom: 15px;
+                          color: white;
+                      }
+              
+                      .stat-card .card-title {
+                          font-size: 14px;
+                          text-transform: uppercase;
+                          letter-spacing: 0.5px;
+                          color: #6c757d;
+                          margin-bottom: 8px;
+                          font-weight: 500;
+                      }
+              
+                      .stat-card .card-value {
+                          font-size: 26px;
+                          font-weight: 700;
+                          color: var(--dark-color);
+                          margin-bottom: 10px;
+                          font-family: 'Orbitron', sans-serif;
+                      }
+              
+                      .trend-indicator {
+                          display: inline-flex;
+                          align-items: center;
+                          font-size: 13px;
+                          gap: 5px;
+                          padding: 4px 8px;
+                          border-radius: 20px;
+                          background: rgba(0, 0, 0, 0.03);
+                      }
+              
+                      .trend-up {
+                          color: #0acf97;
+                      }
+              
+                      .trend-down {
+                          color: #fa5c7c;
+                      }
+              
+                      /* Specific card colors */
+                      .card-today-agent .card-icon { 
+                          background: linear-gradient(135deg, #6c5ce7 0%, #4b3bdb 100%);
+                      }
+                      .card-total-agent .card-icon { 
+                          background: linear-gradient(135deg, #00b894 0%, #009d7a 100%);
+                      }
+                      .card-assigned-agent .card-icon { 
+                          background: linear-gradient(135deg, #fd79a8 0%, #f7478b 100%);
+                      }
+                      .card-outsource-agent .card-icon { 
+                          background: linear-gradient(135deg, #fdcb6e 0%, #f9a602 100%);
+                      }
+              
+                      /* Animation classes */
+                      [data-aos] {
+                          transition: opacity 0.5s ease, transform 0.5s ease;
+                      }
+                      [data-aos="fade-right"] {
+                          transform: translateX(-20px);
+                          opacity: 0;
+                      }
+                      [data-aos="fade-left"] {
+                          transform: translateX(20px);
+                          opacity: 0;
+                      }
+                      [data-aos].aos-animate {
+                          transform: translateX(0);
+                          opacity: 1;
+                      }
+              
+                      /* Responsive adjustments */
+                      @media (max-width: 1199px) {
+                          .col-xl-3 {
+                              flex: 0 0 50%;
+                              max-width: 50%;
+                          }
+                      }
+                      @media (max-width: 767px) {
+                          .col-xl-3 {
+                              flex: 0 0 100%;
+                              max-width: 100%;
+                          }
+                      }
+                  </style>
+              
+                  <!-- View All Link -->
+                  <div class="col-12">
+                      <a href="{% url 'agent_load' %}" class="card-link">
+                          View All Agent/OutSource Agent <i class="fas fa-arrow-right"></i>
+                      </a>
+                  </div>
+              
+                  <!-- Today's Agent Card -->
+                  <div class="col-xl-3 col-md-6" data-aos="fade-right" data-aos-offset="100">
+                      <div class="stat-card card-today-agent">
+                          <div class="card-body">
+                              <div class="card-icon">
+                                  <i class="fas fa-user-clock"></i>
+                              </div>
+                              <h5 class="card-title">Today's Agent</h5>
+                              <h3 class="card-value">{{ agents_added_today_count }}</h3>
+                              <div class="d-flex align-items-center">
+                                  <span class="trend-indicator trend-up">
+                                      <i class="fas fa-arrow-up"></i> New
+                                  </span>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              
+                  <!-- Total Agent Card -->
+                  <div class="col-xl-3 col-md-6" data-aos="fade-right" data-aos-offset="100">
+                      <div class="stat-card card-total-agent">
+                          <div class="card-body">
+                              <div class="card-icon">
+                                  <i class="fas fa-users"></i>
+                              </div>
+                              <h5 class="card-title">Total Agent</h5>
+                              <h3 class="card-value">{{ total_agents_registered_by_user }}</h3>
+                              <div class="d-flex align-items-center">
+                                  <span class="trend-indicator trend-up">
+                                      <i class="fas fa-arrow-up"></i> Registered
+                                  </span>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              
+                  <!-- Assigned Agent Card -->
+                  <div class="col-xl-3 col-md-6" data-aos="fade-left" data-aos-offset="100">
+                      <div class="stat-card card-assigned-agent">
+                          <div class="card-body">
+                              <div class="card-icon">
+                                  <i class="fas fa-user-check"></i>
+                              </div>
+                              <h5 class="card-title">Assigned Agent</h5>
+                              <h3 class="card-value">{{ agent_count }}</h3>
+                              <div class="d-flex align-items-center">
+                                  <span class="trend-indicator trend-down">
+                                      <i class="fas fa-arrow-down"></i> Active
+                                  </span>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              
+                  <!-- Outsource Agent Card -->
+                  <div class="col-xl-3 col-md-6" data-aos="fade-left" data-aos-offset="100">
+                      <div class="stat-card card-outsource-agent">
+                          <div class="card-body">
+                              <div class="card-icon">
+                                  <i class="fas fa-user-tag"></i>
+                              </div>
+                              <h5 class="card-title">Outsource Agents</h5>
+                              <h3 class="card-value">{{ outsourceagent_count }}</h3>
+                              <div class="d-flex align-items-center">
+                                  <span class="trend-indicator trend-up">
+                                      <i class="fas fa-arrow-up"></i> Partners
+                                  </span>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              
+              <!-- end row -->
+              <!-- has_access:"4,5" -->
                
                {% endif %}
 
                {% if user|has_access:"4,5" %}
-               <div class="row">
+               <div class="row agent-dashboard-section">
+                  <!-- Custom CSS -->
+                  <style>
+                      :root {
+                          --primary-color: #4361ee;
+                          --secondary-color: #3f37c9;
+                          --accent-color: #4895ef;
+                          --light-gray: #f8f9fa;
+                          --dark-color: #212529;
+                          --card-shadow: 0 4px 20px rgba(67, 97, 238, 0.1);
+                          --card-hover-shadow: 0 8px 30px rgba(67, 97, 238, 0.2);
+                          --success-color: #0acf97;
+                          --danger-color: #fa5c7c;
+                          --info-color: #39afd1;
+                      }
+              
+                      .agent-dashboard-section {
+                          margin-bottom: 2rem;
+                      }
+              
+                      .stat-card {
+                          border: none;
+                          border-radius: 15px;
+                          overflow: hidden;
+                          transition: all 0.3s ease;
+                          position: relative;
+                          background: white;
+                          box-shadow: var(--card-shadow);
+                          margin-bottom: 24px;
+                          height: 100%;
+                      }
+              
+                      .stat-card:hover {
+                          transform: translateY(-5px);
+                          box-shadow: var(--card-hover-shadow);
+                      }
+              
+                      .stat-card::before {
+                          content: "";
+                          position: absolute;
+                          top: -50px;
+                          right: -50px;
+                          width: 100px;
+                          height: 100px;
+                          border-radius: 50%;
+                          background: rgba(67, 97, 238, 0.05);
+                          z-index: 0;
+                      }
+              
+                      .stat-card::after {
+                          content: "";
+                          position: absolute;
+                          bottom: -30px;
+                          left: -30px;
+                          width: 100px;
+                          height: 100px;
+                          border-radius: 50%;
+                          background: rgba(67, 97, 238, 0.05);
+                          z-index: 0;
+                      }
+              
+                      .stat-card .card-body {
+                          position: relative;
+                          z-index: 1;
+                          padding: 1.5rem;
+                      }
+              
+                      .stat-card .card-icon {
+                          width: 50px;
+                          height: 50px;
+                          display: flex;
+                          align-items: center;
+                          justify-content: center;
+                          border-radius: 12px;
+                          font-size: 24px;
+                          margin-bottom: 15px;
+                          color: white;
+                      }
+              
+                      .stat-card .card-title {
+                          font-size: 14px;
+                          text-transform: uppercase;
+                          letter-spacing: 0.5px;
+                          color: #6c757d;
+                          margin-bottom: 8px;
+                          font-weight: 500;
+                      }
+              
+                      .stat-card .card-value {
+                          font-size: 26px;
+                          font-weight: 700;
+                          color: var(--dark-color);
+                          margin-bottom: 10px;
+                          font-family: 'Orbitron', sans-serif;
+                      }
+              
+                      .stat-card .card-link {
+                          color: var(--primary-color);
+                          text-decoration: none;
+                          font-size: 13px;
+                          transition: all 0.3s;
+                          display: inline-flex;
+                          align-items: center;
+                      }
+              
+                      .stat-card .card-link:hover {
+                          color: var(--secondary-color);
+                          text-decoration: underline;
+                      }
+              
+                      .stat-card .card-link i {
+                          margin-left: 5px;
+                          transition: transform 0.3s;
+                      }
+              
+                      .stat-card .card-link:hover i {
+                          transform: translateX(3px);
+                      }
+              
+                      .trend-indicator {
+                          display: flex;
+                          align-items: center;
+                          font-size: 13px;
+                          margin-left: auto;
+                      }
+              
+                      .trend-up {
+                          color: var(--success-color);
+                      }
+              
+                      .trend-down {
+                          color: var(--danger-color);
+                      }
+              
+                      /* Profile Card */
+                      .profile-card {
+                          border: none;
+                          border-radius: 15px;
+                          overflow: hidden;
+                          background: white;
+                          box-shadow: var(--card-shadow);
+                          position: relative;
+                      }
+              
+                      .profile-card::before {
+                          content: "";
+                          position: absolute;
+                          top: -30px;
+                          right: -30px;
+                          width: 100px;
+                          height: 100px;
+                          border-radius: 50%;
+                          background: rgba(67, 97, 238, 0.05);
+                          z-index: 0;
+                      }
+              
+                      .profile-card .card-body {
+                          position: relative;
+                          z-index: 1;
+                          padding: 1.5rem;
+                      }
+              
+                      .profile-card h5 {
+                          font-size: 18px;
+                          font-weight: 600;
+                          margin-bottom: 5px;
+                      }
+              
+                      .profile-card .text-muted {
+                          font-size: 14px;
+                      }
+              
+                      .profile-card .contact-info {
+                          display: flex;
+                          flex-direction: column;
+                          gap: 10px;
+                          margin-top: 15px;
+                      }
+              
+                      .profile-card .contact-info a {
+                          color: var(--dark-color);
+                          text-decoration: none;
+                          transition: all 0.3s;
+                      }
+              
+                      .profile-card .contact-info a:hover {
+                          color: var(--primary-color);
+                      }
+              
+                      .profile-card .report-link {
+                          display: inline-block;
+                          margin-top: 15px;
+                          color: var(--primary-color);
+                          cursor: pointer;
+                          transition: all 0.3s;
+                      }
+              
+                      .profile-card .report-link:hover {
+                          color: var(--secondary-color);
+                          text-decoration: underline;
+                      }
+              
+                      .progress.animated-progress {
+                          height: 6px;
+                          border-radius: 0 0 15px 15px;
+                          overflow: hidden;
+                      }
+              
+                      /* Card Colors */
+                      .card-total-leads .card-icon { background: linear-gradient(135deg, #727cf5 0%, #5a66f3 100%); }
+                      .card-wallet .card-icon { background: linear-gradient(135deg, #0acf97 0%, #04a777 100%); }
+                      .card-enrolled-leads .card-icon { background: linear-gradient(135deg, #fa5c7c 0%, #f5306e 100%); }
+                      .card-profile .card-icon { background: linear-gradient(135deg, #fdcb6e 0%, #f9a602 100%); }
+              
+                      /* Animation classes */
+                      [data-aos] {
+                          transition: opacity 0.5s ease, transform 0.5s ease;
+                      }
+                      [data-aos="fade-right"] {
+                          transform: translateX(-20px);
+                          opacity: 0;
+                      }
+                      [data-aos="fade-left"] {
+                          transform: translateX(20px);
+                          opacity: 0;
+                      }
+                      [data-aos].aos-animate {
+                          transform: translateX(0);
+                          opacity: 1;
+                      }
+              
+                      /* Responsive adjustments */
+                      @media (max-width: 1199px) {
+                          .col-xl-3 {
+                              margin-bottom: 24px;
+                          }
+                      }
+                  </style>
+              
+                  <!-- Total Leads Card -->
                   <div class="col-xl-3 col-md-6" data-aos="fade-right" data-aos-easing="ease-in-sine">
-                     <!-- card -->
-                     <div class="card card-animate">
-                        <div class="card-body">
-                           <div class="d-flex align-items-center">
-                              <div class="flex-grow-1 overflow-hidden">
-                                 <p
-                                    class="text-uppercase fw-medium text-muted text-truncate mb-0">
-                                    Total Leads
-                                 </p>
+                      <div class="stat-card card-total-leads">
+                          <div class="card-body">
+                              <div class="card-icon">
+                                  <i class="fas fa-users"></i>
                               </div>
-                              <div class="flex-shrink-0">
-                                 <h5 class="text-danger fs-14 mb-0">
-                                    <i class="ri-arrow-right-down-line fs-13 align-middle"></i>
-                                    {{lead_count}}
-                                 </h5>
+                              <h5 class="card-title">Total Leads</h5>
+                              <h3 class="card-value">{{ lead_count }}</h3>
+                              <div class="d-flex align-items-center">
+                                  <a href="{% url 'lead_load' %}" class="card-link">
+                                      View all Leads <i class="fas fa-arrow-right"></i>
+                                  </a>
+                                  <span class="trend-indicator trend-down">
+                                      <i class="fas fa-arrow-down"></i> {{ lead_count }}
+                                  </span>
                               </div>
-                           </div>
-                           <div class="d-flex align-items-end justify-content-between mt-4">
-                              <div>
-                                 <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span
-                                    class="counter-value" data-target="{{lead_count}}">{{lead_count}}</span></h4>
-                                 <a href="{% url "lead_load" %}" class="text-decoration-underline">View all Leads</a>
-                              </div>
-                              
-                           </div>
-                        </div>
-                        <!-- end card body -->
-                     </div>
-                     <div class="card card-animate">
-                        <div class="card-body">
-                           <div class="d-flex align-items-center">
-                              <div class="flex-grow-1 overflow-hidden">
-                                 <p
-                                    class="text-uppercase fw-medium text-muted text-truncate mb-0">
-                                    Wallet
-                                 </p>
-                              </div>
-                              <div class="flex-shrink-0">
-                                 <h5 class="text-danger fs-14 mb-0">
-                                    <i class="ri-arrow-right-down-line fs-13 align-middle"></i>
-                                    Rs {{wallet_balance}}
-                                 </h5>
-                              </div>
-                           </div>
-                           <div class="d-flex align-items-end justify-content-between mt-4">
-                              <div>
-                                 <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span
-                                    class="counter-value" data-target="{{ wallet_balance }}">Rs {{wallet_balance}}</span></h4>
-                                 {% comment %} <a href="{% url "lead_load" %}" class="text-decoration-underline">View all Leads</a> {% endcomment %}
-                              </div>
-                              
-                           </div>
-                        </div>
-                        <!-- end card body -->
-                     </div>
-                     <!-- end card -->
+                          </div>
+                      </div>
                   </div>
-                  <div class="col-lg-4">
-                     <div class="card">
-                        <div class="card-body">
-                           <h5 class="fs-15 fw-semibold">{{agents.assign_employee}}</h5>
-                           <p class="text-muted">{{agents.assign_employee.email}}</p>
-                           <div class="d-flex flex-wrap justify-content-evenly">
-                                 <p class="text-muted mb-0">
-                                   
-                                    {% if user.user_type == "5" %}
-                                    <i class=" ri-phone-line  fs-18 text-danger align-middle me-2"></i>{{agents.assign_employee.admin.contact_no}}
-                                    <p class="text-muted mb-0"> <a href="https://wa.me/+91{{agents.assign_employee.admin.contact_no}}" target="_blank"><i class="ri-whatsapp-fill text-success fs-18 align-middle me-2"></i>Whatsapp us</a> </p>
-                                    {% endif %}
-                                    {% if user.user_type == "4" %}
-                                    <i class=" ri-phone-line  fs-18 text-danger align-middle me-2"></i>{{agents.assign_employee.employee.contact_no}}
-                                    <p class="text-muted mb-0"> <a href="https://wa.me/+91{{agents.assign_employee.employee.contact_no}}" target="_blank"><i class="ri-whatsapp-fill text-success fs-18 align-middle me-2"></i>Whatsapp us</a> </p>
-                                    {% endif %}
-                                 </p>
-                                 
-                              </div>
-                              <p class="text-muted mb-0" style="cursor: pointer;" class="btn btn-primary createTask" type="button" hx-get="{% url "create_report" %}" hx-target="#dialog">Report Against RM</p>
-                        </div>
-                        <div class="progress animated-progress rounded-bottom rounded-0" style="height: 6px;">
-                           <div class="progress-bar bg-success rounded-0" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                           <div class="progress-bar bg-info rounded-0" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                           <div class="progress-bar rounded-0" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                     </div>
-                  </div><!-- end col -->
+              
+                  <!-- Wallet Card -->
                   <div class="col-xl-3 col-md-6" data-aos="fade-right" data-aos-easing="ease-in-sine">
-                     <!-- card -->
-                     <div class="card card-animate">
-                        <div class="card-body">
-                           <div class="d-flex align-items-center">
-                              <div class="flex-grow-1 overflow-hidden">
-                                 <p
-                                    class="text-uppercase fw-medium text-muted text-truncate mb-0">
-                                    Total Enrolled Leads
-                                 </p>
+                      <div class="stat-card card-wallet">
+                          <div class="card-body">
+                              <div class="card-icon">
+                                  <i class="fas fa-wallet"></i>
                               </div>
-                              <div class="flex-shrink-0">
-                                 <h5 class="text-danger fs-14 mb-0">
-                                    <i class="ri-arrow-right-down-line fs-13 align-middle"></i>
-                                    {{leadaccept_count_agent}}
-                                 </h5>
+                              <h5 class="card-title">Wallet Balance</h5>
+                              <h3 class="card-value">Rs {{ wallet_balance }}</h3>
+                              <div class="d-flex align-items-center">
+                                  <span class="trend-indicator trend-down">
+                                      <i class="fas fa-arrow-down"></i> Balance
+                                  </span>
                               </div>
-                           </div>
-                           <div class="d-flex align-items-end justify-content-between mt-4">
-                              <div>
-                                 <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span
-                                    class="counter-value" data-target="{{leadaccept_count_agent}}">{{leadaccept_count_agent}}</span></h4>
-                                 <a href="{% url "lead_load" %}" class="text-decoration-underline">View all Leads</a>
-                              </div>
-                              
-                           </div>
-                        </div>
-                        <!-- end card body -->
-                     </div>
-                     <!-- end card -->
+                          </div>
+                      </div>
                   </div>
-              </div> <!-- end row-->
+              
+                  <!-- Profile Card -->
+                  <div class="col-xl-3 col-md-6">
+                      <div class="profile-card">
+                          <div class="card-body">
+                              <div class="card-icon">
+                                  <i class="fas fa-user-tie"></i>
+                              </div>
+                              <h5>{{ agents.assign_employee }}</h5>
+                              <p class="text-muted">{{ agents.assign_employee.email }}</p>
+                              <div class="contact-info">
+                                  {% if user.user_type == "5" %}
+                                      <p class="text-muted mb-0">
+                                          <i class="ri-phone-line fs-18 text-danger align-middle me-2"></i>
+                                          {{ agents.assign_employee.admin.contact_no }}
+                                      </p>
+                                      <p class="text-muted mb-0">
+                                          <a href="https://wa.me/+91{{ agents.assign_employee.admin.contact_no }}" target="_blank">
+                                              <i class="ri-whatsapp-fill text-success fs-18 align-middle me-2"></i>
+                                              Whatsapp us
+                                          </a>
+              
+                                      </p>
+                                  {% endif %}
+                                  {% if user.user_type == "4" %}
+                                      <p class="text-muted mb-0">
+                                          <i class="ri-phone-line fs-18 text-danger align-middle me-2"></i>
+                                          {{ agents.assign_employee.employee.contact_no }}
+                                      </p>
+                                      <p class="text-muted mb-0">
+                                          <a href="https://wa.me/+91{{ agents.assign_employee.employee.contact_no }}" target="_blank">
+                                              <i class="ri-whatsapp-fill text-success fs-18 align-middle me-2"></i>
+                                              Whatsapp us
+                                          </a>
+                                      </p>
+                                  {% endif %}
+                              </div>
+                              <p class="report-link" hx-get="{% url 'create_report' %}" hx-target="#dialog">
+                                  Report Against RM
+                              </p>
+                          </div>
+                          <div class="progress animated-progress">
+                              <div class="progress-bar bg-success" role="progressbar" style="width: 60%"></div>
+                              <div class="progress-bar bg-info" role="progressbar" style="width: 25%"></div>
+                              <div class="progress-bar" role="progressbar" style="width: 15%"></div>
+                          </div>
+                      </div>
+                  </div>
+              
+                  <!-- Enrolled Leads Card -->
+                  <div class="col-xl-3 col-md-6" data-aos="fade-right" data-aos-easing="ease-in-sine">
+                      <div class="stat-card card-enrolled-leads">
+                          <div class="card-body">
+                              <div class="card-icon">
+                                  <i class="fas fa-user-check"></i>
+                              </div>
+                              <h5 class="card-title">Total Enrolled Leads</h5>
+                              <h3 class="card-value">{{ leadaccept_count_agent }}</h3>
+                              <div class="d-flex align-items-center">
+                                  <a href="{% url 'lead_load' %}" class="card-link">
+                                      View all Leads <i class="fas fa-arrow-right"></i>
+                                  </a>
+                                  <span class="trend-indicator trend-down">
+                                      <i class="fas fa-arrow-down"></i> {{ leadaccept_count_agent }}
+                                  </span>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+               <!-- end row-->
               {% endif %}
 
                
                <!-- end row-->
-               <div class="row">
-                  <div class="col-xl-8" data-aos="fade-right" data-aos-easing="ease-in-sine">
-                     <div class="card">
+               <div class="row dashboard-section">
+                <!-- Custom CSS for dashboard cards -->
+                <style>
+                    .dashboard-section {
+                        margin-bottom: 2rem;
+                    }
+                    
+                    /* Revenue Card */
+                    .revenue-card {
+                        border: none;
+                        border-radius: 15px;
+                        overflow: hidden;
+                        background: white;
+                        box-shadow: var(--card-shadow);
+                        transition: all 0.3s ease;
+                        border: 1px solid lightgray;
+                        position: relative;
+                    }
+                    
+                    .revenue-card:hover {
+                        transform: translateY(-5px);
+                        box-shadow: var(--card-hover-shadow);
+                    }
+                    
+                    .revenue-card::before {
+                        content: "";
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        width: 100px;
+                        height: 100px;
+                        background: var(--success-light);
+                        border-radius: 50%;
+                        transform: translate(50%, -50%);
+                        opacity: 0.5;
+                    }
+                    
+                    .revenue-card .card-header {
+                        background: transparent;
+                        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+                    }
+                    
+                    .revenue-card .card-title {
+                        font-family: 'Orbitron', sans-serif;
+                        font-weight: 600;
+                        color: var(--dark-color);
+                        letter-spacing: 0.5px;
+                        position: relative;
+                    }
+                    
+                    .revenue-card .card-title::after {
+                        content: "";
+                        position: absolute;
+                        bottom: -10px;
+                        left: 0;
+                        width: 40px;
+                        height: 3px;
+                        background: var(--success-color);
+                        border-radius: 3px;
+                    }
+                    
+                    /* Time period buttons */
+                    .time-period-btn {
+                        border: none;
+                        background: transparent;
+                        color: var(--dark-color);
+                        font-weight: 500;
+                        padding: 0.25rem 0.75rem;
+                        border-radius: 20px;
+                        margin-left: 0.5rem;
+                        transition: all 0.2s ease;
+                    }
+                    
+                    .time-period-btn:hover {
+                        background: rgba(0, 0, 0, 0.05);
+                    }
+                    
+                    .time-period-btn.active {
+                        background: var(--primary-color);
+                        color: white;
+                    }
+                    
+                    /* Stats boxes */
+                    .stats-container {
+                        background: var(--light-color);
+                        border-radius: 12px;
+                        overflow: hidden;
+                    }
+                    
+                    .stat-box {
+                        padding: 1rem;
+                        border-right: 1px solid rgba(0, 0, 0, 0.05);
+                        text-align: center;
+                    }
+                    
+                    .stat-box:last-child {
+                        border-right: none;
+                    }
+                    
+                    .stat-value {
+                        font-size: 1.25rem;
+                        font-weight: 600;
+                        color: var(--dark-color);
+                        margin-bottom: 0.25rem;
+                    }
+                    
+                    .stat-label {
+                        font-size: 0.8rem;
+                        color: var(--secondary-color);
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                    }
+                    
+                    /* Todo Card */
+                    .todo-card {
+                        border: none;
+                        border-radius: 15px;
+                        overflow: hidden;
+                        background: white;
+                        box-shadow: var(--card-shadow);
+                        transition: all 0.3s ease;
+                        border: 1px solid lightgray;
+                        position: relative;
+                    }
+                    
+                    .todo-card:hover {
+                        transform: translateY(-5px);
+                        box-shadow: var(--card-hover-shadow);
+                    }
+                    
+                    .todo-card::before {
+                        content: "";
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        width: 100px;
+                        height: 100px;
+                        background: var(--accent-light);
+                        border-radius: 50%;
+                        transform: translate(50%, -50%);
+                        opacity: 0.5;
+                    }
+                    
+                    .todo-card .card-header {
+                        background: transparent;
+                        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+                    }
+                    
+                    .todo-card .card-title {
+                        font-family: 'Orbitron', sans-serif;
+                        font-weight: 600;
+                        color: var(--dark-color);
+                        letter-spacing: 0.5px;
+                        position: relative;
+                    }
+                    
+                    .todo-card .card-title::after {
+                        content: "";
+                        position: absolute;
+                        bottom: -10px;
+                        left: 0;
+                        width: 40px;
+                        height: 3px;
+                        background: var(--accent-color);
+                        border-radius: 3px;
+                    }
+                    
+                    /* Add Todo Button */
+                    .add-todo-btn {
+                        background: var(--primary-color);
+                        color: white;
+                        border: none;
+                        border-radius: 8px;
+                        padding: 0.5rem 1rem;
+                        font-weight: 500;
+                        transition: all 0.2s ease;
+                        display: inline-flex;
+                        align-items: center;
+                    }
+                    
+                    .add-todo-btn:hover {
+                        background: var(--secondary-color);
+                        transform: translateY(-2px);
+                        box-shadow: 0 4px 8px rgba(67, 97, 238, 0.2);
+                    }
+                    
+                    .add-todo-btn i {
+                        margin-right: 0.5rem;
+                    }
+                    
+                    /* Todo List Table */
+                    .todo-table {
+                        border-radius: 12px;
+                        overflow: hidden;
+                    }
+                    
+                    .todo-table table {
+                        margin-bottom: 0;
+                    }
+                    
+                    .todo-table tbody tr {
+                        transition: all 0.2s ease;
+                    }
+                    
+                    .todo-table tbody tr:hover {
+                        background: rgba(0, 0, 0, 0.02);
+                        transform: translateX(3px);
+                    }
+                    
+                    .todo-table td {
+                        padding: 1rem;
+                        vertical-align: middle;
+                        border-top: 1px solid rgba(0, 0, 0, 0.05);
+                    }
+                    
+                    /* Loading Indicator */
+                    .htmx-indicator {
+                        color: var(--secondary-color);
+                        font-size: 0.9rem;
+                        display: flex;
+                        align-items: center;
+                    }
+                    
+                    .htmx-indicator:before {
+                        content: "↻";
+                        display: inline-block;
+                        margin-right: 0.5rem;
+                        animation: spin 1s linear infinite;
+                    }
+                    
+                    @keyframes spin {
+                        from { transform: rotate(0deg); }
+                        to { transform: rotate(360deg); }
+                    }
+                    
+                    /* Responsive adjustments */
+                    @media (max-width: 1199px) {
+                        .stat-box {
+                            padding: 0.75rem;
+                        }
+                        
+                        .stat-value {
+                            font-size: 1.1rem;
+                        }
+                    }
+                    
+                    @media (max-width: 767px) {
+                        .stats-container .col-6 {
+                            width: 50% !important;
+                        }
+                        
+                        .stat-box {
+                            padding: 0.5rem;
+                        }
+                    }
+                </style>
+            
+                <!-- Revenue Card -->
+                <div class="col-xl-8" data-aos="fade-right">
+                    <div class="revenue-card card">
                         <div class="card-header border-0 align-items-center d-flex">
-                           <h4 class="card-title mb-0 flex-grow-1">Revenue</h4>
-                           <div>
-                              <button type="button" class="btn btn-soft-secondary btn-sm">
-                              ALL
-                              </button>
-                              <button type="button" class="btn btn-soft-secondary btn-sm">
-                              1M
-                              </button>
-                              <button type="button" class="btn btn-soft-secondary btn-sm">
-                              6M
-                              </button>
-                              <button type="button" class="btn btn-soft-primary btn-sm">
-                              1Y
-                              </button>
-                           </div>
+                            <h4 class="card-title mb-0 flex-grow-1">Revenue</h4>
+                            <div class="time-period-selector">
+                                <button type="button" class="time-period-btn">
+                                    ALL
+                                </button>
+                                <button type="button" class="time-period-btn">
+                                    1M
+                                </button>
+                                <button type="button" class="time-period-btn">
+                                    6M
+                                </button>
+                                <button type="button" class="time-period-btn active">
+                                    1Y
+                                </button>
+                            </div>
                         </div>
                         <!-- end card header -->
-                        <div class="card-header p-0 border-0 bg-light-subtle">
-                           <div class="row g-0 text-center">
-                              <div class="col-6 col-sm-3">
-                                 <div class="p-3 border border-dashed border-start-0">
-                                    <h5 class="mb-1"><span class="counter-value"
-                                       data-target="7585">0</span></h5>
-                                    <p class="text-muted mb-0">Orders</p>
-                                 </div>
-                              </div>
-                              <!--end col-->
-                              <div class="col-6 col-sm-3">
-                                 <div class="p-3 border border-dashed border-start-0">
-                                    <h5 class="mb-1">$<span class="counter-value"
-                                       data-target="22.89">0</span>k</h5>
-                                    <p class="text-muted mb-0">Earnings</p>
-                                 </div>
-                              </div>
-                              <!--end col-->
-                              <div class="col-6 col-sm-3">
-                                 <div class="p-3 border border-dashed border-start-0">
-                                    <h5 class="mb-1"><span class="counter-value"
-                                       data-target="367">0</span></h5>
-                                    <p class="text-muted mb-0">Refunds</p>
-                                 </div>
-                              </div>
-                              <!--end col-->
-                              <div class="col-6 col-sm-3">
-                                 <div
-                                    class="p-3 border border-dashed border-start-0 border-end-0">
-                                    <h5 class="mb-1 text-success"><span class="counter-value"
-                                       data-target="18.92">0</span>%</h5>
-                                    <p class="text-muted mb-0">Conversation Ratio</p>
-                                 </div>
-                              </div>
-                              <!--end col-->
-                           </div>
+                        
+                        <div class="card-header p-0">
+                            <div class="row g-0 stats-container">
+                                <div class="col-6 col-sm-3">
+                                    <div class="stat-box">
+                                        <div class="stat-value counter-value" data-target="7585">0</div>
+                                        <div class="stat-label">Orders</div>
+                                    </div>
+                                </div>
+                                <!--end col-->
+                                <div class="col-6 col-sm-3">
+                                    <div class="stat-box">
+                                        <div class="stat-value">$<span class="counter-value" data-target="22.89">0</span>k</div>
+                                        <div class="stat-label">Earnings</div>
+                                    </div>
+                                </div>
+                                <!--end col-->
+                                <div class="col-6 col-sm-3">
+                                    <div class="stat-box">
+                                        <div class="stat-value counter-value" data-target="367">0</div>
+                                        <div class="stat-label">Refunds</div>
+                                    </div>
+                                </div>
+                                <!--end col-->
+                                <div class="col-6 col-sm-3">
+                                    <div class="stat-box">
+                                        <div class="stat-value text-success"><span class="counter-value" data-target="18.92">0</span>%</div>
+                                        <div class="stat-label">Conversation Ratio</div>
+                                    </div>
+                                </div>
+                                <!--end col-->
+                            </div>
                         </div>
-                        <!-- end card header -->
+                        <!-- end stats header -->
+                        
                         <div class="card-body p-0 pb-2">
-                           <div class="w-100">
-                              <div id="customer_impression_charts"
-                                 data-colors='["--vz-secondary", "--vz-primary", "--vz-primary-rgb, 0.50"]'
-                                 class="apex-charts" dir="ltr"></div>
-                           </div>
+                            <div class="w-100">
+                                <div id="customer_impression_charts" 
+                                     data-colors='["--vz-secondary", "--vz-primary", "--vz-primary-rgb, 0.50"]' 
+                                     class="apex-charts" dir="ltr"></div>
+                            </div>
                         </div>
                         <!-- end card body -->
-                     </div>
-                     <!-- end card -->
-                  </div>
-                  <!-- end col -->
-                  <div class="col-xl-4" data-aos="fade-left" data-aos-easing="ease-in-sine">
-                     <!-- card -->
-                     <div class="card card-height-100">
+                    </div>
+                    <!-- end card -->
+                </div>
+                <!-- end col -->
+            
+                <!-- Todo List Card -->
+                <div class="col-xl-4" data-aos="fade-left">
+                    <div class="todo-card card">
                         <div class="card-header align-items-center d-flex">
-                           <h4 class="card-title mb-0 flex-grow-1"><button class="btn btn-primary createTask" type="button" hx-get="{% url "add_todo" %}" hx-target="#dialog">
-                              <i class="ri-add-fill align-bottom"></i> Todo List
-                          </button></h4>
-                           
+                            <h4 class="card-title mb-0 flex-grow-1">
+                                <button class="add-todo-btn createTask" type="button" 
+                                        hx-get="{% url 'add_todo' %}" 
+                                        hx-target="#dialog">
+                                    <i class="ri-add-fill align-bottom"></i> Todo List
+                                </button>
+                            </h4>
                         </div>
                         <!-- end card header -->
-                        <!-- card body -->
+                        
                         <div class="card-body">
-                           <div class="live-preview">
-                              <div class="table-responsive">
-                                 <table class="table table-hover table-centered align-middle table-nowrap mb-0">
-                                      
-                                      <tbody class="list form-check-all" hx-get="{% url "todo_list" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="search-results">
-                                       <tr>
-                                          <td class="spinner-border" role="status">
-                                          </td>
-                                          <td> <span class="htmx-indicator"> 
-                                              Loading.....
-                                            </span> </td>
-                                       </tr>
-                                      </tbody>
-                                 </table>
-                              </div>
-                          </div>
+                            <div class="todo-table">
+                                <table class="table table-hover align-middle mb-0">
+                                    <tbody class="list form-check-all" 
+                                           hx-get="{% url 'todo_list' %}" 
+                                           hx-trigger="load, movieListChanged from:body" 
+                                           hx-target="this" 
+                                           id="search-results">
+                                        <tr>
+                                            <td colspan="2" class="text-center py-4">
+                                                <span class="htmx-indicator">
+                                                    Loading tasks...
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                         <!-- end card body -->
-                     </div>
-                     <!-- end card -->
-                  </div>
-                  <!-- end col -->
-               </div>
+                    </div>
+                    <!-- end card -->
+                </div>
+                <!-- end col -->
+            </div>
+
                {% if user|is_admin %}
-               <div class="row">
-                  <div class="col-xl-6" data-aos="fade-right" data-aos-easing="ease-in-sine">
-                     <div class="card">
+
+               <div class="row ranking-section">
+                <!-- Custom CSS for ranking cards -->
+                <style>
+                    .ranking-section {
+                        margin-bottom: 2rem;
+                    }
+                    
+                    /* Ranking Cards */
+                    .ranking-card {
+                        border: none;
+                        border-radius: 15px;
+                        overflow: hidden;
+                        background: white;
+                        box-shadow: var(--card-shadow);
+                        transition: all 0.3s ease;
+                        border: 1px solid lightgray;
+                        position: relative;
+                    }
+                    
+                    .ranking-card:hover {
+                        transform: translateY(-5px);
+                        box-shadow: var(--card-hover-shadow);
+                    }
+                    
+                    .ranking-card::before {
+                        content: "";
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        width: 100px;
+                        height: 100px;
+                        background: var(--primary-light);
+                        border-radius: 50%;
+                        transform: translate(50%, -50%);
+                        opacity: 0.5;
+                    }
+                    
+                    .ranking-card .card-header {
+                        background: transparent;
+                        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+                        padding: 1.25rem 1.5rem;
+                    }
+                    
+                    .ranking-card .card-title {
+                        font-family: 'Orbitron', sans-serif;
+                        font-weight: 600;
+                        color: var(--dark-color);
+                        letter-spacing: 0.5px;
+                        position: relative;
+                    }
+                    
+                    .ranking-card .card-title::after {
+                        content: "";
+                        position: absolute;
+                        bottom: -10px;
+                        left: 0;
+                        width: 40px;
+                        height: 3px;
+                        background: var(--primary-color);
+                        border-radius: 3px;
+                    }
+                    
+                    /* Agent Ranking specific */
+                    .agent-ranking .card-title::after {
+                        background: var(--success-color);
+                    }
+                    
+                    .agent-ranking::before {
+                        background: var(--success-light) !important;
+                    }
+                    
+                    /* Outsource Ranking specific */
+                    .outsource-ranking .card-title::after {
+                        background: var(--accent-color);
+                    }
+                    
+                    .outsource-ranking::before {
+                        background: rgba(72, 149, 239, 0.1) !important;
+                    }
+                    
+                    /* Ranking Tables */
+                    .ranking-table {
+                        border-radius: 12px;
+                        overflow: hidden;
+                    }
+                    
+                    .ranking-table table {
+                        margin-bottom: 0;
+                    }
+                    
+                    .ranking-table thead {
+                        background-color: var(--light-color);
+                    }
+                    
+                    .ranking-table th {
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        font-size: 0.75rem;
+                        letter-spacing: 0.5px;
+                        color: var(--dark-color);
+                        padding: 0.75rem 1.5rem;
+                        border-bottom: none;
+                    }
+                    
+                    .ranking-table td {
+                        padding: 1rem 1.5rem;
+                        vertical-align: middle;
+                        border-top: 1px solid rgba(0, 0, 0, 0.05);
+                    }
+                    
+                    .ranking-table tr:hover {
+                        background-color: rgba(0, 0, 0, 0.02);
+                    }
+                    
+                    .ranking-table .position-cell {
+                        font-weight: 600;
+                        color: var(--dark-color);
+                        width: 50px;
+                    }
+                    
+                    .ranking-table .name-cell a {
+                        color: var(--dark-color);
+                        font-weight: 500;
+                        transition: all 0.2s ease;
+                        text-decoration: none;
+                    }
+                    
+                    .ranking-table .name-cell a:hover {
+                        color: var(--primary-color);
+                        transform: translateX(3px);
+                    }
+                    
+                    .ranking-table .count-cell {
+                        font-weight: 600;
+                        color: var(--success-color);
+                        text-align: center;
+                    }
+                    
+                    .ranking-table .agent-ranking .count-cell {
+                        color: var(--success-color);
+                    }
+                    
+                    .ranking-table .outsource-ranking .count-cell {
+                        color: var(--accent-color);
+                    }
+                    
+                    /* Badge for top performers */
+                    .top-badge {
+                        position: absolute;
+                        right: 1.5rem;
+                        top: 1.25rem;
+                        background: var(--success-color);
+                        color: white;
+                        padding: 0.25rem 0.75rem;
+                        border-radius: 50px;
+                        font-size: 0.75rem;
+                        font-weight: 600;
+                        box-shadow: 0 3px 10px rgba(10, 207, 151, 0.3);
+                    }
+                    
+                    /* Responsive adjustments */
+                    @media (max-width: 767px) {
+                        .ranking-table th,
+                        .ranking-table td {
+                            padding: 0.75rem 1rem;
+                        }
+                    }
+                </style>
+            
+                <!-- Agent Ranking Card -->
+                <div class="col-xl-6" data-aos="fade-right">
+                    <div class="ranking-card card agent-ranking">
                         <div class="card-header align-items-center d-flex">
-                           <h4 class="card-title mb-0 flex-grow-1">Agent Ranking</h4>
-                           
+                            <h4 class="card-title mb-0 flex-grow-1">Agent Ranking</h4>
+                            {% if agent_ranking %}
+                            <span class="top-badge">Top Performer: {{ agent_ranking.0.assign_to_agent__users__first_name }}</span>
+                            {% endif %}
                         </div>
                         <!-- end card header -->
                         <div class="card-body">
-                           <div class="table-responsive table-card">
-                              <table
-                                 class="table table-hover table-centered align-middle table-nowrap mb-0">
-                                 <tbody>
-                                    {% for agent in agent_ranking %}
-                                    <tr>
-                                       <th scope="row">{{forloop.counter}}</th>
-                                       <td>
-                                          <a href="{% url "agent_details" agent.assign_to_agent__id %}" class="fw-medium link-primary">{{ agent.assign_to_agent__users__first_name }}</a>
-                                       </td>
-                                       
-                                       <td>{{ agent.enquiry_count }}</td>
-                                    </tr>
-                                    {% empty %}
-                                    <tr>
-                                      <td colspan="2">No data available</td>
-                                    </tr>
-                                  {% endfor %}
-                                    
-                                    
-                                 </tbody>
-                              </table>
-                           </div>
-                           
+                            <div class="table-responsive ranking-table">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Agent Name</th>
+                                            <th class="text-center">Enquiries</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for agent in agent_ranking %}
+                                        <tr>
+                                            <td class="position-cell">{{ forloop.counter }}</td>
+                                            <td class="name-cell">
+                                                <a href="{% url 'agent_details' agent.assign_to_agent__id %}">
+                                                    {{ agent.assign_to_agent__users__first_name }}
+                                                </a>
+                                            </td>
+                                            <td class="count-cell">{{ agent.enquiry_count }}</td>
+                                        </tr>
+                                        {% empty %}
+                                        <tr>
+                                            <td colspan="3" class="text-center py-4">No data available</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                     </div>
-                  </div>
-                  <div class="col-xl-6" data-aos="fade-left" data-aos-easing="ease-in-sine">
-                     <div class="card card-height-100">
+                    </div>
+                </div>
+                <!-- end col -->
+            
+                <!-- OutSource Ranking Card -->
+                <div class="col-xl-6" data-aos="fade-left">
+                    <div class="ranking-card card outsource-ranking">
                         <div class="card-header align-items-center d-flex">
-                           <h4 class="card-title mb-0 flex-grow-1">OutSource Ranking</h4>
-                           
+                            <h4 class="card-title mb-0 flex-grow-1">OutSource Ranking</h4>
+                            {% if outsourceagent_ranking %}
+                            <span class="top-badge" style="background: var(--accent-color); box-shadow: 0 3px 10px rgba(72, 149, 239, 0.3);">
+                                Top Performer: {{ outsourceagent_ranking.0.assign_to_outsourcingagent__users__first_name }}
+                            </span>
+                            {% endif %}
                         </div>
                         <!-- end card header -->
                         <div class="card-body">
-                           <div class="table-responsive table-card">
-                              <table
-                                 class="table table-centered table-hover align-middle table-nowrap mb-0">
-                                 <tbody>
-                                    {% for outsourcing_agent  in outsourceagent_ranking %}
-                                    <tr>
-                                       <th scope="row">{{forloop.counter}}</th>
-                                       <td><a class="fw-medium link-primary" href="{% url "agent_details" outsourcing_agent.assign_to_outsourcingagent__id %}">{{ outsourcing_agent.assign_to_outsourcingagent__users__first_name }} {{ outsourcing_agent.assign_to_outsourcingagent__users__last_name }}</a></td>
-                                       
-                                       
-                                       <td>{{ outsourcing_agent.enquiry_count }}</td>
-                                 </tr>
-                                 {% empty %}
-                                 <tr>
-                                    <td colspan="2">No data available</td>
-                                 </tr>
-                                 {% endfor %}
-                                 </tbody>
-                              </table>
-                              <!-- end table -->
-                           </div>
-                           
+                            <div class="table-responsive ranking-table">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Agent Name</th>
+                                            <th class="text-center">Enquiries</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for outsourcing_agent in outsourceagent_ranking %}
+                                        <tr>
+                                            <td class="position-cell">{{ forloop.counter }}</td>
+                                            <td class="name-cell">
+                                                <a href="{% url 'agent_details' outsourcing_agent.assign_to_outsourcingagent__id %}">
+                                                    {{ outsourcing_agent.assign_to_outsourcingagent__users__first_name }} 
+                                                    {{ outsourcing_agent.assign_to_outsourcingagent__users__last_name }}
+                                                </a>
+                                            </td>
+                                            <td class="count-cell">{{ outsourcing_agent.enquiry_count }}</td>
+                                        </tr>
+                                        {% empty %}
+                                        <tr>
+                                            <td colspan="3" class="text-center py-4">No data available</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                        <!-- .card-body-->
-                     </div>
-                     <!-- .card-->
-                  </div>
-                  <!-- .col-->
-               </div>
+                    </div>
+                </div>
+                <!-- end col -->
+                </div>
                {% endif %}
-{% comment %}                
+              {% comment %}                
                <div class="row">
                   <div class="col-xxl-5" data-aos="flip-left" data-aos-easing="ease-out-cubic" data-aos-duration="2000">
                      <div class="card">
@@ -1212,78 +2254,342 @@
                      <!-- end card -->
                   </div>
                   <!-- end col -->
-               </div> {% endcomment %}
+               </div> 
+               {% endcomment %}
                <!-- end row-->
-               <div class="row">
-
-                  <div class="col-xl-4" data-aos="flip-right" data-aos-easing="ease-out-cubic" data-aos-duration="2000">
-                     <div class="card">
-                         <div class="card-header align-items-center d-flex">
-                             <h4 class="card-title mb-0 flex-grow-1">SuccessStories</h4>
-                            
-                         </div><!-- end card header -->
-                         <div class="card-body">
-                             
-                             <div class="live-preview">
-                                 <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
-                                     <div class="carousel-indicators">
-                                         <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                                         <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                                         <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                                     </div>
-                                     <div class="carousel-inner">
-                                       {% for item in story %}
-                                         <div class="carousel-item {% if forloop.first %}active{% endif %}" data-bs-interval="10000">
-                                             <img src="{{ item.image.url }}" class="d-block w-100" alt="One Slide">
-                                             <div class="carousel-caption d-none d-md-block">
-                                                 {% comment %} <h5>Drawing a sketch</h5> {% endcomment %}
-                                                 {% comment %} <p>{{ item.description }}</p> {% endcomment %}
-                                             </div>
-                                          </div>
-                                          {% endfor %}
-                                         
-                                     </div>
-                                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
-                                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                         <span class="visually-hidden">Previous</span>
-                                     </button>
-                                     <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
-                                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                         <span class="visually-hidden">Next</span>
-                                     </button>
-                                 </div>
-                             </div>
-                            
-                         </div><!-- end card-body -->
-                     </div><!-- end card -->
-                  </div>
-                  <div class="col-xxl-8 col-xl-8" data-aos="flip-left" data-aos-easing="ease-out-cubic" data-aos-duration="2000">
-                     <div class="card">
-                         <div class="card-header align-items-center d-flex">
-                             <h4 class="card-title mb-0 flex-grow-1">Latest News</h4>
-                             
-                         </div><!-- end card header -->
-                         <div class="card-body">
-
-                             
-                           <div class="live-preview">
-                              <ul class="list-group">
-                                 
-                                 {% for newsItem in latest_news %}
-                                    <li class="list-group-item {% cycle_class forloop.counter 'list-group-fill-primary' 'list-group-fill-secondary' 'list-group-fill-success' %}">
-                                       {{ newsItem.news }}
-                                    </li>
-                                 {% endfor %}
-
-                                    
-                              </ul>
-                           </div>
-                             
-                         </div><!-- end card-body -->
-                     </div><!-- end card -->
+               <div class="row stories-news-section">
+                <!-- Custom CSS -->
+                <style>
+                    :root {
+                        --primary-color: #4361ee;
+                        --primary-light: rgba(67, 97, 238, 0.1);
+                        --secondary-color: #3f37c9;
+                        --accent-color: #4895ef;
+                        --success-color: #0acf97;
+                        --success-light: rgba(10, 207, 151, 0.1);
+                        --info-color: #39afd1;
+                        --warning-color: #ffbc00;
+                        --danger-color: #fa5c7c;
+                        --dark-color: #212529;
+                        --light-color: #f8f9fa;
+                        --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+                        --card-hover-shadow: 0 8px 30px rgba(67, 97, 238, 0.15);
+                    }
+            
+                    .stories-news-section {
+                        margin-bottom: 2rem;
+                    }
+            
+                    /* Success Stories Card */
+                    .stories-card {
+                        border: none;
+                        border-radius: 15px;
+                        overflow: hidden;
+                        background: white;
+                        box-shadow: var(--card-shadow);
+                        transition: all 0.3s ease;
+                        border: 1px solid lightgray;
+                        position: relative;
+                    }
+            
+                    .stories-card:hover {
+                        transform: translateY(-5px);
+                        box-shadow: var(--card-hover-shadow);
+                    }
+            
+                    .stories-card::before {
+                        content: "";
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        width: 100px;
+                        height: 100px;
+                        background: var(--success-light);
+                        border-radius: 50%;
+                        transform: translate(50%, -50%);
+                    }
+            
+                    .stories-card .card-header {
+                        background: transparent;
+                        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+                        padding: 1.25rem 1.5rem;
+                    }
+            
+                    .stories-card .card-title {
+                        font-family: 'Orbitron', sans-serif;
+                        font-weight: 600;
+                        color: var(--dark-color);
+                        letter-spacing: 0.5px;
+                        position: relative;
+                    }
+            
+                    .stories-card .card-title::after {
+                        content: "";
+                        position: absolute;
+                        bottom: -10px;
+                        left: 0;
+                        width: 40px;
+                        height: 3px;
+                        background: var(--success-color);
+                        border-radius: 3px;
+                    }
+            
+                    .stories-card .carousel {
+                        border-radius: 12px;
+                        overflow: hidden;
+                    }
+            
+                    .stories-card .carousel-item img {
+                        height: 300px;
+                        object-fit: cover;
+                        transition: transform 0.5s ease;
+                    }
+            
+                    .stories-card .carousel-item:hover img {
+                        transform: scale(1.03);
+                    }
+            
+                    .stories-card .carousel-indicators button {
+                        width: 10px;
+                        height: 10px;
+                        border-radius: 50%;
+                        background-color: rgba(0, 0, 0, 0.2);
+                        border: none;
+                        margin: 0 5px;
+                    }
+            
+                    .stories-card .carousel-indicators button.active {
+                        background-color: var(--success-color);
+                    }
+            
+                    .stories-card .carousel-control-prev,
+                    .stories-card .carousel-control-next {
+                        width: 40px;
+                        height: 40px;
+                        background: rgba(255, 255, 255, 0.8);
+                        border-radius: 50%;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        opacity: 0;
+                        transition: opacity 0.3s ease;
+                    }
+            
+                    .stories-card:hover .carousel-control-prev,
+                    .stories-card:hover .carousel-control-next {
+                        opacity: 1;
+                    }
+            
+                    .stories-card .carousel-control-prev-icon,
+                    .stories-card .carousel-control-next-icon {
+                        filter: invert(1);
+                        width: 20px;
+                        height: 20px;
+                    }
+            
+                    /* Latest News Card */
+                    .news-card {
+                        border: none;
+                        border-radius: 15px;
+                        overflow: hidden;
+                        background: white;
+                        box-shadow: var(--card-shadow);
+                        transition: all 0.3s ease;
+                        border: 1px solid lightgray;
+                    }
+            
+                    .news-card:hover {
+                        transform: translateY(-5px);
+                        box-shadow: var(--card-hover-shadow);
+                    }
+            
+                    .news-card::before {
+                        content: "";
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        width: 100px;
+                        height: 100px;
+                        background: var(--primary-light);
+                        border-radius: 50%;
+                        transform: translate(50%, -50%);
+                    }
+            
+                    .news-card .card-header {
+                        background: transparent;
+                        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+                        padding: 1.25rem 1.5rem;
+                    }
+            
+                    .news-card .card-title {
+                        font-family: 'Orbitron', sans-serif;
+                        font-weight: 600;
+                        color: var(--dark-color);
+                        letter-spacing: 0.5px;
+                        position: relative;
+                    }
+            
+                    .news-card .card-title::after {
+                        content: "";
+                        position: absolute;
+                        bottom: -10px;
+                        left: 0;
+                        width: 40px;
+                        height: 3px;
+                        background: var(--primary-color);
+                        border-radius: 3px;
+                    }
+            
+                    .news-card .list-group {
+                        border-radius: 12px;
+                        overflow: hidden;
+                    }
+            
+                    .news-card .list-group-item {
+                        border: none;
+                        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+                        padding: 1.25rem 1.5rem;
+                        transition: all 0.3s ease;
+                        position: relative;
+                        overflow: hidden;
+                    }
+            
+                    .news-card .list-group-item:last-child {
+                        border-bottom: none;
+                    }
+            
+                    .news-card .list-group-item:hover {
+                        transform: translateX(5px);
+                        background: rgba(0, 0, 0, 0.02);
+                    }
+            
+                    .news-card .list-group-item::before {
+                        content: "";
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        bottom: 0;
+                        width: 4px;
+                        background: var(--primary-color);
+                    }
+            
+                    .news-card .list-group-fill-primary::before {
+                        background: var(--primary-color);
+                    }
+            
+                    .news-card .list-group-fill-secondary::before {
+                        background: var(--secondary-color);
+                    }
+            
+                    .news-card .list-group-fill-success::before {
+                        background: var(--success-color);
+                    }
+            
+                    /* Animation classes */
+                    [data-aos] {
+                        transition: opacity 0.5s ease, transform 0.5s ease;
+                    }
+                    [data-aos="fade-right"] {
+                        transform: translateX(-20px);
+                        opacity: 0;
+                    }
+                    [data-aos="fade-left"] {
+                        transform: translateX(20px);
+                        opacity: 0;
+                    }
+                    [data-aos].aos-animate {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+            
+                    /* Responsive adjustments */
+                    @media (max-width: 1199px) {
+                        .stories-card .carousel-item img {
+                            height: 250px;
+                        }
+                    }
+            
+                    @media (max-width: 767px) {
+                        .stories-card .carousel-item img {
+                            height: 200px;
+                        }
+                        
+                        .news-card .list-group-item {
+                            padding: 1rem;
+                        }
+                    }
+                </style>
+            
+                <!-- Success Stories Card -->
+                <div class="col-xl-4" data-aos="fade-right">
+                    <div class="stories-card card">
+                        <div class="card-header align-items-center d-flex">
+                            <h4 class="card-title mb-0 flex-grow-1">Success Stories</h4>
+                        </div>
+                        <!-- end card header -->
+                        
+                        <div class="card-body">
+                            <div class="carousel carousel-dark slide" id="carouselExampleDark" data-bs-ride="carousel">
+                                <div class="carousel-indicators">
+                                    {% for item in story %}
+                                    <button type="button" data-bs-target="#carouselExampleDark" 
+                                            data-bs-slide-to="{{ forloop.counter0 }}" 
+                                            {% if forloop.first %}class="active" aria-current="true"{% endif %} 
+                                            aria-label="Slide {{ forloop.counter }}"></button>
+                                    {% endfor %}
+                                </div>
+                                <div class="carousel-inner">
+                                    {% for item in story %}
+                                    <div class="carousel-item {% if forloop.first %}active{% endif %}" data-bs-interval="10000">
+                                        <img src="{{ item.image.url }}" class="d-block w-100" alt="Success Story">
+                                        <div class="carousel-caption d-none d-md-block">
+                                            {% if item.description %}
+                                            <p>{{ item.description }}</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- end card-body -->
+                    </div>
+                    <!-- end card -->
+                </div>
+                <!-- end col -->
+            
+                <!-- Latest News Card -->
+                <div class="col-xxl-8 col-xl-8" data-aos="fade-left">
+                    <div class="news-card card">
+                        <div class="card-header align-items-center d-flex">
+                            <h4 class="card-title mb-0 flex-grow-1">Latest News</h4>
+                        </div>
+                        <!-- end card header -->
+                        
+                        <div class="card-body">
+                            <ul class="list-group">
+                                {% for newsItem in latest_news %}
+                                <li class="list-group-item {% cycle 'list-group-fill-primary' 'list-group-fill-secondary' 'list-group-fill-success' %}">
+                                    {{ newsItem.news }}
+                                    <small class="text-muted d-block mt-1">{{ newsItem.created_at|date:"M d, Y" }}</small>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <!-- end card-body -->
+                    </div>
+                    <!-- end card -->
+                </div>
+                <!-- end col -->
                  </div>
-                 
-               </div>
+            <!-- end row -->
               
                <!-- end row-->
             </div>
@@ -1294,107 +2600,529 @@
          <!-- end col -->
       </div>
 
-      <div class="row mt-5 card">
-         <div class="col-lg-12">
-             <div
-                 class="card rounded-0 bg-primary-subtle mx-n4 mt-n4 border-top border-0 card-border-effect-none">
-                 <div class="px-4">
-                     <div class="row">
-                         <div class="col-xxl-5 align-self-center">
-                             <div class="py-4">
-                                 <h4 class="display-6 coming-soon-text">Frequently asked questions OR Queries</h4>
-                                 
-                             </div>
-                            
-                         </div>
-                         <div class="col-xxl-3 ms-auto">
-                             <div class="mb-n5 pb-1 faq-img d-none d-xxl-block">
-                                 <img src="assets/images/faq-img.png" alt="" class="img-fluid">
-                             </div>
-                         </div>
-                     </div>
-                 </div>
-                 <!-- end card body -->
-             </div>
-             <!-- end card -->
+      <!-- faq section  -->
 
-             <div class="row justify-content-evenly mb-4">
-                 <div class="col-lg-12">
-                  
-                     <div class="mt-3">
-                         <div class="d-flex align-items-center mb-2">
-                             <div class="flex-shrink-0 me-1">
-                                 <i class="ri-question-line fs-24 align-middle text-primary me-1"></i>
-                             </div>
-                             <div class="flex-grow-1">
-                                 <h5 class="fs-16 mb-0 fw-semibold">General Questions</h5>
-                             </div>
-                             <div>
-                                 <h5 class="fs-16 mb-0 fw-semibold"><a href="{% url "queries_load" %}">View All</a></h5>
-                             </div>
-                         </div>
-
-                         
-                         {% for faq in faq %}
-                         <div class="accordion accordion-border-box" id="genques-accordion">
-                             <div class="accordion-item">
-                                 <h2 class="accordion-header" id="genques-headingOne">
-                                     <button class="accordion-button" type="button"
-                                         data-bs-toggle="collapse" data-bs-target="#genques-collapseOne"
-                                         aria-expanded="true" aria-controls="genques-collapseOne">
-                                         {{faq.question}}
-                                     </button>
-                                 </h2>
-                                 <div id="genques-collapseOne" class="accordion-collapse collapse show"
-                                     aria-labelledby="genques-headingOne"
-                                     data-bs-parent="#genques-accordion">
-                                     <div class="accordion-body">
-                                         {{faq.answer}}
-                                     </div>
-                                 </div>
-                             </div>
-                            
-                         </div>
-                         {% endfor %}
-                         <!--end accordion-->
-                     </div>
-                 </div>
-
-             </div>
-         </div>
-         <!--end col-->
-     </div>
-     <div class="col-lg-12">
-      <div class="card">
-         <div class="card-header">
-            <h4 class="card-title mb-0"><a href="{% url "package_load" %}">View All Product</a></h4>
-         </div>
-         <!-- end card header -->
-         <div class="card-body">
-            {% comment %} <p class="text-muted">Use <code>effect-coverflow-swiper</code> class to set a swiper
-               with coverflow effect.
-            </p> {% endcomment %}
-            <!-- Swiper -->
-            <div class="swiper effect-coverflow-swiper rounded pb-5">
-               <div class="swiper-wrapper">
-                  {% for i in package %}
-                  <div class="swiper-slide">
-                     {% if i.image %}
-                     <img src="{{ i.image.url}}" alt="Owl Image" class="card-img" style="height:10rem;">
-                     {% else %}
-                     <img src="{% static "assets/images/small/img-4.jpg" %}" alt="" class="img-fluid">
-                     {% endif %}
-                  </div>
-                  {% endfor %}
-                 
-               </div>
-               <div class="swiper-pagination swiper-pagination-dark"></div>
+      <div class="row faq-section mt-5">
+        <!-- Custom CSS for FAQ section -->
+        <style>
+            .faq-section {
+                margin-bottom: 2rem;
+            }
+            
+            /* FAQ Header Card */
+            .faq-header-card {
+                border: none;
+                border-radius: 15px 15px 0 0;
+                overflow: hidden;
+                background: linear-gradient(135deg, var(--primary-light) 0%, rgba(255,255,255,0.9) 100%);
+                box-shadow: var(--card-shadow);
+                border: 1px solid lightgray;
+                border-bottom: none;
+                position: relative;
+                margin-bottom: 0;
+            }
+            
+            .faq-header-card::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 200px;
+                height: 200px;
+                background: radial-gradient(circle, var(--primary-light) 0%, rgba(67,97,238,0) 70%);
+                opacity: 0.5;
+            }
+            
+            .faq-header-content {
+                position: relative;
+                z-index: 1;
+            }
+            
+            .faqHeading-text {
+                /* font-family: 'Orbitron', sans-serif; */
+                font-weight: 700;
+                color: var(--dark-color);
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                position: relative;
+                display: inline-block;
+            }
+            
+            /* .coming-soon-text::after {
+                content: "";
+                position: absolute;
+                bottom: -10px;
+                left: 0;
+                width: 60px;
+                height: 3px;
+                background: var(--primary-color);
+                border-radius: 3px;
+            } */
+            
+            .faq-img img {
+                max-height: 180px;
+                object-fit: contain;
+                transition: all 0.3s ease;
+            }
+            
+            .faq-img:hover img {
+                transform: translateY(-5px);
+            }
+            
+            /* FAQ Content Section */
+            .faq-content-section {
+                background: white;
+                border-radius: 0 0 15px 15px;
+                box-shadow: var(--card-shadow);
+                border: 1px solid lightgray;
+                border-top: none;
+                padding: 2rem;
+            }
+            
+            /* Section Header */
+            .section-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 1.5rem;
+                padding-bottom: 0.75rem;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            }
+            
+            .section-title {
+                display: flex;
+                align-items: center;
+                font-family: 'Orbitron', sans-serif;
+                font-weight: 600;
+                color: var(--dark-color);
+                letter-spacing: 0.5px;
+            }
+            
+            .section-title i {
+                color: var(--primary-color);
+                margin-right: 0.75rem;
+                font-size: 1.5rem;
+            }
+            
+            .view-all-link {
+                color: var(--primary-color);
+                font-weight: 500;
+                text-decoration: none;
+                transition: all 0.2s ease;
+                display: flex;
+                align-items: center;
+            }
+            
+            .view-all-link:hover {
+                color: var(--secondary-color);
+                transform: translateX(3px);
+            }
+            
+            .view-all-link i {
+                margin-left: 0.5rem;
+                transition: transform 0.2s ease;
+            }
+            
+            .view-all-link:hover i {
+                transform: translateX(3px);
+            }
+            
+            /* Accordion */
+            .faq-accordion {
+                border-radius: 12px;
+                overflow: hidden;
+            }
+            
+            .accordion-item {
+                background-color: white;
+                border: 1px solid rgba(0, 0, 0, 0.05);
+                margin-bottom: 0.75rem;
+                border-radius: 8px !important;
+                overflow: hidden;
+                transition: all 0.2s ease;
+            }
+            
+            .accordion-item:hover {
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            }
+            
+            .accordion-button {
+                background-color: white;
+                font-weight: 500;
+                color: var(--dark-color);
+                padding: 1.25rem 1.5rem;
+                box-shadow: none !important;
+                transition: all 0.2s ease;
+            }
+            
+            .accordion-button:not(.collapsed) {
+                background-color: var(--light-color);
+                color: var(--primary-color);
+            }
+            
+            .accordion-button::after {
+                background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%234361ee'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+                transition: transform 0.3s ease;
+            }
+            
+            .accordion-button:not(.collapsed)::after {
+                background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%234361ee'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+            }
+            
+            .accordion-body {
+                padding: 1.25rem 1.5rem;
+                background-color: var(--light-color);
+                color: var(--dark-color);
+                line-height: 1.6;
+            }
+            
+            /* Responsive adjustments */
+            @media (max-width: 1199px) {
+                .faq-header-card::before {
+                    width: 150px;
+                    height: 150px;
+                }
+                
+                .coming-soon-text {
+                    font-size: 1.75rem;
+                }
+            }
+            
+            @media (max-width: 767px) {
+                .faq-header-card {
+                    text-align: center;
+                }
+                
+                .faq-img {
+                    display: none;
+                }
+                
+                .section-header {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+                
+                .view-all-link {
+                    margin-top: 0.5rem;
+                }
+            }
+        </style>
+    
+        <div class="col-lg-12">
+            <!-- FAQ Header Card -->
+            <div class="faq-header-card card">
+                <div class="px-4">
+                    <div class="row faq-header-content">
+                        <div class="col-xxl-5 align-self-center">
+                            <div class="py-4">
+                                <h4 class="display-8 faqHeading-text">Frequently Asked Questions</h4>
+                                <p class="text-muted mt-2">Find answers to common queries about our services and platform</p>
+                            </div>
+                        </div>
+                        <!-- <div class="col-xxl-3 ms-auto">
+                            <div class="mb-n5 pb-1 faq-img d-none d-xxl-block">
+                                <img src="assets/images/faq-img.png" alt="FAQ Illustration" class="img-fluid">
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
             </div>
-         </div>
-         <!-- end card-body -->
-      </div>
-      <!-- end card -->
-   </div>
+            <!-- end header card -->
+    
+            <!-- FAQ Content -->
+            <div class="faq-content-section">
+                <div class="row justify-content-evenly mb-4">
+                    <div class="col-lg-12">
+                        <div class="mt-3">
+                            <div class="section-header">
+                                <div class="section-title">
+                                    <i class="ri-question-line"></i>
+                                    <h5 class="mb-0">General Questions</h5>
+                                </div>
+                                <a href="{% url 'queries_load' %}" class="view-all-link">
+                                    View All <i class="ri-arrow-right-line"></i>
+                                </a>
+                            </div>
+    
+                            <div class="faq-accordion" id="faq-accordion">
+                                {% for faq in faq %}
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="faq-heading-{{ forloop.counter }}">
+                                        <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" 
+                                                type="button"
+                                                data-bs-toggle="collapse" 
+                                                data-bs-target="#faq-collapse-{{ forloop.counter }}"
+                                                aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" 
+                                                aria-controls="faq-collapse-{{ forloop.counter }}">
+                                            {{ faq.question }}
+                                        </button>
+                                    </h2>
+                                    <div id="faq-collapse-{{ forloop.counter }}" 
+                                         class="accordion-collapse collapse {% if forloop.first %}show{% endif %}"
+                                         aria-labelledby="faq-heading-{{ forloop.counter }}"
+                                         data-bs-parent="#faq-accordion">
+                                        <div class="accordion-body">
+                                            {{ faq.answer }}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <!--end accordion-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end content section -->
+        </div>
+        <!--end col-->
+    </div>
+      <!-- faq section  -->
+
+      <div class="col-lg-12 product-slider-section">
+        <!-- Custom CSS for product slider -->
+        <style>
+            .product-slider-section {
+                margin-bottom: 2rem;
+            }
+            
+            /* Product Slider Card */
+            .product-slider-card {
+                border: none;
+                border-radius: 15px;
+                overflow: hidden;
+                background: white;
+                box-shadow: var(--card-shadow);
+                transition: all 0.3s ease;
+                border: 1px solid lightgray;
+                position: relative;
+            }
+            
+            .product-slider-card:hover {
+                transform: translateY(-5px);
+                box-shadow: var(--card-hover-shadow);
+            }
+            
+            .product-slider-card::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 100px;
+                height: 100px;
+                background: var(--primary-light);
+                border-radius: 50%;
+                transform: translate(50%, -50%);
+                opacity: 0.5;
+            }
+            
+            .product-slider-card .card-header {
+                background: transparent;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+                padding: 1.25rem 1.5rem;
+            }
+            
+            .product-slider-card .card-title {
+                font-family: 'Orbitron', sans-serif;
+                font-weight: 600;
+                color: var(--dark-color);
+                letter-spacing: 0.5px;
+                position: relative;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .product-slider-card .card-title::after {
+                content: "";
+                position: absolute;
+                bottom: -10px;
+                left: 0;
+                width: 40px;
+                height: 3px;
+                background: var(--primary-color);
+                border-radius: 3px;
+            }
+            
+            .view-all-products {
+                color: var(--primary-color);
+                font-weight: 500;
+                text-decoration: none;
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                font-size: 0.9rem;
+            }
+            
+            .view-all-products:hover {
+                color: var(--secondary-color);
+                transform: translateX(5px);
+            }
+            
+            .view-all-products i {
+                margin-left: 0.5rem;
+                transition: transform 0.3s ease;
+            }
+            
+            .view-all-products:hover i {
+                transform: translateX(3px);
+            }
+            
+            /* Swiper Customization */
+            .product-swiper {
+                padding: 1rem 0 3rem !important;
+                margin: 0 -0.5rem;
+            }
+            
+            .product-swiper .swiper-wrapper {
+                padding: 1rem 0;
+            }
+            
+            .product-swiper .swiper-slide {
+                transition: all 0.4s ease;
+                transform: scale(0.9);
+                opacity: 0.7;
+                border-radius: 12px;
+                overflow: hidden;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+                border: 1px solid rgba(0, 0, 0, 0.05);
+            }
+            
+            .product-swiper .swiper-slide-active {
+                transform: scale(1);
+                opacity: 1;
+                box-shadow: 0 8px 25px rgba(67, 97, 238, 0.15);
+                z-index: 1;
+            }
+            
+            .product-swiper .swiper-slide img {
+                width: 100%;
+                height: 250px;
+                object-fit: cover;
+                transition: all 0.5s ease;
+            }
+            
+            .product-swiper .swiper-slide:hover img {
+                transform: scale(1.05);
+            }
+            
+            .product-swiper .swiper-slide-content {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+                padding: 1.5rem 1rem 1rem;
+                color: white;
+                opacity: 0;
+                transition: all 0.3s ease;
+            }
+            
+            .product-swiper .swiper-slide:hover .swiper-slide-content {
+                opacity: 1;
+            }
+            
+            .product-swiper .swiper-pagination {
+                bottom: 1rem !important;
+            }
+            
+            .product-swiper .swiper-pagination-bullet {
+                width: 10px;
+                height: 10px;
+                background: rgba(0, 0, 0, 0.2);
+                opacity: 1;
+                transition: all 0.3s ease;
+            }
+            
+            .product-swiper .swiper-pagination-bullet-active {
+                background: var(--primary-color);
+                transform: scale(1.3);
+            }
+            
+            /* Navigation Arrows */
+            .product-swiper .swiper-button-next,
+            .product-swiper .swiper-button-prev {
+                width: 40px;
+                height: 40px;
+                background: white;
+                border-radius: 50%;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                opacity: 0;
+                transition: all 0.3s ease;
+            }
+            
+            .product-swiper:hover .swiper-button-next,
+            .product-swiper:hover .swiper-button-prev {
+                opacity: 1;
+            }
+            
+            .product-swiper .swiper-button-next::after,
+            .product-swiper .swiper-button-prev::after {
+                font-size: 1rem;
+                color: var(--primary-color);
+                font-weight: bold;
+            }
+            
+            /* Responsive adjustments */
+            @media (max-width: 1199px) {
+                .product-swiper .swiper-slide img {
+                    height: 220px;
+                }
+            }
+            
+            @media (max-width: 767px) {
+                .product-swiper .swiper-slide img {
+                    height: 180px;
+                }
+                
+                .product-swiper .swiper-slide-content {
+                    padding: 1rem 0.5rem;
+                    opacity: 1;
+                }
+            }
+        </style>
+    
+        <div class="product-slider-card card">
+            <div class="card-header">
+                <h4 class="card-title mb-0">
+                    Our Products
+                    <a href="{% url 'package_load' %}" class="view-all-products">
+                        View All <i class="ri-arrow-right-line"></i>
+                    </a>
+                </h4>
+            </div>
+            <!-- end card header -->
+            
+            <div class="card-body">
+                <!-- Swiper -->
+                <div class="swiper product-swiper">
+                    <div class="swiper-wrapper">
+                        {% for i in package %}
+                        <div class="swiper-slide">
+                            {% if i.image %}
+                            <img src="{{ i.image.url }}" alt="{{ i.name }}" class="card-img">
+                            {% else %}
+                            <img src="{% static 'assets/images/small/img-4.jpg' %}" alt="Default Product Image" class="card-img">
+                            {% endif %}
+                            <div class="swiper-slide-content">
+                                <h5 class="text-white mb-1">{{ i.name|default:"Product Name" }}</h5>
+                                <p class="text-white-50 small mb-0">{{ i.description|truncatechars:60|default:"Product description" }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <!-- Add Pagination -->
+                    <div class="swiper-pagination"></div>
+                    <!-- Navigation arrows -->
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+            </div>
+            <!-- end card-body -->
+        </div>
+        <!-- end card -->
+    </div>
+    <!-- end col -->
    </div>
    <!-- container-fluid -->
 </div>
