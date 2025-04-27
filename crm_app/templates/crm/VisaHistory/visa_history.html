@@ -30,7 +30,7 @@
                         <div class="col-sm">
                            <div class="d-flex justify-content-sm-end">
                              
-                              <div class="search-box ms-2">
+                              {% comment %} <div class="search-box ms-2">
                                  <input class="form-control" type="search" 
                                     name="search" placeholder="Begin Typing To Search Users..." 
                                     hx-get="{% url "visacountry_list" %}" 
@@ -39,7 +39,7 @@
                                     hx-indicator=".htmx-indicator">
                                 
                                  <i class="ri-search-line search-icon"></i>
-                              </div>
+                              </div> {% endcomment %}
                            </div>
                         </div>
                      </div>
