@@ -1,4 +1,5 @@
 {% load static %}
+{% load user_roles %}
 <script src="https://sdk.cashfree.com/js/ui/2.0.0/cashfree-ui.js"></script>
 
 <!-- Custom Header CSS -->
@@ -229,7 +230,7 @@
                         </span>
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
-                        <h6 class="dropdown-header">{{request.user.first_name}} {{request.user.last_name}}!</h6>
+                     <h6 class="dropdown-header">{{request.user.first_name}} {{request.user.last_name}} {% if request.user|is_admin %}(Admin) {% elif request.user|is_employee %}(Employee){% elif request.user|has_access:"4,5" %}(Agent){% endif %}</h6>
                         <a class="dropdown-item" href="{% url "profile" %}">
                             <i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
                             <span class="align-middle">Profile</span>
