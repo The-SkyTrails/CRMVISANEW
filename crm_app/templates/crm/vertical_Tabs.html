@@ -13,7 +13,12 @@
             <li class="nav-item">
                 
                <a class="nav-link active" data-bs-toggle="tab" href="#home-1" role="tab" onclick="myFunction2('approve')" >
+               {% if user|has_access:"4,5" %}
+               All Packages
+               {% else %}
                Approved
+               {% endif %}
+              
                </a>
             </li>
             {% if user|is_admin %}

@@ -1,0 +1,128 @@
+{% extends "crm/base/base.html" %}
+{% block main-content %}
+<div class="page-content">
+   <div class="container-fluid">
+      <!-- start page title -->
+      <div class="row">
+         <div class="col-12">
+            <div
+               class="page-title-box d-sm-flex align-items-center justify-content-between bg-transparent">
+               <h4 class="mb-sm-0">Visa Booking</h4>
+               <div class="page-title-right">
+                  <ol class="breadcrumb m-0">
+                     <li class="breadcrumb-item"><a href="javascript: void(0);">Visa Booking</a></li>
+                     <li class="breadcrumb-item active">List</li>
+                  </ol>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- end page title -->
+      <div class="row">
+         <div class="col-lg-12">
+            <div class="card">
+               
+               <!-- end card header -->
+               <div class="card-body">
+                  <div class="listjs-table" id="customerList">
+                     <div class="row g-4 mb-3">
+                       
+                        <div class="col-sm">
+                           <div class="d-flex justify-content-sm-end">
+                             
+                              <div class="search-box ms-2">
+                                 <input class="form-control" type="search" 
+                                    name="search" placeholder="Begin Typing To Search Users..." 
+                                    hx-get="{% url "visacountry_list" %}" 
+                                    hx-trigger="input changed delay:500ms, search" 
+                                    hx-target="#search-results" 
+                                    hx-indicator=".htmx-indicator">
+                                
+                                 <i class="ri-search-line search-icon"></i>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="table-responsive table-card mt-3 mb-1">
+                        <table class="table align-middle table-nowrap table-bordered border-secondary" id="customerTable" >
+                           <thead class="table-light">
+                              <tr>
+                                
+                                 <th>Si No</th>   
+                                 <th>First Name</th>
+                                 <th>Last Name</th>   
+                                 <th>Email</th>                        
+                                 <th>Booking Type</th>
+                                 <th>Visa Type</th>
+                                 <th>Departure Country</th>
+                                 <th>Arrival Country</th>
+                                 <th>From Date</th>
+                                 <th>To Date</th>
+                                 
+                                 
+                                 
+                              </tr>
+                           </thead>
+                           <tbody class="list form-check-all" hx-get="{% url "visa_history_list" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="search-results">
+                           
+                              <tr>
+                                 <td class="spinner-border" role="status">
+                                 </td>
+                                 <td> <span class="htmx-indicator"> 
+                                     Loading.....
+                                   </span> </td>
+                              </tr>
+                           </tbody>
+                        </table>
+                        
+                      
+                     </div>
+                  </div>
+      
+               </div>
+               <!-- end card -->
+            </div>
+            <!-- end col -->
+         </div>
+         <!-- end col -->
+      </div>
+      <!-- end row -->
+      <!-- end row -->
+      {% comment %} {% include "crm/SuperAdmin/add_admin.html" %} {% endcomment %}
+      
+      <!-- Modal -->
+      <div class="modal fade zoomIn" id="deleteRecordModal" tabindex="-1" aria-hidden="true">
+         <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                     id="btn-close"></button>
+               </div>
+               <div class="modal-body">
+                  <div class="mt-2 text-center">
+                     <lord-icon src="../../../gsqxdxog.json" trigger="loop"
+                        colors="primary:#f7b84b,secondary:#f06548"
+                        style="width:100px;height:100px"></lord-icon>
+                     <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                        <h4>Are you Sure ?</h4>
+                        <p class="text-muted mx-4 mb-0">Are you Sure You want to Remove this Record
+                           ?
+                        </p>
+                     </div>
+                  </div>
+                  <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                     <button type="button" class="btn w-sm btn-light"
+                        data-bs-dismiss="modal">Close</button>
+                     <button type="button" class="btn w-sm btn-danger " id="delete-record">Yes,
+                     Delete It!</button>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!--end modal -->
+   </div>
+   <!-- container-fluid -->
+</div>
+
+{% endblock main-content %}

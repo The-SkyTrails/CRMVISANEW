@@ -302,6 +302,8 @@ urlpatterns = [
    path("wallet/history",wallet_history,name="wallet_history"),
 
    path("booking/history",booking_history,name="booking_history"),
+   path("visa/history/",visa_history,name="visa_history"),
+   path("visa/history/list",visa_history_list,name="visa_history_list"),
 
    
    

@@ -54,8 +54,9 @@
                               <li class="nav-item">
                                  <a class="nav-link active fw-semibold" data-bs-toggle="tab"
                                     href="#lead-all" role="tab">
-                                 All <span
-                                    class="badge bg-primary-subtle text-primary align-middle rounded-pill ms-1">12</span>
+                                 All 
+                                 {% comment %} <span
+                                    class="badge bg-primary-subtle text-primary align-middle rounded-pill ms-1">12</span> {% endcomment %}
                                  </a>
                               </li>
                               {% if user|has_access:"2,3" %}

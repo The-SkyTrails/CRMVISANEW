@@ -3687,7 +3687,8 @@ def add_admin(request):
             first_name = form.cleaned_data['first_name']
             last_name = form.cleaned_data['last_name']
             email = form.cleaned_data['email']
-            mobile = form.cleaned_data['mobile']
+            mobile = form.cleaned_data['contact_no']
+            print("mobileeeeeeeeeeeeeeeee",mobile)
             password = form.cleaned_data['password']
             profile_pic = form.cleaned_data['profile_pic']
 
@@ -3696,13 +3697,13 @@ def add_admin(request):
                     form.add_error('email', 'A user with this email already exists.')
             elif len(mobile) < 10:  # Check if mobile length is less than 10
                 form.add_error('mobile', 'Mobile number must be at least 10 digits.')
-            elif SuperAdminHOD.objects.filter(mobile=mobile).exists():
+            elif Admin.objects.filter(contact_no=mobile).exists():
                     form.add_error('mobile', 'A user with this Mobile No already exists.')
             else:
                 customuser = CustomUser.objects.create_user(username=email,first_name=first_name,last_name=last_name,email=email,password=password,user_type="2")
             
-                customuser.superadminhod.mobile=mobile
-                customuser.superadminhod.profile_pic=profile_pic
+                customuser.admin.contact_no=mobile
+                customuser.admin.profile_pic=profile_pic
 
 
                 customuser.save()
@@ -6895,3 +6896,24 @@ def booking_history(request):
         "total_pages": total_pages,
     }
     return render(request, 'crm/booking_history.html', context)
+
+
+
+def visa_history(request):
+    return render(request,'crm/VisaHistory/visa_history.html')
+
+def visa_history_list(request):
+    # API se data fetch karenge
+    user_id = request.user.id  # Id fix hai ya aap dynamic bhi kar sakte ho
+    print("userss id",user_id)
+    api_url = f"https://st-backend-rzu7.onrender.com/skyTrails/api/visa/getVisaApplicationByUser?userId={user_id}"
+    
+    try:
+        response = requests.get(api_url)
+        response_data = response.json()
+        visa_applications = response_data.get('result', [])
+    except Exception as e:
+        print(f"Error fetching API data: {e}")
+        visa_applications = []
+
+    return render(request, 'crm/VisaHistory/visabooking_list.html', {'visa_applications': visa_applications})

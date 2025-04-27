@@ -1,4 +1,5 @@
 {% extends "crm/base/base.html" %}
+{% load user_roles %}
 
 {% block main-content %}
 <style>
@@ -102,7 +103,7 @@
                             <label for="exampleFormControlInput1" class="custom-form-label">Refused</label>
                            </div>
                            <!--end col-->
-   
+                           {% if user|has_access:"2,3" %}
                            <div class="col-xxl-3 col-md-6">
                               <div>
                                  <label for="agent-dropdown" class="form-label">Assign to Agent</label>
@@ -112,6 +113,7 @@
                                  </select>
                               </div>
                            </div>
+                           {% endif %}
 
                            <div class="row formrow" id="refusal-country-field" style="display: none;">
                             <div class="col-md-6 mb-2">
