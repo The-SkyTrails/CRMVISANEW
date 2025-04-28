@@ -415,7 +415,7 @@
                      <li class="nav-item">
                         {% if request.user.is_authenticated %}
                         {% with request.session.access_token as token %}
-                        <a class="nav-link menu-link"  href="https://b2bnww.netlify.app/itinerary?token={{ token }}&redirectURL='visa'">
+                        <a class="nav-link menu-link"  href="https://travel.theskytrails.com/itinerary?token={{ token }}&redirectURL=visa">
                            <i class="ri-pencil-ruler-2-line"></i> Visa
                            </a>
                         {% endwith %}
@@ -438,7 +438,7 @@
             {% if request.user.is_authenticated %}
             {% with request.session.access_token as token %}
             <li class="nav-item">
-               <a class="nav-link menu-link"  href="https://b2bnww.netlify.app/itinerary?token={{ token }}">
+               <a class="nav-link menu-link"  href="https://travel.theskytrails.com/itinerary?token={{ token }}">
                <i class="ri-pencil-ruler-2-line"></i> <span data-key="t-widgets">B2B</span>
                </a>
                {% comment %} <a class="nav-link menu-link"  href="https://b2bnw.netlify.app//?token={{ token }}">
