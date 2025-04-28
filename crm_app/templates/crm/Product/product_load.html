@@ -2,40 +2,152 @@
 {% load custom_filters %}
 {% load static %}
 {% block main-content %}
+<style>
+    /* Futuristic Design Styles */
+    .page-content {
+        /* background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%); */
+        min-height: calc(100vh - 70px);
+    }
+    
+    .card_product {
+        border: none;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        background: white;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .card_product:hover {
+        /* transform: translateY(-5px); */
+        /* box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1); */
+    }
+    
+    h5 {
+        color: #2c3e50;
+        font-weight: 600;
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem !important;
+        position: relative;
+        padding-bottom: 10px;
+    }
+    
+    h5::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 60px;
+        height: 4px;
+        background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+        border-radius: 2px;
+    }
+    
+    .search-box_product {
+        position: relative;
+        width: 300px;
+    }
+    
+    .search-box_product input {
+        border: 2px solid #e0e6ed;
+        border-radius: 12px;
+        padding: 10px 20px 10px 40px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        background-color: #f8fafc;
+    }
+    
+    .search-box_product input:focus {
+        border-color: #2575fc;
+        box-shadow: 0 0 0 3px rgba(37, 117, 252, 0.1);
+        background-color: white;
+    }
+    
+    .search-icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+    }
+    
+    .btn-primary {
+        background: var(--vz-primary);
+        border: none;
+        border-radius: 12px;
+        padding: 10px 20px;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        box-shadow: 0 4px 15px rgba(106, 17, 203, 0.3);
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 7px 20px rgba(106, 17, 203, 0.4);
+    }
+    
+    .htmx-indicator {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(37, 117, 252, 0.3);
+        border-radius: 50%;
+        border-top-color: #2575fc;
+        animation: spin 1s ease-in-out infinite;
+        margin-left: 10px;
+    }
+    
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .search-box {
+            width: 100%;
+        }
+        
+        h5 {
+            font-size: 1.3rem;
+        }
+    }
+</style>
+
 <div class="page-content">
    <div class="container-fluid">
       <div class="row">
          <div class="col-xxl-12">
-            <h5 class="mb-3">Package Types</h5>
-            <div class="col-sm">
-               <div class="d-flex justify-content-sm-end">
-                 
-                  <div class="search-box ms-2 mb-2">
+            <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+               <h5>Package Types</h5>
+               <div class="d-flex align-items-center">
+                  <div class="search-box_product me-3">
                      <input class="form-control" type="search" 
-                        name="search" placeholder="Search ..." 
+                        name="search" placeholder="Search packages..." 
                         hx-get="{% url "package_list" %}" 
                         hx-trigger="input changed delay:500ms, search" 
                         hx-target="#search-results" 
                         hx-indicator=".htmx-indicator">
-                     {% comment %} <input type="text" class="form-control searching" placeholder="Search..." id="searchInput"> {% endcomment %}
                      <i class="ri-search-line search-icon"></i>
+                  </div>
+                  <button class="btn btn-primary add-btn" hx-get="{% url "add_package" %}" hx-target="#dialog">
+                     <i class="ri-add-line align-middle me-1"></i> Add Package
+                  </button>
+               </div>
+            </div>
+            
+            <div class="card_product">
+               <div class="card-body p-0">
+                  <div id="search-results" 
+                     hx-get="{% url "package_list" %}" 
+                     hx-trigger="load, movieListChanged from:body" 
+                     hx-target="this">
                   </div>
                </div>
             </div>
-            {% comment %} <button class="btn btn-primary add-btn mb-2" hx-get="{% url "after_Swap" %}" hx-swap="HTML swap:1s">Add</button> {% endcomment %}
-            {% comment %} <button class="btn btn-primary add-btn mb-2" hx-get="{% url "add_package" %}" hx-target="#dialog">Add</button> {% endcomment %}
-            <div class="card">
-               <div class="card-body" hx-get="{% url "package_list" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="search-results">
-               
-               </div>
-               <!-- end card-body -->
-            </div>
          </div>
-         <!--end col-->
       </div>
-      <!-- end row -->
    </div>
 </div>
-
 
 {% endblock main-content %}

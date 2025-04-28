@@ -1,12 +1,172 @@
 {% extends "crm/base/base.html" %}
 {% block main-content %}
+<style>
+    /* Custom Premium Styling - Consistent with other pages */
+    .visa-booking-container {
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        border: 1px solid #f0f0f0;
+        width: 100%;
+    }
+    
+    .visa-booking-header {
+        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        border-bottom: 1px solid #eaeaea;
+        padding: 20px 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .visa-booking-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #2c3e50;
+        letter-spacing: 0.5px;
+        margin: 0;
+    }
+    
+    .table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .visa-booking-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        font-size: 14px;
+        min-width: 1000px; /* Minimum width to prevent squeezing */
+    }
+    
+    .visa-booking-table thead th {
+        background-color: #f8fafc;
+        color: #64748b;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 12px;
+        letter-spacing: 0.5px;
+        padding: 16px 20px;
+        border-bottom: 1px solid #f1f5f9;
+        position: sticky;
+        top: 0;
+        white-space: nowrap;
+    }
+    
+    .visa-booking-table tbody tr {
+        transition: all 0.2s ease;
+    }
+    
+    .visa-booking-table tbody tr:hover {
+        background-color: #f8fafc;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    }
+    
+    .visa-booking-table tbody td {
+        padding: 16px 20px;
+        border-bottom: 1px solid #f1f5f9;
+        color: #334155;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+    
+    .visa-booking-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+    
+    /* Loading Indicator */
+    .visa-booking-loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px;
+    }
+    
+    .visa-booking-loading-indicator {
+        color: #64748b;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .visa-booking-loading-indicator:before {
+        content: "";
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border: 2px solid rgba(59, 130, 246, 0.2);
+        border-top-color: #3b82f6;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+    }
+    
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+    
+    /* Empty State */
+    .no-booking-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+        text-align: center;
+        min-width: 1000px; /* Match table min-width */
+    }
+    
+    .no-booking-icon {
+        font-size: 64px;
+        color: #cbd5e1;
+        margin-bottom: 20px;
+    }
+    
+    .no-booking-text {
+        font-size: 16px;
+        color: #64748b;
+        font-weight: 500;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .visa-booking-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 15px;
+        }
+        
+        .visa-booking-title {
+            font-size: 16px;
+        }
+        
+        .table-wrapper {
+            border-radius: 0;
+        }
+        
+        .visa-booking-table thead th,
+        .visa-booking-table tbody td {
+            padding: 12px 15px;
+            font-size: 13px;
+        }
+        
+        .no-booking-icon {
+            font-size: 48px;
+        }
+    }
+</style>
+
 <div class="page-content">
    <div class="container-fluid">
       <!-- start page title -->
       <div class="row">
          <div class="col-12">
-            <div
-               class="page-title-box d-sm-flex align-items-center justify-content-between bg-transparent">
+            <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-transparent">
                <h4 class="mb-sm-0">Visa Booking</h4>
                <div class="page-title-right">
                   <ol class="breadcrumb m-0">
@@ -18,36 +178,20 @@
          </div>
       </div>
       <!-- end page title -->
+      
       <div class="row">
          <div class="col-lg-12">
-            <div class="card">
+            <div class="visa-booking-container">
+               <div class="visa-booking-header">
+                  <h4 class="visa-booking-title">VISA BOOKING HISTORY</h4>
+               </div>
                
-               <!-- end card header -->
-               <div class="card-body">
+               <div class="card-body p-4">
                   <div class="listjs-table" id="customerList">
-                     <div class="row g-4 mb-3">
-                       
-                        <div class="col-sm">
-                           <div class="d-flex justify-content-sm-end">
-                             
-                              {% comment %} <div class="search-box ms-2">
-                                 <input class="form-control" type="search" 
-                                    name="search" placeholder="Begin Typing To Search Users..." 
-                                    hx-get="{% url "visacountry_list" %}" 
-                                    hx-trigger="input changed delay:500ms, search" 
-                                    hx-target="#search-results" 
-                                    hx-indicator=".htmx-indicator">
-                                
-                                 <i class="ri-search-line search-icon"></i>
-                              </div> {% endcomment %}
-                           </div>
-                        </div>
-                     </div>
-                     <div class="table-responsive table-card mt-3 mb-1">
-                        <table class="table align-middle table-nowrap table-bordered border-secondary" id="customerTable" >
-                           <thead class="table-light">
+                     <div class="table-wrapper">  <!-- Added wrapper for horizontal scroll -->
+                        <table class="visa-booking-table">
+                           <thead>
                               <tr>
-                                
                                  <th>Si No</th>   
                                  <th>First Name</th>
                                  <th>Last Name</th>   
@@ -58,39 +202,28 @@
                                  <th>Arrival Country</th>
                                  <th>From Date</th>
                                  <th>To Date</th>
-                                 
-                                 
-                                 
                               </tr>
                            </thead>
-                           <tbody class="list form-check-all" hx-get="{% url "visa_history_list" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="search-results">
-                           
+                           <tbody class="list form-check-all" hx-get="{% url 'visa_history_list' %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="search-results">
                               <tr>
-                                 <td class="spinner-border" role="status">
+                                 <td colspan="10" class="text-center">
+                                    <div class="visa-booking-loading">
+                                       <span class="visa-booking-loading-indicator"> 
+                                          Loading visa bookings...
+                                       </span>
+                                    </div>
                                  </td>
-                                 <td> <span class="htmx-indicator"> 
-                                     Loading.....
-                                   </span> </td>
                               </tr>
                            </tbody>
                         </table>
-                        
-                      
                      </div>
                   </div>
-      
                </div>
-               <!-- end card -->
             </div>
-            <!-- end col -->
          </div>
-         <!-- end col -->
       </div>
-      <!-- end row -->
-      <!-- end row -->
-      {% comment %} {% include "crm/SuperAdmin/add_admin.html" %} {% endcomment %}
       
-      <!-- Modal -->
+      <!-- Delete Modal -->
       <div class="modal fade zoomIn" id="deleteRecordModal" tabindex="-1" aria-hidden="true">
          <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -105,9 +238,7 @@
                         style="width:100px;height:100px"></lord-icon>
                      <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
                         <h4>Are you Sure ?</h4>
-                        <p class="text-muted mx-4 mb-0">Are you Sure You want to Remove this Record
-                           ?
-                        </p>
+                        <p class="text-muted mx-4 mb-0">Are you Sure You want to Remove this Record?</p>
                      </div>
                   </div>
                   <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
@@ -124,5 +255,31 @@
    </div>
    <!-- container-fluid -->
 </div>
+
+<script>
+    document.body.addEventListener('htmx:afterSwap', function(evt) {
+        if (evt.detail.target.id === 'search-results') {
+            // Check if response is empty
+            if (evt.detail.target.textContent.trim() === '' || 
+                evt.detail.target.querySelector('tr[data-empty]')) {
+                const emptyRow = document.createElement('tr');
+                emptyRow.innerHTML = `
+                    <td colspan="10">
+                        <div class="no-booking-container">
+                            <div class="no-booking-icon">
+                                <i class="ri-passport-line"></i>
+                            </div>
+                            <div class="no-booking-text">
+                                No visa bookings found
+                            </div>
+                        </div>
+                    </td>
+                `;
+                evt.detail.target.innerHTML = '';
+                evt.detail.target.appendChild(emptyRow);
+            }
+        }
+    });
+</script>
 
 {% endblock main-content %}

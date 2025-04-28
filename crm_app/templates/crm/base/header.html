@@ -22,128 +22,151 @@
 
     .logo-lg img {
         transition: all 0.3s ease;
-        height: 56px;
+        height:37px;
     }
 
     .logo-lg img:hover {
         transform: scale(1.05);
     }
 
-
-    /* Wallet Balance Display */
-    .wallet-balance {
-        background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
-        color: white;
-        padding: 0.5rem 1rem;
-        border-radius: 50px;
-        font-weight: 600;
-        box-shadow: 0 4px 15px rgba(67, 97, 238, 0.2);
-        display: flex;
-        align-items: center;
-        gap: 5px;
+    /* Wallet Balance Display - HHL Style */
+    .wallet-balance-container {
+        position: relative;
         margin-right: 1rem;
     }
-
-    /* .wallet-balance::before {
-        content: "💰";
-        margin-right: 0.5rem;
-        font-size: 1.2rem;
-    } */
-
-    /* Profile Button - Unique Design */
-    #page-header-user-dropdown {
-        border: 2px solid rgba(67, 97, 238, 0.3);
-        border-radius: 50px;
-        padding: 0.25rem 0.75rem;
+    
+    .wallet-balance {
+        /* background: white; */
+        background: linear-gradient(135deg, #fa5c7c 0%, #f5306e 100%);
+        color: #fff;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-weight: 600;
+        border: 1px solid #ddd;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
         transition: all 0.3s ease;
-        background: transparent;
+        font-size: 14px;
+    }
+
+    .wallet-balance:hover {
+      background: linear-gradient(90deg, #f56783 0%, #cf265b 100%);
+    }
+
+    /* Wallet Dropdown Menu - HHL Style */
+    .wallet-dropdown {
+        position: absolute;
+        right: 0;
+        top: 100%;
+        margin-top: 0.5rem;
+        min-width: 200px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        border: 1px solid #ddd;
+        z-index: 1000;
+        display: none;
+    }
+    
+    .wallet-dropdown.show {
+        display: block;
+    }
+    
+    .wallet-dropdown-item {
+        padding: 0.75rem 1.5rem;
+        color: #333;
+        text-decoration: none;
+        display: block;
+        transition: all 0.2s ease;
+        font-size: 14px;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .wallet-dropdown-item:last-child {
+        border-bottom: none;
+    }
+    
+    .wallet-dropdown-item:hover {
+        background: #f5f5f5;
+    }
+
+    /* Profile Button - HHL Style */
+    .profile-btn-container {
+        position: relative;
+        /* margin-left: 1rem; */
+    }
+    
+    #page-header-user-dropdown {
+      background: linear-gradient(135deg, #0acf97 0%, #04a777 100%);
+        color: #fff;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-weight: 600;
+        border: 1px solid #ddd;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 14px;
     }
 
     #page-header-user-dropdown:hover {
-        border-color: #4361ee;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 10px rgba(67, 97, 238, 0.15);
+      background: linear-gradient(90deg, #13b889 0%, #057755 100%);
     }
 
-    .header-profile-user {
-        width: 36px;
-        height: 36px;
-        object-fit: cover;
-        transition: all 0.3s ease;
-    }
-
-    #page-header-user-dropdown:hover .header-profile-user {
-        transform: scale(1.1);
-    }
-
-    .user-name-text {
-        color: #495057;
-        font-weight: 600;
-        transition: all 0.3s ease;
-    }
-
-    #page-header-user-dropdown:hover .user-name-text {
-        color: #4361ee;
-    }
-
-    /* Dropdown Menu */
-    .dropdown-menu {
-        border: none;
-        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
-        border-radius: 12px;
-        padding: 0.5rem 0;
+    /* Profile Dropdown - HHL Style */
+    .profile-dropdown {
+        position: absolute;
+        right: 0;
+        top: 100%;
         margin-top: 0.5rem;
-        border: 1px solid rgba(0, 0, 0, 0.05);
+        min-width: 220px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        border: 1px solid #ddd;
+        z-index: 1000;
+        display: none;
     }
-
-    .dropdown-item {
-        padding: 0.5rem 1.5rem;
-        border-radius: 6px;
-        margin: 0 0.5rem;
-        width: auto;
+    
+    .profile-dropdown.show {
+        display: block;
+    }
+    
+    .profile-dropdown-item {
+        padding: 0.75rem 1.5rem;
+        color: #333;
+        text-decoration: none;
+        display: block;
         transition: all 0.2s ease;
+        font-size: 14px;
+        border-bottom: 1px solid #eee;
     }
-
-    .dropdown-item:hover {
-        background: rgba(67, 97, 238, 0.1);
-        color: #4361ee;
-        transform: translateX(5px);
+    
+    .profile-dropdown-item:last-child {
+        border-bottom: none;
     }
-
-    .dropdown-divider {
-        margin: 0.5rem 1rem;
-        border-color: rgba(0, 0, 0, 0.05);
+    
+    .profile-dropdown-item:hover {
+        background: #f5f5f5;
     }
-
-    .dropdown-header {
+    
+    .profile-dropdown-header {
+        padding: 0.75rem 1.5rem;
         font-weight: 600;
-        color: #4361ee;
-        padding: 0.5rem 1.5rem;
-    }
-
-    /* Search Dropdown */
-    #page-header-search-dropdown {
-        border: 2px solid rgba(0, 0, 0, 0.05);
-        border-radius: 50%;
-        width: 36px;
-        height: 36px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s ease;
-    }
-
-    #page-header-search-dropdown:hover {
-        border-color: #4361ee;
-        background: rgba(67, 97, 238, 0.1);
+        color: #333;
+        border-bottom: 1px solid #eee;
+        font-size: 14px;
     }
 
     /* Responsive Adjustments */
     @media (max-width: 768px) {
-        .wallet-balance {
+        .wallet-balance, #page-header-user-dropdown {
             padding: 0.4rem 0.8rem;
-            font-size: 0.9rem;
-            margin-right: 0.5rem;
+            font-size: 13px;
         }
         
         .navbar-brand-box {
@@ -151,7 +174,7 @@
         }
         
         .logo-lg img {
-            height: 48px;
+            height: 37px;
         }
     }
 </style>
@@ -159,26 +182,9 @@
 <header id="page-topbar">
     <div class="layout-width">
         <div class="navbar-header">
-            <div class="d-flex">
+            <div class="d-flex gap-2">
                 <!-- LOGO -->
-                <div class="navbar-brand-box horizontal-logo">
-                    <a href="index.html" class="logo logo-dark">
-                        <span class="logo-sm">
-                            <img src="{% static "assets/images/logo-sm.png" %}" alt="" height="22">
-                        </span>
-                        <span class="logo-lg">
-                            <img src="{% static "assets/images/crmlogodark.png" %}" alt="" height="50">
-                        </span>
-                    </a>
-                    <a href="{% url "dashboard" %}" class="logo logo-light">
-                        <span class="logo-sm">
-                            <img src="{% static "assets/images/logo-sm.png" %}" alt="" height="22">
-                        </span>
-                        <span class="logo-lg">
-                            <img src="{% static "assets/images/crmlogonew.png" %}" alt="" height="56px">
-                        </span>
-                    </a>
-                </div>
+               
                 <button type="button"
                class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger"
                id="topnav-hamburger-icon">
@@ -188,6 +194,18 @@
             <span></span>
             </span>
             </button>
+
+
+            <div class="logo ">
+               <a href="{% url "dashboard" %}" class="logo logo-dark">
+                   <span class="logo-sm">
+                       <img src="{% static "assets/images/favicon.ico" %}"  >
+                   </span>
+                   <span class="logo-lg">
+                       <img src="{% static "assets/images/favicon.ico" %}"  >
+                   </span>
+               </a>
+           </div>
             </div>
             
             <div class="d-flex align-items-center">
@@ -207,42 +225,44 @@
                     </div>
                 </div>
 
-                <!-- Wallet Balance -->
-                <div class="wallet-balance">
-                  <i class="fa-solid fa-wallet"></i>
-                    ₹ <span data-target="{{ wallet_balance }}">{{ wallet_balance|floatformat:2 }}</span>
+                <!-- Wallet Balance with Dropdown - HHL Style -->
+                <div class="wallet-balance-container">
+                    <div class="wallet-balance" id="walletBalanceDropdown">
+                        <i class="fa-solid fa-wallet"></i>
+                        ₹{{ wallet_balance|floatformat:2 }}
+                        <i class="fas fa-chevron-down ms-2" style="font-size: 0.8rem;"></i>
+                    </div>
+                    <div class="wallet-dropdown" id="walletDropdownMenu">
+                        <a class="wallet-dropdown-item" href="#" data-bs-toggle="modal" data-bs-target=".bs-example-modal-sm">
+                            <i class="fas fa-plus-circle me-2"></i>
+                            <span>Recharge Wallet</span>
+                        </a>
+                        <a class="wallet-dropdown-item" href="{% url 'recharge_history' %}">
+                            <i class="fas fa-history me-2"></i>
+                            <span>Transaction History</span>
+                        </a>
+                    </div>
                 </div>
-                <a class="dropdown-item" href="#"  data-bs-toggle="modal" data-bs-target=".bs-example-modal-sm">
-           
-                  <span class="align-middle text-danger" style="margin-left:12px;">Recharge</span>
-                </a>
                 
-                <!-- Profile Dropdown -->
-                <div class="dropdown ms-sm-3 header-item ">
-                    <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="d-flex align-items-center">
-                            <img class="rounded-circle header-profile-user" src="{% static "assets/images/users/avatar-1.jpg" %}" alt="Header Avatar">
-                            <span class="text-start ms-xl-2">
-                                <span class="d-none d-xl-inline-block ms-1 fw-semibold user-name-text">
-                                    {{request.user.first_name}} {{request.user.last_name}}
-                                </span>
-                            </span>
-                        </span>
+                <!-- Profile Dropdown - HHL Style -->
+                <div class="profile-btn-container">
+                    <button type="button" class="btn" id="page-header-user-dropdown">
+                        <i class="fas fa-user-circle me-1"></i>
+                        <span class="">Profile</span>
+                        <i class="fas fa-chevron-down ms-2" style="font-size: 0.8rem;"></i>
                     </button>
-                    <div class="dropdown-menu dropdown-menu-end">
-                     <h6 class="dropdown-header">{{request.user.first_name}} {{request.user.last_name}} {% if request.user|is_admin %}(Admin) {% elif request.user|is_employee %}(Employee){% elif request.user|has_access:"4,5" %}(Agent){% endif %}</h6>
-                        <a class="dropdown-item" href="{% url "profile" %}">
-                            <i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
-                            <span class="align-middle">Profile</span>
+                    <div class="profile-dropdown" id="profileDropdownMenu">
+                        <div class="profile-dropdown-header">
+                            {{request.user.first_name}} {{request.user.last_name}} 
+                            {% if request.user|is_admin %}(Admin){% elif request.user|is_employee %}(Employee){% elif request.user|has_access:"4,5" %}(Agent){% endif %}
+                        </div>
+                        <a class="profile-dropdown-item" href="{% url "profile" %}">
+                            <i class="mdi mdi-account-circle me-2"></i>
+                            <span>Profile</span>
                         </a>
-                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target=".bs-example-modal-sm">
-                            <i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
-                            <span class="align-middle">Recharge</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>
-                            <span class="align-middle">Logout</span>
+                        <a class="profile-dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <i class="mdi mdi-logout me-2"></i>
+                            <span>Logout</span>
                         </a>
                         <form action="{% url "logout" %}" method="POST" id="logout-form" style="display: none;">
                             {% csrf_token %}
@@ -259,30 +279,26 @@
     document.getElementById('topnav-hamburger-icon').addEventListener('click', function() {
         this.classList.toggle('active');
     });
+
+    // Wallet balance dropdown toggle
+    document.getElementById('walletBalanceDropdown').addEventListener('click', function(e) {
+        e.stopPropagation();
+        document.getElementById('walletDropdownMenu').classList.toggle('show');
+    });
+
+    // Profile dropdown toggle
+    document.getElementById('page-header-user-dropdown').addEventListener('click', function(e) {
+        e.stopPropagation();
+        document.getElementById('profileDropdownMenu').classList.toggle('show');
+    });
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.wallet-balance-container')) {
+            document.getElementById('walletDropdownMenu').classList.remove('show');
+        }
+        if (!e.target.closest('.profile-btn-container')) {
+            document.getElementById('profileDropdownMenu').classList.remove('show');
+        }
+    });
 </script>
-{% comment %} 
-<script>
-   const cashfree = Cashfree({ mode: "sandbox" });
-
-   document.getElementById("rechargeBtn").addEventListener("click", function (e) {
-       e.preventDefault();
-
-       fetch("{% url 'generate_cashfree_token' %}", {
-           method: "POST",
-           headers: {
-               "X-CSRFToken": "{{ csrf_token }}",
-           },
-       })
-       .then(res => res.json())
-       .then(data => {
-           if (data.payment_session_id) {
-               cashfree.checkout({
-                   paymentSessionId: data.payment_session_id,
-                   redirectTarget: "_self"
-               });
-           } else {
-               alert("Error: " + (data.error || "Unable to get session ID"));
-           }
-       });
-   });
-</script> {% endcomment %}

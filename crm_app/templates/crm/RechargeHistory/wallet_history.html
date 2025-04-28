@@ -2,13 +2,138 @@
 {% load sweetify %}
 {% sweetify %}
 {% block main-content %}
+<style>
+    /* Custom Premium Styling - Consistent with other pages */
+    .wallet-management-container {
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        border: 1px solid #f0f0f0;
+    }
+    
+    .wallet-header {
+        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        border-bottom: 1px solid #eaeaea;
+        padding: 20px 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .wallet-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #2c3e50;
+        letter-spacing: 0.5px;
+        margin: 0;
+    }
+    
+    .wallet-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        font-size: 14px;
+    }
+    
+    .wallet-table thead th {
+        background-color: #f8fafc;
+        color: #64748b;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 12px;
+        letter-spacing: 0.5px;
+        padding: 16px 20px;
+        border-bottom: 1px solid #f1f5f9;
+        position: sticky;
+        top: 0;
+    }
+    
+    .wallet-table tbody tr {
+        transition: all 0.2s ease;
+    }
+    
+    .wallet-table tbody tr:hover {
+        background-color: #f8fafc;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    }
+    
+    .wallet-table tbody td {
+        padding: 16px 20px;
+        border-bottom: 1px solid #f1f5f9;
+        color: #334155;
+        vertical-align: middle;
+    }
+    
+    .wallet-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+    
+    .type-badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+        display: inline-block;
+    }
+    
+    .type-credit {
+        background-color: #d1fae5;
+        color: #065f46;
+    }
+    
+    .type-debit {
+        background-color: #fee2e2;
+        color: #b91c1c;
+    }
+    
+    .no-history-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+        text-align: center;
+    }
+    
+    .no-history-icon {
+        font-size: 64px;
+        color: #cbd5e1;
+        margin-bottom: 20px;
+    }
+    
+    .no-history-text {
+        font-size: 16px;
+        color: #64748b;
+        font-weight: 500;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .wallet-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        .wallet-table thead th,
+        .wallet-table tbody td {
+            padding: 12px 15px;
+        }
+        
+        .no-history-icon {
+            font-size: 48px;
+        }
+    }
+</style>
+
 <div class="page-content">
    <div class="container-fluid">
       <!-- start page title -->
       <div class="row">
          <div class="col-12">
-            <div
-               class="page-title-box d-sm-flex align-items-center justify-content-between bg-transparent">
+            <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-transparent">
                <h4 class="mb-sm-0">Wallet History</h4>
                <div class="page-title-right">
                   <ol class="breadcrumb m-0">
@@ -20,74 +145,62 @@
          </div>
       </div>
       <!-- end page title -->
+      
       <div class="row">
          <div class="col-lg-12">
-            <div class="card">
-               <div class="card-header">
-                  <h4 class="card-title mb-0">WALLET HISTORY</h4>
+            <div class="wallet-management-container">
+               <div class="wallet-header">
+                  <h4 class="wallet-title">WALLET HISTORY</h4>
                </div>
-               <!-- end card header -->
-               <div class="card-body">
+               
+               <div class="card-body p-4">
                   <div class="listjs-table" id="customerList">
-                    
-                     <div class="table-responsive table-card mt-3 mb-1">
-                        <table class="table align-middle table-nowrap table-bordered border-secondary" id="customerTable" >
-                           <thead class="table-light">
+                     <div class="table-responsive">
+                        {% if wallet %}
+                        <table class="wallet-table">
+                           <thead>
                               <tr>
-                                 {% comment %} <th>
-                                    <div class="form-check">
-                                       <input class="form-check-input" type="checkbox"
-                                          id="checkAll" value="option">
-                                    </div>
-                                 </th> {% endcomment %}
                                  <th>S.No.</th>
                                  <th>Balance</th>
                                  <th>Type</th>
                                  <th>Updated At</th>
                                  <th>Booking ID</th>
-                                 
-                                
                               </tr>
                            </thead>
                            <tbody class="list form-check-all">
-                           {% comment %} <tbody class="list form-check-all" hx-trigger="load,  movieListChanged from:body" hx-get="{% url 'admin_list' %}" hx-target="this" id="search-results"> {% endcomment %}
                               {% for i in wallet %}
                               <tr>
                                  <td>{{forloop.counter}}</td>
-                                 <td>{{i.balance}}</td>
-                                 <td>{{i.type}}</td>
+                                 <td>₹{{i.balance}}</td>
+                                 <td>
+                                    <span class="type-badge type-{{i.type|lower}}">
+                                       {{i.type}}
+                                    </span>
+                                 </td>
                                  <td>{{i.updated_at}}</td>
-                                 <td>{{i.booking_id}}</td>                          
-                                 
+                                 <td>{{i.booking_id|default:"-"}}</td>
                               </tr>
                               {% endfor %}
                            </tbody>
                         </table>
-                        
-                      
+                        {% else %}
+                        <div class="no-history-container">
+                           <div class="no-history-icon">
+                              <i class="ri-wallet-line"></i>
+                           </div>
+                           <div class="no-history-text">
+                              No wallet history found
+                           </div>
+                        </div>
+                        {% endif %}
                      </div>
                   </div>
-      
                </div>
-               <!-- end card -->
             </div>
-            <!-- end col -->
          </div>
-         <!-- end col -->
       </div>
-      <!-- end row -->
-      <!-- end row -->
-      {% comment %} {% include "crm/SuperAdmin/add_admin.html" %} {% endcomment %}
-      
-      <!-- Modal -->
-      
-      <!--end modal -->
-
-     
    </div>
    <!-- container-fluid -->
 </div>
-
-
 
 {% endblock main-content %}

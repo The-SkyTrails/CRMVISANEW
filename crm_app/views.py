@@ -136,7 +136,7 @@ def dashboard(request):
         greeting = "Good Evening"
     
     # Common data for all users
-    package = Package.objects.filter(approval="Yes").order_by("-last_updated_on")[:10]
+    package = Package.objects.filter(approval="Yes").order_by("-last_updated_on")[:4]
     
     faq = FAQ.objects.exclude(answer__isnull=True).exclude(answer__exact="")
     story = SuccessStory.objects.all()

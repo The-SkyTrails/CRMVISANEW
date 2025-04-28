@@ -2,427 +2,689 @@
 {% load static %}
 {% load custom_filters %}
 <!-- start page title -->
-<div class="row">
-   <div class="col-12">
-      <div class="d-sm-flex align-items-center justify-content-around bg-transparent">
-        
-        <button class="btn btn-sm btn-primary" hx-get="{% url "add_package" %}" hx-target="#dialog" id="demoo">Add</button>
+<style>
+   /* Premium Package Listing Styles */
+   .nav-border-top-success {
+       /* border-top: 3px solid var(--vz-primary); */
+   }
+
+   .nav-tabs {
+       border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+       background: transparent;
+       padding: 0;
+       margin-bottom: 2rem;
+   }
+
+   .nav-tabs .nav-link {
+       color: #6c757d;
+       border: none;
+       font-weight: 500;
+       padding: 0.75rem 1.5rem;
+       position: relative;
+       transition: all 0.3s ease;
+       border-radius: 0;
+       margin: 0 0.5rem;
+   }
+
+   .nav-tabs .nav-link:hover {
+       color: var(--vz-primary);
+       background: transparent;
+   }
+
+   .nav-tabs .nav-link::after {
+       content: '';
+       position: absolute;
+       bottom: -1px;
+       left: 0;
+       width: 0;
+       height: 2px;
+       background: var(--vz-primary);
+       transition: width 0.3s ease;
+   }
+
+   .nav-tabs .nav-link:hover::after {
+       width: 100%;
+   }
+
+   .nav-tabs .nav-link.active {
+       color: var(--vz-primary);
+       background: transparent;
+       box-shadow: none;
+   }
+
+   .nav-tabs .nav-link.active::after {
+       width: 100%;
+   }
+
+   /* Premium Card Styles */
+   .package-card {
+       border: none;
+       border-radius: 12px;
+       overflow: hidden;
+       background: white;
+       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+       transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+       margin-bottom: 24px;
+       height: 100%;
+       position: relative;
+       border: 1px solid rgba(0, 0, 0, 0.03);
+   }
+
+   .package-card:hover {
+       transform: translateY(-5px);
+       box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+       border-color: rgba(var(--vz-primary-rgb), 0.2);
+   }
+
+   .package-card .card-img-container {
+       height: 250px;
+       overflow: hidden;
+       position: relative;
+   }
+
+   .package-card img {
+       object-fit: cover;
+       width: 100%;
+       height: 100%;
+       transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+   }
+
+   .package-card:hover img {
+       transform: scale(1.08);
+   }
+
+   .package-card .card-body {
+       padding: 1.5rem;
+       position: relative;
+   }
+
+   .package-card .card-title {
+       color: #2c3e50;
+       font-weight: 600;
+       font-size: 1.1rem;
+       margin-bottom: 0.75rem;
+       line-height: 1.4;
+       display: -webkit-box;
+       -webkit-line-clamp: 2;
+       -webkit-box-orient: vertical;
+       overflow: hidden;
+       text-overflow: ellipsis;
+       min-height: 3em;
+   }
+
+   .package-card .card-text {
+       color: #6c757d;
+       font-size: 0.85rem;
+       margin-bottom: 0.75rem;
+       display: flex;
+       align-items: center;
+   }
+
+   .package-card .card-text i {
+       margin-right: 0.5rem;
+       color: var(--vz-primary);
+       font-size: 1rem;
+   }
+
+   .package-card .card-footer {
+       background: white;
+       border-top: 1px solid rgba(0, 0, 0, 0.05);
+       padding: 1rem 1.5rem;
+       display: flex;
+       justify-content: space-between;
+       gap: 0.75rem;
+   }
+
+   /* Premium Button Styles */
+   .btn-details {
+       background: var(--vz-primary);
+       border: none;
+       border-radius: 6px;
+       color: white;
+       font-weight: 500;
+       padding: 0.5rem 1rem;
+       flex: 1;
+       transition: all 0.3s ease;
+       box-shadow: 0 2px 5px rgba(var(--vz-primary-rgb), 0.2);
+   }
+
+   .btn-details:hover {
+       background: rgba(var(--vz-primary-rgb), 0.9);
+       transform: translateY(-2px);
+       box-shadow: 0 4px 10px rgba(var(--vz-primary-rgb), 0.3);
+   }
+
+   .btn-disapprove {
+       background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+       border: none;
+       border-radius: 6px;
+       color: white;
+       font-weight: 500;
+       padding: 0.5rem 1rem;
+       flex: 1;
+       transition: all 0.3s ease;
+       box-shadow: 0 2px 5px rgba(255, 94, 98, 0.2);
+   }
+
+   .btn-disapprove:hover {
+       transform: translateY(-2px);
+       box-shadow: 0 4px 10px rgba(255, 94, 98, 0.3);
+   }
+
+   .btn-approve {
+       background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
+       border: none;
+       border-radius: 6px;
+       color: white;
+       font-weight: 500;
+       padding: 0.5rem 1rem;
+       flex: 1;
+       transition: all 0.3s ease;
+       box-shadow: 0 2px 5px rgba(0, 176, 155, 0.2);
+   }
+
+   .btn-approve:hover {
+       transform: translateY(-2px);
+       box-shadow: 0 4px 10px rgba(0, 176, 155, 0.3);
+   }
+
+   .btn-delete {
+       background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+       border: none;
+       border-radius: 6px;
+       color: white;
+       font-weight: 500;
+       padding: 0.5rem 1rem;
+       flex: 1;
+       transition: all 0.3s ease;
+       box-shadow: 0 2px 5px rgba(255, 65, 108, 0.2);
+   }
+
+   .btn-delete:hover {
+       transform: translateY(-2px);
+       box-shadow: 0 4px 10px rgba(255, 65, 108, 0.3);
+   }
+
+   /* Animation Nav */
+   .animation-nav {
+       background: transparent;
+       border-radius: 0;
+       padding: 0;
+       margin-bottom: 1.5rem;
+       border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+   }
+
+   .animation-nav .nav-link {
+       color: #6c757d;
+       border: none;
+       border-radius: 0;
+       padding: 0.75rem 1.5rem;
+       font-weight: 500;
+       transition: all 0.3s ease;
+       position: relative;
+       margin: 0 0.5rem;
+   }
+
+   .animation-nav .nav-link::after {
+       content: '';
+       position: absolute;
+       bottom: -1px;
+       left: 0;
+       width: 0;
+       height: 2px;
+       background: var(--vz-primary);
+       transition: width 0.3s ease;
+   }
+
+   .animation-nav .nav-link:hover {
+      color: #fff;
+       background: transparent;
+   }
+
+   .animation-nav .nav-link:hover::after {
+       width: 100%;
+   }
+
+   .animation-nav .nav-link.active {
+       color: #fff;
+       background: transparent;
+       box-shadow: none;
+   }
+
+   .animation-nav .nav-link.active::after {
+       width: 100%;
+   }
+
+   /* Pagination */
+   .pagination-wrap {
+       display: flex;
+       justify-content: center;
+       align-items: center;
+       flex-wrap: wrap;
+       margin-top: 2rem;
+   }
+
+   .pagination {
+       display: flex;
+       gap: 0.5rem;
+   }
+
+   .page-item {
+       margin: 0 0.25rem;
+   }
+
+   .page-link {
+       border: none;
+       border-radius: 6px !important;
+       color: #6c757d;
+       font-weight: 500;
+       padding: 0.5rem 1rem;
+       transition: all 0.3s ease;
+       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+   }
+
+   .page-link:hover {
+       color: var(--vz-primary);
+       background: rgba(var(--vz-primary-rgb), 0.1);
+       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+   }
+
+   .page-item.active .page-link {
+       background: var(--vz-primary);
+       color: white;
+       box-shadow: 0 4px 10px rgba(var(--vz-primary-rgb), 0.3);
+   }
+
+   .pagination-prev,
+   .pagination-next {
+       border: none;
+       border-radius: 6px;
+       padding: 0.5rem 1rem;
+       color: #6c757d;
+       font-weight: 500;
+       transition: all 0.3s ease;
+       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+   }
+
+   .pagination-prev:hover,
+   .pagination-next:hover {
+       color: var(--vz-primary);
+       background: rgba(var(--vz-primary-rgb), 0.1);
+       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+   }
+
+   /* Empty State */
+   .empty-state {
+       text-align: center;
+       padding: 3rem;
+       color: #adb5bd;
+   }
+
+   .empty-state i {
+       font-size: 3rem;
+       color: #e9ecef;
+       margin-bottom: 1rem;
+       display: inline-block;
+   }
+
+   .empty-state p {
+       font-size: 1rem;
+       color: #6c757d;
+   }
+
+   /* Status Badges */
+   .status-badge {
+       position: absolute;
+       top: 1rem;
+       right: 1rem;
+       padding: 0.35rem 0.85rem;
+       border-radius: 20px;
+       font-size: 0.7rem;
+       font-weight: 600;
+       text-transform: uppercase;
+       letter-spacing: 0.5px;
+       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+       z-index: 1;
+   }
+
+   .badge-approved {
+       background: white;
+       color: #00b09b;
+       border: 1px solid rgba(0, 176, 155, 0.2);
+   }
+
+   .badge-disapproved {
+       background: white;
+       color: #ff5e62;
+       border: 1px solid rgba(255, 94, 98, 0.2);
+   }
+
+   /* Card Hover Effects */
+   .package-card::before {
+       content: '';
+       position: absolute;
+       top: 0;
+       left: 0;
+       width: 100%;
+       height: 100%;
+       background: linear-gradient(135deg, rgba(var(--vz-primary-rgb), 0.03) 0%, rgba(var(--vz-primary-rgb), 0) 100%);
+       opacity: 0;
+       transition: opacity 0.3s ease;
+       z-index: 0;
+   }
+
+   .package-card:hover::before {
+       opacity: 1;
+   }
+
+   /* Responsive Adjustments */
+   @media (max-width: 768px) {
+       .package-card .card-footer {
+           flex-direction: column;
+           gap: 0.75rem;
+       }
        
-         <ul class="nav nav-tabs nav-justified nav-border-top nav-border-top-success" role="tablist">
-            
-            <li class="nav-item">
-                
-               <a class="nav-link active" data-bs-toggle="tab" href="#home-1" role="tab" onclick="myFunction2('approve')" >
-               {% if user|has_access:"4,5" %}
-               All Packages
-               {% else %}
-               Approved
-               {% endif %}
-              
-               </a>
-            </li>
-            {% if user|is_admin %}
-            <li class="nav-item">
-               <a class="nav-link" data-bs-toggle="tab" href="#messages-1" role="tab" onclick="myFunction2('disapprove')">
-               Disapproved
-               </a>
-            </li>
-            
-            {% endif %}
-         </ul>
-        {% comment %} <button class="btn btn-sm btn-primary" hx-get="{% url "add_package" %}" hx-target="#dialog">Add</button>
-         <ul class="nav nav-tabs nav-justified nav-border-top nav-border-top-success" role="tablist">
-            
-            <li class="nav-item">
-                
-               <a class="nav-link active" data-bs-toggle="tab" href="#home-1" role="tab" >
-               Approved
-               </a>
-            </li>
-            <li class="nav-item">
-               <a class="nav-link" data-bs-toggle="tab" href="#messages-1" role="tab">
-               Disapproved
-               </a>
-            </li>
-         </ul> {% endcomment %}
-         
-         
-      </div>
-   </div>
-</div>
-<!-- end page title -->
-<!--end row-->
-<!--end row-->
+       .package-card .btn-details,
+       .package-card .btn-disapprove,
+       .package-card .btn-approve,
+       .package-card .btn-delete {
+           width: 100%;
+       }
+       
+       .nav-tabs {
+           flex-wrap: nowrap;
+           overflow-x: auto;
+           padding-bottom: 0.5rem;
+       }
+       
+       .animation-nav {
+           flex-wrap: nowrap;
+           overflow-x: auto;
+           padding-bottom: 0.5rem;
+       }
+   }
+
+   /* Card Info Section */
+   .package-card .info-section {
+       position: relative;
+       z-index: 1;
+   }
+
+   /* Price Tag (if you add pricing later) */
+   .price-tag {
+       position: absolute;
+       top: 1rem;
+       left: 1rem;
+       background: white;
+       padding: 0.35rem 0.85rem;
+       border-radius: 20px;
+       font-size: 0.9rem;
+       font-weight: 600;
+       color: var(--vz-primary);
+       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+       z-index: 1;
+       border: 1px solid rgba(var(--vz-primary-rgb), 0.2);
+   }
+</style>
 <div class="row">
-   <div class="col-xxl-6">
-      <div class="tab-content text-muted">
-         <div class="tab-pane active" id="home-1" role="tabpanel">
-            <div class="row">
-               <div class="col-xxl-6">
-                  {% comment %} 
-                  <h5 class="mb-3">Animation Nav</h5>
-                  {% endcomment %}
-                  <div class="card">
-                     <div class="card-body">
-                      
-                        <ul class="nav nav-pills animation-nav nav-justified gap-2 mb-3" role="tablist">
-                           <li class="nav-item waves-effect waves-light">
-                              <a class="nav-link active" data-bs-toggle="tab" href="#all" role="tab">
-                              All
-                              </a>
-                           </li>
-                           {% for state in package_choices %}
-                           <li class="nav-item waves-effect waves-light">
-                              <a class="nav-link" data-bs-toggle="tab" href="#{{ state.0|slugify }}" role="tab">
-                              {{state.1}}
-                              </a>
-                           </li>
-                           {% endfor %}
-                           
-                           
-                        </ul>
-                        <div class="tab-content text-muted">
-                           <div class="tab-pane active" id="all" role="tabpanel">
-                              <div class="row">
-                                 {% with packages_by_type.all as package_list %}
-                                 
-                                 {% if package_list %}
-                                 {% for package in package_list %}
-                                 <div class="col-sm-6 col-xl-4 d-flex align-items-stretch" data-aos="zoom-in-up" data-aos-duration="3000">
-                                    <div class="card w-100">
-                                       <div class="" style="height:250px;" >
-                                          {% if package.image %} <!-- Check if image exists -->
-                                          <img class="card-img-top h-100 img-fluid" src="{{ package.image.url }}" alt="{{ package.title }}">
-                                          {% else %}
-                                          <img class="card-img-top h-100 img-fluid" src="{% static 'path/to/default_image.jpg' %}" alt="{{ package.title }}"> <!-- Default image -->
-                                          {% endif %}
-                                       </div>
-                                       <div class="card-body">
-                                          
-                                          <h4 class="card-title text-secondary mb-2">{{package.package_type}}</h4> <hr>
-                                          <p class="card-text">{{ package.title }}</p>
-                                          <p class="card-text">Category: {{ package.visa_category }}</p>
-                                          <p class="card-text">Contry: {{ package.visa_country }}</p>
-                                          <p class="card-text">Processing Time: {{ package.processing_time }}</p>
-                                          <p class="card-text">No. Of Visa : {{ package.number_of_visa }}</p>
-                                          <p class="card-text">Expiry Date : {{ package.package_expiry_date }}</p>
-                                          <p class="card-text">Created By : {{ package.last_updated_by }}</p>
-                                       </div>
-                                       <div class="card-footer d-flex justify-content-between">
-                                          <a href="{% url "product_details" package.id %}"  class="btn btn-primary">See Details</a>
-                                          {% if user.is_authenticated and user.user_type == '2' %}
-                                          <button class="btn btn-warning " hx-get="{% url "package_disapprove" pk=package.pk %}" hx-target="#all">Dispproved</button>
-                                          <button class="btn btn-danger remove-item-btn" hx-delete="{% url 'delete_package' pk=package.pk %}" 
-                                             hx-confirm="Are you sure you want to delete this Product ?"
-                                             hx-target="#all"
-                                             hx-swap="outerHTML"
-                                             hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}'>
-                                          Delete
-                                          </button> 
-                                          {% endif %}   
-                                       </div>
-                                    </div>
-                                 </div>
-                                 {% endfor %}
-                                 {% else %}
-                                 <p>No packages available.</p>
-                                 {% endif %}
-                                 {% endwith %}
-                              </div>
-                             
-                              <div class="pagination-wrap" id="search-results">
-                                 {% if page_obj.has_previous %}
-                                 <a class="page-item pagination-prev" href="?page=1{% if search_query %}&search={{ search_query }}{% endif %}">First</a>
-                                 <a class="page-item pagination-prev" hx-get="{% url 'package_list' %}?page={{ page_obj.previous_page_number }}&search={{ search_query }}" hx-target="#search-results">
-                                    Previous
-                                 </a>
-                                 {% endif %}
-                             
-                                 <ul class="pagination listjs-pagination mb-0">
-                                    {% for num in page_obj.paginator.page_range %}
-                                       {% if page_obj.number == num %}
-                                             <li class="page-item active">
-                                                <a class="page-link" href="javascript:void(0);">{{ num }}</a>
-                                             </li>
-                                       {% else %}
-                                             <li class="page-item">
-                                                <a class="page-link" hx-get="{% url 'package_list' %}?page={{ num }}&search={{ search_query }}" hx-target="#search-results">{{ num }}</a>
-                                             </li>
-                                       {% endif %}
-                                    {% endfor %}
-                                 </ul>
-                             
-                                 {% if page_obj.has_next %}
-                                 <a class="page-item pagination-next" hx-get="{% url 'package_list' %}?page={{ page_obj.next_page_number }}&search={{ search_query }}" hx-target="#search-results">
-                                    Next
-                                 </a>
-                                 <a class="page-item pagination-next" hx-get="{% url 'package_list' %}?page={{ page_obj.paginator.num_pages }}&search={{ search_query }}" hx-target="#search-results">
-                                    Last
-                                 </a>
-                                 {% endif %}
+  <div class="col-12">
+     <div class="d-flex justify-content-center align-items-start ">
+        <ul class="nav nav-tabs nav-justified nav-border-top nav-border-top-success" role="tablist">
+           <li class="nav-item">
+              <a class="nav-link active" data-bs-toggle="tab" href="#home-1" role="tab" onclick="myFunction2('approve')">
+              {% if user|has_access:"4,5" %}
+              All Packages
+              {% else %}
+              Approved
+              {% endif %}
+              </a>
+           </li>
+           {% if user|is_admin %}
+           <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="tab" href="#messages-1" role="tab" onclick="myFunction2('disapprove')">
+              Disapproved
+              </a>
+           </li>
+           {% endif %}
+        </ul>
+     </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xxl-12">
+     <div class="tab-content text-muted">
+        <div class="tab-pane active" id="home-1" role="tabpanel">
+           <div class="row">
+              <div class="col-xxl-12">
+                 <div class="card">
+                    <div class="card-body">
+                       <ul class="nav nav-pills animation-nav nav-justified gap-2 mb-3" role="tablist">
+                          <li class="nav-item waves-effect waves-light">
+                             <a class="nav-link active" data-bs-toggle="tab" href="#all" role="tab">
+                             All
+                             </a>
+                          </li>
+                          {% for state in package_choices %}
+                          <li class="nav-item waves-effect waves-light">
+                             <a class="nav-link" data-bs-toggle="tab" href="#{{ state.0|slugify }}" role="tab">
+                             {{state.1}}
+                             </a>
+                          </li>
+                          {% endfor %}
+                       </ul>
+                       
+                       <div class="tab-content text-muted">
+                          <div class="tab-pane active" id="all" role="tabpanel">
+                             <div class="row g-3">
+                                {% with packages_by_type.all as package_list %}
+                                {% if package_list %}
+                                {% for package in package_list %}
+                                <div class="col-sm-6 col-xl-4 d-flex align-items-stretch" data-aos="zoom-in-up" data-aos-duration="500">
+                                   <div class="card package-card">
+                                      <div class="card-img-container">
+                                         {% if package.image %}
+                                         <img class="img-fluid" src="{{ package.image.url }}" alt="{{ package.title }}">
+                                         {% else %}
+                                         <img class="img-fluid" src="{% static 'path/to/default_image.jpg' %}" alt="{{ package.title }}">
+                                         {% endif %}
+                                      </div>
+                                      <div class="card-body">
+                                         <h4 class="card-title">{{package.title}}</h4>
+                                         <hr class="my-3">
+                                         <p class="card-text"><i class="ri-map-pin-line me-2"></i> Country: {{ package.visa_country }}</p>
+                                         <p class="card-text"><i class="ri-list-check-2 me-2"></i> Category: {{ package.visa_category }}</p>
+                                         <p class="card-text"><i class="ri-time-line me-2"></i> Processing: {{ package.processing_time }}</p>
+                                         <p class="card-text"><i class="ri-pass-valid-line me-2"></i> Visas: {{ package.number_of_visa }}</p>
+                                         <p class="card-text"><i class="ri-calendar-event-line me-2"></i> Expiry: {{ package.package_expiry_date }}</p>
+                                         <p class="card-text"><i class="ri-user-line me-2"></i> Created By: {{ package.last_updated_by }}</p>
+                                      </div>
+                                      <div class="card-footer">
+                                         <a href="{% url "product_details" package.id %}" class="btn btn-details">Details</a>
+                                         {% if user.is_authenticated and user.user_type == '2' %}
+                                         <button class="btn btn-disapprove" hx-get="{% url "package_disapprove" pk=package.pk %}" hx-target="#all">Disapprove</button>
+                                         <button class="btn btn-delete remove-item-btn" 
+                                            hx-delete="{% url 'delete_package' pk=package.pk %}" 
+                                            hx-confirm="Are you sure you want to delete this Product?"
+                                            hx-target="#all"
+                                            hx-swap="outerHTML"
+                                            hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}'>
+                                            Delete
+                                         </button> 
+                                         {% endif %}   
+                                      </div>
+                                   </div>
+                                </div>
+                                {% endfor %}
+                                {% else %}
+                                <div class="col-12">
+                                   <div class="empty-state">
+                                      <i class="ri-box-1-line" style="font-size: 3rem; color: #dee2e6;"></i>
+                                      <p class="mt-3">No packages available</p>
+                                   </div>
+                                </div>
+                                {% endif %}
+                                {% endwith %}
                              </div>
                              
-                              {% comment %} <div class="pagination-wrap">
-                                    {% if page_obj.has_previous %}
-                                    <a class="page-item pagination-prev" href="?page=1{% if search_query %}&search={{ search_query }}{% endif %}">First</a>
-                                    <a class="page-item pagination-prev" hx-get="{% url 'package_list' %}?page={{ page_obj.previous_page_number }}&search={{ search_query }}" hx-target="#search-results">
-                                       Previous
-                                    </a>
-                                    {% endif %}
-                           
-                                    <ul class="pagination listjs-pagination mb-0">
-                                       {% for num in page_obj.paginator.page_range %}
-                                          {% if page_obj.number == num %}
-                                                <li class="page-item active">
-                                                   <a class="page-link" href="javascript:void(0);">{{ num }}</a>
-                                                </li>
-                                          {% else %}
-                                                <li class="page-item">
-                                                   <a class="page-link" hx-get="{% url 'package_list' %}?page={{ num }}&search={{ search_query }}" hx-target="#search-results">{{ num }}</a>
-                                                </li>
-                                          {% endif %}
-                                       {% endfor %}
-                           
-                                       {% if page_obj.paginator.num_pages > 3 %}
-                                       <li class="page-item"><span class="page-link">...</span></li>
-                                      
-                                       {% endif %}
-                                    </ul>
-                           
-                                    {% if page_obj.has_next %}
-                                    <a class="page-item pagination-next" hx-get="{% url 'package_list' %}?page={{ page_obj.next_page_number }}&search={{ search_query }}" hx-target="#search-results">
-                                       Next
-                                    </a>
-                                    <a class="page-item pagination-next" hx-get="{% url 'package_list' %}?page={{ page_obj.paginator.num_pages }}&search={{ search_query }}" hx-target="#search-results">
-                                       Last
-                                    </a>
-                                    {% endif %}
-                              </div>
-                              {% endcomment %}
-                             
-                              
-
-                             
-                                
-
-                           </div>
-                            {% for state in package_choices %}
-                           <div class="tab-pane" id="{{state.0|slugify }}" role="tabpanel">
-                              <div class="row ">
-                                 {% with packages_by_type|get_item:state.0 as package_list %}
-                                 {% if package_list %}
-                                 {% for package in package_list %}
-                                 <div class="col-sm-6 col-xl-4 d-flex align-items-stretch" data-aos="zoom-in-up" data-aos-duration="3000">
-                                    <div class="card w-100">
-                                       <div class="" style="height:250px;" >
-                                          {% if package.image %} <!-- Check if image exists -->
-                                          <img class="card-img-top h-100 img-fluid" src="{{ package.image.url }}" alt="{{ package.title }}">
-                                          {% else %}
-                                          <img class="card-img-top h-100 img-fluid" src="{% static 'path/to/default_image.jpg' %}" alt="{{ package.title }}"> <!-- Default image -->
-                                          {% endif %}
-                                       </div>
-                                       <div class="card-body">
-                                          <h4 class="card-title text-secondary mb-2">{{ package.title }}</h4>
-                                          <p class="card-text">Category: {{ package.visa_category }}</p>
-                                          <p class="card-text">Contry: {{ package.visa_country }}</p>
-                                          <p class="card-text">Processing Time: {{ package.processing_time }}</p>
-                                          <p class="card-text">No. Of Visa : {{ package.number_of_visa }}</p>
-                                          <p class="card-text">Expiry Date : {{ package.package_expiry_date }}</p>
-                                          <p class="card-text">Created By : {{ package.last_updated_by }}</p>
-                                       </div>
-                                       <div class="card-footer d-flex justify-content-between">
-                                          <a href="{% url "product_details" package.id %}"  class="btn btn-primary">See Details</a>
-                                          {% if user.is_authenticated and user.user_type == '2' %}
-                                          <button class="btn btn-warning ">Dispproved</button>
-                                          <button class="btn  btn-danger remove-item-btn" hx-delete="{% url 'delete_package' pk=package.pk %}" 
-                                             hx-confirm="Are you sure you want to delete this Product ?"
-                                             hx-target="#all"
-                                             hx-swap="outerHTML"
-                                             hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}'>
-                                          Delete
-                                          </button> 
-                                          {% endif %} 
-                                       </div>
-                                    </div>
-                                 </div>
-                                
-                                 {% endfor %}
-                                 {% else %}
-                                 <p>No packages available.</p>
-                                 {% endif %}
-                                
-                                 {% endwith %}
-                              </div>
-                              
-                           </div>
-                           
-                           {% endfor %} 
-
-                           {% comment %} {% for state in package_choices %}
-                              <div class="tab-pane" id="{{ state.0|slugify }}" role="tabpanel">
-                                 <div class="row">
-                                       {% with packages_by_type|get_item:state.0 as package_list %}
-                                          {% if package_list %}
-                                             {% for package in package_list %}
-                                                   <div class="col-sm-6 col-xl-4 d-flex align-items-stretch" data-aos="zoom-in-up" data-aos-duration="3000">
-                                                      <div class="card w-100">
-                                                         <div class="" style="height:250px;">
-                                                               {% if package.image %}
-                                                                  <img class="card-img-top h-100 img-fluid" src="{{ package.image.url }}" alt="{{ package.title }}">
-                                                               {% else %}
-                                                                  <img class="card-img-top h-100 img-fluid" src="{% static 'path/to/default_image.jpg' %}" alt="{{ package.title }}">
-                                                               {% endif %}
-                                                         </div>
-                                                         <div class="card-body">
-                                                               <h4 class="card-title text-secondary mb-2">{{ package.title }}</h4>
-                                                               <p class="card-text">Category: {{ package.visa_category }}</p>
-                                                               <p class="card-text">Country: {{ package.visa_country }}</p>
-                                                               <p class="card-text">Processing Time: {{ package.processing_time }}</p>
-                                                               <p class="card-text">No. Of Visa : {{ package.number_of_visa }}</p>
-                                                               <p class="card-text">Expiry Date : {{ package.package_expiry_date }}</p>
-                                                               <p class="card-text">Created By : {{ package.last_updated_by }}</p>
-                                                         </div>
-                                                         <div class="card-footer d-flex justify-content-between">
-                                                               <a href="{% url "product_details" package.id %}" class="btn btn-primary">See Details</a>
-                                                               <button class="btn btn-warning">Disapproved</button>
-                                                               <button class="btn btn-danger remove-item-btn" hx-delete="{% url 'delete_package' pk=package.pk %}"
-                                                                     hx-confirm="Are you sure you want to delete this Product?"
-                                                                     hx-target="#all"
-                                                                     hx-swap="outerHTML"
-                                                                     hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}'>
-                                                                  Delete
-                                                               </button>
-                                                         </div>
-                                                      </div>
-                                                   </div>
-                                             {% endfor %}
-                                             
-                                             <!-- Pagination controls for each package type -->
-                                             <div class="col-12">
-                                                   <nav aria-label="Page navigation">
-                                                      <ul class="pagination justify-content-center">
-                                                         {% if package_list.has_previous %}
-                                                               <li class="page-item">
-                                                                  <a class="page-link" href="?page_{{ state.0 }}={{ package_list.previous_page_number }}&search={{ search_query }}" aria-label="Previous">
-                                                                     <span aria-hidden="true">&laquo;</span>
-                                                                  </a>
-                                                               </li>
-                                                         {% endif %}
-                                                         
-                                                         {% for i in package_list.paginator.page_range %}
-                                                               <li class="page-item {% if package_list.number == i %}active{% endif %}">
-                                                                  <a class="page-link" href="?page_{{ state.0 }}={{ i }}&search={{ search_query }}">{{ i }}</a>
-                                                               </li>
-                                                         {% endfor %}
-                                                         
-                                                         {% if package_list.has_next %}
-                                                               <li class="page-item">
-                                                                  <a class="page-link" href="?page_{{ state.0 }}={{ package_list.next_page_number }}&search={{ search_query }}" aria-label="Next">
-                                                                     <span aria-hidden="true">&raquo;</span>
-                                                                  </a>
-                                                               </li>
-                                                         {% endif %}
-                                                      </ul>
-                                                   </nav>
-                                             </div>
-                                          {% else %}
-                                             <p>No packages available.</p>
-                                          {% endif %}
-                                       {% endwith %}
-                                 </div>
-                              </div>
-                           {% endfor %} {% endcomment %}
-                           
-                           
-                        </div>
-                     </div>
-                     <!-- end card-body -->
-                  </div>
-               </div>
-               <!--end col-->
-               <!--end col-->
-            </div>
-         </div>
-         <div class="tab-pane" id="messages-1" role="tabpanel">
-            <div class="row">
-               <div class="col-xxl-6">
-                  
-                  <div class="card">
-                     <div class="card-body">
-                        <div class="row ">
-                           {% for disapprove in disapprove_pkg %}
-                           <div class="col-sm-6 col-xl-4 d-flex align-items-stretch" data-aos="zoom-in-up" data-aos-duration="3000">
-                              <div class="card w-100">
-                                 <div class="" style="height:250px;" >
-                                    {% if disapprove.image %} <!-- Check if image exists -->
-                                    <img class="card-img-top h-100 img-fluid" src="{{ disapprove.image.url }}" alt="{{ package.title }}">
-                                    {% else %}
-                                    <img class="card-img-top h-100 img-fluid" src="{% static 'path/to/default_image.jpg' %}" alt="{{ package.title }}"> <!-- Default image -->
-                                    {% endif %}
-                                 </div>
-                                 <div class="card-body">
-                                    <h4 class="card-title text-secondary mb-2">{{ disapprove.title }}</h4>
-                                    <p class="card-text">Category: {{ disapprove.visa_category }}</p>
-                                    <p class="card-text">Contry: {{ disapprove.visa_country }}</p>
-                                    <p class="card-text">Processing Time: {{ disapprove.processing_time }}</p>
-                                    <p class="card-text">No. Of Visa : {{ disapprove.number_of_visa }}</p>
-                                    <p class="card-text">Expiry Date : {{ disapprove.package_expiry_date }}</p>
-                                    <p class="card-text">Created By : {{ disapprove.last_updated_by }}</p>
-                                 </div>
-                                 <div class="card-footer d-flex justify-content-between">
-                                    <a href="{% url "product_details" disapprove.id %}"  class="btn btn-primary">See Details</a>
-                                    {% comment %} <button class="btn btn-success ">Approved</button> {% endcomment %}
-                                    <button class="btn btn-success " hx-get="{% url "package_disapprove" pk=disapprove.pk %}" hx-target="#messages-1">Approved</button>
-                                    <button class="btn btn-danger remove-item-btn" hx-delete="{% url 'delete_package' pk=disapprove.pk %}" 
-                                       hx-confirm="Are you sure you want to delete this Product ?"
-                                       hx-target="#all"
-                                       hx-swap="outerHTML"
-                                       hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}'>
-                                    Delete
-                                    </button>    
-                                 </div>
-                              </div>
-                           </div>
-                           {% endfor %}
-                           {% comment %} {% else %}
-                           <p>No packages available.</p>
-                           {% endif %} {% endcomment %}
-                        </div>
-                     </div>
-                     <!-- end card-body -->
-                  </div>
-               </div>
-               <!--end col-->
-               <!--end col-->
-            </div>
-         </div>
-         
-      </div>
-      
-   </div>
-   <!--end col-->
-   <!--end col-->
+                             <div class="pagination-wrap" id="search-results">
+                                {% if page_obj.has_previous %}
+                                <a class="page-item pagination-prev" href="?page=1{% if search_query %}&search={{ search_query }}{% endif %}">First</a>
+                                <a class="page-item pagination-prev" hx-get="{% url 'package_list' %}?page={{ page_obj.previous_page_number }}&search={{ search_query }}" hx-target="#search-results">
+                                   Previous
+                                </a>
+                                {% endif %}
+                            
+                                <ul class="pagination listjs-pagination mb-0">
+                                   {% for num in page_obj.paginator.page_range %}
+                                      {% if page_obj.number == num %}
+                                            <li class="page-item active">
+                                               <a class="page-link" href="javascript:void(0);">{{ num }}</a>
+                                            </li>
+                                      {% else %}
+                                            <li class="page-item">
+                                               <a class="page-link" hx-get="{% url 'package_list' %}?page={{ num }}&search={{ search_query }}" hx-target="#search-results">{{ num }}</a>
+                                            </li>
+                                      {% endif %}
+                                   {% endfor %}
+                                </ul>
+                            
+                                {% if page_obj.has_next %}
+                                <a class="page-item pagination-next" hx-get="{% url 'package_list' %}?page={{ page_obj.next_page_number }}&search={{ search_query }}" hx-target="#search-results">
+                                   Next
+                                </a>
+                                <a class="page-item pagination-next" hx-get="{% url 'package_list' %}?page={{ page_obj.paginator.num_pages }}&search={{ search_query }}" hx-target="#search-results">
+                                   Last
+                                </a>
+                                {% endif %}
+                             </div>
+                          </div>
+                          
+                          {% for state in package_choices %}
+                          <div class="tab-pane" id="{{state.0|slugify }}" role="tabpanel">
+                             <div class="row">
+                                {% with packages_by_type|get_item:state.0 as package_list %}
+                                {% if package_list %}
+                                {% for package in package_list %}
+                                <div class="col-sm-6 col-xl-4 d-flex align-items-stretch" data-aos="zoom-in-up" data-aos-duration="500">
+                                   <div class="card package-card">
+                                      <div class="card-img-container">
+                                         {% if package.image %}
+                                         <img class="img-fluid" src="{{ package.image.url }}" alt="{{ package.title }}">
+                                         {% else %}
+                                         <img class="img-fluid" src="{% static 'path/to/default_image.jpg' %}" alt="{{ package.title }}">
+                                         {% endif %}
+                                      </div>
+                                      <div class="card-body">
+                                         <h4 class="card-title">{{ package.title }}</h4>
+                                         <p class="card-text"><i class="ri-map-pin-line me-2"></i> Country: {{ package.visa_country }}</p>
+                                         <p class="card-text"><i class="ri-list-check-2 me-2"></i> Category: {{ package.visa_category }}</p>
+                                         <p class="card-text"><i class="ri-time-line me-2"></i> Processing: {{ package.processing_time }}</p>
+                                         <p class="card-text"><i class="ri-pass-valid-line me-2"></i> Visas: {{ package.number_of_visa }}</p>
+                                         <p class="card-text"><i class="ri-calendar-event-line me-2"></i> Expiry: {{ package.package_expiry_date }}</p>
+                                         <p class="card-text"><i class="ri-user-line me-2"></i> Created By: {{ package.last_updated_by }}</p>
+                                      </div>
+                                      <div class="card-footer">
+                                         <a href="{% url "product_details" package.id %}" class="btn btn-details">Details</a>
+                                         {% if user.is_authenticated and user.user_type == '2' %}
+                                         <button class="btn btn-disapprove">Disapprove</button>
+                                         <button class="btn btn-delete remove-item-btn" 
+                                            hx-delete="{% url 'delete_package' pk=package.pk %}" 
+                                            hx-confirm="Are you sure you want to delete this Product?"
+                                            hx-target="#all"
+                                            hx-swap="outerHTML"
+                                            hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}'>
+                                            Delete
+                                         </button> 
+                                         {% endif %} 
+                                      </div>
+                                   </div>
+                                </div>
+                                {% endfor %}
+                                {% else %}
+                                <div class="col-12">
+                                   <div class="empty-state">
+                                      <i class="ri-box-1-line" style="font-size: 3rem; color: #dee2e6;"></i>
+                                      <p class="mt-3">No packages available in this category</p>
+                                   </div>
+                                </div>
+                                {% endif %}
+                                {% endwith %}
+                             </div>
+                          </div>
+                          {% endfor %}
+                       </div>
+                    </div>
+                 </div>
+              </div>
+           </div>
+        </div>
+        
+        <div class="tab-pane" id="messages-1" role="tabpanel">
+           <div class="row">
+              <div class="col-xxl-12">
+                 <div class="card">
+                    <div class="card-body">
+                       <div class="row">
+                          {% for disapprove in disapprove_pkg %}
+                          <div class="col-sm-6 col-xl-4 d-flex align-items-stretch" data-aos="zoom-in-up" data-aos-duration="500">
+                             <div class="card package-card">
+                                <div class="card-img-container">
+                                   {% if disapprove.image %}
+                                   <img class="img-fluid" src="{{ disapprove.image.url }}" alt="{{ package.title }}">
+                                   {% else %}
+                                   <img class="img-fluid" src="{% static 'path/to/default_image.jpg' %}" alt="{{ package.title }}">
+                                   {% endif %}
+                                </div>
+                                <div class="card-body">
+                                   <h4 class="card-title">{{ disapprove.title }}</h4>
+                                   <p class="card-text"><i class="ri-map-pin-line me-2"></i> Country: {{ disapprove.visa_country }}</p>
+                                   <p class="card-text"><i class="ri-list-check-2 me-2"></i> Category: {{ disapprove.visa_category }}</p>
+                                   <p class="card-text"><i class="ri-time-line me-2"></i> Processing: {{ disapprove.processing_time }}</p>
+                                   <p class="card-text"><i class="ri-pass-valid-line me-2"></i> Visas: {{ disapprove.number_of_visa }}</p>
+                                   <p class="card-text"><i class="ri-calendar-event-line me-2"></i> Expiry: {{ disapprove.package_expiry_date }}</p>
+                                   <p class="card-text"><i class="ri-user-line me-2"></i> Created By: {{ disapprove.last_updated_by }}</p>
+                                </div>
+                                <div class="card-footer">
+                                   <a href="{% url "product_details" disapprove.id %}" class="btn btn-details">Details</a>
+                                   <button class="btn btn-approve" hx-get="{% url "package_disapprove" pk=disapprove.pk %}" hx-target="#messages-1">Approve</button>
+                                   <button class="btn btn-delete remove-item-btn" 
+                                      hx-delete="{% url 'delete_package' pk=disapprove.pk %}" 
+                                      hx-confirm="Are you sure you want to delete this Product?"
+                                      hx-target="#all"
+                                      hx-swap="outerHTML"
+                                      hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}'>
+                                      Delete
+                                   </button>    
+                                </div>
+                             </div>
+                          </div>
+                          {% empty %}
+                          <div class="col-12">
+                             <div class="empty-state">
+                                <i class="ri-box-1-line" style="font-size: 3rem; color: #dee2e6;"></i>
+                                <p class="mt-3">No disapproved packages available</p>
+                             </div>
+                          </div>
+                          {% endfor %}
+                       </div>
+                    </div>
+                 </div>
+              </div>
+           </div>
+        </div>
+     </div>
+  </div>
 </div>
 
 <script>
-   function myFunction2(value) {
-      
-      if(value==='approve'){
-         console.log("approve",value)
-         document.getElementById("demoo").style.display = "block";
-
-      }else if(value ==='disapprove'){
-         console.log("disapprove",value)
-         document.getElementById("demoo").style.display = "none";
-      }
-      
-      
-   }
-  
-   </script>
-
-<!--end row-->
-<!--end row-->
-<!--end row-->
-<!--end row-->
-<!-- container-fluid -->
+  function myFunction2(value) {
+     if(value==='approve'){
+        console.log("approve",value)
+        document.getElementById("demoo").style.display = "block";
+     } else if(value ==='disapprove'){
+        console.log("disapprove",value)
+        document.getElementById("demoo").style.display = "none";
+     }
+  }
+</script>

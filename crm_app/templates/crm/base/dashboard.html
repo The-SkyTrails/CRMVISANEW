@@ -39,44 +39,13 @@
                 padding: 0.75rem 1.5rem;
             }
             
-            /* .news-ticker-card::before {
-                content: "";
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                height: 2px;
-                background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0) 100%);
-                animation: shine 3s infinite;
-            } */
-            
-            @keyframes shine {
-                0% { transform: translateX(-100%); }
-                100% { transform: translateX(100%); }
-            }
-            
             .news-ticker {
                 display: flex;
                 align-items: center;
                 color: white;
                 font-size: 1rem;
                 font-weight: 500;
-                overflow: hidden;
-                position: relative;
                 height: 40px;
-            }
-            
-            .news-ticker-content {
-                display: flex;
-                align-items: center;
-                position: absolute;
-                white-space: nowrap;
-                animation: ticker 60s linear infinite;
-            }
-            
-            @keyframes ticker {
-                0% { transform: translateX(100%); }
-                100% { transform: translateX(-100%); }
             }
             
             .news-item {
@@ -102,7 +71,15 @@
                 font-style: italic;
             }
             
-            .news-ticker:hover .news-ticker-content {
+            /* Marquee customization */
+            marquee {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+            }
+            
+            marquee:hover {
                 animation-play-state: paused;
             }
             
@@ -129,7 +106,7 @@
         <div class="news-ticker-card card">
             <div class="news-ticker">
                 {% if latest_news %}
-                <div class="news-ticker-content">
+                <marquee behavior="scroll" direction="left" scrollamount="6">
                     {% for newsItem in latest_news %}
                     <div class="news-item">
                         <svg class="news-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
@@ -140,7 +117,7 @@
                         {{ newsItem.news }}
                     </div>
                     {% endfor %}
-                </div>
+                </marquee>
                 {% else %}
                 <div class="no-news">
                     <svg class="news-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="rgba(255,255,255,0.8)">
@@ -235,7 +212,7 @@
                         <div class="greeting-container">
                             <div class="greeting-content">
                                 <h1 class="greeting-title">{{greeting}}, {{request.user.first_name}}!</h1>
-                                <p class="greeting-subtitle">Here's what's happening with your store today.</p>
+                                <p class="greeting-subtitle">Here's what's happening with your business today.</p>
                             </div>
                         </div>
                     </div>
@@ -1527,14 +1504,14 @@
                                 <div class="col-6 col-sm-3">
                                     <div class="stat-box">
                                         <div class="stat-value counter-value" data-target="7585">0</div>
-                                        <div class="stat-label">Orders</div>
+                                        <div class="stat-label">Total Leads</div>
                                     </div>
                                 </div>
                                 <!--end col-->
                                 <div class="col-6 col-sm-3">
                                     <div class="stat-box">
-                                        <div class="stat-value">$<span class="counter-value" data-target="22.89">0</span>k</div>
-                                        <div class="stat-label">Earnings</div>
+                                        <div class="stat-value"><span class="counter-value" data-target="22">0</span></div>
+                                        <div class="stat-label">New Leads</div>
                                     </div>
                                 </div>
                                 <!--end col-->
@@ -2879,50 +2856,64 @@
     </div>
       <!-- faq section  -->
 
-      <div class="col-lg-12 product-slider-section">
-        <!-- Custom CSS for product slider -->
+      <div class="col-lg-12 product-grid-section">
+        <!-- Custom CSS for product grid -->
         <style>
-            .product-slider-section {
+            .product-grid-section {
                 margin-bottom: 2rem;
             }
             
-            /* Product Slider Card */
-            .product-slider-card {
+            /* Product Grid Container */
+            .product-grid-container {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 1.5rem;
+                padding: 1rem 0;
+            }
+            
+            /* Product Card */
+            .product-card {
                 border: none;
-                border-radius: 15px;
+                border-radius: 16px;
                 overflow: hidden;
                 background: white;
-                box-shadow: var(--card-shadow);
-                transition: all 0.3s ease;
-                border: 1px solid lightgray;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+                transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
                 position: relative;
+                z-index: 1;
+                border: 1px solid rgba(0, 0, 0, 0.03);
             }
             
-            .product-slider-card:hover {
-                transform: translateY(-5px);
-                box-shadow: var(--card-hover-shadow);
+            .product-card:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 15px 40px rgba(67, 97, 238, 0.15);
             }
             
-            .product-slider-card::before {
+            .product-card::before {
                 content: "";
                 position: absolute;
                 top: 0;
                 right: 0;
-                width: 100px;
-                height: 100px;
-                background: var(--primary-light);
-                border-radius: 50%;
-                transform: translate(50%, -50%);
-                opacity: 0.5;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(135deg, rgba(67, 97, 238, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+                z-index: -1;
+                opacity: 0;
+                transition: opacity 0.3s ease;
             }
             
-            .product-slider-card .card-header {
+            .product-card:hover::before {
+                opacity: 1;
+            }
+            
+            /* Card Header */
+            .product-grid-card .card-header {
                 background: transparent;
                 border-bottom: 1px solid rgba(0, 0, 0, 0.05);
                 padding: 1.25rem 1.5rem;
             }
             
-            .product-slider-card .card-title {
+            .product-grid-card .card-title {
                 font-family: 'Orbitron', sans-serif;
                 font-weight: 600;
                 color: var(--dark-color);
@@ -2933,7 +2924,7 @@
                 align-items: center;
             }
             
-            .product-slider-card .card-title::after {
+            .product-grid-card .card-title::after {
                 content: "";
                 position: absolute;
                 bottom: -10px;
@@ -2968,121 +2959,101 @@
                 transform: translateX(3px);
             }
             
-            /* Swiper Customization */
-            .product-swiper {
-                padding: 1rem 0 3rem !important;
-                margin: 0 -0.5rem;
-            }
-            
-            .product-swiper .swiper-wrapper {
-                padding: 1rem 0;
-            }
-            
-            .product-swiper .swiper-slide {
-                transition: all 0.4s ease;
-                transform: scale(0.9);
-                opacity: 0.7;
-                border-radius: 12px;
-                overflow: hidden;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-                border: 1px solid rgba(0, 0, 0, 0.05);
-            }
-            
-            .product-swiper .swiper-slide-active {
-                transform: scale(1);
-                opacity: 1;
-                box-shadow: 0 8px 25px rgba(67, 97, 238, 0.15);
-                z-index: 1;
-            }
-            
-            .product-swiper .swiper-slide img {
+            /* Product Image */
+            .product-card-img {
                 width: 100%;
-                height: 250px;
+                height: 220px;
                 object-fit: cover;
-                transition: all 0.5s ease;
+                transition: transform 0.5s ease;
             }
             
-            .product-swiper .swiper-slide:hover img {
-                transform: scale(1.05);
+            .product-card:hover .product-card-img {
+                transform: scale(1.03);
             }
             
-            .product-swiper .swiper-slide-content {
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
-                padding: 1.5rem 1rem 1rem;
-                color: white;
-                opacity: 0;
-                transition: all 0.3s ease;
+            /* Product Content */
+            .product-card-content {
+                padding: 1.5rem;
+                position: relative;
             }
             
-            .product-swiper .swiper-slide:hover .swiper-slide-content {
-                opacity: 1;
+            .product-card-title {
+                font-weight: 600;
+                color: var(--dark-color);
+                margin-bottom: 0.5rem;
+                font-size: 1.1rem;
+                transition: color 0.3s ease;
             }
             
-            .product-swiper .swiper-pagination {
-                bottom: 1rem !important;
-            }
-            
-            .product-swiper .swiper-pagination-bullet {
-                width: 10px;
-                height: 10px;
-                background: rgba(0, 0, 0, 0.2);
-                opacity: 1;
-                transition: all 0.3s ease;
-            }
-            
-            .product-swiper .swiper-pagination-bullet-active {
-                background: var(--primary-color);
-                transform: scale(1.3);
-            }
-            
-            /* Navigation Arrows */
-            .product-swiper .swiper-button-next,
-            .product-swiper .swiper-button-prev {
-                width: 40px;
-                height: 40px;
-                background: white;
-                border-radius: 50%;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-                opacity: 0;
-                transition: all 0.3s ease;
-            }
-            
-            .product-swiper:hover .swiper-button-next,
-            .product-swiper:hover .swiper-button-prev {
-                opacity: 1;
-            }
-            
-            .product-swiper .swiper-button-next::after,
-            .product-swiper .swiper-button-prev::after {
-                font-size: 1rem;
+            .product-card:hover .product-card-title {
                 color: var(--primary-color);
-                font-weight: bold;
+            }
+            
+            .product-card-description {
+                color: #6c757d;
+                font-size: 0.85rem;
+                margin-bottom: 1rem;
+                line-height: 1.5;
+            }
+            
+            /* Hover Effect Layer */
+            .product-card-hover {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(to top, rgba(67, 97, 238, 0.9) 0%, rgba(67, 97, 238, 0.1) 70%);
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                padding: 1.5rem;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+                color: white;
+            }
+            
+            .product-card:hover .product-card-hover {
+                opacity: 0;
+            }
+            
+            .hover-title {
+                font-weight: 600;
+                margin-bottom: 0.5rem;
+            }
+            
+            .hover-description {
+                font-size: 0.85rem;
+                opacity: 0.9;
+                margin-bottom: 1rem;
             }
             
             /* Responsive adjustments */
             @media (max-width: 1199px) {
-                .product-swiper .swiper-slide img {
-                    height: 220px;
+                .product-grid-container {
+                    grid-template-columns: repeat(3, 1fr);
                 }
             }
             
             @media (max-width: 767px) {
-                .product-swiper .swiper-slide img {
-                    height: 180px;
+                .product-grid-container {
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 1rem;
                 }
                 
-                .product-swiper .swiper-slide-content {
-                    padding: 1rem 0.5rem;
-                    opacity: 1;
+                .product-card-img {
+                    height: 180px;
+                }
+            }
+            
+            @media (max-width: 575px) {
+                .product-grid-container {
+                    grid-template-columns: 1fr;
                 }
             }
         </style>
     
-        <div class="product-slider-card card">
+        <div class="product-grid-card card">
             <div class="card-header">
                 <h4 class="card-title mb-0">
                     Our Products
@@ -3094,28 +3065,26 @@
             <!-- end card header -->
             
             <div class="card-body">
-                <!-- Swiper -->
-                <div class="swiper product-swiper">
-                    <div class="swiper-wrapper">
-                        {% for i in package %}
-                        <div class="swiper-slide">
-                            {% if i.image %}
-                            <img src="{{ i.image.url }}" alt="{{ i.name }}" class="card-img">
-                            {% else %}
-                            <img src="{% static 'assets/images/small/img-4.jpg' %}" alt="Default Product Image" class="card-img">
-                            {% endif %}
-                            <div class="swiper-slide-content">
-                                <h5 class="text-white mb-1">{{ i.name|default:"Product Name" }}</h5>
-                                <p class="text-white-50 small mb-0">{{ i.description|truncatechars:60|default:"Product description" }}</p>
-                            </div>
+                <div class="product-grid-container">
+                    {% for i in package %}
+                    <div class="product-card">
+                        {% if i.image %}
+                        <img src="{{ i.image.url }}" alt="{{ i.name }}" class="product-card-img">
+                        {% else %}
+                        <img src="{% static 'assets/images/small/img-4.jpg' %}" alt="Default Product Image" class="product-card-img">
+                        {% endif %}
+                        
+                        <div class="product-card-content">
+                            <h5 class="product-card-title">{{ i.title|default:"Product Name" }}</h5>
+                            <p class="product-card-description">{{ i.description|truncatechars:60|default:"Product description" }}</p>
                         </div>
-                        {% endfor %}
+                        
+                        <div class="product-card-hover">
+                            <h5 class="hover-title">{{ i.name|default:"Product Name" }}</h5>
+                            <p class="hover-description">{{ i.description|truncatechars:100|default:"Product description" }}</p>
+                        </div>
                     </div>
-                    <!-- Add Pagination -->
-                    <div class="swiper-pagination"></div>
-                    <!-- Navigation arrows -->
-                    <div class="swiper-button-next"></div>
-                    <div class="swiper-button-prev"></div>
+                    {% endfor %}
                 </div>
             </div>
             <!-- end card-body -->

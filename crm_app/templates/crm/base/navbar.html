@@ -1,5 +1,30 @@
 {% load user_roles %}
 {% load static %}
+
+<style>
+   .app-menu  {
+      background: #fff;
+      /* padding: 0px 0px 0px 0px; */
+   }
+   .nav-link.menu-link i {
+    background: #f5f7fb;
+    padding: 6px 9px;
+    border-radius: 8px;
+    margin-right: 10px;
+    color: #4a5568;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+.navbar-menu .navbar-nav .nav-link:hover {
+      background: #f5f7fb;
+      color: #4a5568;
+      border-radius: 8px;
+}
+.navbar-menu .navbar-nav .nav-link:hover i {
+      background: #fff;
+     
+}
+</style>
 <div class="app-menu navbar-menu">
    <!-- LOGO -->
    <div class="navbar-brand-box">
@@ -197,8 +222,7 @@
             {% endif %}
             {% if user|is_admin %}
             <li class="nav-item">
-               <a class="nav-link m
-               u-link" href="#sidebarPages" data-bs-toggle="collapse" role="button"
+               <a class="nav-link menu-link" href="#sidebarPages" data-bs-toggle="collapse" role="button"
                   aria-expanded="false" aria-controls="sidebarPages">
                <i class="ri-pages-line"></i> <span data-key="t-pages">Master Module</span>
                </a>
@@ -363,20 +387,21 @@
 
             <li class="nav-item">
                <a class="nav-link menu-link"  href="{% url "recharge_history" %}">
-               <i class="ri-pencil-ruler-2-line"></i> <span data-key="t-widgets">Recharge History</span>
+                  <i class="ri-wallet-3-line"></i> <span data-key="t-widgets">Recharge History</span>
                </a>
             </li>
             <li class="nav-item">
                <a class="nav-link menu-link"  href="{% url "wallet_history" %}">
-               <i class="ri-pencil-ruler-2-line"></i> <span data-key="t-widgets">Wallet History</span>
+                  <i class="ri-history-line"></i>  <span data-key="t-widgets">Wallet History</span>
                </a>
             </li>
              {% comment %} <li class="nav-item">
                <a class="nav-link menu-link"  href="{% url "booking_history" %}">
-               <i class="ri-pencil-ruler-2-line"></i> <span data-key="t-widgets">Booking History</span>
+                  <i class="ri-history-line"></i> <span data-key="t-widgets">Booking History</span>
                </a>
             </li>{% endcomment %}
 
+            
             <li class="nav-item">
                <a class="nav-link menu-link" href="#lead" data-bs-toggle="collapse" role="button"
                   aria-expanded="false" aria-controls="lead">
@@ -388,9 +413,13 @@
                     
                      
                      <li class="nav-item">
-                        <a class="nav-link menu-link"  href="https://b2bnww.netlify.app/visa">
+                        {% if request.user.is_authenticated %}
+                        {% with request.session.access_token as token %}
+                        <a class="nav-link menu-link"  href="https://b2bnww.netlify.app/itinerary?token={{ token }}&redirectURL='visa'">
                            <i class="ri-pencil-ruler-2-line"></i> Visa
                            </a>
+                        {% endwith %}
+                        {% endif %}
                        
                      </li>
                      <li class="nav-item">
@@ -405,8 +434,6 @@
                   </ul>
                </div>
             </li>
-
-           
 
             {% if request.user.is_authenticated %}
             {% with request.session.access_token as token %}
