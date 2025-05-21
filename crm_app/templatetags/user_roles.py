@@ -12,6 +12,11 @@ def is_employee(user):
     return user.user_type == "3"
 
 
+@register.filter
+def is_subagent(user):
+    return user.user_type == "6"
+
+
 
 @register.filter
 def has_access(user, allowed_roles):

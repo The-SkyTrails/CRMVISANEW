@@ -1,0 +1,93 @@
+{% load user_roles %}
+{% load static %}
+{% for i in page_obj %}
+<tr id="agent-{{ i.pk }}">
+   
+  
+   <td>{{forloop.counter}}</td>
+   <td>
+      {% if i.profile_pic %}
+      <img src="{{ i.profile_pic.url }}" class="img-responsive" alt="Product Image" style="height:40px;"/>
+      {% else %}
+      <img src="{% static 'assets/images/no-profile.png' %}" class="img-responsive" alt="Product Image" style="height:40px;" />
+   {% endif %}
+     
+   {{i.users.first_name}} {{i.users.last_name}}
+  </td>
+   {% comment %} <td>{{i.users.first_name}} {{i.users.last_name}}</td> {% endcomment %}
+  
+
+   <td>{{i.contact_no}}</td>
+   <td>{{i.users.email}}</td>
+   <td>{{i.registeron}}</td>
+   <td>{{i.last_updated}}</td>
+  
+  
+  
+<td>
+   
+
+    <button class="btn btn-sm btn-danger remove-item-btn" 
+           hx-delete="{% url 'sub_agent_delete' pk=i.pk %}" 
+           hx-confirm="Do you want to Delete ?"
+           hx-target="#agent-{{ i.pk }}"
+           hx-swap="outerHTML"
+           hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}'>
+      Delete
+   </button> 
+   {% comment %} <button class="btn btn-sm btn-primary remove-item-btn" ><a href="{% url "subagent_details" i.id %}"></a>View</button> {% endcomment %}
+   <a href="{% url 'subagent_details' i.id %}" class="btn btn-sm btn-primary">View</a>
+
+   
+  {% comment %} <a href="{% url "subagent_details" i.id %}" class="btn btn-sm btn-danger remove-item-btn"><button class="btn"> View </button></a> {% endcomment %}
+  
+</td>
+   
+ 
+{% endfor %}
+
+
+<div class="d-flex justify-content-end">
+ <div class="pagination-wrap hstack gap-2" style="width: 2px;">
+    <!-- Previous Page Button -->
+    {% if page_obj.has_previous %}
+    <a class="page-item pagination-prev" href="?page=1{% if search_query %}&search={{ search_query }}{% endif %}">First</a>
+
+    <a class="page-item pagination-prev" hx-get="{% url 'subagent_list' %}?page={{ page_obj.previous_page_number }}&search={{ search_query }}" hx-target="#search-results">
+       Previous
+    </a>
+    {% endif %}
+
+    <!-- Numbered Page Links -->
+    <ul class="pagination listjs-pagination mb-0">
+        {% for num in page_obj.paginator.page_range|slice:":3" %}
+            {% if page_obj.number == num %}
+                <li class="page-item active">
+                    <a class="page-link" href="javascript:void(0);">{{ num }}</a>
+                </li> <!-- Current page -->
+             {% else %}
+             <li class="page-item">
+                <a class="page-link" hx-get="{% url 'subagent_list' %}?page={{ num }}&search={{ search_query }}" hx-target="#search-results">{{ num }}</a>
+            </li>
+            {% endif %}
+
+           
+        {% endfor %}
+        {% if page_obj.paginator.num_pages > 3 %}
+        <li class="page-item"><span class="page-link">...</span></li>
+        <li class="page-item {% if page_obj.number == page_obj.paginator.num_pages %}active{% endif %}">
+          <a class="page-link" hx-get="{% url 'subagent_list' %}?page={{ page_obj.paginator.num_pages }}&search={{ search_query }}" hx-target="#search-results">{{ page_obj.paginator.num_pages }}</a>
+        </li>
+      
+        {% endif %}
+    </ul>
+
+    <!-- Next Page Button -->
+    {% if page_obj.has_next %}
+    <a class="page-item pagination-next" hx-get="{% url 'subagent_list' %}?page={{ page_obj.next_page_number }}&search={{ search_query }}" hx-target="#search-results">
+       Next
+    </a>
+    {% endif %}
+ </div>
+</div>
+

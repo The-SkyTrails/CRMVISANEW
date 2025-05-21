@@ -1,0 +1,237 @@
+{% load custom_filters %}
+<form action="{% url "subagent_personal_details" agent.id %}" method="POST" autocomplete="off" enctype="multipart/form-data">
+    {% csrf_token %}
+<div class="row mb-2">
+    <div class="col-lg-12">
+        <div class="card">
+
+            <div class="card-header align-items-center d-flex">
+                <h4 class="card-title mb-0 flex-grow-1">Personal Details</h4>
+                
+            </div>
+            
+            <div class="card-body">
+                <div class="live-preview">
+                    <div class="row gy-4">
+                        <div class="col-xxl-3 col-md-4">
+                            <div>
+                                <label for="firstname" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="firstname" value="{{agent.users.first_name}}" name="first_name">
+                            </div>
+                        </div>
+                        <div class="col-xxl-3 col-md-4">
+                            <div>
+                                <label for="lastname" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="lastname" value="{{agent.users.last_name}}" name="last_name">
+                            </div>
+                        </div>
+                        <!--end col-->
+                        
+                        <div class="col-xxl-3 col-md-4">
+                            <div>
+                                <label for="date" class="form-label">Date Of Birth</label>
+                                <input type="date" class="form-control" id="date" value="{{agent.dob|date:'Y-m-d'}}" name="dob">
+                            </div>
+                        </div>
+                        <div class="col-xxl-3 col-md-4">
+                            
+                                <label for="gender" class="form-label">Gender</label>
+                                <select class="form-select bg-dark" aria-label="Default select example" id="gender" name="gender">
+                                    <option value="">Select</option>
+                                    <option value="Male" {% if agent.gender == "Male" %}selected{% endif %}>Male</option>
+                                    <option value="Female" {% if agent.gender == "Female" %}selected{% endif %}>Female</option>
+                                </select>
+                            
+                        </div>
+
+                        <div class="col-xxl-3 col-md-4">
+                            
+                            <label for="maritalstatus" class="form-label">Maritial Status</label>
+                            <select class="form-select bg-dark" aria-label="Default select example" id="maritalstatus" name="maritial">
+                                <option  value="">Select</option>
+                                <option value="Single" {% if agent.marital_status == "Single" %}selected{% endif %}>Single</option>
+                                <option value="Married" {% if agent.marital_status == "Married" %}selected{% endif %}>Married</option>
+                                
+                            </select>
+                        
+                        </div>
+
+                        <div class="col-xxl-3 col-md-4">
+                            <div class="mb-2">
+                                <label for="formfile" class="form-label">Add Profile</label>
+                                <input type="file" class="form-control" id="formfile" name="original_pic">
+                            </div>
+                                    {% if agent.profile_pic and agent.profile_pic.url %}
+                                    <a class="fw-medium link-primary" href="{{ agent.profile_pic.url }}" target="__blank">{{ agent.profile_pic.url|filename }}</a>
+                                {% else %}
+                                    <!-- Handle the case where 'profile_pic' is not set or has no file associated with it -->
+                                    No profile picture available
+                                {% endif %}
+                        </div>
+                    
+                    
+                    
+                    
+                    
+                    </div>
+                    <!--end row-->
+                </div>
+                                    
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row mb-2">
+    <div class="col-lg-12">
+        <div class="card">
+
+            <div class="card-header align-items-center d-flex">
+                <h4 class="card-title mb-0 flex-grow-1">Bank Details</h4>
+                
+            </div>
+            
+            <div class="card-body">
+                <div class="live-preview">
+                    <div class="row gy-4">
+                        <div class="col-xxl-3 col-md-4">
+                            <div>
+                                <label for="holdername" class="form-label">Name of Account Holder</label>
+                                <input type="text" class="form-control" id="holdername" value="{{agent.account_holder}}" name="accountholder">
+                            </div>
+                        </div>
+                        <div class="col-xxl-3 col-md-4">
+                            <div>
+                                <label for="acnumber" class="form-label">Account Number</label>
+                                <input type="text" class="form-control" id="acnumber" value="{{agent.account_no}}" name="account">
+                            </div>
+                        </div>
+                        <!--end col-->
+                        
+                        <div class="col-xxl-3 col-md-4">
+                            <div>
+                                <label for="bankname" class="form-label">Bank Name</label>
+                                <input type="text" class="form-control" id="bankname" value="{{agent.bank_name}}" name="bankname">
+                            </div>
+                        </div>
+                        
+                        <div class="col-xxl-3 col-md-4">
+                            <div>
+                                <label for="branchname" class="form-label">Branch Name</label>
+                                <input type="text" class="form-control" id="branchname" value="{{agent.branch_name}}" name="branchname">
+                            </div>
+                        </div>
+
+                        <div class="col-xxl-3 col-md-4">
+                            <div>
+                                <label for="ifscode" class="form-label">IFSC Code</label>
+                                <input type="text" class="form-control" id="ifscode" value="{{agent.ifsc_code}}" name="ifsc">
+                            </div>
+                        </div>
+             
+                      
+                       
+                    </div>
+                    <!--end row-->
+                </div>
+                                     
+            </div>
+        </div>
+    </div>
+    <!--end col-->
+</div>
+
+<div class="row mb-2">
+    <div class="col-lg-12">
+        <div class="card">
+
+            <div class="card-header align-items-center d-flex">
+                <h4 class="card-title mb-0 flex-grow-1">Business Details</h4>
+                
+            </div>
+            
+            <div class="card-body">
+                <div class="live-preview">
+                    <div class="row gy-4">
+                        <div class="col-xxl-3 col-md-4">
+                            <div>
+                                <label for="Oraganisation" class="form-label">Name of the Oraganisation</label>
+                                <input type="text" class="form-control" id="Oraganisation" value="{{agent.organization_name}}" name="organization">
+                            </div>
+                        </div>
+                        <div class="col-xxl-3 col-md-4">
+                            <div>
+                                <label for="businesstype" class="form-label">Business Type</label>
+                                <input type="text" class="form-control" id="businesstype" value="{{agent.business_type}}" name="business_type">
+                            </div>
+                        </div>
+                        <!--end col-->
+                        
+                        <div class="col-xxl-3 col-md-4">
+                            <div>
+                                <label for="registrationno" class="form-label">Registration Number</label>
+                                <input type="text" class="form-control" id="registrationno" value="{{agent.registration_number}}" name="registration">
+                            </div>
+                        </div>
+                        
+                        <div class="col-xxl-3 col-md-4">
+                            <div>
+                                <label for="address" class="form-label">Address</label>
+                                <input type="text" class="form-control" id="address" value="{{agent.Address}}" name="address">
+                            </div>
+                        </div>
+
+                        <div class="col-xxl-3 col-md-4">
+                            <div>
+                                <label for="citytown" class="form-label">City/Town</label>
+                                <input type="text" class="form-control" id="citytown" value="{{agent.City}}" name="city">
+                            </div>
+                        </div>
+                        <div class="col-xxl-3 col-md-4">
+                            <div>
+                                <label for="state" class="form-label">State</label>
+                                <input type="text" class="form-control" id="state" value="{{agent.state}}" name="state">
+                            </div>
+                        </div>
+                        <div class="col-xxl-3 col-md-4">
+                            <div>
+                                <label for="country" class="form-label">Country</label>
+                                <input type="text" class="form-control" id="country" value="{{agent.country}}" name="country">
+                            </div>
+                        </div>
+                        <div class="col-xxl-3 col-md-4">
+                            <div>
+                                <label for="Zipcode" class="form-label">Zipcode</label>
+                                <input type="text" class="form-control" id="Zipcode" value="{{agent.zipcode}}" name="zipcode">
+                            </div>
+                        </div>
+
+                       
+             
+                      
+                       
+                    </div>
+                    <!--end row-->
+                </div>
+                                     
+            </div>
+        </div>
+    </div>
+    <!--end col-->
+</div>
+
+
+
+<div class="d-flex profile-wrapper mb-2">
+    <!-- Nav tabs -->
+    <ul class="nav nav-pills animation-nav profile-nav gap-2 gap-lg-3 flex-grow-1" role="tablist">
+        
+    </ul>
+    <div class="flex-shrink-0">
+        <button type="submit" class="btn btn-success">update</button>
+        {% comment %} <a href="pages-profile-settings.html" class="btn btn-success"><i class="ri-edit-box-line align-bottom"></i> Edit Profile</a> {% endcomment %}
+    </div>
+</div>
+</form>

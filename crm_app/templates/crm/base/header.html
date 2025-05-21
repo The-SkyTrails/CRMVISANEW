@@ -226,6 +226,7 @@
                 </div>
 
                 <!-- Wallet Balance with Dropdown - HHL Style -->
+                {% if request.user|has_access:"4,5" %}
                 <div class="wallet-balance-container">
                     <div class="wallet-balance" id="walletBalanceDropdown">
                         <i class="fa-solid fa-wallet"></i>
@@ -243,6 +244,7 @@
                         </a>
                     </div>
                 </div>
+                {% endif %}
                 
                 <!-- Profile Dropdown - HHL Style -->
                 <div class="profile-btn-container">
@@ -254,7 +256,7 @@
                     <div class="profile-dropdown" id="profileDropdownMenu">
                         <div class="profile-dropdown-header">
                             {{request.user.first_name}} {{request.user.last_name}} 
-                            {% if request.user|is_admin %}(Admin){% elif request.user|is_employee %}(Employee){% elif request.user|has_access:"4,5" %}(Agent){% endif %}
+                            {% if request.user|is_admin %}(Admin){% elif request.user|is_employee %}(Employee){% elif request.user|has_access:"4,5" %}(Agent){% elif request.user|is_subagent %}(SubAgent){% endif %}
                         </div>
                         <a class="profile-dropdown-item" href="{% url "profile" %}">
                             <i class="mdi mdi-account-circle me-2"></i>
@@ -273,18 +275,20 @@
         </div>
     </div>
 </header>
-
 <script>
     // Hamburger icon animation
     document.getElementById('topnav-hamburger-icon').addEventListener('click', function() {
         this.classList.toggle('active');
     });
 
-    // Wallet balance dropdown toggle
-    document.getElementById('walletBalanceDropdown').addEventListener('click', function(e) {
-        e.stopPropagation();
-        document.getElementById('walletDropdownMenu').classList.toggle('show');
-    });
+    // Wallet balance dropdown toggle (only if element exists)
+    const walletBalanceDropdown = document.getElementById('walletBalanceDropdown');
+    if (walletBalanceDropdown) {
+        walletBalanceDropdown.addEventListener('click', function(e) {
+            e.stopPropagation();
+            document.getElementById('walletDropdownMenu').classList.toggle('show');
+        });
+    }
 
     // Profile dropdown toggle
     document.getElementById('page-header-user-dropdown').addEventListener('click', function(e) {
@@ -294,11 +298,14 @@
 
     // Close dropdowns when clicking outside
     document.addEventListener('click', function(e) {
-        if (!e.target.closest('.wallet-balance-container')) {
-            document.getElementById('walletDropdownMenu').classList.remove('show');
+        const walletDropdown = document.getElementById('walletDropdownMenu');
+        const profileDropdown = document.getElementById('profileDropdownMenu');
+        
+        if (walletDropdown && !e.target.closest('.wallet-balance-container')) {
+            walletDropdown.classList.remove('show');
         }
-        if (!e.target.closest('.profile-btn-container')) {
-            document.getElementById('profileDropdownMenu').classList.remove('show');
+        if (profileDropdown && !e.target.closest('.profile-btn-container')) {
+            profileDropdown.classList.remove('show');
         }
     });
 </script>

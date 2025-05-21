@@ -212,6 +212,16 @@ urlpatterns = [
 
 
 
+   # ------------------------- SubAGENT --------------------------
+
+   path('Subagent/Load/',subagent_load,name="subagent_load"),
+   path('Subagent/List/',subagent_list,name="subagent_list"),
+   path('Add/SubAgent/',add_subagent,name="add_subagent"),
+   path("SubAgent/Details/<int:id>/", subagent_details, name="subagent_details"),
+   path("SubAgent/Personal/Details/<int:id>/", subagent_personal_details, name="subagent_personal_details"),
+    path('SubAgent/Delete/<int:pk>/', sub_agent_delete, name="sub_agent_delete"),
+
+
    # ------------------------- Report --------------------------
    
    

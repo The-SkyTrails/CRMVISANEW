@@ -52,3 +52,5 @@ admin.site.register(Education_Summary)
 admin.site.register(Todo)
 admin.site.register(Wallet)
 admin.site.register(RechargeHistory)
+admin.site.register(SubAgnt)
+

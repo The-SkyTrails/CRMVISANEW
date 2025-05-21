@@ -31,8 +31,8 @@ from django.core.cache import cache
 
 from django.utils.dateparse import parse_date
 
-from .models import Agent
-from .filters import AgentFilter,OutSourceAgentFilter
+from .models import Agent,SubAgnt
+from .filters import AgentFilter,OutSourceAgentFilter,SubAgentFilter
 from django.db.models import Prefetch
 from .filters import EnquiryFilter
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -191,6 +191,8 @@ def dashboard(request):
 
     elif user_type == "5":  # Outsourcing Agent
         latest_news = News.objects.filter(outsource_Agent__in=[True]).order_by("-created_at")[:10]
+    elif user_type == "6":  # Outsourcing Agent
+        latest_news = News.objects.filter(subagent=True).order_by("-created_at")[:10]
 
     # Context setup
     context = {
@@ -1544,6 +1546,7 @@ def add_package(request):
 
 def product_details(request,id):
    package = Package.objects.get(id=id)
+   print("okkkkkkkkkk")
    context = {
        'package':package
    }
@@ -4531,7 +4534,7 @@ from django.db.models import Prefetch
 
 def enquiry4(request, id):
     # Fetch the Enquiry object or return a 404 error
-    print("sooopppppppppppppppppppppp")
+    
     enq = get_object_or_404(Enquiry, id=id)
 
     # Fetch DocumentFiles associated with the enquiry
@@ -4950,6 +4953,8 @@ def all_lead(request):
         query &= Q(assign_to_agent=user.agent) | Q(created_by=user)
     elif user.user_type == '5':  # Outsourcing Agent
         query &= Q(assign_to_outsourcingagent=user.outsourcingagent) | Q(created_by=user)
+    elif user.user_type == '6':  # Agent
+         query &= Q(created_by=user)
 
     search_fields = [
         'FirstName', 'LastName', 'enquiry_number', 'passport_no', 'registered_on',
@@ -6917,3 +6922,327 @@ def visa_history_list(request):
         visa_applications = []
 
     return render(request, 'crm/VisaHistory/visabooking_list.html', {'visa_applications': visa_applications})
+
+
+
+
+
+# ------------------------------- Sub AGENT --------------------------
+
+
+def subagent_load(request):
+   
+   return render(request,'crm/InternalManagement/SubAgent/subagent_load.html')
+
+
+
+def subagent_list(request):
+    user = request.user
+
+    # Initialize the filter if using django-filter
+    subagent_filter = SubAgentFilter(request.GET, queryset=SubAgnt.objects.all()) if 'SubAgentFilter' in globals() else None
+    subagents = subagent_filter.qs if subagent_filter else SubAgnt.objects.all()
+
+    # Filter by who created (Agent or OutsourcingAgent)
+    if hasattr(user, 'agent'):
+        subagents = subagents.filter(created_by_agent=user.agent)
+    elif hasattr(user, 'outsourcingagent'):
+        subagents = subagents.filter(created_by_outsourcing=user.outsourcingagent)
+
+    # Search logic
+    search_query = request.GET.get('search', '')
+    if search_query:
+        search_terms = search_query.split()
+        query = Q()
+        for term in search_terms:
+            query &= (
+                Q(users__first_name__icontains=term) |
+                Q(users__last_name__icontains=term) |
+                Q(users__email__icontains=term) |
+                Q(contact_no__icontains=term) 
+            )
+        subagents = subagents.filter(query)
+
+    # Date filtering
+    start_date_str = request.GET.get('start_date')
+    end_date_str = request.GET.get('end_date')
+
+    if start_date_str:
+        start_date = parse_date(start_date_str)
+        if start_date:
+            subagents = subagents.filter(created_on__date__gte=start_date)
+
+    if end_date_str:
+        end_date = parse_date(end_date_str)
+        if end_date:
+            subagents = subagents.filter(created_on__date__lte=end_date)
+
+    subagents = subagents.order_by('-id')
+
+    # Pagination
+    paginator = Paginator(subagents, 10)
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'page_obj': page_obj,
+        'search_query': search_query,
+        'subagent_filter': subagent_filter,
+        'start_date': start_date_str,
+        'end_date': end_date_str
+    }
+
+    return render(request, 'crm/InternalManagement/SubAgent/subagent_list.html', context)
+
+from django.contrib import messages
+
+# @login_required
+# def add_subagent(request):
+#     logged_in_user = request.user
+
+#     if request.method == "POST":
+#         firstname = request.POST.get("firstname")
+#         lastname = request.POST.get("lastname")
+#         email = request.POST.get("email").lower()
+#         contact = request.POST.get("contact")
+#         password = request.POST.get("password")
+#         country = request.POST.get("country")
+#         state = request.POST.get("state")
+#         city = request.POST.get("city")
+#         address = request.POST.get("address")
+#         zipcode = request.POST.get("zipcode")
+#         files = request.FILES.get("files")
+
+#         if CustomUser.objects.filter(username=email).exists():
+#             sweetify.error(request, 'Error!', text=f'{email} already exists.', persistent='OK')
+#             return redirect("add_subagent")
+
+#         try:
+#             user = CustomUser.objects.create_user(
+#                 username=email,
+#                 first_name=firstname,
+#                 last_name=lastname,
+#                 email=email,
+#                 password=password,
+#                 user_type="6",  # SubAgent
+#             )
+
+#             # Assign parent agent or outsource creator
+#             if logged_in_user.user_type == '4':
+#                 print("created by agent ")
+#                 agent = Agent.objects.get(users=logged_in_user)
+#                 user.created_by_agent=agent
+#                 # subagent = SubAgnt.objects.create(users=user, created_by_agent=agent)
+#             if logged_in_user.user_type == '5':
+#                 print("created by out soruce agent ")
+#                 outsource = OutSourcingAgent.objects.get(users=logged_in_user)
+#                 # subagent = SubAgnt.objects.create(users=user, created_by_outsourcing=outsource)
+#                 user.created_by_outsourcing = outsource
+#             # else:
+#             #     sweetify.error(request, 'Error!', text='You are not authorized to create a SubAgent', persistent='OK')
+#             #     # messages.error(request, 'You are not authorized to create a SubAgent.')
+#             #     user.delete()
+#             #     return redirect('add_subagent')
+
+#             # Populate SubAgent profile data
+#             user.contact_no = contact
+#             user.country = country
+#             user.state = state
+#             user.city = city
+#             user.address = address
+#             user.zipcode = zipcode
+#             user.profile_pic = files
+#             user.registerdby = logged_in_user
+#             user.save()
+
+#             # messages.success(request, 'SubAgent created successfully.')
+#             sweetify.success(request, 'Success!', text='SubAgent Added successfully', persistent='OK')
+#             return redirect('subagent_load')
+
+#         except Exception as e:
+#             print('Error:', e)
+#             sweetify.errorSubAgnt(request, 'Error!', text=f"An error occurred: {e}", persistent='OK')
+
+#     return render(request, "crm/InternalManagement/SubAgent/add_subagent.html")
+
+
+@login_required
+def add_subagent(request):
+    logged_in_user = request.user
+
+    if request.method == "POST":
+        firstname = request.POST.get("firstname")
+        lastname = request.POST.get("lastname")
+        email = request.POST.get("email").lower()
+        contact = request.POST.get("contact")
+        password = request.POST.get("password")
+        country = request.POST.get("country")
+        state = request.POST.get("state")
+        city = request.POST.get("city")
+        address = request.POST.get("address")
+        zipcode = request.POST.get("zipcode")
+        files = request.FILES.get("files")
+
+        if CustomUser.objects.filter(username=email).exists():
+            sweetify.error(request, 'Error!', text=f'{email} already exists.', persistent='OK')
+            return redirect("add_subagent")
+
+        try:
+            user = CustomUser.objects.create_user(
+                username=email,
+                first_name=firstname,
+                last_name=lastname,
+                email=email,
+                password=password,
+                user_type="6",  # SubAgent
+            )
+
+            # Assign parent agent or outsourcing agent
+           
+
+            # user.registerdby = logged_in_user
+           
+            # user = SubAgnt.objects.get(users=user)
+            if logged_in_user.user_type == '4':
+                print("created by agent")
+                agent = Agent.objects.get(users=logged_in_user)
+                user.subagnt.created_by_agent = agent
+
+            elif logged_in_user.user_type == '5':
+                print("created by outsourcing agent")
+                outsource = OutSourcingAgent.objects.get(users=logged_in_user)
+                user.subagnt.created_by_outsourcing = outsource
+            user.subagnt.contact_no = contact
+            user.subagnt.country = country
+            user.subagnt.state = state
+            user.subagnt.City = city
+            user.subagnt.Address = address
+            user.subagnt.zipcode = zipcode
+            user.subagnt.profile_pic = files
+            user.save()
+
+            sweetify.success(request, 'Success!', text='SubAgent Added successfully', persistent='OK')
+            return redirect('subagent_load')
+
+        except Exception as e:
+            print('Error:', e)
+            sweetify.error(request, 'Error!', text=f"An error occurred: {e}", persistent='OK')
+
+    return render(request, "crm/InternalManagement/SubAgent/add_subagent.html")
+
+ 
+def subagent_details(request, id):
+    try:
+        subagent = SubAgnt.objects.get(id=id)
+        is_outsource_agent = False  # Set this based on your business logic
+
+        context = {
+            'agent': subagent,  # assuming 'agent' in the template refers to subagent
+            'is_outsource_agent': is_outsource_agent,
+        }
+        return render(request, 'crm/InternalManagement/SubAgent/subagent_details.html', context)
+
+    except SubAgnt.DoesNotExist:
+        raise Http404("No SubAgent matches the given query.")
+
+
+
+
+
+def subagent_personal_details(request, id):
+    print("helooooooooooo ggggggg")
+    # Fetch from Agent or OutSourcingAgent based on which model the ID belongs to
+    try:
+        agent = SubAgnt.objects.get(id=id)  # Try to get an Agent first
+    except SubAgnt.DoesNotExist:
+        
+        
+        # If not found in Agent, look in OutSourcingAgent
+        raise Http404("No SubAgent matches the given query.")
+
+    users = agent.users  # Associated user object
+
+    if request.method == "POST":
+        # Collect form data
+        firstname = request.POST.get("first_name")
+        lastname = request.POST.get("last_name")
+        dob = request.POST.get("dob")
+        gender = request.POST.get("gender")
+        maritial = request.POST.get("maritial")
+        original_pic = request.FILES.get("original_pic")
+        organization = request.POST.get("organization")
+        business_type = request.POST.get("business_type")
+        registration = request.POST.get("registration")
+        address = request.POST.get("address")
+        country = request.POST.get("country")
+        state = request.POST.get("state")
+        city = request.POST.get("city")
+        zipcode = request.POST.get("zipcode")
+        accountholder = request.POST.get("accountholder")
+        bankname = request.POST.get("bankname")
+        branchname = request.POST.get("branchname")
+        account = request.POST.get("account")
+        ifsc = request.POST.get("ifsc")
+
+        # Update agent details
+        if dob:
+            agent.dob = dob
+        if gender:
+            agent.gender = gender
+        if maritial:
+            agent.marital_status = maritial
+        if original_pic:
+            agent.profile_pic = original_pic
+
+        users.first_name = firstname
+        users.last_name = lastname
+        agent.organization_name = organization
+        agent.business_type = business_type
+        agent.registration_number = registration
+        agent.Address = address
+        agent.country = country
+        agent.state = state
+        agent.City = city
+        agent.zipcode = zipcode
+        agent.account_holder = accountholder
+        agent.bank_name = bankname
+        agent.branch_name = branchname
+        agent.account_no = account
+        agent.ifsc_code = ifsc
+
+        # Save changes
+        users.save()
+        agent.save()
+
+        sweetify.success(request, 'Successful', text='Personal Details Updated!', persistent='OK')
+        return redirect("subagent_details", id=id)
+
+    context = {
+        'agent': agent,
+    }
+    return render(request, 'crm/InternalManagement/SubAgent/subagentpersonal_details.html', context)
+
+
+
+
+
+def sub_agent_delete(request, pk):
+    
+    try:
+        subagent = get_object_or_404(SubAgnt, pk=pk)
+        custom_user = subagent.users
+        custom_user.delete()
+        subagent.delete()  # This will also delete the associated SuperAdminHOD because of cascade delete
+        return HttpResponse(
+        status=204,
+        headers={
+            'HX-Trigger': json.dumps({
+                "movieListChanged": None,
+                "showMessage": f"SubAgent Deleted Successfully"
+            })
+        })
+
+        
+    except CustomUser.DoesNotExist:
+        return HttpResponseNotFound("SubAgent not found")
+    

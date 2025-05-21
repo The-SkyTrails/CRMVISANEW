@@ -360,7 +360,7 @@
    }
 
    /* Card Hover Effects */
-   .package-card::before {
+   {% comment %} .package-card::before {
        content: '';
        position: absolute;
        top: 0;
@@ -371,7 +371,7 @@
        opacity: 0;
        transition: opacity 0.3s ease;
        z-index: 0;
-   }
+   } {% endcomment %}
 
    .package-card:hover::before {
        opacity: 1;
@@ -432,7 +432,7 @@
         <ul class="nav nav-tabs nav-justified nav-border-top nav-border-top-success" role="tablist">
            <li class="nav-item">
               <a class="nav-link active" data-bs-toggle="tab" href="#home-1" role="tab" onclick="myFunction2('approve')">
-              {% if user|has_access:"4,5" %}
+              {% if user|has_access:"4,5,6" %}
               All Packages
               {% else %}
               Approved
@@ -457,7 +457,7 @@
         <div class="tab-pane active" id="home-1" role="tabpanel">
            <div class="row">
               <div class="col-xxl-12">
-                 <div class="card">
+                 <div class="">
                     <div class="card-body">
                        <ul class="nav nav-pills animation-nav nav-justified gap-2 mb-3" role="tablist">
                           <li class="nav-item waves-effect waves-light">
@@ -481,7 +481,7 @@
                                 {% if package_list %}
                                 {% for package in package_list %}
                                 <div class="col-sm-6 col-xl-4 d-flex align-items-stretch" data-aos="zoom-in-up" data-aos-duration="500">
-                                   <div class="card package-card">
+                                   <div class="package-card">
                                       <div class="card-img-container">
                                          {% if package.image %}
                                          <img class="img-fluid" src="{{ package.image.url }}" alt="{{ package.title }}">
@@ -501,6 +501,7 @@
                                       </div>
                                       <div class="card-footer">
                                          <a href="{% url "product_details" package.id %}" class="btn btn-details">Details</a>
+                                         {% comment %} <a href="{% url "product_details" package.id %}" class="btn btn-details">Details</a> {% endcomment %}
                                          {% if user.is_authenticated and user.user_type == '2' %}
                                          <button class="btn btn-disapprove" hx-get="{% url "package_disapprove" pk=package.pk %}" hx-target="#all">Disapprove</button>
                                          <button class="btn btn-delete remove-item-btn" 
@@ -567,7 +568,7 @@
                                 {% if package_list %}
                                 {% for package in package_list %}
                                 <div class="col-sm-6 col-xl-4 d-flex align-items-stretch" data-aos="zoom-in-up" data-aos-duration="500">
-                                   <div class="card package-card">
+                                   <div class="package-card">
                                       <div class="card-img-container">
                                          {% if package.image %}
                                          <img class="img-fluid" src="{{ package.image.url }}" alt="{{ package.title }}">
@@ -623,12 +624,12 @@
         <div class="tab-pane" id="messages-1" role="tabpanel">
            <div class="row">
               <div class="col-xxl-12">
-                 <div class="card">
+                 <div class="">
                     <div class="card-body">
                        <div class="row">
                           {% for disapprove in disapprove_pkg %}
                           <div class="col-sm-6 col-xl-4 d-flex align-items-stretch" data-aos="zoom-in-up" data-aos-duration="500">
-                             <div class="card package-card">
+                             <div class=" package-card">
                                 <div class="card-img-container">
                                    {% if disapprove.image %}
                                    <img class="img-fluid" src="{{ disapprove.image.url }}" alt="{{ package.title }}">

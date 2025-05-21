@@ -115,6 +115,13 @@
                   </ul>
                </div>
             </li>
+            {% if user|has_access:"4,5" %}
+            <li class="nav-item">
+               <a class="nav-link menu-link"  href="{% url 'subagent_load' %}">
+               <i class="ri-account-circle-line"></i> <span data-key="t-widgets">SubAgent</span>
+               </a>
+            </li>
+            {% endif %}
             <!-- end Dashboard Menu -->
             {% comment %} <li class="nav-item">
                <a class="nav-link menu-link" href="#" data-bs-toggle="collapse" role="button"
@@ -292,10 +299,10 @@
                      </li>
                      {% endif %}
                      <li class="nav-item">
-                        <a href="{% url "succestory_load" %}" class="nav-link" data-key="t-job">{% if user|has_access:"3,4,5" %}View Success Storis{% endif %} {% if user|is_admin %} Manage Success Story {% endif %}</a>
+                        <a href="{% url "succestory_load" %}" class="nav-link" data-key="t-job">{% if user|has_access:"3,4,5,6" %}View Success Storis{% endif %} {% if user|is_admin %} Manage Success Story {% endif %}</a>
                      </li>
                      <li class="nav-item">
-                        <a href="{% url "news_load" %}" class="nav-link" data-key="t-job">{% if user|has_access:"3,4,5" %}View News{% endif %} {% if user|is_admin %} Manage News {% endif %}</a>
+                        <a href="{% url "news_load" %}" class="nav-link" data-key="t-job">{% if user|has_access:"3,4,5,6" %}View News{% endif %} {% if user|is_admin %} Manage News {% endif %}</a>
                      </li>
                      {% if user|has_access:"2,4,5" %}
                      <li class="nav-item">
@@ -363,7 +370,7 @@
             <li class="nav-item">
                <a class="nav-link menu-link" href="#sidebarAdvanceUI" data-bs-toggle="collapse"
                   role="button" aria-expanded="false" aria-controls="sidebarAdvanceUI">
-               <i class="ri-stack-line"></i> <span data-key="t-advance-ui">{% if user|is_admin %}Others {% endif %} {% if user|has_access:"3,4,5" %}Queries {% endif %}</span>
+               <i class="ri-stack-line"></i> <span data-key="t-advance-ui">{% if user|is_admin %}Others {% endif %} {% if user|has_access:"3,4,5,6" %}Queries {% endif %}</span>
                </a>
                <div class="collapse menu-dropdown" id="sidebarAdvanceUI">
                   <ul class="nav nav-sm flex-column">
@@ -384,7 +391,8 @@
                </div>
             </li>
             {% endif %}
-
+            
+             {% if user|has_access:"4,5" %}
             <li class="nav-item">
                <a class="nav-link menu-link"  href="{% url "recharge_history" %}">
                   <i class="ri-wallet-3-line"></i> <span data-key="t-widgets">Recharge History</span>
@@ -395,11 +403,7 @@
                   <i class="ri-history-line"></i>  <span data-key="t-widgets">Wallet History</span>
                </a>
             </li>
-             {% comment %} <li class="nav-item">
-               <a class="nav-link menu-link"  href="{% url "booking_history" %}">
-                  <i class="ri-history-line"></i> <span data-key="t-widgets">Booking History</span>
-               </a>
-            </li>{% endcomment %}
+            
 
             
             <li class="nav-item">
@@ -415,7 +419,7 @@
                      <li class="nav-item">
                         {% if request.user.is_authenticated %}
                         {% with request.session.access_token as token %}
-                        <a class="nav-link menu-link"  href="https://travel.theskytrails.com/itinerary?token={{ token }}&redirectURL=visa">
+                        <a class="nav-link menu-link"  href="https://travel.theskytrails.com/itinerary?token={{ token }}&redirectURL=visa&isDummy=false">
                            <i class="ri-pencil-ruler-2-line"></i> Visa
                            </a>
                         {% endwith %}
@@ -434,18 +438,37 @@
                   </ul>
                </div>
             </li>
-
+            {% endif %}
+             {% if user|has_access:"4,5" %}
             {% if request.user.is_authenticated %}
             {% with request.session.access_token as token %}
             <li class="nav-item">
-               <a class="nav-link menu-link"  href="https://travel.theskytrails.com/itinerary?token={{ token }}">
+               <a class="nav-link menu-link"  href="https://travel.theskytrails.com/itinerary?token={{ token }}&redirectURL=&isDummy=false">
                <i class="ri-pencil-ruler-2-line"></i> <span data-key="t-widgets">B2B</span>
                </a>
-               {% comment %} <a class="nav-link menu-link"  href="https://b2bnw.netlify.app//?token={{ token }}">
-               <i class="ri-pencil-ruler-2-line"></i> <span data-key="t-widgets">B2B</span>
-               </a> {% endcomment %}
+               
             </li>
             {% endwith %}
+            {% endif %}
+            {% endif %}
+
+            {% if user|has_access:"4,5" %}
+            {% if request.user.is_authenticated %}
+            {% with request.session.access_token as token %}
+            <li class="nav-item">
+               <a class="nav-link menu-link"  href="https://travel.theskytrails.com/itinerary?token={{ token }}&redirectURL=dummy-flight&isDummy=true">
+               <i class="ri-pencil-ruler-2-line"></i> <span data-key="t-widgets">Dummy Flight</span>
+               </a>
+               
+            </li>
+            <li class="nav-item">
+               <a class="nav-link menu-link"  href="https://travel.theskytrails.com/itinerary?token={{ token }}&redirectURL=dummy-hotel&isDummy=true">
+               <i class="ri-pencil-ruler-2-line"></i> <span data-key="t-widgets">Dummy Hotel</span>
+               </a>
+               
+            </li>
+            {% endwith %}
+            {% endif %}
             {% endif %}
 
          

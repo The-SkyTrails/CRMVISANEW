@@ -9,7 +9,7 @@ import datetime
 # Create your models here.
 
 class CustomUser(AbstractUser):
-    user_type_data=(("1","HOD"),("2","Admin"),("3","Employee"),("4", "Agent"),("5", "Out Sourcing Agent"))
+    user_type_data=(("1","HOD"),("2","Admin"),("3","Employee"),("4", "Agent"),("5", "Out Sourcing Agent"),("6", "subgnt"))
     user_type=models.CharField(default=1,choices=user_type_data,max_length=10)
     is_logged_in = models.BooleanField(default=False)
 
@@ -427,6 +427,50 @@ class OutSourcingAgent(models.Model):
     # def _str_(self):
     #     return f"{self.users.first_name} {self.users.last_name}"
 
+class SubAgnt(models.Model):
+    users = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    
+    # Who created this SubAgent: either an Agent or an OutSourcingAgent
+    created_by_agent = models.ForeignKey(
+        Agent, on_delete=models.SET_NULL, null=True, blank=True, related_name='subagents_created'
+    )
+    created_by_outsourcing = models.ForeignKey(
+        OutSourcingAgent, on_delete=models.SET_NULL, null=True, blank=True, related_name='subagents_created'
+    )
+
+    contact_no = models.CharField(max_length=20)
+    country = models.CharField(max_length=50)
+    state = models.CharField(max_length=50)
+    City = models.CharField(max_length=50)
+    Address = models.TextField()
+    zipcode = models.CharField(max_length=100)
+    dob = models.DateField(null=True, blank=True)
+    gender = models.CharField(max_length=10, choices=Gender, null=True, blank=True)
+    marital_status = models.CharField(max_length=50, choices=marital_status, null=True, blank=True)
+    
+    profile_pic = models.ImageField(upload_to="SubAgent/Profile Pic/", null=True, blank=True)
+    activeinactive = models.BooleanField(default=True, null=True, blank=True)
+    registeron = models.DateTimeField(auto_now_add=True)
+
+    # ---------- Bank Information ----------------
+    account_holder = models.CharField(max_length=100, null=True, blank=True)
+    bank_name = models.CharField(max_length=100, null=True, blank=True)
+    branch_name = models.CharField(max_length=100, null=True, blank=True)
+    account_no = models.CharField(max_length=100, null=True, blank=True)
+    ifsc_code = models.CharField(max_length=100, null=True, blank=True)
+
+    # -------------------------- KYC information ------------------
+    adhar_card_front = models.FileField(upload_to="SubAgent/Kyc", null=True, blank=True)
+    adhar_card_back = models.FileField(upload_to="SubAgent/Kyc", null=True, blank=True)
+    pancard = models.FileField(upload_to="SubAgent/Kyc", null=True, blank=True)
+    organization_name = models.CharField(max_length=100, null=True, blank=True)
+    business_type = models.CharField(max_length=100, null=True, blank=True)
+    registration_number = models.CharField(max_length=100, null=True, blank=True)
+    registration_certificate = models.FileField(upload_to="SubAgent/Kyc", null=True, blank=True)
+    last_updated = models.DateTimeField(auto_now_add=False, auto_now=True,null=True,blank=True)
+
+    def __str__(self):
+        return f"{self.users.first_name} {self.users.last_name}"
 
 
 class SuccessStory(models.Model):
@@ -445,6 +489,7 @@ class News(models.Model):
     employee = models.BooleanField(default=False)
     agent = models.BooleanField(default=False)
     outsource_Agent = models.BooleanField(default=False)
+    subagent = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
@@ -1118,6 +1163,9 @@ def create_user_profile(sender,instance,created,**kwargs):
             Agent.objects.create(users=instance,contact_no="", zipcode="", activeinactive="True",type="",profile_pic="",)
         if instance.user_type=="5":
             OutSourcingAgent.objects.create(users=instance,contact_no="", zipcode="", activeinactive="True",type="",profile_pic="",)
+        if instance.user_type == "6":
+            SubAgnt.objects.create(users=instance, contact_no="", zipcode="", activeinactive=True, profile_pic="")
+           
 
 @receiver(post_save,sender=CustomUser)
 def save_user_profile(sender,instance,**kwargs):
@@ -1132,6 +1180,8 @@ def save_user_profile(sender,instance,**kwargs):
         instance.agent.save()
     if instance.user_type=="5":
         instance.outsourcingagent.save()
+    if instance.user_type=="6":
+        instance.subagnt.save()
 
 
 
