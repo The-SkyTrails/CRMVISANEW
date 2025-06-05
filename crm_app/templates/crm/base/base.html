@@ -235,47 +235,141 @@
 
     {% load sweetify %}
     {% sweetify %}
-   
-    <script>
-      const cashfree = Cashfree({ mode: "sandbox" });
-  
-      document.getElementById("rechargeBtn").addEventListener("click", function (e) {
-          e.preventDefault();
-  
-          const amount = document.getElementById("amountInput").value;
-  
-          // Validate amount
-          if (!amount || isNaN(amount) || parseFloat(amount) <= 0) {
-              alert("Please enter a valid amount.");
-              return;
+    
+  <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
+{% comment %} 
+<script>
+  const cashfree = Cashfree({ mode: "sandbox" });
+
+  document.getElementById("rechargeBtn").addEventListener("click", function (e) {
+    e.preventDefault();
+
+    const amount = document.getElementById("amountInput").value;
+
+    if (!amount || isNaN(amount) || parseFloat(amount) <= 0) {
+      alert("Please enter a valid amount.");
+      return;
+    }
+
+    fetch("{% url 'generate_cashfree_token' %}", {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": "{{ csrf_token }}",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ amount: amount })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.payment_session_id) {
+        let checkoutOptions = {
+          paymentSessionId: data.payment_session_id,
+          redirectTarget: "_modal"  // ✅ MODAL instead of redirect
+        };
+
+        cashfree.checkout(checkoutOptions).then(result => {
+          if (result.error) {
+            console.log("Payment Error:", result.error);
+            //alert("Payment failed or cancelled.");
           }
-  
-          // Send amount to backend via fetch
-          fetch("{% url 'generate_cashfree_token' %}", {
-              method: "POST",
-              headers: {
-                  "X-CSRFToken": "{{ csrf_token }}",
-                  "Content-Type": "application/json"
-              },
-              body: JSON.stringify({ amount: amount })
-          })
-          .then(res => res.json())
-          .then(data => {
-              if (data.payment_session_id) {
-                  cashfree.checkout({
-                      paymentSessionId: data.payment_session_id,
-                      redirectTarget: "_self"
-                  });
-              } else {
-                  alert("Error: " + (data.error || "Unable to get session ID"));
-              }
-          })
-          .catch(err => {
-              console.error("Fetch error:", err);
-              alert("Something went wrong while processing your request.");
-          });
-      });
-  </script>
+
+          if (result.redirect) {
+            console.log("Redirecting...");
+          }
+
+          if (result.paymentDetails) {
+            console.log("Payment complete:", result.paymentDetails);
+            alert("Payment status: " + result.paymentDetails.paymentMessage);
+          }
+        });
+
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+    })
+    .catch(err => {
+      console.error("Fetch error:", err);
+      alert("Error while initiating payment.");
+    });
+  });
+</script> {% endcomment %}
+
+    <script>
+        const cashfree = Cashfree({ mode: "sandbox" });
+
+        document.getElementById("rechargeBtn").addEventListener("click", function (e) {
+            e.preventDefault();
+
+            const amount = document.getElementById("amountInput").value;
+
+            if (!amount || isNaN(amount) || parseFloat(amount) <= 0) {
+                alert("Please enter a valid amount.");
+                return;
+            }
+
+            fetch("{% url 'generate_cashfree_token' %}", {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ amount: amount })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.payment_session_id) {
+                    const checkoutOptions = {
+                        paymentSessionId: data.payment_session_id,
+                        redirectTarget: "_modal"
+                    };
+                    const orderId = data.order_id;
+
+                    cashfree.checkout(checkoutOptions).then(result => {
+                        if (result.error) {
+                            console.log("❌ Payment Error:", result.error);
+                            // You can send to Django via AJAX if needed
+                        }
+                        
+
+                        if (result.paymentDetails) {
+                            console.log("✅ Payment Success:", result.paymentDetails);
+                           // const returnUrl = `http://127.0.0.1:8000/handle_response/?order_id=${orderId}`;
+                            //window.location.href = returnUrl;
+                            
+                            // You can also notify backend here via fetch
+
+                            fetch(`/handle_response/?order_id=${orderId}&payment_session_id=${data.payment_session_id}`, {
+                                method: 'GET',
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                }
+                            })
+                            .then(res => res.json())
+                            .then(data => {
+                                if (data.status === "SUCCESS") {
+                                    alert("Payment successful!");
+                                    window.location.reload();
+                                } else {
+                                    alert("Payment status: " + data.status);
+                                }
+                            })
+                            .catch(err => {
+                                console.error("❌ Error:", err);
+                                alert("Something went wrong while checking payment status.");
+                            });
+
+                        } 
+                    });
+                } else {
+                    alert("Something went wrong: " + data.error);
+                }
+            })
+            .catch(err => {
+                console.error("Fetch error:", err);
+                alert("Error initiating payment.");
+            });
+        });
+    </script>
     
    </body>
 </html>

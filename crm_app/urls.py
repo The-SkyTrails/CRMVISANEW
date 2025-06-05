@@ -26,7 +26,8 @@ urlpatterns = [
    path('profile/', profile,name="profile"),
    path('profile/Setting/', profile_setting,name="profile_setting"),
    path("generate-cashfree-token/", generate_cashfree_token, name="generate_cashfree_token"),
-
+   path('handle_response/', handle_response, name='handle_response'),
+   
    # ------------------------- VISA COUNTRY --------------------------
 
    path('VisaCountry/Load/',visacountry_load,name="visacountry_load"),
