@@ -6756,7 +6756,7 @@ def generate_cashfree_token(request):
 
             orderMeta = OrderMeta()
             # orderMeta.return_url = f"https://www.cashfree.com/devstudio/preview/pg/mobile/android?order_id={order_id}"
-            orderMeta.return_url = f"http://127.0.0.1:8000/payments/handle_response/?order_id={order_id}"
+            orderMeta.return_url = f"https://crm.theskytrails.com/payments/handle_response/?order_id={order_id}"
             createOrderRequest.order_meta = orderMeta
 
             api_response = Cashfree().PGCreateOrder(x_api_version, createOrderRequest, None, None)
