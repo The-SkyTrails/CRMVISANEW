@@ -6737,7 +6737,7 @@ def generate_cashfree_token(request):
         try:
             Cashfree.XClientId = config("CASHFREE_Client_ID")
             Cashfree.XClientSecret = config("CASHFREE_Client_Secret")
-            Cashfree.XEnvironment = Cashfree.SANDBOX
+            Cashfree.XEnvironment =  Cashfree.PRODUCTION
             x_api_version = "2025-01-01"
 
             order_id = f"order_{uuid.uuid4().hex[:10]}"
@@ -6788,7 +6788,7 @@ def handle_response(request):
     # Set Cashfree credentials (preferably via env variables)
     Cashfree.XClientId = config("CASHFREE_Client_ID", default="your_client_id")
     Cashfree.XClientSecret = config("CASHFREE_Client_Secret", default="your_client_secret")
-    Cashfree.XEnvironment = Cashfree.SANDBOX  # or Cashfree.PRODUCTION
+    Cashfree.XEnvironment = Cashfree.PRODUCTION  # or Cashfree.PRODUCTION
     x_api_version = "2025-01-01"
 
     try:
@@ -6980,7 +6980,7 @@ def visa_history_list(request):
     # API se data fetch karenge
     user_id = request.user.id  # Id fix hai ya aap dynamic bhi kar sakte ho
     print("userss id",user_id)
-    api_url = f"https://st-backend-rzu7.onrender.com/skyTrails/api/visa/getVisaApplicationByUser?userId={user_id}"
+    api_url = f"https://back.theskytrails.com/skyTrails/api/visa/getVisaApplicationByUser?userId={user_id}"
     
     try:
         response = requests.get(api_url)
