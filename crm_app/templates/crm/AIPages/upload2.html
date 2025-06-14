@@ -1,7 +1,5 @@
-
-
- <!DOCTYPE html>
- {% load static %}
+<!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -718,7 +716,7 @@ background: rgba(159, 159, 159, 0.3);
     <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
       <div class="d-flex align-items-center gap-4">
         <div class="d-flex flex-column flex-lg-row gap-4">
-          <a href="./Form.html" class="text-dark fw-semibold text-decoration-none" style="font-size: 15px;">Apply now</a>
+          <a href="{% url "ai_form" %}" class="text-dark fw-semibold text-decoration-none" style="font-size: 15px;">Apply now</a>
           <a href="#" class="text-dark fw-semibold text-decoration-none" style="font-size: 15px;">My Applications</a>
           <a href="#" class="text-dark fw-semibold text-decoration-none" style="font-size: 15px;">My Documents</a>
 
@@ -931,9 +929,9 @@ background: rgba(159, 159, 159, 0.3);
 
       </div>
       <div>
-        <a href="Guideline.html">
+        <a href="{% url "ai_guideline" %}">
         <button class="btn btn-secondary me-2">Go Back</button></a>
-        <a href="{% url "ai_review" %}">
+        <a href="reviewA.html">
         <button class="btn btn-submit-custom">Submit</button></a>
       </div>
     </div>
@@ -1030,7 +1028,7 @@ background: rgba(159, 159, 159, 0.3);
 
   function showNoDataMessage(message = 'No data available') {
     const form = document.getElementById('right-details-fields');
-    form.innerHTML = `<div class="no-data-message">${message}</div>`;
+    form.innerHTML = <div class="no-data-message">${message}</div>;
   }
   function hasRequiredDocuments() {
   return uploadedImages.length > 0;
@@ -1136,7 +1134,7 @@ function showUploadRequiredModal() {
       }
     }
 
-    console.warn("⚠️ Unknown document type received:", docTypeRaw);
+    console.warn("⚠ Unknown document type received:", docTypeRaw);
     return "Unsorted";
   }
 
@@ -1162,7 +1160,7 @@ function showUploadRequiredModal() {
       files.forEach((obj, i) => {
         const fileDiv = document.createElement('div');
         fileDiv.className = 'doc-type-file' + ((dtIdx === selectedDocTypeIdx && i === selectedFileIdx) ? ' selected' : '');
-        fileDiv.innerHTML = `<span class="mdi mdi-checkbox-blank-circle"></span><span class="filename">${truncateFilename(obj.fileName || obj.imageUrl || 'Doc')}</span>`;
+        fileDiv.innerHTML = <span class="mdi mdi-checkbox-blank-circle"></span><span class="filename">${truncateFilename(obj.fileName || obj.imageUrl || 'Doc')}</span>;
         fileDiv.onclick = () => { selectDocFile(dtIdx, i); };
         filesDiv.appendChild(fileDiv);
       });
@@ -1203,7 +1201,7 @@ function showUploadRequiredModal() {
     setUIState('preview');
 
     const sel = document.getElementById('doc-type-dropdown');
-    sel.innerHTML = DOC_TYPES.map((type, i) => `<option value="${i}">${type}</option>`).join('');
+    sel.innerHTML = DOC_TYPES.map((type, i) => <option value="${i}">${type}</option>).join('');
     const curr = docsOfType[selectedFileIdx];
     sel.value = DOC_TYPES.indexOf(curr.docType);
 
@@ -1218,7 +1216,7 @@ function showUploadRequiredModal() {
         renderChecklist();
         updateMainPreview();
       } else {
-        alert(`No documents uploaded under "${newDocType}" yet.`);
+        alert(No documents uploaded under "${newDocType}" yet.);
         sel.value = DOC_TYPES.indexOf(curr.docType); // revert dropdown
       }
     };
@@ -1287,7 +1285,7 @@ function showUploadRequiredModal() {
           if (typeof item === 'object' && item !== null) {
             return { ...acc, ...item };
           }
-          return { ...acc, [`Item_${Object.keys(acc).length + 1}`]: item };
+          return { ...acc, [Item_${Object.keys(acc).length + 1}]: item };
         }, {});
       }
 
@@ -1297,7 +1295,7 @@ function showUploadRequiredModal() {
         
         if (value && typeof value === 'object' && !Array.isArray(value)) {
           Object.keys(value).forEach(subKey => {
-            flattenedDetails[`${key}_${subKey}`] = value[subKey];
+            flattenedDetails[${key}_${subKey}] = value[subKey];
           });
         } else {
           flattenedDetails[key] = value;
@@ -1454,11 +1452,11 @@ function saveFieldValue(fieldElement) {
 
   function showProcessingOverlay(totalFiles) {
     document.getElementById('file-processing-overlay').style.display = 'flex';
-    document.getElementById('processing-counter').textContent = `Processing 0 of ${totalFiles} documents`;
+    document.getElementById('processing-counter').textContent = Processing 0 of ${totalFiles} documents;
   }
 
   function updateProcessingProgress(current, total) {
-    document.getElementById('processing-counter').textContent = `Processing ${current} of ${total} documents`;
+    document.getElementById('processing-counter').textContent = Processing ${current} of ${total} documents;
   }
 
   function hideProcessingOverlay() {
@@ -1468,7 +1466,7 @@ function saveFieldValue(fieldElement) {
   function applyZoom() {
     const img = document.getElementById('preview-img-main');
     if (img) {
-      img.style.transform = `scale(${currentZoomLevel})`;
+      img.style.transform = scale(${currentZoomLevel});
       img.style.transition = 'transform 0.3s ease-in-out';
       img.style.transformOrigin = 'center center';
     }
@@ -1506,7 +1504,7 @@ function saveFieldValue(fieldElement) {
     const currentDoc = docsOfType[selectedFileIdx];
 
     if (!currentDoc) {
-        errorListDiv.innerHTML = `<div class="no-error-message">No document selected</div>`;
+        errorListDiv.innerHTML = <div class="no-error-message">No document selected</div>;
         document.getElementById("review-errors-count").textContent = "0";
         return;
     }
@@ -1529,20 +1527,20 @@ function saveFieldValue(fieldElement) {
 
     // Add status code error if present
     if (currentDoc.backendObj?.statusCode && currentDoc.backendObj.statusCode !== 200) {
-        filteredErrors.push(`API Error: Status Code ${currentDoc.backendObj.statusCode}`);
+        filteredErrors.push(API Error: Status Code ${currentDoc.backendObj.statusCode});
     }
 
     // Display errors or no-error message
     if (filteredErrors.length > 0) {
         const title = document.createElement("div");
         title.className = "doc-details-field";
-        title.innerHTML = `<label><strong>${currentDoc.docType} - ${currentDoc.fileName}</strong></label>`;
+        title.innerHTML = <label><strong>${currentDoc.docType} - ${currentDoc.fileName}</strong></label>;
         errorListDiv.appendChild(title);
 
         filteredErrors.forEach(err => {
             const errorItem = document.createElement("div");
             errorItem.className = "doc-details-field";
-            errorItem.innerHTML = `<input type="text" readonly value="${escapeHtml(err)}" style="color:#e53935; font-weight: 600;" />`;
+            errorItem.innerHTML = <input type="text" readonly value="${escapeHtml(err)}" style="color:#e53935; font-weight: 600;" />;
             errorListDiv.appendChild(errorItem);
             errorCount++;
         });
@@ -1606,13 +1604,13 @@ function saveFieldValue(fieldElement) {
 
       // const sectionTitle = document.createElement("div");
       // sectionTitle.className = "doc-details-field";
-      // sectionTitle.innerHTML = `<label><strong>Missing Document Types</strong></label>`;
+      // sectionTitle.innerHTML = <label><strong>Missing Document Types</strong></label>;
       errorListDiv.appendChild(sectionTitle);
 
       missingTypes.forEach(type => {
         const errorItem = document.createElement("div");
         errorItem.className = "doc-details-field";
-        errorItem.innerHTML = `<input type="text" readonly value="${type} not uploaded" style="color:#e53935; font-weight: 600;" />`;
+        errorItem.innerHTML = <input type="text" readonly value="${type} not uploaded" style="color:#e53935; font-weight: 600;" />;
         errorListDiv.appendChild(errorItem);
       });
 
@@ -1622,37 +1620,34 @@ function saveFieldValue(fieldElement) {
   }
   // Add this near your other constants
 const MAX_PHOTOS_ALLOWED = 3;
+
 async function handleFilesSelected(fileInputs) {
     if (!fileInputs.length) return;
 
-    // Photo count validation (unchanged)
-    const existingPhotoCount = uploadedImages.filter(img => 
-        img.docType === "Photo"
-    ).length;
-    
+    // Only count new photo files being uploaded
     const newFiles = Array.from(fileInputs);
     const newPhotosCount = newFiles.filter(file => 
         file.type.startsWith('image/')
     ).length;
 
-    if (existingPhotoCount + newPhotosCount > MAX_PHOTOS_ALLOWED) {
-        alert(`You can only upload ${MAX_PHOTOS_ALLOWED} photos maximum.\n\nYou already have ${existingPhotoCount} photos uploaded and are trying to add ${newPhotosCount} more.`);
+    // Validate only the new photo count
+    if (newPhotosCount > MAX_PHOTOS_ALLOWED) {
+        alert(You can only upload ${MAX_PHOTOS_ALLOWED} photos at a time.\n\nYou are trying to add ${newPhotosCount} photos.);
         return;
     }
 
     showProcessingOverlay(newFiles.length);
-    document.getElementById('uploading-file-name').textContent = `${newFiles.length} files selected`;
+    document.getElementById('uploading-file-name').textContent = ${newFiles.length} files selected;
 
     try {
-        // 1. Get results and ensure it's always an array
+        // Upload files
         const results = await uploadFilesWithRetry(newFiles, 0);
         const processedResults = Array.isArray(results) ? results : [results];
 
-        // 2. Process each result safely
+        // Process each result
         processedResults.forEach((result, index) => {
             const file = newFiles[index];
             
-            // Ensure result has expected structure
             const safeResult = result || {};
             const docType = safeResult.docType || "Unsorted";
             const imageUrl = safeResult.imageUrl || "";
@@ -1665,20 +1660,15 @@ async function handleFilesSelected(fileInputs) {
                 backendObj
             };
 
-            // Check for duplicates
-            if (!uploadedImages.some(img => 
-                img.fileName === fileEntry.fileName && 
-                img.imageUrl === fileEntry.imageUrl
-            )) {
-                uploadedImages.push(fileEntry);
-            }
+            // Add to uploaded images (without duplicate check if you want to allow duplicates)
+            uploadedImages.push(fileEntry);
 
             updateProcessingProgress(index + 1, newFiles.length);
         });
 
     } catch (e) {
-        console.error(`Batch upload failed:`, e);
-        alert(`Upload failed: ${e.message || 'Unknown error'}`);
+        console.error(Batch upload failed:, e);
+        alert(Upload failed: ${e.message || 'Unknown error'});
     } finally {
         hideProcessingOverlay();
         sessionStorage.setItem('uploadedDocuments', JSON.stringify(uploadedImages));
@@ -1688,7 +1678,6 @@ async function handleFilesSelected(fileInputs) {
         document.getElementById('upload-more-container').style.display = 'block';
     }
 }
-
   async function uploadFilesWithRetry(files, attempt = 0) {
     try {
         const result = await uploadFiles(files);
@@ -1737,7 +1726,7 @@ async function uploadFiles(files) {
 
         const processedFiles = imageDetails.map((entry, idx) => ({
             docType: matchDocType(entry.parsedData?.Document_Type || "Unsorted"),
-            fileName: files[idx]?.name || `document_${idx}`,
+            fileName: files[idx]?.name || document_${idx},
             imageUrl: entry.imageUrl,
             backendObj: entry
         }));
@@ -1753,7 +1742,7 @@ async function uploadFiles(files) {
        if (uploadResponse.data.statusCode === 200 || uploadResponse.data.statusCode === 201) {
     // Fire-and-forget with response logging (but no UI impact)
     axios.post(
-        'https://st-backend-rzu7.onrender.com/skyTrails/api/visa/openai/visaApplDocCreation',
+        'https://back.theskytrails.com/skyTrails/api/visa/openai/visaApplDocCreation',
         {
             payload: {
                 userId: userData.userId,
@@ -1800,7 +1789,7 @@ return {
     if (signupData?.firstName) {
       const heading = document.getElementById('reviewName');
       if (heading) {
-        heading.textContent = `${signupData.firstName}, Know before you go!`;
+        heading.textContent = ${signupData.firstName}, Know before you go!;
       }
       const profileInitialEl = document.getElementById('profileInitial');
       if (profileInitialEl) {
@@ -1824,13 +1813,13 @@ return {
         const d1 = new Date(start);
         const d2 = new Date(end);
         const diff = Math.ceil((d2 - d1) / (1000 * 60 * 60 * 24));
-        return diff > 0 ? `${diff} days` : 'N/A';
+        return diff > 0 ? ${diff} days : 'N/A';
       };
 
       document.getElementById('infoDestination').textContent = destination;
       document.getElementById('infoVisaType').textContent = visaType;
       document.getElementById('infoDuration').textContent = getDuration(fromDateStr, toDateStr);
-      document.getElementById('infoDates').textContent = `${formatDate(fromDateStr)} – ${formatDate(toDateStr)}`;
+      document.getElementById('infoDates').textContent = ${formatDate(fromDateStr)} – ${formatDate(toDateStr)};
     }
 
     if (uploadedImages.length > 0) {
@@ -1888,13 +1877,4 @@ return {
 </script>
 
 </body>
-</html>    
-
-
-
-
-
-
-
-
-
+</html>
