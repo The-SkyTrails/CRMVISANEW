@@ -216,7 +216,7 @@ travelToOptions.forEach(item => {
           localStorage.setItem('visaData', JSON.stringify(finalData));
 
     // ✅ Redirect to AI home page (optional)
-          window.location.href = 'aihome.html';
+          window.location.href = "{% url 'ai_home' %}";
        
         } catch (err) {
           console.error('Submission failed:', err.response?.data || err.message);

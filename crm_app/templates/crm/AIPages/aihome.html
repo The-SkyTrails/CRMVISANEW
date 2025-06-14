@@ -1,0 +1,719 @@
+
+
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Review - The Skytrails</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      /* background: linear-gradient(90deg, #fff4ee 0%, #fdeffb 55%, #e1eaff 100%); */
+      margin: 0;
+      
+    }
+
+   
+body {
+  background: linear-gradient(120deg, #ffffff 0%, #f8f2f8 48%, #e9bddd 100%);
+}
+
+    .nav-link {
+      font-weight: 600;
+      color: #1e1e1e;
+      font-size: 15px;
+    }
+    .nav-link:hover {
+      color: #f97316;
+    }
+    .tab-step {
+      background: #fbeee9;
+      padding: 10px 25px;
+      border-radius: 999px;
+      font-size: 16px;
+      font-weight: 500;
+      color: #333;
+    }
+    .tab-step.active {
+      border: 2px solid rgb(199, 187, 175);
+      color: #f97316;
+      background: #fff;
+      font-weight: 600;
+    }
+    .review-heading {
+      font-size: 2.1rem;
+      font-weight: 700;
+      color: #1e1e1e;
+    }
+    .highlight-text {
+      color: #f97316;
+      font-style: italic;
+      font-weight: 600;
+    }
+    .review-box {
+      border: 2px solid #ffb8b8;
+      background: #fff1f1;
+      padding: 1rem 1.25rem;
+      border-radius: 15px;
+      margin-top: 1rem;
+    }
+   
+
+
+
+    .footer-bar {
+      margin-top: 3rem;
+      padding: 5px 10px;
+      /* background: linear-gradient(to right, #fbeee9, #f5e4f8); */
+      border-top: 1px solid rgba(0, 0, 0, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      color: #666;
+       max-width: 1140px; /* limit width */
+       max-height: 100px;
+   
+    }
+    .footer-bar .btn {
+      border-radius: 30px;
+      padding: 8px 20px;
+      font-weight: 600;
+      margin-top: 10px;
+         
+    }
+
+
+
+ 
+.btn-submit-custom {
+      background-color: #f97316;
+      color: #fff;
+      border: none;
+    }
+    .btn-submit-custom:hover {
+      background-color: #fb923c;
+    }
+
+
+
+ 
+
+ 
+
+
+.info-bar {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 12px 28px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 40px;
+  font-size: 14px;
+  color: #1f1f1f;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.info-bar > div {
+  display: flex;
+  align-items: center;
+}
+
+.info-bar i {
+  font-size: 18px;
+  margin-right: 6px;
+  color: #333;
+}
+.logo-img {
+  max-height: 220px;
+  object-fit: contain;
+  display: block;
+}
+
+
+
+ 
+
+
+
+
+.step-container {
+      text-align: center;
+      padding: 60px 20px 30px;
+    }
+
+    .step-title {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .step-subtitle {
+      font-size: 1.1rem;
+      color: #666;
+      margin-bottom: 40px;
+    }
+
+    .step-tracker {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .step-pill {
+         background-color: #fbeee9;
+      padding: 12px 28px;
+      border-radius: 50px;
+      font-weight: 500;
+      font-size: 16px;
+      color: #444;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .step-pill.active {
+      border: 2px solid #ff5a00;
+      color: #ff5a00;
+      background-color: #fff;
+      font-weight: 600;
+    }
+
+    .step-pill::after {
+      content: '';
+      width: 50px;
+      height: 2px;
+      background-color: #e0e0e0;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: -40px;
+      z-index: -1;
+    }
+
+    .step-pill:last-child::after {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .step-tracker {
+        gap: 15px;
+      }
+      .step-pill::after {
+        display: none;
+      }
+    }
+
+
+
+
+
+
+
+
+.form-section {
+         background: rgba(213, 213, 213, 0.1);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+    .form-label {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .form-control, select {
+      border-radius: 12px;
+      border: none;
+      box-shadow: inset 0 0 0 1px #e0e0e0;
+      padding: 0.75rem 1rem;
+    }
+    .visa-option {
+      border-radius: 16px;
+      padding: 1.25rem;
+      background-color: #fff;
+      transition: all 0.3s;
+    }
+    .visa-option.active {
+      background-color: #ffd3b6;
+      border: 2px solid #f97316;
+    }
+    .continue-btn {
+      background: linear-gradient(to right, #ff6600, #ff8000);
+      color: #fff;
+      font-weight: 600;
+      border: none;
+      border-radius: 999px;
+      padding: 0.75rem 2rem;
+      font-size: 16px;
+      margin-top: 2rem;
+    }
+    .continue-btn:hover {
+      background: #ff6600;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    .form-container {
+         background: rgba(213, 213, 213, 0.1);
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 1100px;
+      margin: 50px auto;
+      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
+    }
+
+    .visa-option {
+      cursor: pointer;
+      border-radius: 16px;
+      padding: 20px;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+      background: #f6f6f6;
+    }
+
+    .visa-option.active {
+      border: 2px solid #f97316;
+      background-color: #ffe0cb;
+    }
+
+    .visa-option:hover {
+      background-color: #fbe9e4;
+    }
+
+    .form-label {
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .form-control {
+      border-radius: 12px;
+      height: 48px;
+    }
+
+    .btn-orange {
+      background: linear-gradient(to right, #f97316, #fb923c);
+      color: white;
+      border-radius: 999px;
+      padding: 10px 28px;
+      border: none;
+    }
+
+    .btn-orange:hover {
+      background: #fb923c;
+    }
+
+
+
+
+     
+
+
+
+
+  </style>
+</head>
+
+
+<body>
+  <nav class="navbar navbar-expand-lg border-bottom px-4 py-3" style="background: linear-gradient(90deg, #ebe9e9 0%, #d4d4d4 55%, #e1eaff 100%);">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="#" style="height: 44px;">
+        <img src="{% static "assets/images/logo1.png" %}" alt="Logo" class="logo-img">
+      </a>
+      <div class="d-flex align-items-center gap-4">
+        <a href="{% url "ai_form" %}" class="nav-link">Apply now</a>
+        <a href="#" class="nav-link">My Applications</a>
+        <a href="#" class="nav-link">My Documents</a>
+        <a href="#" class="nav-link">Show Walkthrough</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="step-container">
+    <h2 class="step-title">Welcome, let’s get the basics sorted!</h2>
+    <p class="step-subtitle">Tell us where you're from, where you're headed, why you're going—and when the adventure begins!</p>
+  </div>
+   
+   <div class="step-tracker">
+      <div class="step-pill active border border-warning">Details</div>
+      <div class="step-pill">Guidelines</div>
+      <div class="step-pill">Upload</div>
+      <div class="step-pill">Review</div>
+      <div class="step-pill">Submit</div>
+    </div>
+  
+
+  <div class="container form-container">
+    <div class="mb-4">
+      <label class="form-label">What country is your Passport From?</label>
+      <input id="passportCountry" class="form-control" placeholder="Type country name">
+    </div>
+
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <label class="form-label">Travelling From</label>
+        <input id="travelFrom" class="form-control" placeholder="Type country name">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Travelling To</label>
+        <input id="travelTo" class="form-control" placeholder="Type country name">
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <label class="form-label">Select Your Visa Category</label>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="visa-option" id="visitorVisa" onclick="selectVisa(this)">
+            <div class="fw-bold text-orange mb-2">🧳 Visitor</div>
+            <div class="text-muted small">For leisure, sightseeing, family visit, business meetings, study (less than 6 months), and work travel.</div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="visa-option" id="studentVisa" onclick="selectVisa(this)">
+            <div class="fw-bold text-dark mb-2">🎓 Student</div>
+            <div class="text-muted small">For long-term study purposes.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <label class="form-label">When are you Travelling?</label>
+      <div class="row">
+        <div class="col-md-6 mb-2">
+          <input id="departureDate" type="date" class="form-control">
+        </div>
+        <div class="col-md-6 mb-2">
+          <input id="arrivalDate" type="date" class="form-control">
+        </div>
+      </div>
+    </div>
+
+    <div class="text-end">
+      <a href="{% url "ai_guideline" %}">
+        <button class="btn btn-orange">Continue →</button>
+      </a>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function selectVisa(selectedDiv) {
+      document.querySelectorAll('.visa-option').forEach(el => el.classList.remove('active'));
+      selectedDiv.classList.add('active');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const signupData = JSON.parse(localStorage.getItem('signupData'));
+      const visaData = JSON.parse(localStorage.getItem('visaData'));
+
+      if (signupData && signupData.firstName) {
+        const welcomeEl = document.querySelector('.step-title');
+        if (welcomeEl) {
+          welcomeEl.textContent = `Welcome ${signupData.firstName}, let’s get the basics sorted!`;
+        }
+      }
+
+      if (visaData) {
+        document.getElementById('passportCountry').value = visaData.sourceCountry || '';
+        document.getElementById('travelFrom').value = visaData.depCountyName || '';
+        document.getElementById('travelTo').value = visaData.arrCountyName || '';
+        document.getElementById('departureDate').value = visaData.fromDate?.split('T')[0] || '';
+        document.getElementById('arrivalDate').value = visaData.toDate?.split('T')[0] || '';
+
+        const category = visaData.visaCategory?.toLowerCase();
+        if (category) {
+          if (category.includes("visitor")) {
+            document.getElementById('visitorVisa').classList.add('active');
+          } else if (category.includes("student")) {
+            document.getElementById('studentVisa').classList.add('active');
+          }
+        }
+      } else {
+        console.warn('visaData not found in localStorage');
+      }
+    });
+  </script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <body>
+  <nav class="navbar navbar-expand-lg border-bottom px-4 py-3" style="background: linear-gradient(90deg, #ebe9e9 0%, #d4d4d4 55%, #e1eaff 100%);">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="#" style="height: 44px;">
+        <img src="images/logo1.png" alt="Logo" class="logo-img">
+       
+      </a>
+      <div class="d-flex align-items-center gap-4">
+        <a href="#" class="nav-link">Apply now</a>
+        <a href="#" class="nav-link">My Applications</a>
+        <a href="#" class="nav-link">My Documents</a>
+        <a href="#" class="nav-link">Show Walkthrough</a>
+        <div class="dropdown">
+          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">Premium Services</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Visa Help</a></li>
+            <li><a class="dropdown-item" href="#">Consulting</a></li>
+          </ul>
+        </div>
+        <div class="dropdown">
+          <a class="d-flex align-items-center justify-content-center rounded-circle bg-light" style="width: 36px; height: 36px; font-weight: 600; font-size: 14px; color: #555;" data-bs-toggle="dropdown">
+            A
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><a class="dropdown-item" href="#">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+ 
+<div class="step-container">
+    <h2 class="step-title">Welcome Abhinandan, let’s get the basics sorted!</h2>
+    <p class="step-subtitle">Tell us where you're from, where you're headed, why you're going—and when the adventure begins!</p>
+
+    <div class="step-tracker">
+      <div class="step-pill active border border-warning">Details</div>
+      <div class="step-pill">Guidelines</div>
+      <div class="step-pill">Upload</div>
+      <div class="step-pill">Review</div>
+      <div class="step-pill">Submit</div>
+    </div>
+  </div>
+
+
+    
+ 
+     
+
+
+
+
+ <div class="container form-container">
+  <div class="mb-4">
+    <label class="form-label">What country is your Passport From?</label>
+    <input class="form-control" placeholder="Type country name">
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <label class="form-label">Travelling From</label>
+      <input class="form-control" placeholder="Type country name">
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Travelling To</label>
+      <input class="form-control" placeholder="Type country name">
+    </div>
+  </div>
+
+  <div class="mb-4">
+    <label class="form-label">Select Your Visa Category</label>
+    <div class="row g-3">
+      <div class="col-md-6">
+        <div class="visa-option active" onclick="selectVisa(this)">
+          <div class="fw-bold text-orange mb-2">🧳 Visitor</div>
+          <div class="text-muted small">
+            For leisure, sightseeing, family visit, business meetings, study (less than 6 months) and work travel.
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="visa-option" onclick="selectVisa(this)">
+          <div class="fw-bold text-dark mb-2">🎓 Student</div>
+          <div class="text-muted small">
+            Passengers using other airports for layovers under 24 hours to complete their journey.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-4">
+    <label class="form-label">When are you Travelling?</label>
+    <div class="row">
+      <div class="col-md-6 mb-2">
+        <input type="date" class="form-control">
+      </div>
+      <div class="col-md-6 mb-2">
+        <input type="date" class="form-control">
+      </div>
+    </div>
+  </div>
+
+  <div class="text-end">
+    <a href="indexA.html">
+    <button class="btn btn-orange">Continue →</button></a>
+  </div>
+</div> 
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+ <script>
+  function selectVisa(selectedDiv) {
+    document.querySelectorAll('.visa-option').forEach(el => el.classList.remove('active'));
+    selectedDiv.classList.add('active');
+  }
+
+
+
+
+
+
+
+
+  // document.addEventListener('DOMContentLoaded', () => {
+  //   const signupData = JSON.parse(localStorage.getItem('signupData'));
+  //   const visaData = JSON.parse(localStorage.getItem('visaData')); // only if you also store visa data
+
+  //   if (signupData) {
+  //     document.querySelector('.step-title').textContent = `Welcome ${signupData.firstName}, let’s get the basics sorted!`;
+
+  //     document.querySelectorAll('input.form-control')[0].value = signupData.country;
+  //     document.querySelectorAll('input.form-control')[1].value = signupData.country;
+  //     document.querySelectorAll('input.form-control')[2].value = signupData.city;
+  //   }
+
+  //   // You can store visaData in visaForm.js like this (add this in Visa form submit):
+  //   // localStorage.setItem('visaData', JSON.stringify(finalData));
+
+  //   if (visaData) {
+  //     // Optional: auto fill dates if needed
+  //     document.querySelectorAll('input[type="date"]')[0].value = visaData.fromDate.split('T')[0];
+  //     document.querySelectorAll('input[type="date"]')[1].value = visaData.toDate.split('T')[0];
+  //   }
+  // });
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const signupData = JSON.parse(localStorage.getItem('signupData'));
+    const visaData = JSON.parse(localStorage.getItem('visaData'));
+
+    if (signupData) {
+      // Update the welcome heading
+      const welcomeEl = document.querySelector('.step-title');
+      if (welcomeEl) {
+        welcomeEl.textContent = `Welcome ${signupData.firstName}, let’s get the basics sorted!`;
+      }
+    }
+
+    if (visaData) {
+      // Set country of passport
+      const passportInput = document.querySelector('input[placeholder="Type country name"]');
+      if (passportInput) {
+        passportInput.value = visaData.sourceCountry || '';
+      }
+
+      // Set Traveling From and Traveling To
+      const travelFromInput = document.querySelectorAll('input[placeholder="Type country name"]')[1];
+      const travelToInput = document.querySelectorAll('input[placeholder="Type country name"]')[2];
+      if (travelFromInput) travelFromInput.value = visaData.depCountyName || '';
+      if (travelToInput) travelToInput.value = visaData.arrCountyName || '';
+
+      // Set travel dates
+      const dateInputs = document.querySelectorAll('input[type="date"]');
+      if (dateInputs.length >= 2) {
+        dateInputs[0].value = visaData.fromDate?.split('T')[0] || '';
+        dateInputs[1].value = visaData.toDate?.split('T')[0] || '';
+      }
+
+      // Set Visa Category visually (Visitor or Student)
+      const visaCategory = visaData.visaCategory?.toLowerCase();
+      if (visaCategory) {
+        document.querySelectorAll('.visa-option').forEach((el) => {
+          const label = el.textContent.toLowerCase();
+          if (label.includes(visaCategory)) {
+            el.classList.add('active');
+          } else {
+            el.classList.remove('active');
+          }
+        });
+      }
+    }
+  });
+
+
+
+
+
+</script> 
+
+
+
+
+
+
+</body> -->

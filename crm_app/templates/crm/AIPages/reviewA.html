@@ -1,0 +1,4532 @@
+
+
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Review - The Skytrails</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      /* background: linear-gradient(90deg, #fff4ee 0%, #fdeffb 55%, #e1eaff 100%); */
+      margin: 0;
+      background: linear-gradient(135deg, #fff5f1 0%, #ffeef2 30%, #f4ebfb 70%, #e7eaff 100%);
+        background: linear-gradient(
+    120deg, 
+    #faf9f8 0%, 
+    #f8dfef 40%, 
+    #f8d4ea 100%
+  );
+    }
+
+   
+body {
+  background: linear-gradient(120deg, #ffffff 0%, #f8f2f8 48%, #e9bddd 100%);
+}
+
+    .nav-link {
+      font-weight: 600;
+      color: #1e1e1e;
+      font-size: 15px;
+    }
+    .nav-link:hover {
+      color: #f97316;
+    }
+    .tab-step {
+      background: #fbeee9;
+      padding: 10px 25px;
+      border-radius: 999px;
+      font-size: 16px;
+      font-weight: 500;
+      color: #333;
+    }
+    .tab-step.active {
+      border: 2px solid rgb(199, 187, 175);
+      color: #f97316;
+      background: #fff;
+      font-weight: 600;
+    }
+    .review-heading {
+      font-size: 2.1rem;
+      font-weight: 700;
+      color: #1e1e1e;
+    }
+    .highlight-text {
+      color: #f97316;
+      font-style: italic;
+      font-weight: 600;
+    }
+    .review-box {
+      border: 2px solid #ffb8b8;
+      background: #fff1f1;
+      padding: 1rem 1.25rem;
+      border-radius: 15px;
+      margin-top: 1rem;
+    }
+    .review-box h6 {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .error-text {
+      color: #e02424;
+      font-weight: 500;
+    }
+    .badge-error {
+      background-color: #dc3545;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 5px 10px;
+    }
+    .info-pill {
+      background: rgba(255, 255, 255, 0.65);
+      border-radius: 999px;
+      padding: 8px 18px;
+      font-size: 7px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .info-pill i {
+      font-size: 17px;
+      color: #444;
+    }
+    .toggle-edit {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+
+
+ .review-container {
+      display: flex;
+      gap: 24px;
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 1320px;
+    }
+    .errors-panel {
+        background-color: #8b8b8b1a;
+      border-radius: 20px;
+      padding: 20px;
+      width: 40%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+    /* .errors-panel.collapsed {
+ 
+  overflow: hidden;
+} */
+    .form-panel {
+      background-color: #8b8b8b1a;
+      border-radius: 20px;
+      padding: 30px;
+      width: 60%;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      overflow-y: scroll;
+      max-height: 90vh;
+      scrollbar-width: none; /* Firefox */
+    }
+    .form-panel::-webkit-scrollbar {
+      display: none; /* Chrome, Safari */
+    }
+    .error-heading {
+      font-size: 20px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+    .error-heading .badge {
+      background-color: #dc3545;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 5px 10px;
+    }
+    .error-category {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 1rem 0 0.5rem;
+    }
+    .error-item {
+      color: #d62424;
+      font-weight: 500;
+      font-size: 15px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .error-item i {
+      color: #f59e0b;
+    }
+    .form-section-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .form-control, select {
+      border-radius: 10px;
+      border: 2px solid #d8b4fe;
+      font-weight: 500;
+    }
+    .form-control:focus {
+      border-color: #a855f7;
+      box-shadow: none;
+    }
+    .form-text-error {
+      color: red;
+      font-size: 0.9rem;
+    }
+    .form-check-label {
+      margin-left: 0.5rem;
+      font-weight: 500;
+    }
+    .section-divider {
+      border-top: 1px solid #ddd;
+      margin: 2rem 0;
+    }
+      .errors-panel {
+     background-color: #8b8b8b1a;
+      border-radius: 20px;
+      padding: 20px;
+      
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      transition: max-height 0.3s ease-in-out;
+  }
+  /* .errors-panel.collapsed {
+    max-height: 160px;
+    overflow: hidden;
+  } */
+    .footer-bar {
+      margin-top: 3rem;
+      padding: 5px 10px;
+      /* background: linear-gradient(to right, #fbeee9, #f5e4f8); */
+      border-top: 1px solid rgba(0, 0, 0, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      color: #666;
+       max-width: 1140px; /* limit width */
+       max-height: 100px;
+   
+    }
+    .footer-bar .btn {
+      border-radius: 30px;
+      padding: 8px 20px;
+      font-weight: 600;
+      margin-top: 10px;
+         
+    }
+
+
+
+ 
+.btn-submit-custom {
+      background-color: #f97316;
+      color: #fff;
+      border: none;
+    }
+    .btn-submit-custom:hover {
+      background-color: #fb923c;
+    }
+
+
+
+ .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .doc-tab-content {
+      animation: fadeIn 0.3s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    button.active {
+      background-color: #f97316 !important;
+      color: white !important;
+      border-color: #f97316 !important;
+    }
+
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  .errors-panel::-webkit-scrollbar {
+  display: none;
+}
+.errors-panel {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+
+.info-bar {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 12px 28px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 40px;
+  font-size: 14px;
+  color: #1f1f1f;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.info-bar > div {
+  display: flex;
+  align-items: center;
+}
+
+.info-bar i {
+  font-size: 18px;
+  margin-right: 6px;
+  color: #333;
+}
+.logo-img {
+  max-height: 220px;
+  object-fit: contain;
+  display: block;
+}
+.question {
+    margin-top: 15px;
+  }
+
+  .nested {
+    margin-left: 20px;
+  }
+
+  .deeper {
+    margin-left: 40px;
+  }
+
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg border-bottom px-4 py-3" style="background: linear-gradient(90deg, #ebe9e9 0%, #d4d4d4 55%, #e1eaff 100%);">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="#" style="height: 44px;">
+        <img src="{% static "assets/images/logo1.png" %}" alt="Logo" class="logo-img">
+       
+      </a>
+      <div class="d-flex align-items-center gap-4">
+        <a href="{% url "ai_form" %}" class="nav-link">Apply now</a>
+        <a href="#" class="nav-link">My Applications</a>
+        <a href="#" class="nav-link">My Documents</a>
+        <a href="#" class="nav-link">Show Walkthrough</a>
+        <div class="dropdown">
+          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">Premium Services</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Visa Help</a></li>
+            <li><a class="dropdown-item" href="#">Consulting</a></li>
+          </ul>
+        </div>
+        <div class="dropdown">
+          <a  id="profileInitial" class="d-flex align-items-center justify-content-center rounded-circle bg-light" style="width: 36px; height: 36px; font-weight: 600; font-size: 14px; color: #555;" data-bs-toggle="dropdown">
+            A
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><a class="dropdown-item" href="#">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container py-5">
+    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center">
+      <div class="mb-4 mb-lg-0" style="max-width: 57%;">
+        <h2  id="reviewName"   class="review-heading"> Final Review</h2>
+        <p class="fs-5 text-muted">
+          Time to polish it up! Fix the errors, review your docs, and when it all looks good—smash that <span class="highlight-text">Prepare File</span> button to prep your downloadable application package and glide into the next steps!
+        </p>
+      </div>
+
+       <div class="info-bar d-inline-flex px-4 py-2 align-items-center justify-content-start" style="background: rgba(0, 0, 0, 0.03); font-size: 12px; border-radius: 20px;">
+  <div class="d-flex align-items-center me-3">
+    <i class="material-icons me-1">location_on</i>
+    <span id="infoDestination">Destination</span>
+  </div>
+  <div class="d-flex align-items-center me-3">
+    <i class="material-icons me-1">badge</i>
+    <span id="infoVisaType">Visa Type</span>
+  </div>
+  <div class="d-flex align-items-center me-3">
+    <i class="material-icons me-1">timer</i>
+    <span id="infoDuration">Duration</span>
+  </div>
+  <div class="d-flex align-items-center text-muted">
+    <i class="material-icons me-1">calendar_today</i>
+    <span id="infoDates">Travel Dates</span>
+  </div>
+</div>
+
+    </div>
+
+    <div class="d-flex align-items-center gap-4 pt-5 flex-wrap">
+      <div class="tab-step">Details</div>
+      <div class="tab-step">Guidelines</div>
+      <div class="tab-step">Upload</div>
+      <div class="tab-step active border border-warning">Review</div>
+      <div class="tab-step">Submit</div>
+    </div>
+  </div>
+     
+
+
+
+
+    <div class="container py-4  ">
+  <div class="review-container">
+    <div class="errors-panel ">
+      <div class="error-heading" data-bs-toggle="collapse" data-bs-target="#errorList" aria-expanded="false" aria-controls="errorList">
+        Errors to fix <span class="badge rounded-pill">24</span> <i class="material-icons">expand_more</i>
+      </div>
+      <div class="collapse show" id="errorList">
+       
+      </div>
+       
+      <div class="mt-4">
+      <div class="error-heading" data-bs-toggle="collapse" data-bs-target="#processedDocs" aria-expanded="false" aria-controls="processedDocs">
+  Processed Documents  <i class="material-icons">expand_more</i>
+</div>
+
+
+
+        <div class="collapse" id="processedDocs">
+          
+  <div class="mt-3" id="docsDisplayArea">
+    
+  </div>
+
+
+        </div>
+      </div>
+   </div>
+
+
+  
+
+    <div class="form-panel">
+      <div class="form-section-title">Application Form</div>
+
+
+  <div id="form-Australia" class="country-form" style="display: none;">
+      <form id="fullVisaForm">
+        <!-- PERSONAL DATA -->
+        <div class="mb-3"><label class="form-label">Surname(s) *</label><input type="text" class="form-control" ></div>
+        <div class="mb-3"><label class="form-label">Surname(s) at birth *</label><input type="text" class="form-control" ></div>
+        <div class="mb-3"><label class="form-label">First name(s) *</label><input type="text" class="form-control" ></div>
+        <div class="mb-3"><label class="form-label">Date of birth *</label><input type="text" class="form-control" ></div>
+        <div class="mb-3">
+         <label class="form-label">Place of Birth *</label>
+<select class="form-control">
+  <option value="">-- Please Select --</option>
+  <!-- JS will populate this -->
+</select>
+
+        
+        </div>
+        <div class="mb-3"><label class="form-label">Country of birth *</label><select class="form-control"></select></div>
+        <div class="mb-3"><label class="form-label">Current nationality/ies *</label><select class="form-control"><option selected>INDIA</option></select></div>
+        <div class="mb-3"><label class="form-label">Original nationality *</label><select class="form-control border-success"><option disabled selected>-- Please Select --</option></select><div class="form-text-error">This field is required</div></div>
+
+        <!-- Additional form fields will go here -->
+        <div class="mb-3"><label class="form-label">Do you have any other nationality?</label><br>
+          <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" id="otherNatYes"><label class="form-check-label" for="otherNatYes">Yes</label></div>
+          <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" id="otherNatNo" checked><label class="form-check-label" for="otherNatNo">No</label></div>
+        </div>
+
+        <div class="mb-3"><label class="form-label">Sex *</label><br>
+          <div class="form-check"><input class="form-check-input" type="radio" name="sex" id="male" checked><label class="form-check-label" for="male">Male</label></div>
+          <div class="form-check"><input class="form-check-input" type="radio" name="sex" id="female"><label class="form-check-label" for="female">Female</label></div>
+          <div class="form-check"><input class="form-check-input" type="radio" name="sex" id="sexOther"><label class="form-check-label" for="sexOther">Other</label></div>
+        </div>
+
+        <div class="mb-3"><label class="form-label">Marital Status *</label><br>
+          <div class="form-check"><input class="form-check-input" type="radio" name="marital" id="single"><label class="form-check-label" for="single">Single</label></div>
+          <div class="form-check"><input class="form-check-input" type="radio" name="marital" id="married" checked><label class="form-check-label" for="married">Married</label></div>
+          <div class="form-check"><input class="form-check-input" type="radio" name="marital" id="registered"><label class="form-check-label" for="registered">In a registered partnership</label></div>
+          <div class="form-check"><input class="form-check-input" type="radio" name="marital" id="separated"><label class="form-check-label" for="separated">Separated</label></div>
+          <div class="form-check"><input class="form-check-input" type="radio" name="marital" id="divorced"><label class="form-check-label" for="divorced">Divorced</label></div>
+          <div class="form-check"><input class="form-check-input" type="radio" name="marital" id="widow"><label class="form-check-label" for="widow">Widow(er)</label></div>
+          <div class="form-check"><input class="form-check-input" type="radio" name="marital" id="otherStatus"><label class="form-check-label" for="otherStatus">Other</label></div>
+        </div>
+         <div class="form-section-title">Guardian Details</div>
+        <div class="mb-3"><input type="checkbox" id="noParentDetails"> <label for="noParentDetails">Do not have parent details</label></div>
+        <div class="form-section-title">Guardian 1</div>
+        <div class="mb-3"><label class="form-label">Nationality</label><select class="form-control"><option>-- Please Select --</option></select></div>
+        <div class="mb-3"><label class="form-label">First Name</label><input type="text" class="form-control" value="DARSHNA"></div>
+        <div class="mb-3"><label class="form-label">Surname</label><input type="text" class="form-control"></div>
+        <div class="mb-3"><label class="form-label">Country</label><select class="form-control"><option>-- Please Select --</option></select></div>
+        <div class="mb-3"><label class="form-label">State/Province</label><input type="text" class="form-control"></div>
+        <div class="mb-3"><label class="form-label">Place</label><input type="text" class="form-control"></div>
+        <div class="mb-3"><label class="form-label">Postal Code</label><input type="text" class="form-control"></div>
+        <div class="mb-3"><label class="form-label">Address</label><input type="text" class="form-control"></div>
+        <div class="mb-3"><label class="form-label">House number</label><input type="text" class="form-control"></div>
+        <div class="mb-3"><label class="form-label">Flat number</label><input type="text" class="form-control"></div>
+        <div class="mb-3"><label class="form-label">Email</label><input type="email" class="form-control"></div>
+        <div class="mb-3"><label class="form-label">Phone number</label><input type="text" class="form-control"></div>
+
+        <div class="form-section-title">Guardian 2</div>
+        <div class="mb-3"><label class="form-label">Nationality</label><select class="form-control"><option>-- Please Select --</option></select></div>
+        <div class="mb-3"><label class="form-label">First Name</label><input type="text" class="form-control" value="NATHU"></div>
+        <div class="mb-3"><label class="form-label">Surname</label><input type="text" class="form-control" value="RAM"></div>
+        <div class="mb-3"><label class="form-label">Country</label><select class="form-control"><option>-- Please Select --</option></select></div>
+        <div class="mb-3"><label class="form-label">State/Province</label><input type="text" class="form-control"></div>
+        <div class="mb-3"><label class="form-label">Place</label><input type="text" class="form-control"></div>
+        <div class="mb-3"><label class="form-label">Postal Code</label><input type="text" class="form-control"></div>
+        <div class="mb-3"><label class="form-label">Address</label><input type="text" class="form-control"></div>
+        <div class="mb-3"><label class="form-label">House number</label><input type="text" class="form-control"></div>
+        <div class="mb-3"><label class="form-label">Flat number</label><input type="text" class="form-control"></div>
+        <div class="mb-3"><label class="form-label">Email</label><input type="email" class="form-control"></div>
+        <div class="mb-3"><label class="form-label">Phone number</label><input type="text" class="form-control"></div>
+
+        <div class="form-section-title">Passport Details</div>
+        <div class="mb-3"><label class="form-label">National Identity Number</label><input type="text" class="form-control" ></div>
+        <div class="mb-3"><label class="form-label">Number of Travel Document</label><input type="text" class="form-control" ></div>
+        <div class="mb-3"><label class="form-label">Date of issue</label><input type="text" class="form-control" ></div>
+        <div class="mb-3"><label class="form-label">Valid Until</label><input type="text" class="form-control"></div>
+        <div class="mb-3"><label class="form-label">Issued by</label><input type="text" class="form-control" ></div>
+
+
+        <div class="form-section-title">EU Citizenship</div>
+<div class="mb-3">
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="euCitizen" id="notEUCitizen" checked>
+    <label class="form-check-label" for="notEUCitizen">Not an EU citizen</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="euCitizen" id="isEUCitizen">
+    <label class="form-check-label" for="isEUCitizen">EU citizen</label>
+  </div>
+</div>
+<div class="form-section-title">Family Member of EU/EEA/Swiss Citizen or UK National</div>
+<div class="mb-3"><label class="form-label">Surname</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">First Name</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Date of Birth</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Citizenship</label><select class="form-control"><option>-- Please Select --</option></select></div>
+<div class="mb-3"><label class="form-label">Passport Number</label><input type="text" class="form-control"></div>
+<div class="mb-3">
+  <label class="form-label">Family link with EU/EEA/Swiss citizen or UK national</label>
+  <select class="form-control">
+    <option>spouse</option>
+    <option>child</option>
+    <option>grandchild</option>
+    <option>dependent ascendant</option>
+    <option>registered partnership</option>
+    <option>other (please specify)</option>
+  </select>
+</div>
+
+<!-- Contact Info -->
+<div class="form-section-title">Contact Details</div>
+<div class="mb-3"><label class="form-label">Country</label><input type="text" class="form-control" ></div>
+<div class="mb-3"><label class="form-label">State/Province</label><input type="text" class="form-control" ></div>
+<div class="mb-3"><label class="form-label">Place</label><input type="text" class="form-control" ></div>
+<div class="mb-3"><label class="form-label">Postal Code</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Address</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Email</label><input type="email" class="form-control" ></div>
+<div class="mb-3"><label class="form-label">Phone number</label><input type="text" class="form-control" ></div>
+
+<div class="form-section-title">Other Data</div>
+<div class="mb-3">
+  <label class="form-label">Residence in a country other than the country of current nationality</label>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="residence" id="residenceNo" checked>
+    <label class="form-check-label" for="residenceNo">No</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="residence" id="residenceYes">
+    <label class="form-check-label" for="residenceYes">Yes. Residence permit or equivalent</label>
+  </div>
+</div>
+<div class="mb-3"><label class="form-label">Main purpose(s) of the journey</label><input type="text" class="form-control" ></div>
+<div class="mb-3"><label class="form-label">Additional information regarding the purpose of stays</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Member State of main destination</label><input type="text" class="form-control" ></div>
+<div class="mb-3"><label class="form-label">Member State of first entry</label><input type="text" class="form-control" ></div>
+<div class="mb-3"><label class="form-label">Number of entries requested</label>
+  <select class="form-control">
+    <option>Single entry</option>
+    <option>Two entries</option>
+    <option>Multiple entries</option>
+  </select>
+</div>
+<div class="mb-3"><label class="form-label">Duration of intended stay (number of days)</label><input type="text" class="form-control" ></div>
+<div class="mb-3"><label class="form-label">Intended date of arrival</label><input type="text" class="form-control" ></div>
+<div class="mb-3"><label class="form-label">Intended date of departure</label><input type="text" class="form-control" ></div>
+<div class="mb-3">
+  <label class="form-label">Previous fingerprints</label>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="fingerprints" id="fpNo" checked>
+    <label class="form-check-label" for="fpNo">No</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="fingerprints" id="fpYes">
+    <label class="form-check-label" for="fpYes">Yes</label>
+  </div>
+</div>
+<div class="mb-3"><label class="form-label">Entry permit for final destination</label><input type="text" class="form-control" value="Does not apply"></div>
+
+<div class="form-section-title">Inviting Entity</div>
+<div class="mb-3"><label class="form-label">Is the inviting entity a company/organisation?</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Name and address of inviting company</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Place</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Postal Code</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Address</label><input type="text" class="form-control"></div>
+
+<div class="mb-3"><label class="form-label">Contact person First Name</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Contact person Surname</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Place</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Postal Code</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Phone number</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Email</label><input type="email" class="form-control"></div>
+
+<div class="form-section-title">Declarations</div>
+<div class="form-check mb-2">
+  <input class="form-check-input" type="checkbox" id="declaration1">
+  <label class="form-check-label" for="declaration1">I am aware that the visa fee is not refunded if the visa is refused</label>
+</div>
+<div class="form-check mb-2">
+  <input class="form-check-input" type="checkbox" id="declaration2">
+  <label class="form-check-label" for="declaration2">Applicable in case a multiple-entry visa is applied for (cf. Field No 24): I am aware of the need to have an adequate travel medical insurance for my first stay and any subsequent visits to the territory of Member States.</label>
+</div>
+<div class="form-check mb-2">
+  <input class="form-check-input" type="checkbox" id="declaration3">
+  <label class="form-check-label" for="declaration3">I am aware of and consent to the following: the collection of the data required by this application form and the taking of my photograph and, if applicable, the taking of fingerprints, are mandatory for the examination of the visa application; and any personal data concerning me which appear on the visa application form, as well as my fingerprints and my photograph will be supplied to the relevant authorities of the Member States and processed by those authorities, for the purposes of a decision on my visa application. Such data as well as data concerning the decision taken on my application or a decision whether to annul, revoke or extend a visa issued will be entered into, and stored in the Visa Information Sysetm (VIS) ( ) for a maximum period of five years , during which it will be accessible to the visa authorities and the authorities competently for carrying out checks on visas at external borders and within the Member States, immigration and asylum authorities in the Member States for the purposes of verifying whether the condition for the legal entry into, stay and residence on the territory of the Member States are fulfilled, of identifying persons who do not or who no longer fulfill these conditions, of examining an asylum application and of determining responsibility fo such examination. Under certain conditions the data will also be available to designated authorities of the Member States and to Europol for the purpose of the prevention, detection and investigation of terrorist offenses and of other serious criminal offenses. The authority of the Member State responsible for processing the data is: Centralny Organ Techniczny KSI, Komenda Główna Police, Puławska 148/150, 02-624 Warszawa. I am aware that I have the right to obtain in any of the Member States notification of the data relating to me recorded in the VIS and of the Member State which transmitted the data, and to request that data relating to me which are inaccurate be corrected and that data relating to me processed illegally be deleted. At my express request, the authority examining my application will inform me of the manner in which I may exercise my right to check the personal data concerning me and have them corrected or deleted, including the related remedies according to the national law of the State concerned . The national supervisory authority of that Member State will hear claims concerning the protection of personal data: Inspector General for Personal Data Protection, ul. Stawki 2, 00-193 Warsaw. I declare that to the best of my knowledge all particulars supplied by me are correct and complete. I am aware that any false statements will lead to my application being rejected or to the annulment of a visa already granted any may also render me liable to prosecution under the law of the Member State which deals with the application. I undertake to leave the territory of the Member States before the expiry of the visa, if granted.I have been informed that possession of a visa is only one of the prerequisites for entry into the European territory of the Member States. The mere fact that a visa has been granted to me does not mean that I will be entitled to compensation if I fail to comply with the relevant provisions of Article 5(1) of Regulation (EC) No 562/2006 (Schengen Borders Code) and I am terefore refused entry. The prerequisites for entry will be checked again on entry into the European territory of the Member States.</label>
+</div>
+<div class="form-check mb-2">
+  <input class="form-check-input" type="checkbox" id="declaration4">
+  <label class="form-check-label" for="declaration4">I am aware that I have the right to obtain, in each Member State, information about my personal data stored in the VIS and information about the Member State that provided the data, and to request that my personal data be corrected - if they are incorrect or have been deleted - if they were processed illegally. At my express request, the authority examining my application will inform me of how I can exercise my right to check the personal data concerning me and request their correction or deletion, and notify me of the relevant legal remedies under the national law of the Member State concerned . Complaints regarding the protection of personal data will be considered by the national supervisory authority of that Member State [contact details: President of the Personal Data Protection Office, ul. Stawki 2, 00-193 Warsaw]..</label>
+</div>
+<div class="form-check mb-4">
+  <input class="form-check-input" type="checkbox" id="declaration5">
+  <label class="form-check-label" for="declaration5">I certify that to the best of my knowledge all the details I have provided are correct and complete. I am aware that providing false information will result in the refusal of my application or the annulment of the visa granted and may also be subject to criminal liability under the law of the Member State examining the application..</label>
+</div>
+
+
+
+<div class="form-check mb-4">
+  <input class="form-check-input" type="checkbox" id="declaration5">
+  <label class="form-check-label" for="declaration5">I undertake to leave the territory of the Member States before the expiry of the visa, if granted. I have been informed that possession of a visa is only one of the conditions for entry into the European territory of the Member States. The mere fact that I have been granted a visa does not mean that I will be entitled to compensation in the event of failure to comply with the relevant conditions laid down in the provisions of Art. 6 sec. 1 of Regulation (EU) 2016/399 (Schengen Borders Code), as a result of which I will not be allowed to enter. The fulfillment of the entry conditions will be checked again when entering the European territory of the Member States.</label>
+</div>
+
+
+
+<div class="form-check mb-4">
+  <input class="form-check-input" type="checkbox" id="declaration5">
+  <label class="form-check-label" for="declaration5">I hereby give consent for my personal data in the e-Konsulat registration form to be processed, in accordance with art. 6 sec. 1 letter a Regulation (EU) 2016/679 of the European Parliament and of the Council of 27 April 2016 on the protection of individuals with regard to the processing of personal data and on the free movement of such data, and repealing Directive 95/46 / EC (GDPR), by the Ministry of Foreign Affairs, with its seat in Warsaw, Al. J. Ch. Szucha 23. At the same time, I declare that I have read the information posted on the websitehttps://secure.e-konsulat.gov.pl/rodobeing the implementation of the information obligation specified in Art. 13 of the GDPR regarding the processing of my personal data, and I am aware of all my rights referred to in art. 15 - 19 GDPR.</label>
+</div>
+
+        <!-- Additional fieldsets like Guardian, Passport, Contact, Purpose, etc. to follow -->
+      </form>
+      </div>
+
+
+
+
+      
+ <div id="form-Germany" class="country-form" style="display: none;">
+      <form id="fullVisaForm">
+       
+        <div class="mb-3">
+  <label class="form-label">Family name*</label>
+  <input type="text" class="form-control" name="family_name" value="">
+</div>
+<div class="mb-3">
+  <label class="form-label">Name at birth *</label>
+  <input type="text" class="form-control" name="name_at_birth" value="">
+</div>
+<div class="mb-3">
+  <label class="form-label">First name(s) *</label>
+  <input type="text" class="form-control" name="first_names" value="">
+</div>
+<div class="mb-3">
+  <label class="form-label">Date of birth *</label>
+  <input type="text" class="form-control" name="date_of_birth" value="">
+</div>
+<div class="mb-3">
+  <label class="form-label">Place of Birth *</label>
+  <select class="form-control" name="place_of_birth">
+    <option value="">-- Please Select --</option>
+  </select>
+</div>
+<div class="mb-3">
+  <label class="form-label">Country of birth *</label>
+  <select class="form-control" name="country_of_birth"></select>
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Gender *</label><br>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="gender" id="male" value="male" checked>
+    <label class="form-check-label" for="male">Male</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="gender" id="female" value="female">
+    <label class="form-check-label" for="female">Female</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="gender" id="sexOther" value="other">
+    <label class="form-check-label" for="sexOther">Other</label>
+  </div>
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Marital Status *</label><br>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="marital_status" id="single" value="single">
+    <label class="form-check-label" for="single">Single</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="marital_status" id="married" value="married" checked>
+    <label class="form-check-label" for="married">Married</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="marital_status" id="registered" value="registered">
+    <label class="form-check-label" for="registered">In a registered partnership</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="marital_status" id="separated" value="separated">
+    <label class="form-check-label" for="separated">Separated</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="marital_status" id="divorced" value="divorced">
+    <label class="form-check-label" for="divorced">Divorced</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="marital_status" id="widow" value="widow">
+    <label class="form-check-label" for="widow">Widow(er)</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="marital_status" id="otherStatus" value="other">
+    <label class="form-check-label" for="otherStatus">Other</label>
+  </div>
+</div>
+
+<div class="form-section-title">Current Nationality</div>
+<div class="mb-3">
+  <label class="form-label">Nationality</label>
+  <select class="form-control border-success" name="nationality">
+    <option disabled selected>-- Please Select --</option>
+  </select>
+  <div class="form-text-error">This field is required</div>
+</div>
+<div class="mb-3">
+  <label class="form-label">Other nationality *</label>
+  <select class="form-control" name="other_nationality"></select>
+</div>
+
+<p class="small text-muted" id="freedomNote">
+  In exercising their right to freedom of movement, family members of nationals of the EU, EEA or Switzerland (spouse, child or dependent ascendant) are not obliged to provide information concerning their occupation, reference or the financing of their stay. If you belong to this category and you do not wish to provide any information, please select 'Yes'. You must submit documentary evidence of your family relationship.
+</p>
+
+<div class="mb-4">
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="freedomCheckbox" name="exercise_freedom_movement">
+    <label class="form-check-label fw-bold" for="freedomCheckbox">
+      Do you wish to exercise your right to freedom of movement?
+    </label>
+  </div>
+</div>
+
+
+
+<div id="freedom-section-yes" style="display: none;">
+  <h5 class="form-section-title">Details regarding citizenship of the EU, EEA or Switzerland</h5>
+
+  <div class="mb-3">
+    <label class="form-label">Family relationship</label>
+    <select class="form-control" name="eu_family_relationship">
+      <option disabled selected>-- Please Select --</option>
+      <option value="spouse">Spouse</option>
+      <option value="child">Child</option>
+      <option value="dependent_ascendant">Dependent ascendant</option>
+    </select>
+  </div>
+  <div class="mb-3"><label class="form-label">Family name</label><input type="text" class="form-control" name="eu_family_name"></div>
+  <div class="mb-3"><label class="form-label">First name(s)</label><input type="text" class="form-control" name="eu_first_names"></div>
+  <div class="mb-3"><label class="form-label">Date of birth (dd.mm.yyyy)</label><input type="text" class="form-control" name="eu_date_of_birth"></div>
+  <div class="mb-3"><label class="form-label">Current nationality</label><select class="form-control" name="eu_nationality"><option value="">-- Please Select --</option></select></div>
+  <div class="mb-3"><label class="form-label">Travel document or identity card number</label><input type="text" class="form-control" name="eu_travel_doc_number"></div>
+  
+  <div class="form-section-title">Applicant's address</div>
+  <div class="mb-3"><label class="form-label">Street</label><input type="text" class="form-control" name="eu_street"></div>
+  <div class="mb-3"><label class="form-label">House number</label><input type="text" class="form-control" name="eu_house_number"></div>
+  <div class="mb-3"><label class="form-label">Other address information</label><input type="text" class="form-control" name="eu_other_address_info"></div>
+  <div class="mb-3"><label class="form-label">Postal code</label><input type="text" class="form-control" name="eu_postal_code"></div>
+  <div class="mb-3"><label class="form-label">Town/city</label><input type="text" class="form-control" name="eu_city"></div>
+  <div class="mb-3"><label class="form-label">Country</label><select class="form-control" name="eu_country"><option value="">-- Please Select --</option></select></div>
+  <div class="mb-3"><label class="form-label">Telephone/mobile number</label><input type="text" class="form-control" name="eu_phone"></div>
+  <div class="mb-3"><label class="form-label">Email</label><input type="email" class="form-control" name="eu_email"></div>
+</div>
+
+<div id="freedom-section-no">
+  <h5 class="form-section-title">Occupation</h5>
+  <div class="mb-3"><label class="form-label">Current occupation</label><select class="form-control" name="occupation"><option value="">-- Please Select --</option></select></div>
+  <div class="mb-3"><label class="form-label">Company name and telephone number</label><input type="text" class="form-control" name="company_info"></div>
+  <div class="mb-3"><label class="form-label">Street</label><input type="text" class="form-control" name="occupation_street"></div>
+  <div class="mb-3"><label class="form-label">House number</label><input type="text" class="form-control" name="occupation_house_number"></div>
+  <div class="mb-3"><label class="form-label">Other address information</label><input type="text" class="form-control" name="occupation_other_address"></div>
+  <div class="mb-3"><label class="form-label">Postal code</label><input type="text" class="form-control" name="occupation_postal_code"></div>
+  <div class="mb-3"><label class="form-label">Town/city</label><input type="text" class="form-control" name="occupation_city"></div>
+  <div class="mb-3"><label class="form-label">Country</label><select class="form-control" name="occupation_country"><option value="">-- Please Select --</option></select></div>
+  <div class="mb-3"><label class="form-label">Telephone/mobile number</label><input type="text" class="form-control" name="occupation_phone"></div>
+  <div class="mb-3"><label class="form-label">Email</label><input type="email" class="form-control" name="occupation_email"></div>
+</div>
+
+<div class="mb-3">
+  <input type="checkbox" id="residenceCheckbox" name="other_residence_country">
+  <label for="residenceCheckbox">Is your residence in a country other than that of your current nationality?</label>
+</div>
+
+<div id="residence-detail-section" style="display: none;">
+  <h5><strong>Details on the applicant's right to reside in place of residence</strong></h5>
+  <div class="mb-3">
+    <label class="form-label">Type of authorisation to return/residence permit *</label>
+    <input type="text" class="form-control" name="residence_permit_type">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Number of authorisation to return/residence permit *</label>
+    <input type="text" class="form-control" name="residence_permit_number">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Valid until (dd.mm.yyyy) *</label>
+    <input type="text" class="form-control" name="residence_permit_valid_until">
+  </div>
+</div>
+
+<div class="form-section-title">Documents</div>
+<h5 class="mt-3">Identification papers and travel documents</h5>
+
+<div class="mb-3">
+  <label class="form-label">Type of travel document</label><br>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="travel_doc_type" id="ordinaryPassport" value="ordinary_passport" checked>
+    <label class="form-check-label" for="ordinaryPassport">Ordinary Passport</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="travel_doc_type" id="groupPassport" value="group_passport">
+    <label class="form-check-label" for="groupPassport">Group Passport</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="travel_doc_type" id="protectionPassport" value="protection_passport">
+    <label class="form-check-label" for="protectionPassport">Protection Passport</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="travel_doc_type" id="diplomaticPassport" value="diplomatic_passport">
+    <label class="form-check-label" for="diplomaticPassport">Diplomatic Passport</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="travel_doc_type" id="servicePassport" value="service_passport">
+    <label class="form-check-label" for="servicePassport">Service Passport</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="travel_doc_type" id="officialDutyPassport" value="official_duty_passport">
+    <label class="form-check-label" for="officialDutyPassport">Official Duty Passport</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="travel_doc_type" id="specialPassport" value="special_passport">
+    <label class="form-check-label" for="specialPassport">Special Passport</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="travel_doc_type" id="passportForAliens" value="passport_for_aliens">
+    <label class="form-check-label" for="passportForAliens">Passport for Aliens</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="travel_doc_type" id="nationalLaissezPasser" value="national_laissez_passer">
+    <label class="form-check-label" for="nationalLaissezPasser">National Laissez-Passer</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="travel_doc_type" id="unLaissezPasser" value="un_laissez_passer">
+    <label class="form-check-label" for="unLaissezPasser">United Nations Laissez-Passer</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="travel_doc_type" id="refugeeTravelDoc" value="refugee_travel_doc">
+    <label class="form-check-label" for="refugeeTravelDoc">Travel Document for Refugees (1951 Geneva Convention)</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="travel_doc_type" id="statelessTravelDoc" value="stateless_travel_doc">
+    <label class="form-check-label" for="statelessTravelDoc">Travel Document for Stateless Person (1954 New York Convention)</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="travel_doc_type" id="seamanPassport" value="seaman_passport">
+    <label class="form-check-label" for="seamanPassport">Seaman's Passport</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="travel_doc_type" id="otherTravelDoc" value="other">
+    <label class="form-check-label" for="otherTravelDoc">Others</label>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+<div class="mb-3">
+  <label class="form-label">Travel document number</label>
+  <input type="text" class="form-control" name="travel_document_number" placeholder="Enter document number">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">National identity number, where applicable</label>
+  <input type="text" class="form-control" name="national_id_number" placeholder="">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Date of issue (dd.mm.yyyy)</label>
+  <input type="date" class="form-control" name="document_issue_date" placeholder="">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Valid until (dd.mm.yyyy)</label>
+  <input type="date" class="form-control" name="document_expiry_date" placeholder="">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Issuing state</label>
+  <select class="form-control" name="issuing_state">
+    <option value="">-- Please Select --</option>
+  </select>
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Issued by</label>
+  <input type="text" class="form-control" name="issued_by" placeholder="">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Issued in</label>
+  <input type="text" class="form-control" name="issued_in" placeholder="">
+</div>
+
+
+<div class="form-section-title">Biometric Data</div>
+
+<div class="mb-3">
+  <input type="checkbox" id="fingerprintsToggle" name="fingerprints_collected">
+  <label for="fingerprintsToggle">Have your fingerprints been collected previously for the purpose of applying for a Schengen visa?</label>
+</div>
+
+<div id="fingerprint-details-section" style="display: none;">
+  <div class="mb-3">
+    <label>Date (dd.mm.yyyy), if known</label>
+    <input type="date" class="form-control" name="fingerprint_date">
+  </div>
+</div>
+
+<div class="mb-3">
+  <input type="checkbox" id="visaStickerToggle" name="visa_sticker_known">
+  <label for="visaStickerToggle">Visa sticker number, if known:</label>
+</div>
+
+<div id="visa-sticker-section" style="display: none;">
+  <div class="mb-3">
+    <label>Visa sticker number options</label>
+    <select class="form-control" name="visa_sticker_options">
+      <option value="">-- Please Select --</option>
+    </select>
+  </div>
+  <div class="mb-3">
+    <label>Visa sticker number</label>
+    <input type="text" class="form-control" name="visa_sticker_number">
+  </div>
+</div>
+
+
+<div class="form-section-title">Travel Data</div>
+
+<div class="mb-3">
+  <label class="form-label">Primary purpose of trip</label>
+  <select class="form-control" name="primary_purpose">
+    <option value="tourism" selected>Tourism</option>
+    <option value="business">Business Trip</option>
+    <option value="family_visit">visit of family or friends</option>
+    <option value="cultural">cultural</option>
+    <option value="sport">sport</option>
+    <option value="official">Official visit</option>
+    <option value="medical">Medical reason</option>
+    <option value="study">Study</option>
+    <option value="transit">Transit</option>
+    <option value="airport_transit">Airport transit</option>
+    <option value="other">Other</option>
+  </select>
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Other purpose of trip (if any)</label>
+  <select class="form-control" name="secondary_purpose">
+    <option value="">-- Please Select --</option>
+    <option value="tourism">Tourism</option>
+    <option value="business">Business trip</option>
+    <option value="family_visit">Visit of family or friends</option>
+    <option value="cultural">Cultural</option>
+    <option value="sport">Sport</option>
+    <option value="official">Official visit</option>
+    <option value="medical">Medical reason</option>
+    <option value="study">Study</option>
+    <option value="transit">Transit</option>
+    <option value="airport_transit">Airport Transit</option>
+    <option value="other">Other</option>
+  </select>
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Other (please specify)</label>
+  <input type="text" class="form-control" name="purpose_other_specify">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Further information on the purpose of the stay</label>
+  <input type="text" class="form-control" name="purpose_additional_info">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Member State of first entry</label>
+  <input type="text" class="form-control" name="first_entry_state" value="">
+</div>
+
+
+<div class="form-section-title">Main Travel Destination</div>
+<div class="mb-3">
+  <label class="form-label">First destination</label>
+  <input type="text" class="form-control" name="first_destination" value="">
+</div>
+<div class="mb-3">
+  <label class="form-label">Second destination</label>
+  <input type="text" class="form-control" name="second_destination" value="">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Number of entries requested</label>
+  <select class="form-control" name="entry_count">
+    <option value="single">Single Entry</option>
+    <option value="double">Double Entry</option>
+    <option value="multiple">Multiple Entry</option>
+  </select>
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Planned arrival date in Schengen area</label>
+  <input type="date" class="form-control" name="arrival_date" value="">
+</div>
+<div class="mb-3">
+  <label class="form-label">Planned departure date from Schengen area</label>
+  <input type="date" class="form-control" name="departure_date" value="">
+</div>
+
+<div class="form-section-title">Entry Permit for the final country of destination, where applicable</div>
+
+<div class="mb-3">
+  <label class="form-label">Type of entry permit</label>
+  <select class="form-control" name="entry_permit_type">
+    <option value="">-- Please Select --</option>
+    <option value="residence">Residence Permit</option>
+    <option value="reentry">Re-entery Visa</option>
+    <option value="alien">Resident Alien Card</option>
+    <option value="other">Other</option>
+  </select>
+</div>
+<div class="mb-3">
+  <label class="form-label">Entry permit number</label>
+  <input type="text" class="form-control" name="entry_permit_number">
+</div>
+<div class="mb-3">
+  <label class="form-label">Final destination country</label>
+  <input type="text" class="form-control" name="final_destination_country">
+</div>
+<div class="mb-3">
+  <label class="form-label">Issued by</label>
+  <input type="text" class="form-control" name="entry_permit_issued_by">
+</div>
+<div class="mb-3">
+  <label class="form-label">Valid from (DD.MM.YYYY)</label>
+  <input type="date" class="form-control" name="entry_permit_valid_from">
+</div>
+<div class="mb-3">
+  <label class="form-label">Valid until (DD.MM.YYYY)</label>
+  <input type="date" class="form-control" name="entry_permit_valid_until">
+</div>
+
+
+<div class="form-section-title">Reference</div>
+<div class="mb-3">
+  <label class="form-label">Type of reference</label>
+  <select class="form-control" name="reference_type">
+    <option value="none">No reference person</option>
+    <option value="person">Inviting Person</option>
+    <option value="company">Inviting Company/Organization</option>
+    <option value="hotel">Hotel</option>
+    <option value="diplomat">Accredicted diplomat</option>
+    <option value="eu_citizen">EU citizen</option>
+    <option value="householder">Householder</option>
+    <option value="rental">Rental of private accomodation(by commercial lessor)</option>        
+    <option value="private_company">Inviting Company/Organization(by private individual)</option>
+  </select>
+</div>
+
+
+
+
+      </form>
+      </div>  
+
+
+
+      <div id="form-Portugal" class="country-form" style="display: none;">
+      <form id="fullVisaForm">
+      
+        <div class="mb-3">
+  <label class="form-label">Family name*</label>
+  <input type="text" class="form-control" name="family_name" value="">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Name at birth *</label>
+  <input type="text" class="form-control" name="name_at_birth" value="">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">First name(s) *</label>
+  <input type="text" class="form-control" name="first_names" value="">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Date of birth *</label>
+  <input type="date" class="form-control" name="date_of_birth" value=""> <!-- Changed to date type -->
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Place of Birth *</label>
+  <select class="form-control" name="place_of_birth">
+    <option value="">-- Please Select --</option>
+    <!-- JS will populate this -->
+  </select>
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Country of birth *</label>
+  <select class="form-control" name="country_of_birth"></select>
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Current nationality/ies *</label>
+  <select class="form-control" name="current_nationality"></select>
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Nationality at birth, if different *</label>
+  <select class="form-control" name="birth_nationality">
+    <option value="" disabled selected>-- Please Select --</option>
+  </select>
+  <div class="form-text-error">This field is required</div>
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Other nationality *</label>
+  <select class="form-control" name="other_nationality"></select>
+</div>
+
+<!-- Sex Radio Buttons -->
+<div class="mb-3">
+  <label class="form-label">Sex *</label><br>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="sex" id="male" value="male" checked>
+    <label class="form-check-label" for="male">Male</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="sex" id="female" value="female">
+    <label class="form-check-label" for="female">Female</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="sex" id="sexOther" value="other">
+    <label class="form-check-label" for="sexOther">Other</label>
+  </div>
+</div>
+
+<!-- Marital Status Radio Buttons -->
+<div class="mb-3">
+  <label class="form-label">Marital Status *</label><br>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="marital_status" id="single" value="single">
+    <label class="form-check-label" for="single">Single</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="marital_status" id="married" value="married" checked>
+    <label class="form-check-label" for="married">Married</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="marital_status" id="registered" value="registered">
+    <label class="form-check-label" for="registered">Registered partnership</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="marital_status" id="separated" value="separated">
+    <label class="form-check-label" for="separated">Separated</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="marital_status" id="divorced" value="divorced">
+    <label class="form-check-label" for="divorced">Divorced</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="marital_status" id="widow" value="widow">
+    <label class="form-check-label" for="widow">Widow(er)</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="marital_status" id="otherStatus" value="other">
+    <label class="form-check-label" for="otherStatus">Other</label>
+  </div>
+</div>
+
+<div class="mb-3">
+  <label class="form-label">National identity number:</label>
+  <input type="text" class="form-control" name="national_id" placeholder="Enter your ID number">
+</div>
+
+
+
+
+
+
+
+
+
+      <div class="form-check mb-3">
+  <input class="form-check-input" type="checkbox" id="toggle-eu-section" name="freedom_of_movement">
+  <label class="form-check-label" for="toggle-eu-section">
+    Do you wish to exercise your right to freedom of movement?
+  </label>
+</div>
+
+<div id="section-eu-section" style="display: none;">
+  <h5>Details regarding citizenship of the EU, EEA or Switzerland</h5>
+  
+  <div class="mb-3">
+    <label class="form-label">Family relationship *</label><br>
+    <div class="form-check">
+      <input type="radio" name="family_relation" class="form-check-input" id="spouse" value="spouse">
+      <label class="form-check-label" for="spouse">Spouse</label>
+    </div>
+    <div class="form-check">
+      <input type="radio" name="family_relation" class="form-check-input" id="child" value="child">
+      <label class="form-check-label" for="child">Child</label>
+    </div>
+    <div class="form-check">
+      <input type="radio" name="family_relation" class="form-check-input" id="grandchild" value="grandchild">
+      <label class="form-check-label" for="grandchild">Grandchild</label>
+    </div>
+    <div class="form-check">
+      <input type="radio" name="family_relation" class="form-check-input" id="dependent" value="dependent">
+      <label class="form-check-label" for="dependent">Dependent ascendant</label>
+    </div>
+    <div class="form-check">
+      <input type="radio" name="family_relation" class="form-check-input" id="partnership" value="partnership">
+      <label class="form-check-label" for="partnership">Registered partnership</label>
+    </div>
+    <div class="form-check">
+      <input type="radio" name="family_relation" class="form-check-input" id="otherRelation" value="other">
+      <label class="form-check-label" for="otherRelation">Other</label>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Family name *</label>
+    <input type="text" class="form-control" name="eu_family_name">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">First name *</label>
+    <input type="text" class="form-control" name="eu_first_name">
+  </div>
+   
+  <div class="mb-3">
+    <label class="form-label">Date of birth (dd.mm.yyyy) *</label>
+    <input type="date" class="form-control" name="eu_date_of_birth"> <!-- Changed to date type -->
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Current nationality/ies *</label>
+    <select class="form-control" name="eu_current_nationality"></select>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Travel document or identity card number*</label>
+    <input type="text" class="form-control" name="eu_travel_doc_number">
+  </div>
+</div>
+
+      
+
+
+<div class="form-section-title">Identification papers and travel documents</div>
+
+<div class="mb-3">
+  <label class="form-label">Type of travel document</label><br>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="travel_doc_type" id="ordinaryPassport" value="ordinary">
+    <label class="form-check-label" for="ordinaryPassport">Ordinary Passport</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="travel_doc_type" id="diplomaticPassport" value="diplomatic">
+    <label class="form-check-label" for="diplomaticPassport">Diplomatic Passport</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="travel_doc_type" id="servicePassport" value="service">
+    <label class="form-check-label" for="servicePassport">Service Passport</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="travel_doc_type" id="officialPassport" value="official">
+    <label class="form-check-label" for="officialPassport">Official Passport</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="travel_doc_type" id="specialPassport" value="special">
+    <label class="form-check-label" for="specialPassport">Special Passport</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="travel_doc_type" id="otherTravelDoc" value="other">
+    <label class="form-check-label" for="otherTravelDoc">Other travel document</label>
+  </div>
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Travel document number</label>
+  <input type="text" class="form-control" name="travel_doc_number">
+</div>
+<div class="mb-3">
+  <label class="form-label">Date of issue</label>
+  <input type="date" class="form-control" name="travel_doc_issue_date"> <!-- Changed to date type -->
+</div>
+<div class="mb-3">
+  <label class="form-label">Valid until</label>
+  <input type="date" class="form-control" name="travel_doc_expiry_date"> <!-- Changed to date type -->
+</div>
+
+        
+       
+<div class="mb-3"><label class="form-label">Issuing state</label><select class="form-control"><option>-- Please Select --</option></select></div>
+
+
+
+
+
+<div class="form-section-title">Biometric Data</div>
+
+<div class="mb-3">
+  <label class="form-label">
+    Have your fingerprints been collected previously for the purpose of applying for a Schengen visa?
+  </label><br>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="fingerprints" id="fingerprintsYes">
+    <label class="form-check-label" for="fingerprintsYes">Yes</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="fingerprints" id="fingerprintsNo">
+    <label class="form-check-label" for="fingerprintsNo">No</label>
+  </div>
+</div>
+
+
+<div id="fingerprints-extra" style="display: none;">
+  <div class="mb-3">
+    <label class="form-label">Date (dd.mm.yyyy), if known</label>
+    <input type="text" class="form-control">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Visa sticker number, if known</label>
+    <input type="text" class="form-control">
+  </div>
+</div>
+
+
+
+
+
+<div class="form-section-title">Applicant's address</div>
+<div class="mb-3"><label class="form-label">Street</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">House number</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Postal code</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Town/city</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Country</label><select class="form-control"><option>-- Please Select --</option></select></div>
+<div class="mb-3"><label class="form-label">Telephone/mobile number</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Email</label><input type="email" class="form-control"></div>
+
+
+<div class="mb-3">
+  <label class="form-label">Is your residence in a country other than that of your current nationality?</label><br>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="residenceCheck" id="residenceYes" value="yes">
+    <label class="form-check-label" for="residenceYes">Yes</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="residenceCheck" id="residenceNo" value="no" checked>
+    <label class="form-check-label" for="residenceNo">No</label>
+  </div>
+</div>
+
+<div id="section-residence-details" style="display: none;">
+  <h5><strong>Details on the applicant's right to reside in place of residence</strong></h5>
+
+  <div class="mb-3">
+    <label class="form-label">Type of authorisation to return/residence permit *</label>
+    <input type="text" class="form-control">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Number of authorisation to return/residence permit *</label>
+    <input type="text" class="form-control">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Valid until (dd.mm.yyyy) *</label>
+    <input type="text" class="form-control">
+  </div>
+</div>
+
+
+<div class="form-section-title">Occupation</div>
+<div class="mb-3"><label class="form-label">Current occupation</label><input type="text" class="form-control" name="current_occupation"></div>
+<div class="mb-3"><label class="form-label">Company name and telephone number</label><input type="text" class="form-control" name="company_info"></div>
+<div class="mb-3"><label class="form-label">Street</label><input type="text" class="form-control" name="street"></div>
+<div class="mb-3"><label class="form-label">House number</label><input type="text" class="form-control" name="house_number"></div>
+<div class="mb-3"><label class="form-label">Other address information</label><input type="text" class="form-control" name="other_address_info"></div>
+<div class="mb-3"><label class="form-label">Postal code</label><input type="text" class="form-control" name="postal_code"></div>
+<div class="mb-3"><label class="form-label">Town/city</label><input type="text" class="form-control" name="city"></div>
+<div class="mb-3"><label class="form-label">Country</label><select class="form-control" name="country"><option>-- Please Select --</option></select></div>
+
+<div class="form-section-title">Travel Data</div>
+<div class="mb-3">
+  <label class="form-label">Purpose(s) of the trip</label><br>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="tourism" name="purpose_tourism"><label class="form-check-label" for="tourism">Tourism</label></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="business" name="purpose_business"><label class="form-check-label" for="business">Business</label></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="visit" name="purpose_visit"><label class="form-check-label" for="visit">Visit of family or friends</label></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="cultural" name="purpose_cultural"><label class="form-check-label" for="cultural">Cultural</label></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="sports" name="purpose_sports"><label class="form-check-label" for="sports">Sports</label></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="official" name="purpose_official"><label class="form-check-label" for="official">Official visit</label></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="medical" name="purpose_medical"><label class="form-check-label" for="medical">Medical reasons</label></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="study" name="purpose_study"><label class="form-check-label" for="study">Study</label></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="transit" name="purpose_transit"><label class="form-check-label" for="transit">Airport transit</label></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="other" name="purpose_other"><label class="form-check-label" for="other">Other (please specify)</label></div>
+</div>
+
+<div class="mb-3"><label class="form-label">Additional information on purpose of stay</label><input type="text" class="form-control" name="purpose_additional_info"></div>
+<div class="mb-3"><label class="form-label">Member State of first entry</label><input type="text" class="form-control" name="first_entry_state"></div>
+<div class="mb-3"><label class="form-label">Main travel destination(s)</label><input type="text" class="form-control" name="main_destination"></div>
+
+<div class="mb-3">
+  <label class="form-label">Number of entries requested</label>
+  <select class="form-control" name="entries_requested">
+    <option>Single Entry</option>
+    <option>Double Entries</option>
+    <option>Multiple Entries</option>
+  </select>
+</div>
+
+<div class="mb-3"><label class="form-label">Planned arrival date</label><input type="text" class="form-control" name="arrival_date" value="28/05/2025"></div>
+<div class="mb-3"><label class="form-label">Planned departure date</label><input type="text" class="form-control" name="departure_date" value="31/05/2025"></div>
+
+<div class="form-section-title">Entry Permit (if applicable)</div>
+<div class="mb-3"><label class="form-label">Issued by</label><input type="text" class="form-control" name="permit_issued_by"></div>
+<div class="mb-3"><label class="form-label">Valid from (DD.MM.YYYY)</label><input type="text" class="form-control" name="permit_valid_from"></div>
+<div class="mb-3"><label class="form-label">Valid until (DD.MM.YYYY)</label><input type="text" class="form-control" name="permit_valid_until"></div>
+
+<div class="form-section-title">Reference</div>
+<div class="mb-3">
+  <label class="form-label">Type of reference</label><br>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="referenceType" id="invitingPerson" value="person">
+    <label class="form-check-label" for="invitingPerson">Inviting person</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="referenceType" id="invitingCompany" value="company">
+    <label class="form-check-label" for="invitingCompany">Inviting organization/company</label>
+  </div>
+</div>
+
+<div id="reference-person-section" style="display: none;">
+  <h5><strong>Inviting Person Details</strong></h5>
+  <div class="mb-3"><label class="form-label">Family name</label><input type="text" class="form-control" name="invitee_family_name"></div>
+  <div class="mb-3"><label class="form-label">First name(s)</label><input type="text" class="form-control" name="invitee_first_name"></div>
+  <div class="mb-3"><label class="form-label">Address</label><input type="text" class="form-control" name="invitee_address"></div>
+  <div class="mb-3"><label class="form-label">Telephone/mobile number</label><input type="text" class="form-control" name="invitee_phone"></div>
+  <div class="mb-3"><label class="form-label">E-mail</label><input type="email" class="form-control" name="invitee_email"></div>
+</div>
+
+<div id="reference-company-section" style="display: none;">
+  <h5><strong>Inviting Organization/Company Details</strong></h5>
+  <div class="mb-3"><label class="form-label">Name of the organization, company or hotel</label><input type="text" class="form-control" name="company_name"></div>
+  <div class="mb-3"><label class="form-label">Organisation's address of business, town/city</label><input type="text" class="form-control" name="company_address"></div>
+
+  <h6><strong>Contact Person Details</strong></h6>
+  <div class="mb-3"><label class="form-label">Family name of the contact person</label><input type="text" class="form-control" name="contact_family_name"></div>
+  <div class="mb-3"><label class="form-label">First name(s) of contact person</label><input type="text" class="form-control" name="contact_first_name"></div>
+  <div class="mb-3"><label class="form-label">Address</label><input type="text" class="form-control" name="contact_address"></div>
+  <div class="mb-3"><label class="form-label">Telephone/mobile number</label><input type="text" class="form-control" name="contact_phone"></div>
+  <div class="mb-3"><label class="form-label">E-mail</label><input type="email" class="form-control" name="contact_email"></div>
+</div>
+
+<div class="form-section-title">Assumption of Costs</div>
+<div class="mb-3">
+  <label class="form-label">Travel and living costs</label><br>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="costsCovered" id="self" value="self">
+    <label class="form-check-label" for="self">By the applicant(s) themselves</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="costsCovered" id="sponsor" value="sponsor">
+    <label class="form-check-label" for="sponsor">By a sponsor (host, company, organisation), please specify</label>
+  </div>
+</div>
+
+<div id="costs-self-section" style="display: none;">
+  <h6><strong>Means of support</strong></h6>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="cash" name="support_cash"><label class="form-check-label" for="cash">Cash</label></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="cheques" name="support_cheques"><label class="form-check-label" for="cheques">Traveler's cheques</label></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="creditCards" name="support_credit_cards"><label class="form-check-label" for="creditCards">Credit cards</label></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="prepaidAccommodation" name="support_prepaid_accommodation"><label class="form-check-label" for="prepaidAccommodation">Prepaid accommodation</label></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="prepaidTransport" name="support_prepaid_transport"><label class="form-check-label" for="prepaidTransport">Prepaid transport</label></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="otherMeans" name="support_other"><label class="form-check-label" for="otherMeans">Other (please specify)</label></div>
+</div>
+
+<div id="costs-sponsor-section" style="display: none;">
+  <h6><strong>Sponsor Details</strong></h6>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="inviterCovers" name="sponsor_inviter"><label class="form-check-label" for="inviterCovers">By the inviter(s), see information above</label></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="otherCovers" name="sponsor_other"><label class="form-check-label" for="otherCovers">By others (see details of the different obligor)</label></div>
+
+  <h6 class="mt-3"><strong>Means of support by sponsor</strong></h6>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="sponsorCash" name="sponsor_support_cash"><label class="form-check-label" for="sponsorCash">Cash</label></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="sponsorAccommodation" name="sponsor_support_accommodation"><label class="form-check-label" for="sponsorAccommodation">Prepaid accommodation</label></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="sponsorAllCosts" name="sponsor_support_all"><label class="form-check-label" for="sponsorAllCosts">Covering all costs during the stay</label></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="sponsorTransport" name="sponsor_support_transport"><label class="form-check-label" for="sponsorTransport">Prepaid transport</label></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="sponsorOther" name="sponsor_support_other"><label class="form-check-label" for="sponsorOther">Other (please specify)</label></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </form>
+      </div> 
+      
+    
+
+   
+ <div id="form-France" class="country-form" style="display: none;">
+      <form id="fullVisaForm">
+        <!-- PERSONAL DATA -->
+        
+      <div class="form-section-title">Travel Details</div>
+
+<!-- Situation -->
+<div class="mb-3">
+  <label class="form-label">Current nationality</label>
+   <input type="text" class="form-control" value="">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">
+    Do you join or travel with a family member from an EU country (excluding France), the EEA, the Swiss Confederation, or a family member who is a UK national beneficiary of the withdrawal agreement?
+  </label><br>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="travelWithFamily" id="familyYes">
+    <label class="form-check-label" for="familyYes">Yes</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="travelWithFamily" id="familyNo">
+    <label class="form-check-label" for="familyNo">No</label>
+  </div>
+</div>
+
+<div class="form-section-title">Your Stay</div>
+
+<div class="mb-3">
+  <label class="form-label">Place of submission of application</label>
+  <input type="text" class="form-control" value="">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Visa type requested</label>
+  <input type="text" class="form-control" value="">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Main destination of stay</label>
+  <input type="text" class="form-control" value="">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">City of submission of application</label>
+  <select class="form-control">
+    <option>-- Please Select --</option>
+    <option>Ahmedabad</option>
+    <option>Banglore</option>
+    <option>Calcutta</option>
+     <option>Chandigardh</option>
+      <option>Chennai</option>
+       <option>Cochin</option>
+       <option>Goa</option>
+       <option>Hyderabad</option>
+       <option>Jaipur</option>
+       <option>Jalandhar</option>
+       <option>New Delhi</option>
+       <option>Pondicherry</option>
+       <option>Pune</option>
+
+  </select>
+</div>
+<div class="form-section-title">Your travel document</div>
+<!-- Travel document -->
+<div class="mb-3">
+  <label class="form-label">Issuing authority of the travel document</label>
+  <input type="text" class="form-control" value="">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Travel document</label>
+ 
+    <select class="form-control">
+    <option>-- Please Select --</option>
+    <option>Diplomatic passport</option>
+    <option>Service Passport</option>
+ 
+  </select>
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Travel document number</label>
+  <input type="text" class="form-control">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Date of issue</label>
+  <input type="date" class="form-control">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Expiry date</label>
+  <input type="date" class="form-control">
+</div>
+
+<!-- Your plans -->
+<div class="form-section-title">Your Plans</div>
+ 
+<div class="mb-3">
+  <label class="form-label">Your Plans</label>
+ <select class="form-control">
+    <option>-- Please Select --</option>
+    <option>Tourism</option>
+    <option>Business</option>
+    <option>Study</option>
+    
+  </select>
+</div>
+<div class="mb-3">
+  <label class="form-label">Main purpose of stay</label>
+  <select class="form-control">
+    <option>-- Please Select --</option>
+    <option>Tourism Private visit</option>
+    <option>Tourism /Family  of EU/EEA/Swiss national</option>
+   
+  </select>
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Additional information about your project</label>
+  <input type="text" class="form-control">
+</div>
+
+<!-- Personal Info -->
+<div class="form-section-title">Personal Information</div>
+<div class="form-section-title">Your identity</div>
+
+<div class="mb-3">
+  <label class="form-label">Sex</label>
+  <select class="form-control">
+    <option>-- Please Select --</option>
+    <option>Male</option>
+    <option>Female</option>
+    <option>Other</option>
+  </select>
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Marital status</label>
+  <select class="form-control">
+    <option>-- Please Select --</option>
+    <option>Single</option>
+    <option>Married</option>
+    <option>Divorced</option>
+    <option>Widowed</option>
+      <option>Regiter Partenship</option>
+        <option>Others</option>
+  </select>
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Last name(s)</label>
+  <input type="text" class="form-control">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Last name(s) at birth (if different)</label>
+  <input type="text" class="form-control">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Obligatory first name/s if it/they exist
+</label>
+  <input type="text" class="form-control">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Date of birth (dd/mm/yyyy)</label>
+  <input type="date" class="form-control">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Place of birth</label>
+  <input type="text" class="form-control">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Country or territory of birth</label>
+   <input type="text" class="form-control" value="">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Current nationality</label>
+   <input type="text" class="form-control" value="">
+</div>
+
+
+
+<div class="mb-3">
+  <label class="form-label">National identity number</label>
+  <input type="text" class="form-control">
+</div>
+
+
+
+<div class="mb-3">
+  <label class="form-label">Nationality at birth (if different)</label>
+   <input type="text" class="form-control" value="">
+</div>
+
+
+
+
+<div class="mb-3">
+  <label class="form-label">Other nationalities</label>
+   <input type="text" class="form-control" value="">
+</div>
+
+
+
+
+<div class="form-section-title">Your personal information</div>
+
+<div class="mb-3">
+  <label class="form-label">Address</label>
+  <input type="text" class="form-control">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Post code</label>
+  <input type="text" class="form-control">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">City</label>
+  <input type="text" class="form-control">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Country or territory</label>
+  <select class="form-control">
+    <option>-- Please Select --</option>
+    <option>India</option>
+    <option>USA</option>
+    <option>France</option>
+  </select>
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Telephone number</label>
+  <input type="text" class="form-control" required>
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Email address</label>
+  <input type="email" class="form-control">
+</div>
+
+
+    
+<div class="form-section-title">Details of your Residency</div>
+
+<div class="mb-3">
+  <label class="form-label">Do you live in a country other than the country of your current nationality?</label><br>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="residencyStatus" id="resideYes">
+    <label class="form-check-label" for="resideYes">Yes</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="residencyStatus" id="resideNo" checked>
+    <label class="form-check-label" for="resideNo">No</label>
+  </div>
+</div>
+
+<!-- This section shows ONLY if "Yes" -->
+<div id="residency-details" style="display: none;">
+  <div class="mb-3">
+    <label class="form-label">Residence permit no. or equivalent</label>
+    <input type="text" class="form-control">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Date of issue</label>
+    <input type="date" class="form-control">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Expiry date</label>
+    <input type="date" class="form-control">
+  </div>
+</div>
+
+<!-- Are you joining or travelling with a French national family member? -->
+<div class="form-section-title">Your Family </div>
+<div class="mb-3">
+  <label class="form-label">Are you joining or travelling with a French national family member?</label><br>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="joinFrench" id="joinFrenchYes">
+    <label class="form-check-label" for="joinFrenchYes">Yes</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="joinFrench" id="joinFrenchNo" checked>
+    <label class="form-check-label" for="joinFrenchNo">No</label>
+  </div>
+</div>
+
+<div id="french-family-details" style="display: none;">
+  <div class="mb-3">
+    <label class="form-label">Family relationship</label>
+    <select class="form-control">
+      <option>-- Please Select --</option>
+     <option>Child</option>
+      <option>GrandChild</option>
+      <option>Departure relative</option>
+      <option>Non-Departure relative</option>
+      <option>Family ascendant EU/EEA/Switzerland</option>
+      <option>Registered Parternship/PACS</option>
+      <option>Other</option>
+    </select>
+  </div>
+  <div class="mb-3"><label class="form-label">No. of the travel document or national identity no.</label><input type="text" class="form-control"></div>
+  <div class="mb-3"><label class="form-label">Last name/s</label><input type="text" class="form-control"></div>
+  <div class="mb-3"><label class="form-label">Date of birth (dd/mm/yyyy)</label><input type="date" class="form-control"></div>
+  <div class="mb-3"><label class="form-label">First name/s</label><input type="text" class="form-control"></div>
+</div>
+
+<!-- EU/EEA/Swiss/UK National Family Member -->
+ <div id="join-eu-question-block" style="display: none;">
+<div class="mb-3">
+  <label class="form-label">Do you join or travel with a family member from an EU country (excluding France), the EEA, the Swiss Confederation, or a family member who is a UK national beneficiary of the withdrawal agreement?</label><br>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="joinEU" id="joinEUYes">
+    <label class="form-check-label" for="joinEUYes">Yes</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="joinEU" id="joinEUNo" checked>
+    <label class="form-check-label" for="joinEUNo">No</label>
+  </div>
+</div>
+
+<div id="eu-family-details" style="display: none;">
+  <div class="mb-3">
+    <label class="form-label">Family relationship</label>
+    <select class="form-control">
+      <option>-- Please Select --</option>
+      <option>Child</option>
+      <option>GrandChild</option>
+      <option>Departure relative</option>
+      <option>Non-Departure relative</option>
+      <option>Family ascendant EU/EEA/Switzerland</option>
+      <option>Registered Parternship/PACS</option>
+      <option>Other</option>
+    </select>
+  </div>
+  <div class="mb-3"><label class="form-label">No. of the travel document or national identity no.</label><input type="text" class="form-control"></div>
+  <div class="mb-3"><label class="form-label">Last name/s</label><input type="text" class="form-control"></div>
+  <div class="mb-3"><label class="form-label">First name/s</label><input type="text" class="form-control"></div>
+  <div class="mb-3"><label class="form-label">Date of birth (dd/mm/yyyy)</label><input type="date" class="form-control"></div>
+  <div class="mb-3"><label class="form-label">Nationality</label><input type="text" class="form-control"></div>
+</div>
+
+</div>
+
+
+
+
+
+
+<div class="form-section-title">Previous Stay</div>
+
+<!-- First Question -->
+<div class="mb-3">
+  <label class="form-label">Have you received a Schengen visa within the last 59 months?</label><br>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="prevStay" id="prevStayYes">
+    <label class="form-check-label" for="prevStayYes">Yes</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="prevStay" id="prevStayNo" checked>
+    <label class="form-check-label" for="prevStayNo">No</label>
+  </div>
+</div>
+
+<!-- Section shown if YES to first question -->
+<div id="prev-stay-details" style="display: none;">
+  <div class="mb-3">
+    <label class="form-label">Valid from</label>
+    <input type="date" class="form-control">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">To</label>
+    <input type="date" class="form-control">
+  </div>
+
+  <!-- Second Question: Fingerprints -->
+  <div class="mb-3">
+    <label class="form-label">Have your digital fingerprints previously been taken in connection with a previous application for a Schengen visa?</label><br>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="prevBiometrics" id="prevBiometricsYes">
+      <label class="form-check-label" for="prevBiometricsYes">Yes</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="prevBiometrics" id="prevBiometricsNo" checked>
+      <label class="form-check-label" for="prevBiometricsNo">No</label>
+    </div>
+  </div>
+
+  <!-- If YES to second question -->
+  <div id="biometric-details" style="display: none;">
+    <div class="mb-3">
+      <label class="form-label">Valid from</label>
+      <input type="date" class="form-control">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Number of last biometric visa</label>
+      <input type="text" class="form-control">
+    </div>
+  </div>
+</div>
+
+<div class="form-section-title">Details of your stay</div>
+<div class="mb-3">
+  <label class="form-label">You indicated that you will be travelling in the country France. Will you be travelling in other member states or territories, even if only for a few hours?</label><br>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="otherTravel" id="otherTravelYes">
+    <label class="form-check-label" for="otherTravelYes">Yes</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="otherTravel" id="otherTravelNo" checked>
+    <label class="form-check-label" for="otherTravelNo">No</label>
+  </div>
+</div>
+
+<div id="otherTravelSection" style="display: none;">
+  <div class="mb-3">
+    <label class="form-label">Other destination member state(s) or territory(ies)</label>
+    <select class="form-control">
+      <option>-- Please Select --</option>
+      <option>Austria</option>
+      <option>Belgium</option>
+      <option>Bulgaria</option>
+      <option>Croatia</option>
+      <option>Czech Republic</option>
+      <option>Denmark</option>
+      <option>Estonia</option>
+      <option>Finland</option>
+      <option>Germany</option>
+      <option>Greece</option>
+      <option>Hungary</option>
+      <option>Iceland</option>
+      <option>Italy</option>
+      <option>Latvia</option>
+      <option>Liechtenstein</option>
+      <option>Lithuania</option>
+      <option>Luxembourg</option>
+      <option>Malta</option>
+      <option>Monaco</option>
+      <option>Netherlands</option>
+      <option>Norway</option>
+      <option>Poland</option>
+      <option>Portugal</option>
+      <option>Romania</option>
+      <option>Slovakia</option>
+      <option>Slovenia</option>
+      <option>Spain</option>
+      <option>Sweden</option>
+      <option>Switzerland</option>
+    </select>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Member state or territory of first entry</label>
+    <select class="form-control">
+      <option>-- Please Select --</option>
+      <option>Austria</option>
+      <option>Belgium</option>
+      <option>Bulgaria</option>
+      <option>Croatia</option>
+      <option>Czech Republic</option>
+      <option>Denmark</option>
+      <option>Estonia</option>
+      <option>Finland</option>
+      <option>Germany</option>
+      <option>Greece</option>
+      <option>Hungary</option>
+      <option>Iceland</option>
+      <option>Italy</option>
+      <option>Latvia</option>
+      <option>Liechtenstein</option>
+      <option>Lithuania</option>
+      <option>Luxembourg</option>
+      <option>Malta</option>
+      <option>Monaco</option>
+      <option>Netherlands</option>
+      <option>Norway</option>
+      <option>Poland</option>
+      <option>Portugal</option>
+      <option>Romania</option>
+      <option>Slovakia</option>
+      <option>Slovenia</option>
+      <option>Spain</option>
+      <option>Sweden</option>
+      <option>Switzerland</option>
+    </select>
+  </div>
+</div>
+
+
+
+<div class="mb-3">
+  <label class="form-label">Planned date of arrival in Schengen area</label>
+  <input type="date" class="form-control" required>
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Planned date of departure from Schengen area</label>
+  <input type="date" class="form-control" required>
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Planned duration of stay in number of days</label>
+  <input type="number" class="form-control" placeholder="Required" required>
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Number of entries requested</label>
+  <select class="form-control" required>
+    <option value="">-- Please Select --</option>
+    <option>Single entry</option>
+    <option>Two entries</option>
+    <option>Multiple entries</option>
+  </select>
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Number of stays planned in France for the coming year</label>
+  <input type="number" class="form-control" placeholder="Enter number">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Other stay project</label>
+  <select class="form-control">
+    <option value="">-- Please Select --</option>
+    <option>Business</option>
+      <option>Entery Via for beneficency of the withdrawl agreement</option>
+    <option>Family or Private visit</option>
+    <option>medical reasons</option>
+    <option>official visit</option>
+    <option>Other</option>
+      <option>Study</option>
+        <option>Tourism</option>
+  </select>
+</div>
+
+
+
+
+<div class="form-section-title">Your Contacts</div>
+<div class="mb-3">
+  <label class="form-label">A person will be accommodating me</label><br>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="hostPerson" id="hostYes">
+    <label class="form-check-label" for="hostYes">Yes</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="hostPerson" id="hostNo" checked>
+    <label class="form-check-label" for="hostNo">No</label>
+  </div>
+</div>
+
+<div id="host-details" style="display: none;">
+  <div class="mb-3">
+    <label class="form-label">Name</label>
+    <input type="text" class="form-control">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Obligatory first name/s if it/they exist</label>
+    <input type="text" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Address</label>
+    <input type="text" class="form-control">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Post code</label>
+    <input type="text" class="form-control">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">City</label>
+    <input type="text" class="form-control">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Country or territory</label>
+    <select class="form-control">
+      <option>-- Please Select --</option>
+      <option>France</option>
+  
+      <!-- add more countries as needed -->
+    </select>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Telephone number</label>
+    <input type="text" class="form-control">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Email address</label>
+    <input type="email" class="form-control">
+  </div>
+</div>
+
+
+
+
+
+
+<div class="mb-3">
+  <label class="form-label">A company, organisation or establishment will be accommodating me</label><br>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="hostOrg" id="hostOrgYes">
+    <label class="form-check-label" for="hostOrgYes">Yes</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="hostOrg" id="hostOrgNo" checked>
+    <label class="form-check-label" for="hostOrgNo">No</label>
+  </div>
+</div>
+
+<div id="host-org-details" style="display: none;">
+  <div class="mb-3"><label class="form-label">Name of the host organisation/company</label><input type="text" class="form-control"></div>
+  <div class="mb-3"><label class="form-label">Address</label><input type="text" class="form-control"></div>
+  <div class="mb-3"><label class="form-label">Post code</label><input type="text" class="form-control"></div>
+  <div class="mb-3"><label class="form-label">City</label><input type="text" class="form-control"></div>
+  <div class="mb-3">
+    <label class="form-label">Country</label>
+    <select class="form-control">
+      <option>-- Please Select --</option>
+      <option>France</option>
+      <option>Germany</option>
+      <option>Italy</option>
+      <option>Spain</option>
+      <!-- Add more countries if needed -->
+    </select>
+  </div>
+  <div class="mb-3"><label class="form-label">Telephone number</label><input type="text" class="form-control"></div>
+  <div class="mb-3"><label class="form-label">Email address</label><input type="email" class="form-control"></div>
+
+  <h5 class="mt-4">Details of the contact person</h5>
+  <div class="mb-3"><label class="form-label">Last name of the contact person</label><input type="text" class="form-control"></div>
+  <div class="mb-3"><label class="form-label">First name of the contact person</label><input type="text" class="form-control"></div>
+  <div class="mb-3"><label class="form-label">Address</label><input type="text" class="form-control"></div>
+  <div class="mb-3"><label class="form-label">Post code</label><input type="text" class="form-control"></div>
+  <div class="mb-3"><label class="form-label">City</label><input type="text" class="form-control"></div>
+  <div class="mb-3">
+    <label class="form-label">Country</label>
+    <select class="form-control">
+      <option>-- Please Select --</option>
+      <option>France</option>
+ 
+      <!-- Add more countries if needed -->
+    </select>
+  </div>
+  <div class="mb-3"><label class="form-label">Telephone number</label><input type="text" class="form-control"></div>
+  <div class="mb-3"><label class="form-label">Email address</label><input type="email" class="form-control"></div>
+</div>
+
+
+<div class="mb-3">
+  <label class="form-label">My hotel or a different place of accommodation (if different)</label><br>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="altAccom" id="altAccomYes">
+    <label class="form-check-label" for="altAccomYes">Yes</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="altAccom" id="altAccomNo" checked>
+    <label class="form-check-label" for="altAccomNo">No</label>
+  </div>
+</div>
+
+<div id="alt-accom-details" style="display: none;">
+  <div class="mb-3"><label class="form-label">Name of the host organisation/company</label><input type="text" class="form-control" required></div>
+  <div class="mb-3"><label class="form-label">Address</label><input type="text" class="form-control"></div>
+  <div class="mb-3"><label class="form-label">Post code</label><input type="text" class="form-control"></div>
+  <div class="mb-3"><label class="form-label">City</label><input type="text" class="form-control"></div>
+  <div class="mb-3">
+    <label class="form-label">Country or territory</label>
+    <select class="form-control">
+      <option>-- Please Select --</option>
+      <option>France</option>
+    
+      <!-- Add more if needed -->
+    </select>
+  </div>
+  <div class="mb-3"><label class="form-label">Telephone number</label><input type="text" class="form-control"></div>
+  <div class="mb-3"><label class="form-label">Email address</label><input type="email" class="form-control"></div>
+</div>
+
+<div class="form-section-title">Funding of travel costs</div>
+
+<!-- Myself Funding -->
+<h5><strong>Myself</strong></h5>
+<div class="form-check mb-2">
+  <input class="form-check-input" type="checkbox" id="fundSelf">
+  <label class="form-check-label" for="fundSelf">You are funding a part or all of the costs of your stay.</label>
+</div>
+
+<div id="self-fund-options" style="display: none; margin-left: 20px;">
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="accomPrepaid"><label class="form-check-label" for="accomPrepaid">Accommodation prepaid</label></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="transportPrepaid"><label class="form-check-label" for="transportPrepaid">Transport costs prepaid</label></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="cheques"><label class="form-check-label" for="cheques">Travellers cheques</label></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="creditCard"><label class="form-check-label" for="creditCard">Credit card</label></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="cash"><label class="form-check-label" for="cash">Cash</label></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="other"><label class="form-check-label" for="other">Other</label></div>
+</div>
+
+
+<!-- Host Company/Organization -->
+<h5 class="mt-4"><strong>Host Company/Organization</strong></h5>
+<div class="form-check mb-2">
+  <input class="form-check-input" type="checkbox" id="fundHost">
+  <label class="form-check-label" for="fundHost">A company, organisation or establishment will be accommodating me</label>
+</div>
+
+<div id="host-fund-options" style="display: none; margin-left: 20px;">
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="hostAllCovered"><label class="form-check-label" for="hostAllCovered">All expenses covered during stay</label></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="hostAccom"><label class="form-check-label" for="hostAccom">Accommodation provided</label></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="hostTransport"><label class="form-check-label" for="hostTransport">Transport costs paid</label></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="hostCash"><label class="form-check-label" for="hostCash">Cash</label></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="hostOther"><label class="form-check-label" for="hostOther">Other</label></div>
+</div>
+
+
+<!-- Another Guarantor -->
+<h5 class="mt-4"><strong>Another Guarantor</strong></h5>
+<div class="form-check mb-2">
+  <input class="form-check-input" type="checkbox" id="fundGuarantor">
+  <label class="form-check-label" for="fundGuarantor">Another guarantor is funding a part or all of the costs of your stay.</label>
+</div>
+
+<div id="guarantor-fund-options" style="display: none; margin-left: 20px;">
+  <div class="mb-2"><label class="form-label">Specify which</label></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="guarAllCovered"><label class="form-check-label" for="guarAllCovered">All expenses covered during stay</label></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="guarAccom"><label class="form-check-label" for="guarAccom">Accommodation provided</label></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="guarTransport"><label class="form-check-label" for="guarTransport">Transport costs paid</label></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="guarCash"><label class="form-check-label" for="guarCash">Cash</label></div>
+  <div class="form-check"><input class="form-check-input" type="checkbox" id="guarOther"><label class="form-check-label" for="guarOther">Other</label></div>
+</div>
+
+
+
+
+<div class="form-section-title">Person Completing the Form</div>
+
+<div class="mb-3">
+  <label class="form-label">Name/s</label>
+  <input type="text" class="form-control">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Obligatory first name/s if it/they exist</label>
+  <input type="text" class="form-control" required>
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Address</label>
+  <input type="text" class="form-control">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Post code</label>
+  <input type="text" class="form-control">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">City</label>
+  <input type="text" class="form-control">
+</div>
+
+
+<div class="mb-3">
+  <label class="form-label">Country</label>
+   <input type="text" class="form-control" value="">
+</div>
+
+
+<div class="mb-3">
+  <label class="form-label">Telephone number</label>
+  <input type="text" class="form-control">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Email address</label>
+  <input type="email" class="form-control">
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+      
+ <div id="form-Italy" class="country-form" style="display: none;">
+      <form id="fullVisaForm">
+        <!-- PERSONAL DATA -->
+        
+    
+
+
+
+        <div class="form-section-title">Applicant / General Information</div>
+
+<!-- Personal Data -->
+<div class="mb-3"><label class="form-label">Surname</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Surname at birth</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">First Name</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Date of birth</label><input type="date" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Place of Birth</label><input type="text" class="form-control"></div>
+
+<div class="mb-3"><label class="form-label">Country of birth</label>
+  <select class="form-control">
+    <option>-- Please Select --</option>
+    <option>India</option>
+    <option>France</option>
+    <option>Germany</option>
+    <option>United States</option>
+    <option>United Kingdom</option>
+    <!-- Add more countries as needed -->
+  </select>
+</div>
+
+<div class="mb-3"><label class="form-label">Current nationality</label>
+  <select class="form-control">
+    <option>-- Please Select --</option>
+    <option>Indian</option>
+    <option>French</option>
+    <option>German</option>
+    <option>American</option>
+    <option>British</option>
+  </select>
+</div>
+
+<div class="mb-3"><label class="form-label">Nationality at birth</label>
+  <select class="form-control">
+    <option>-- Please Select --</option>
+    <option>Indian</option>
+    <option>French</option>
+    <option>German</option>
+    <option>American</option>
+    <option>British</option>
+  </select>
+</div>
+
+<div class="mb-3"><label class="form-label">Sex</label>
+  <select class="form-control">
+    <option>-- Please Select --</option>
+    <option>Male</option>
+    <option>Female</option>
+    <option>Other</option>
+  </select>
+</div>
+
+<div class="mb-3"><label class="form-label">Marital Status</label>
+  <select class="form-control">
+    <option>-- Please Select --</option>
+    <option>Single</option>
+    <option>Married</option>
+    <option>Divorced</option>
+    <option>Widowed</option>
+  </select>
+</div>
+
+<!-- Employer / Education -->
+<div class="form-section-title mt-4">Employer / Educational Establishment</div>
+<div class="mb-3"><label class="form-label">Current Occupation</label>
+  <select class="form-control">
+    <option>-- Please Select --</option>
+    <option>Student</option>
+    <option>Employee</option>
+    <option>Self-employed</option>
+    <option>Unemployed</option>
+  </select>
+</div>
+<div class="mb-3"><label class="form-label">Employer / Establishment</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Address</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Postal Code</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">City</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Country</label>
+  <select class="form-control">
+    <option>-- Please Select --</option>
+    <option>India</option>
+    <option>France</option>
+    <option>Germany</option>
+  </select>
+</div>
+<div class="mb-3"><label class="form-label">Phone</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Fax</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Email</label><input type="email" class="form-control"></div>
+
+<!-- Residence Info -->
+<div class="form-section-title mt-4">Residence Details</div>
+<div class="mb-3"><label class="form-label">Residence in another country?</label>
+  <select class="form-control">
+    <option>-- Please Select --</option>
+    <option>Yes</option>
+    <option>No</option>
+  </select>
+</div>
+<div class="mb-3"><label class="form-label">Residence Permit Document Number</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Valid Until</label><input type="date" class="form-control"></div>
+
+<!-- Home Address -->
+<div class="form-section-title mt-4">Home Address</div>
+<div class="mb-3"><label class="form-label">Address</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Postal Code</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">City</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Country</label>
+  <select class="form-control">
+    <option>-- Please Select --</option>
+    <option>India</option>
+    <option>France</option>
+    <option>Germany</option>
+  </select>
+</div>
+<div class="mb-3"><label class="form-label">Phone</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Fax</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Email</label><input type="email" class="form-control"></div>
+
+<!-- Travel Documents -->
+<div class="form-section-title mt-4">Travel Documents</div>
+<div class="mb-3"><label class="form-label">Country of issue</label>
+  <select class="form-control">
+    <option>-- Please Select --</option>
+    <option>India</option>
+    <option>France</option>
+    <option>Germany</option>
+  </select>
+</div>
+<div class="mb-3"><label class="form-label">Document Type</label><input type="text" class="form-control" value="Passport"></div>
+<div class="mb-3"><label class="form-label">Number of Travel Document</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Date of Issue</label><input type="date" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Valid Until</label><input type="date" class="form-control"></div>
+<div class="mb-3"><label class="form-label">National Identity Number</label><input type="text" class="form-control"></div>
+
+<!-- Travel Info -->
+<div class="form-section-title mt-4">Travel Info</div>
+<div class="mb-3"><label class="form-label">Member State of First Entry</label><input type="text" class="form-control" value=""></div>
+<div class="mb-3"><label class="form-label">Main Purpose of Journey</label><input type="text" class="form-control" value=""></div>
+<div class="mb-3"><label class="form-label">Other Purpose of Trip</label><input type="text" class="form-control"></div>
+
+<div class="mb-3">
+  <label class="form-label">Do you have any other purpose of trip?</label><br>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="otherTripPurpose" id="otherTripYes">
+    <label class="form-check-label" for="otherTripYes">Yes</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="otherTripPurpose" id="otherTripNo" checked>
+    <label class="form-check-label" for="otherTripNo">No</label>
+  </div>
+</div>
+
+<div id="other-purpose-section" style="display: none;">
+  <div class="mb-3">
+    <label class="form-label">Other Purpose</label>
+    <select class="form-control">
+      <option>-- Please Select --</option>
+      <option>Medical Treatment</option>
+      <option>Study</option>
+      <option>Official Visit</option>
+      <option>Cultural</option>
+      <option>Sport</option>
+      <option>Other</option>
+    </select>
+  </div>
+</div>
+
+
+
+<div class="form-section-title">Member State(s) of Destination</div>
+<div class="mb-3">
+  <label class="form-label">Select member state</label>
+  <select class="form-control">
+    <option>-- Please Select --</option>
+    <option>Austria</option>
+    <option>Belgium</option>
+    <option>Croatia</option>
+    <option>Czech Republic</option>
+    <option>Denmark</option>
+    <option>Estonia</option>
+    <option>Finland</option>
+    <option>France</option>
+    <option>Germany</option>
+    <option>Greece</option>
+    <option>Hungary</option>
+    <option>Iceland</option>
+    <option>Italy</option>
+    <option>Latvia</option>
+    <option>Liechtenstein</option>
+    <option>Lithuania</option>
+    <option>Luxembourg</option>
+    <option>Malta</option>
+    <option>Netherlands</option>
+    <option>Norway</option>
+    <option>Poland</option>
+    <option>Portugal</option>
+    <option>Slovakia</option>
+    <option>Slovenia</option>
+    <option>Spain</option>
+    <option>Sweden</option>
+    <option>Switzerland</option>
+  </select>
+</div>
+
+
+
+
+
+
+<div class="mb-3">
+  <label class="form-label">Number of entries requested</label>
+  <select class="form-control">
+    <option>One</option>
+    <option>Two</option>
+    <option>Multiple</option>
+  </select>
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Duration of the intended stay (number of days)</label>
+  <input type="number" class="form-control" placeholder="Enter number of days" required>
+</div>
+
+<div class="form-section-title">Schengen Visas</div>
+<div class="mb-3">
+  <label class="form-label">Schengen visas issued during the last three years</label>
+  <select class="form-control">
+    <option>-- Please Select --</option>
+    <option>Yes</option>
+    <option>No</option>
+  </select>
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Fingerprints collected previously for the purpose of applying for a Schengen visa</label>
+  <select class="form-control">
+    <option>-- Please Select --</option>
+    <option>Yes</option>
+    <option>No</option>
+  </select>
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Intended date of arrival in the Schengen area</label>
+  <input type="date" class="form-control">
+</div>
+<div class="mb-3">
+  <label class="form-label">Schengen departure date</label>
+  <input type="date" class="form-control">
+</div>
+
+<div class="form-section-title">Entry Permit (if applicable)</div>
+<div class="mb-3">
+  <label class="form-label">Issued by</label>
+  <select class="form-control">
+    <option>-- Please Select --</option>
+   <option>Austria</option>
+    <option>Belgium</option>
+    <option>Croatia</option>
+    <option>Czech Republic</option>
+    <option>Denmark</option>
+    <option>Estonia</option>
+    <option>Finland</option>
+    <option>France</option>
+    <option>Germany</option>
+    <option>Greece</option>
+    <option>Hungary</option>
+    <option>Iceland</option>
+    <option>Italy</option>
+    <option>Latvia</option>
+    <option>Liechtenstein</option>
+    <option>Lithuania</option>
+    <option>Luxembourg</option>
+    <option>Malta</option>
+    <option>Netherlands</option>
+    <option>Norway</option>
+    <option>Poland</option>
+    <option>Portugal</option>
+    <option>Slovakia</option>
+    <option>Slovenia</option>
+    <option>Spain</option>
+    <option>Sweden</option>
+    <option>Switzerland</option>
+  </select>
+</div>
+<div class="mb-3">
+  <label class="form-label">Valid from</label>
+  <input type="date" class="form-control">
+</div>
+<div class="mb-3">
+  <label class="form-label">Valid Until</label>
+  <input type="date" class="form-control">
+</div>
+
+<div class="form-section-title">Sponsor</div>
+<div class="mb-3">
+  <label class="form-label">Inviting type</label>
+  <select class="form-control">
+    <option>-- Please Select --</option>
+    <option>Hotel/Temporary accomdation</option>
+    <option>Person</option>
+    <option>Invitation</option>
+  </select>
+</div>
+<div class="mb-3">
+  <label class="form-label">The applicant's travel and subsistence expenses are charged</label>
+  <select class="form-control">
+    <option>-- Please Select --</option>
+    <option>Oneself</option>
+    <option>Inviting Person</option>
+    <option>Inviting Company</option>
+  </select>
+</div>
+<div class="mb-3">
+  <label class="form-label">Means of support</label>
+  <select class="form-control">
+    <option>-- Please Select --</option>
+    <option>Means autonomous</option>
+    <option>Declaration warranty</option>
+    <option>official invitation</option>
+    <option>Prepaid trip</option>
+    <option>Scholarship</option>
+  </select>
+</div>
+
+<div class="form-section-title">References (EU, EEA or CH citizens)</div>
+<p class="text-muted">* Only if the applicant is a family member of EU, EEA or CH citizen (spouse, child or dependent ascendant)</p>
+<div class="mb-3"><label class="form-label">Surname</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">First Name</label><input type="text" class="form-control"></div>
+<div class="mb-3"><label class="form-label">Date of birth</label><input type="date" class="form-control"></div>
+<div class="mb-3">
+  <label class="form-label">Nationality</label>
+  <select class="form-control">
+    <option>-- Please Select --</option>
+    <!-- Add country options -->
+  </select>
+</div>
+<div class="mb-3"><label class="form-label">Travel document number or ID card number</label><input type="text" class="form-control"></div>
+
+<div class="mb-3">
+  <label class="form-label">Family constraint with an EU, EEA or CH citizen</label>
+  <select class="form-control">
+    <option>-- Please Select --</option>
+    <option>Spouse</option>
+    <option>Child</option>
+    <option>Nipote</option>
+    <option>unione registra</option>
+    <option>other</option>
+  </select>
+</div>
+
+
+
+
+
+
+
+
+
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+      
+
+ <div id="form-United Kingdom" class="country-form" style="display: none;">
+
+  <form id="fullVisaForm">
+
+  <div class="form-section-title">Application Details</div>
+
+  <div class="mb-3">
+    <label class="form-label">Confirm your visa type</label>
+    <select class="form-control" required>
+      <option disabled selected>-- Please Select --</option>
+      <option>Visit visa</option>
+      <option>Transit visa</option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Select a country to provide your biometrics</label>
+    <select class="form-control" required>
+      <option disabled selected>-- Please Select --</option>
+      <option>United Kingdom</option>
+      <option>France</option>
+      <option>Germany</option>
+      <option>Canada</option>
+      <option>India</option>
+      <option>United States</option>
+    </select>
+    <div class="form-text-error">This field is required</div>
+  </div>
+
+  <div class="mb-3 form-check">
+    <input type="checkbox" class="form-check-input" id="biometricConfirm">
+    <label class="form-check-label" for="biometricConfirm">
+      I have identified the location where I will provide my biometrics (or I am unable to provide my biometrics at any location).
+    </label>
+  </div>
+
+  <div class="form-section-title">Contact Details</div>
+
+  <div class="mb-3">
+    <label class="form-label">Email</label>
+    <input type="email" class="form-control" required>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label d-block">Does this email belong to you?</label>
+    <div class="form-check form-check-inline">
+      <input type="radio" class="form-check-input" name="emailOwns" id="emailOwnsYes">
+      <label class="form-check-label" for="emailOwnsYes">Yes</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input type="radio" class="form-check-input" name="emailOwns" id="emailOwnsNo">
+      <label class="form-check-label" for="emailOwnsNo">No</label>
+    </div>
+  </div>
+
+  <div id="q2-container" class="mb-3" style="display:none;">
+    <label class="form-label d-block">Do you have any other email?</label>
+    <div class="form-check form-check-inline">
+      <input type="radio" class="form-check-input" name="otherEmail" id="otherEmailYes">
+      <label class="form-check-label" for="otherEmailYes">Yes</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input type="radio" class="form-check-input" name="otherEmail" id="otherEmailNo">
+      <label class="form-check-label" for="otherEmailNo">No</label>
+    </div>
+  </div>
+
+  <div id="q3-container" class="mb-3" style="display:none;">
+    <label class="form-label d-block">Do you have your own email?</label>
+    <div class="form-check form-check-inline">
+      <input type="radio" class="form-check-input" name="ownEmail" id="ownEmailYes">
+      <label class="form-check-label" for="ownEmailYes">Yes</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input type="radio" class="form-check-input" name="ownEmail" id="ownEmailNo">
+      <label class="form-check-label" for="ownEmailNo">No</label>
+    </div>
+  </div>
+
+  <div id="extra-emails-container" class="mb-3" style="display:none;">
+    <label class="form-label">Another Email</label>
+    <input type="email" class="form-control" placeholder="Enter another email">
+  </div>
+
+  <div id="email-preference-container" class="mb-3" style="display:none;">
+    <label class="form-label">Which email address should we use to contact you with any questions about your application?</label>
+    
+    <label class="form-label mt-3">Which email address should we use to send a decision on your application?</label>
+  
+    <label class="form-label mt-3">Which email address should we use to communicate with you after your application has been decided?</label>
+ 
+  </div>
+
+  <div id="email-if-own-container" class="mb-3" style="display:none;">
+    <label class="form-label">Email</label>
+    <input type="email" class="form-control" placeholder="Enter your email">
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+ <div class="form-section-title">Telephone Details</div>
+
+  <div class="mb-3">
+    <label for="telephone-number" class="form-label">Telephone Number</label>
+    <input type="tel" class="form-control" id="telephone-number" name="telephone-number" required>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label d-block">Where do you use this telephone number?</label>
+    <div class="form-check">
+      <input type="checkbox" class="form-check-input" id="use-uk" name="usage-location" value="uk">
+      <label class="form-check-label" for="use-uk">For use whilst in the UK</label>
+    </div>
+    <div class="form-check">
+      <input type="checkbox" class="form-check-input" id="use-out-uk" name="usage-location" value="out-uk">
+      <label class="form-check-label" for="use-out-uk">For use whilst out of the UK</label>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label d-block">What type of number is this?</label>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" id="type-home" name="number-type" value="home">
+      <label class="form-check-label" for="type-home">Home telephone number</label>
+    </div>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" id="type-business" name="number-type" value="business">
+      <label class="form-check-label" for="type-business">Business telephone number</label>
+    </div>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" id="type-mobile" name="number-type" value="mobile">
+      <label class="form-check-label" for="type-mobile">Mobile telephone number</label>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label d-block">Do you have any other telephone numbers?</label>
+    <div class="form-check form-check-inline">
+      <input type="radio" class="form-check-input" name="hasOtherPhone" id="hasOtherPhoneYes">
+      <label class="form-check-label" for="hasOtherPhoneYes">Yes</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input type="radio" class="form-check-input" name="hasOtherPhone" id="hasOtherPhoneNo">
+      <label class="form-check-label" for="hasOtherPhoneNo">No</label>
+    </div>
+  </div>
+
+  <div id="other-phone-container" class="mb-3" style="display:none;">
+    <label class="form-label">Telephone Number</label>
+    <input type="tel" class="form-control" name="other-telephone-number">
+
+    <label class="form-label mt-3 d-block">Where do you use this telephone number?</label>
+    <div class="form-check">
+      <input type="checkbox" class="form-check-input" name="other-usage-location" value="uk" id="useOtherUk">
+      <label class="form-check-label" for="useOtherUk">For use whilst in the UK</label>
+    </div>
+    <div class="form-check">
+      <input type="checkbox" class="form-check-input" name="other-usage-location" value="out-uk" id="useOtherOutUk">
+      <label class="form-check-label" for="useOtherOutUk">For use whilst out of the UK</label>
+    </div>
+
+    <label class="form-label mt-3 d-block">Select whether this is your home, mobile or work telephone number</label>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="other-number-type" value="home" id="otherHome">
+      <label class="form-check-label" for="otherHome">Home telephone number</label>
+    </div>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="other-number-type" value="business" id="otherBusiness">
+      <label class="form-check-label" for="otherBusiness">Business telephone number</label>
+    </div>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="other-number-type" value="mobile" id="otherMobile">
+      <label class="form-check-label" for="otherMobile">Mobile telephone number</label>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+
+
+  <div class="form-section-title">Contact Preference</div>
+  <div class="mb-3">
+    <label class="form-label d-block">Are you able to be contacted by telephone?</label>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="contactPreference" value="call-sms">
+      <label class="form-check-label">I can be contacted by telephone call and text message (SMS)</label>
+    </div>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="contactPreference" value="call-only">
+      <label class="form-check-label">I can only be contacted by telephone call</label>
+    </div>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="contactPreference" value="sms-only">
+      <label class="form-check-label">I can only be contacted by text message (SMS)</label>
+    </div>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="contactPreference" value="no-contact">
+      <label class="form-check-label">I cannot be contacted by telephone call or text message (SMS)</label>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Which is your primary contact number?</label>
+    <input type="tel" class="form-control" id="primary-contact-number" name="primary-contact-number">
+  </div>
+
+  <div class="form-section-title">Your Name</div>
+  <div class="mb-3">
+    <label class="form-label">Given Name</label>
+    <input type="text" class="form-control" id="given-name" name="given-name">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Family Name</label>
+    <input type="text" class="form-control" id="family-name" name="family-name">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label d-block">In addition to the names already provided, are you now or have you ever been known by another name?</label>
+    <div class="form-check form-check-inline">
+      <input type="radio" class="form-check-input" name="otherName" id="otherNameYes">
+      <label class="form-check-label" for="otherNameYes">Yes</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input type="radio" class="form-check-input" name="otherName" id="otherNameNo">
+      <label class="form-check-label" for="otherNameNo">No</label>
+    </div>
+  </div>
+
+  <div id="other-name-section" class="mb-3" style="display:none;">
+    <h4>Any Other Name</h4>
+    <label class="form-label">Given Name</label>
+    <input type="text" class="form-control" id="other-given-name" name="other-given-name">
+    <label class="form-label mt-3">Family Name</label>
+    <input type="text" class="form-control" id="other-family-name" name="other-family-name">
+  </div>
+
+
+   <div class="form-section-title">Sex and Relationship Status</div>
+
+  <!-- Sex -->
+  <div class="mb-3">
+    <label class="form-label d-block">Sex</label>
+    <div class="form-check form-check-inline">
+      <input type="radio" class="form-check-input" id="sexMale" name="sex" value="male">
+      <label class="form-check-label" for="sexMale">Male</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input type="radio" class="form-check-input" id="sexFemale" name="sex" value="female">
+      <label class="form-check-label" for="sexFemale">Female</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input type="radio" class="form-check-input" id="sexUnspecified" name="sex" value="unspecified">
+      <label class="form-check-label" for="sexUnspecified">Unspecified</label>
+    </div>
+  </div>
+
+  <!-- Relationship Status -->
+  <div class="mb-3">
+    <label for="relationship-status" class="form-label">Relationship Status</label>
+    <select id="relationship-status" name="relationship-status" class="form-control" required>
+      <option disabled selected>-- Please Select --</option>
+      <option value="single">Single</option>
+      <option value="married">Married</option>
+      <option value="divorced">Divorced</option>
+      <option value="widowed">Widowed</option>
+      <option value="separated">Separated</option>
+      <option value="partnered">In a relationship</option>
+    </select>
+  </div>
+
+
+
+
+
+
+
+
+
+
+  <div class="form-section-title">Address</div>
+  <div class="mb-3">
+    <label class="form-label">House Number</label>
+    <input type="text" class="form-control" id="house-number" name="house-number">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Town</label>
+    <input type="text" class="form-control" id="town" name="town">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">State</label>
+    <input type="text" class="form-control" id="state" name="state">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Postal Code</label>
+    <input type="text" class="form-control" id="postal-code" name="postal-code">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Country</label>
+    <select class="form-control" name="country" required>
+      <option disabled selected>-- Please Select --</option>
+      <option>United Kingdom</option>
+      <option>France</option>
+      <option>Germany</option>
+      <option>Canada</option>
+      <option>India</option>
+      <option>United States</option>
+    </select>
+  </div>
+
+  <div class="form-section-title">Correspondence Address</div>
+  <div class="mb-3">
+    <label class="form-label d-block">Is this your correspondence address?</label>
+    <div class="form-check form-check-inline">
+      <input type="radio" class="form-check-input" name="isCorrespondence" id="isCorrespondenceYes">
+      <label class="form-check-label" for="isCorrespondenceYes">Yes</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input type="radio" class="form-check-input" name="isCorrespondence" id="isCorrespondenceNo">
+      <label class="form-check-label" for="isCorrespondenceNo">No</label>
+    </div>
+  </div>
+
+  <div id="correspondence-address-section" class="mb-3" style="display:none;">
+    <label class="form-label">House Number</label>
+    <input type="text" class="form-control" id="corr-house-number" name="corr-house-number">
+    <label class="form-label mt-3">Town</label>
+    <input type="text" class="form-control" id="corr-town" name="corr-town">
+    <label class="form-label mt-3">State</label>
+    <input type="text" class="form-control" id="corr-state" name="corr-state">
+    <label class="form-label mt-3">Postal Code</label>
+    <input type="text" class="form-control" id="corr-postal-code" name="corr-postal-code">
+    <label class="form-label mt-3">Country</label>
+    <select class="form-control" name="corr-country" required>
+      <option disabled selected>-- Please Select --</option>
+      <option>United Kingdom</option>
+      <option>France</option>
+      <option>Germany</option>
+      <option>Canada</option>
+      <option>India</option>
+      <option>United States</option>
+    </select>
+  </div>
+
+
+
+    <div class="form-section-title">About This Property</div>
+
+  <!-- Duration at Address (Unit of Time) -->
+  <div class="mb-3">
+    <label for="time-unit" class="form-label">How long have you lived at this address? (Unit of time)</label>
+    <select id="time-unit" name="time-unit" class="form-control" required>
+      <option disabled selected>-- Please Select --</option>
+      <option value="years">Years</option>
+      <option value="months">Months</option>
+      <option value="weeks">Weeks</option>
+    </select>
+  </div>
+
+  <!-- Duration at Address (Actual Time) -->
+  <div class="mb-3">
+    <label for="time-lived" class="form-label">How long have you lived at this address? (Lived time)</label>
+    <input type="number" class="form-control" id="time-lived" name="time-lived" min="0" required>
+  </div>
+
+  <!-- Ownership Status -->
+  <div class="mb-3">
+    <label class="form-label d-block">What is the ownership status of your home?</label>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" id="ownHome" name="ownership-status" value="own">
+      <label class="form-check-label" for="ownHome">I own it</label>
+    </div>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" id="rentHome" name="ownership-status" value="rent">
+      <label class="form-check-label" for="rentHome">I rent it</label>
+    </div>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" id="otherHome" name="ownership-status" value="other">
+      <label class="form-check-label" for="otherHome">Other</label>
+    </div>
+  </div>
+
+  <div class="form-section-title">Passport Details</div>
+
+  <!-- Passport Number -->
+  <div class="mb-3">
+    <label for="passport-number" class="form-label">Passport number or travel document reference number</label>
+    <input type="text" class="form-control" id="passport-number" name="passport-number" required>
+  </div>
+
+  <!-- Issuing Authority -->
+  <div class="mb-3">
+    <label for="issuing-authority" class="form-label">Issuing authority</label>
+    <input type="text" class="form-control" id="issuing-authority" name="issuing-authority" required>
+  </div>
+
+  <!-- Issue Date -->
+  <div class="mb-3">
+    <label for="issue-date" class="form-label">Passport issue date</label>
+    <input type="date" class="form-control" id="issue-date" name="issue-date" required>
+  </div>
+
+  <!-- Expiry Date -->
+  <div class="mb-3">
+    <label for="expiry-date" class="form-label">Passport expiry date</label>
+    <input type="date" class="form-control" id="expiry-date" name="expiry-date" required>
+  </div>
+
+
+
+
+
+
+<div class="form-section-title">National Identity Card</div>
+
+<div class="mb-3">
+  <label class="form-label d-block">Do you have a valid national identity card?</label>
+  <div class="form-check form-check-inline">
+    <input type="radio" class="form-check-input" name="hasNationalID" value="yes" id="hasNationalIDYes">
+    <label class="form-check-label" for="hasNationalIDYes">Yes</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input type="radio" class="form-check-input" name="hasNationalID" value="no" id="hasNationalIDNo">
+    <label class="form-check-label" for="hasNationalIDNo">No</label>
+  </div>
+</div>
+
+<div id="national-id-section" class="mb-3" style="display: none;">
+  <label class="form-label">National identity card number</label>
+  <input type="text" class="form-control" name="national-id-number">
+
+  <label class="form-label mt-3">Issuing authority</label>
+  <input type="text" class="form-control" name="national-id-issuer">
+
+  <label class="form-label mt-3">Issue date (if applicable)</label>
+  <input type="date" class="form-control" name="national-id-issue-date">
+
+  <label class="form-label mt-3">Expiry date (if applicable)</label>
+  <input type="date" class="form-control" name="national-id-expiry-date">
+</div> 
+
+
+
+  <div class="form-section-title">Your Nationality, Country and Date of Birth</div>
+
+  <!-- Country of Nationality -->
+  <div class="mb-3">
+    <label for="country-nationality" class="form-label">Country of nationality</label>
+    <select id="country-nationality" name="country-nationality" class="form-control" required>
+      <option disabled selected>-- Please Select --</option>
+      <option>United Kingdom</option>
+      <option>India</option>
+      <option>United States</option>
+      <option>Canada</option>
+      <option>Australia</option>
+      <option>Germany</option>
+      <!-- Add more as needed -->
+    </select>
+  </div>
+
+  <!-- Country of Birth -->
+  <div class="mb-3">
+    <label for="country-birth" class="form-label">Country of birth</label>
+    <select id="country-birth" name="country-birth" class="form-control" required>
+      <option disabled selected>-- Please Select --</option>
+      <option>United Kingdom</option>
+      <option>India</option>
+      <option>United States</option>
+      <option>Canada</option>
+      <option>Australia</option>
+      <option>Germany</option>
+      <!-- Add more as needed -->
+    </select>
+  </div>
+
+  <!-- Place of Birth -->
+  <div class="mb-3">
+    <label for="place-birth" class="form-label">Place of birth</label>
+    <input type="text" id="place-birth" name="place-birth" class="form-control" required>
+  </div>
+
+  <!-- Date of Birth -->
+  <div class="mb-3">
+    <label for="dob" class="form-label">Date of birth</label>
+    <input type="date" id="dob" name="dob" class="form-control" required>
+  </div>
+
+ 
+
+
+  
+  <div class="mb-3">
+    <label class="form-label d-block">Do you have any other nationality?</label>
+
+    <div class="form-check form-check-inline">
+      <input type="radio" class="form-check-input" name="hasOtherNationality" id="hasOtherNationalityYes">
+      <label class="form-check-label" for="hasOtherNationalityYes">Yes</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input type="radio" class="form-check-input" name="hasOtherNationality" id="hasOtherNationalityNo">
+      <label class="form-check-label" for="hasOtherNationalityNo">No</label>
+    </div>
+  </div>
+  
+
+  <div id="other-nationality-section" style="display: none;">
+    <div class="form-section-title">Your Other Nationalities</div>
+    <div class="mb-3">
+      <label class="form-label">Country of other nationality</label>
+      <select class="form-control" name="other-nationality-country">
+        <option disabled selected>-- Please Select --</option>
+        <option>United Kingdom</option>
+        <option>India</option>
+        <option>United States</option>
+        <option>Canada</option>
+        <option>Australia</option>
+        <option>Germany</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Date held from</label>
+      <input type="date" class="form-control" name="other-nationality-held-from">
+    </div>
+
+    <div  class="mb-3 form-check">
+      <input type="checkbox" class="form-check-input" id="still-hold-nationality">
+      <label class="form-check-label" for="still-hold-nationality">I still hold this nationality</label>
+    </div>
+
+    <div class="mb-3" id="nationality-held-to-container">
+      <label class="form-label">Date held to</label>
+      <input type="date" class="form-control" name="other-nationality-held-to">
+    </div>
+
+    <div class="form-section-title">Passport Details</div>
+    <div class="mb-3">
+      <label class="form-label d-block">Can you provide a valid passport?</label>
+      <div class="form-check form-check-inline">
+        <input type="radio" class="form-check-input" name="hasPassport" id="hasPassportYes">
+        <label class="form-check-label" for="hasPassportYes">Yes</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input type="radio" class="form-check-input" name="hasPassport" id="hasPassportNo">
+        <label class="form-check-label" for="hasPassportNo">No</label>
+      </div>
+    </div>
+
+    <div id="passport-details-section" style="display: none;">
+      <div class="mb-3">
+        <label class="form-label">Passport number</label>
+        <input type="text" class="form-control" name="passport-number">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Issuing authority</label>
+        <select class="form-control" name="passport-issuer">
+          <option disabled selected>-- Please Select --</option>
+          <option>United Kingdom</option>
+          <option>India</option>
+          <option>United States</option>
+          <option>Canada</option>
+          <option>Australia</option>
+          <option>Germany</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Issue date</label>
+        <input type="date" class="form-control" name="passport-issue-date">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Expiry date</label>
+        <input type="date" class="form-control" name="passport-expiry-date">
+      </div>
+    </div>
+
+    <div class="form-section-title">Identity Card Details</div>
+  <div class="mb-3">
+    <label class="form-label d-block">Do you have an identity card for this nationality?</label>
+    <div class="form-check form-check-inline">
+      <input type="radio" class="form-check-input" name="hasIdentityCard" id="hasIdentityCardYes">
+      <label class="form-check-label" for="hasIdentityCardYes">Yes</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input type="radio" class="form-check-input" name="hasIdentityCard" id="hasIdentityCardNo">
+      <label class="form-check-label" for="hasIdentityCardNo">No</label>
+    </div>
+  </div>
+
+  <div id="identity-card-section" style="display: none;">
+    <div class="mb-3">
+      <label class="form-label">Identity number</label>
+      <input type="text" class="form-control" name="identity-number">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Identity issuing authority</label>
+      <input type="text" class="form-control" name="identity-authority" required>
+      <div class="form-text-error">Identity Issuing Authority is required</div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Issue date</label>
+      <input type="date" class="form-control" name="identity-issue-date">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Expiry date</label>
+      <input type="date" class="form-control" name="identity-expiry-date">
+    </div>
+  </div>
+
+ 
+  <div class="mb-3">
+    <label class="form-label d-block">Do you currently hold, or have you ever held, any other nationality or citizenship?</label>
+    <div class="form-check form-check-inline">
+      <input type="radio" class="form-check-input" name="hasAdditionalNationality" id="hasAdditionalNationalityYes">
+      <label class="form-check-label" for="hasAdditionalNationalityYes">Yes</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input type="radio" class="form-check-input" name="hasAdditionalNationality" id="hasAdditionalNationalityNo">
+      <label class="form-check-label" for="hasAdditionalNationalityNo">No</label>
+    </div>
+  </div>
+
+  <div id="additional-nationality-section" style="display: none;">
+    <div class="mb-3">
+      <label class="form-label">Country of other nationality</label>
+      <select class="form-control" name="additional-nationality-country">
+        <option disabled selected>-- Please Select --</option>
+        <option>United Kingdom</option>
+        <option>India</option>
+        <option>United States</option>
+        <option>Canada</option>
+        <option>Australia</option>
+        <option>Germany</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Date held from</label>
+      <input type="date" class="form-control" name="additional-held-from">
+    </div>
+
+    <div class="mb-3 form-check">
+      <input type="checkbox" class="form-check-input" id="additional-still-hold">
+      <label class="form-check-label" for="additional-still-hold">I still hold this nationality</label>
+    </div>
+
+    <div class="mb-3" id="additional-held-to-container">
+      <label class="form-label">Date held to</label>
+      <input type="date" class="form-control" name="additional-held-to">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+  <div class="form-section-title">Your Employment Status</div>
+  <div class="mb-3">
+    <label class="form-label d-block">What is your employment status?</label>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="employment-status" id="employed" value="employed">
+      <label class="form-check-label" for="employed">Employed</label>
+    </div>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="employment-status" id="self-employed" value="self-employed">
+      <label class="form-check-label" for="self-employed">Self-employed</label>
+    </div>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="employment-status" id="unemployed" value="unemployed">
+      <label class="form-check-label" for="unemployed">Unemployed</label>
+    </div>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="employment-status" id="student" value="student">
+      <label class="form-check-label" for="student">A student</label>
+    </div>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="employment-status" id="retired" value="retired">
+      <label class="form-check-label" for="retired">Retired</label>
+    </div>
+  </div>
+
+  <!-- Income and Savings -->
+  <div class="form-section-title">Your Income and Savings</div>
+  <div class="mb-3">
+    <label class="form-label d-block">Do you have another income or any savings?</label>
+    <div class="form-check">
+      <input type="checkbox" class="form-check-input" id="other-income" name="income-savings" value="other-income">
+      <label class="form-check-label" for="other-income">Other regular additional income</label>
+    </div>
+    <div class="form-check">
+      <input type="checkbox" class="form-check-input" id="savings" name="income-savings" value="savings">
+      <label class="form-check-label" for="savings">Savings</label>
+    </div>
+    <div class="form-check">
+      <input type="checkbox" class="form-check-input" id="no-income" name="income-savings" value="none">
+      <label class="form-check-label" for="no-income">I do not have any other income or savings</label>
+    </div>
+  </div>
+
+  <!-- Cost of Visit -->
+  <div class="form-section-title">About the Cost of Your Visit</div>
+  <div class="mb-3">
+    <label class="form-label">Currency</label>
+    <select class="form-control" name="visit-currency" required>
+      <option disabled selected>-- Please Select --</option>
+      <option value="GBP">GBP - British Pound</option>
+
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">How much money are you personally planning to spend on your visit to the UK?</label>
+    <input type="number" class="form-control" name="planned-spend" min="0" step="any">
+  </div>
+
+  <!-- Financial Situation -->
+  <div class="form-section-title">About Your Financial Situation</div>
+  <div class="mb-3">
+    <label class="form-label">Currency</label>
+    <select class="form-control" name="monthly-currency" required>
+      <option disabled selected>-- Please Select --</option>
+      <option value="GBP">GBP - British Pound</option>
+  
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">What is the total amount of money you spend each month?</label>
+    <input type="number" class="form-control" name="monthly-spend" min="0" step="any">
+  
+  </div>
+
+
+
+
+  <div class="form-section-title">Paying for Your Visit</div>
+
+  <!-- Question: Will anyone be paying towards the cost of your visit? -->
+  <div class="mb-3">
+    <label class="form-label d-block">Will anyone be paying towards the cost of your visit?</label>
+    <div class="form-check form-check-inline">
+      <input type="radio" class="form-check-input" name="hasSponsor" id="hasSponsorYes">
+      <label class="form-check-label" for="hasSponsorYes">Yes</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input type="radio" class="form-check-input" name="hasSponsor" id="hasSponsorNo">
+      <label class="form-check-label" for="hasSponsorNo">No</label>
+    </div>
+  </div>
+
+  <!-- Dynamic Sponsor Section -->
+  <div id="sponsor-details-section" style="display: none;">
+    <div class="mb-3">
+      <label class="form-label">Who is paying towards the cost of your visit?</label>
+      <div class="form-check">
+        <input type="radio" class="form-check-input" name="sponsor-type" id="sponsorSomeone" value="someone">
+        <label class="form-check-label" for="sponsorSomeone">Someone I know (for example, family or friend)</label>
+      </div>
+      <div class="form-check">
+        <input type="radio" class="form-check-input" name="sponsor-type" id="sponsorCompany" value="company">
+        <label class="form-check-label" for="sponsorCompany">Another company or organisation</label>
+      </div>
+      <div class="form-check">
+        <input type="radio" class="form-check-input" name="sponsor-type" id="sponsorEmployer" value="employer">
+        <label class="form-check-label" for="sponsorEmployer">My employer or company</label>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Payment currency</label>
+      <select class="form-control" name="sponsor-currency">
+        <option disabled selected>-- Please Select --</option>
+        <option value="GBP">GBP - British Pound</option>
+        <option value="USD">USD - US Dollar</option>
+        <option value="EUR">EUR - Euro</option>
+        <option value="INR">INR - Indian Rupee</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">How much money will they be paying towards your visit?</label>
+      <input type="number" class="form-control" name="sponsor-amount" min="0" step="any">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Why are they helping to pay for your visit?</label>
+      <input type="text" class="form-control" name="sponsor-reason">
+    </div>
+  </div>
+
+
+
+   <div class="form-section-title">Your Planned Travel Information</div>
+
+  <div class="mb-3">
+    <label class="form-label" for="arrival-date">Date you plan to arrive in the UK</label>
+    <input type="date" class="form-control" id="arrival-date" name="arrival-date" required>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label" for="departure-date">Date you plan to leave the UK</label>
+    <input type="date" class="form-control" id="departure-date" name="departure-date" required>
+  </div>
+
+  <!-- Trip Language Preference -->
+  <div class="form-section-title">Trip Information</div>
+
+  <div class="mb-3">
+    <label class="form-label d-block">We may have to talk to you about your application. Which language would you prefer to use?</label>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="spoken-language" id="language-english" value="english">
+      <label class="form-check-label" for="language-english">English</label>
+    </div>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="spoken-language" id="language-other" value="other">
+      <label class="form-check-label" for="language-other">Other</label>
+    </div>
+  </div>
+
+  <!-- Main Purpose -->
+  <div class="mb-3">
+    <label class="form-label d-block">Main reason for your visit</label>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="visit-purpose" id="visit-tourism" value="tourism">
+      <label class="form-check-label" for="visit-tourism">Tourism (including visiting family and friends)</label>
+    </div>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="visit-purpose" id="visit-study" value="study">
+      <label class="form-check-label" for="visit-study">Short Study (for less than 6 months)</label>
+    </div>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="visit-purpose" id="visit-business" value="business">
+      <label class="form-check-label" for="visit-business">Business (including sports and entertainment)</label>
+    </div>
+  </div>
+
+  <!-- Visit Details -->
+  <div class="mb-3">
+    <label class="form-label" for="visit-details">Give details of the main purpose of your visit and anything else you plan to do on your trip.</label>
+    <textarea class="form-control" id="visit-details" name="visit-details" rows="4" required></textarea>
+  </div>
+
+
+
+<div class="form-section-title">Paying for Your Visit</div>
+
+  <!-- Question: Will anyone be paying towards the cost of your visit? -->
+  <div class="mb-3">
+    <label class="form-label d-block">Will anyone be paying towards the cost of your visit?</label>
+    <div class="form-check form-check-inline">
+      <input type="radio" class="form-check-input" name="hasSponsor" id="hasSponsorYes">
+      <label class="form-check-label" for="hasSponsorYes">Yes</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input type="radio" class="form-check-input" name="hasSponsor" id="hasSponsorNo">
+      <label class="form-check-label" for="hasSponsorNo">No</label>
+    </div>
+  </div>
+
+  <!-- Dynamic Sponsor Section -->
+  <div id="sponsor-details-section" style="display: none;">
+    <div class="mb-3">
+      <label class="form-label">Who is paying towards the cost of your visit?</label>
+      <div class="form-check">
+        <input type="radio" class="form-check-input" name="sponsor-type" id="sponsorSomeone" value="someone">
+        <label class="form-check-label" for="sponsorSomeone">Someone I know (for example, family or friend)</label>
+      </div>
+      <div class="form-check">
+        <input type="radio" class="form-check-input" name="sponsor-type" id="sponsorCompany" value="company">
+        <label class="form-check-label" for="sponsorCompany">Another company or organisation</label>
+      </div>
+      <div class="form-check">
+        <input type="radio" class="form-check-input" name="sponsor-type" id="sponsorEmployer" value="employer">
+        <label class="form-check-label" for="sponsorEmployer">My employer or company</label>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Payment currency</label>
+      <select class="form-control" name="sponsor-currency">
+        <option disabled selected>-- Please Select --</option>
+        <option value="GBP">GBP - British Pound</option>
+        <option value="USD">USD - US Dollar</option>
+        <option value="EUR">EUR - Euro</option>
+        <option value="INR">INR - Indian Rupee</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">How much money will they be paying towards your visit?</label>
+      <input type="number" class="form-control" name="sponsor-amount" min="0" step="any">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Why are they helping to pay for your visit?</label>
+      <input type="text" class="form-control" name="sponsor-reason">
+    </div>
+  </div>
+
+
+
+   <div class="form-section-title">Your Planned Travel Information</div>
+
+  <div class="mb-3">
+    <label class="form-label" for="arrival-date">Date you plan to arrive in the UK</label>
+    <input type="date" class="form-control" id="arrival-date" name="arrival-date" required>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label" for="departure-date">Date you plan to leave the UK</label>
+    <input type="date" class="form-control" id="departure-date" name="departure-date" required>
+  </div>
+
+  <!-- Trip Language Preference -->
+  <div class="form-section-title">Trip Information</div>
+
+  <div class="mb-3">
+    <label class="form-label d-block">We may have to talk to you about your application. Which language would you prefer to use?</label>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="spoken-language" id="language-english" value="english">
+      <label class="form-check-label" for="language-english">English</label>
+    </div>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="spoken-language" id="language-other" value="other">
+      <label class="form-check-label" for="language-other">Other</label>
+    </div>
+  </div>
+
+  <!-- Main Purpose -->
+  <div class="mb-3">
+    <label class="form-label d-block">Main reason for your visit</label>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="visit-purpose" id="visit-tourism" value="tourism">
+      <label class="form-check-label" for="visit-tourism">Tourism (including visiting family and friends)</label>
+    </div>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="visit-purpose" id="visit-study" value="study">
+      <label class="form-check-label" for="visit-study">Short Study (for less than 6 months)</label>
+    </div>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="visit-purpose" id="visit-business" value="business">
+      <label class="form-check-label" for="visit-business">Business (including sports and entertainment)</label>
+    </div>
+  </div>
+
+  <!-- Visit Details -->
+  <div class="mb-3">
+    <label class="form-label" for="visit-details">Give details of the main purpose of your visit and anything else you plan to do on your trip.</label>
+    <textarea class="form-control" id="visit-details" name="visit-details" rows="4" required></textarea>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+ 
+
+
+
+
+
+
+
+
+
+
+      
+
+
+
+
+ 
+
+
+
+
+</form>
+
+</div>
+
+<!-- Additional fieldsets like Guardian, Passport, Contact, Purpose, etc. to follow -->
+      </form>
+      </div>
+    </div>
+  </div>
+
+    <div class="footer-bar mt-5">
+      <div>
+        &copy; | Powered by The SkyTrails
+      </div>
+      <div>
+        <a href="upload2.html">
+        <button class="btn btn-secondary me-2">Go Back</button></a>
+        <a href="{% url "ai_submit" %}">
+        <button class="btn btn-submit-custom">Submit</button></a>
+      </div>
+    </div>
+</div>
+
+
+    <!-- Application Form section would follow here -->
+  </div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+
+let uploadedImages = [];
+const savedDestinationCountry = localStorage.getItem('destinationCountry');
+function showFormField(){
+  document.querySelectorAll('[id^="form-"]').forEach(form => {
+  form.style.display = 'none';
+});
+
+// Then show only the selected one
+const targetForm = document.getElementById(`form-${savedDestinationCountry}`);
+if (targetForm) {
+  targetForm.style.display = 'block';
+}
+}
+document.querySelectorAll('[data-bs-toggle="collapse"]').forEach(trigger => {
+  trigger.addEventListener('click', () => {
+    const errorPanel = document.querySelector('.errors-panel');
+    const collapseId = trigger.getAttribute('data-bs-target');
+    const targetCollapse = document.querySelector(collapseId);
+    setTimeout(() => {
+      const isExpanded = targetCollapse.classList.contains('show');
+      if (collapseId === '#errorList') {
+        errorPanel.classList.toggle('collapsed', !isExpanded);
+      }
+    }, 350);
+  });
+});
+
+function truncate(text, max = 20) {
+  return text.length <= max ? text : text.slice(0, max - 3) + "...";
+}
+
+
+function renderProcessedDocs() {
+  const processedDocsDiv = document.getElementById("docsDisplayArea");
+  processedDocsDiv.innerHTML = '';
+  if (!uploadedImages?.length) return;
+
+  const grouped = {};
+  uploadedImages.forEach(doc => {
+    const type = doc.docType || 'Unsorted';
+    if (!grouped[type]) grouped[type] = [];
+    grouped[type].push(doc);
+  });
+
+  const tabNav = document.createElement('div');
+  tabNav.className = 'd-flex flex-wrap gap-2 mb-3';
+  const contentWrapper = document.createElement('div');
+
+  Object.entries(grouped).forEach(([type, docs], index) => {
+    const tabBtn = document.createElement('button');
+    tabBtn.textContent = type;
+    tabBtn.className = `btn btn-outline-warning rounded-pill ${index === 0 ? 'active' : ''}`;
+    tabBtn.onclick = () => {
+      document.querySelectorAll('.doc-tab-content').forEach(c => c.style.display = 'none');
+      document.getElementById(`tab-${type}`).style.display = 'block';
+      document.querySelectorAll('.btn-outline-warning').forEach(btn => btn.classList.remove('active'));
+      tabBtn.classList.add('active');
+    };
+    tabNav.appendChild(tabBtn);
+
+    const content = document.createElement('div');
+    content.id = `tab-${type}`;
+    content.className = 'doc-tab-content';
+    content.style.display = index === 0 ? 'block' : 'none';
+
+    docs.forEach(doc => {
+      const card = document.createElement('div');
+      card.style.border = '2px solid #d3d3d3';
+      card.style.borderRadius = '16px';
+      card.style.padding = '12px';
+      card.style.marginBottom = '16px';
+      card.style.textAlign = 'center';
+
+      const title = document.createElement('div');
+      title.textContent = doc.fileName;
+      title.style.fontWeight = '600';
+      title.style.marginBottom = '10px';
+
+      const image = document.createElement('img');
+      image.src = doc.imageUrl;
+      image.alt = doc.fileName;
+      image.style.width = '120px';
+      image.style.borderRadius = '6px';
+      image.style.cursor = 'pointer';
+      image.onclick = () => window.open(doc.imageUrl, '_blank');
+
+      const expandIcon = document.createElement('span');
+      expandIcon.className = 'material-icons';
+      expandIcon.textContent = 'fullscreen';
+      expandIcon.style.cursor = 'pointer';
+      expandIcon.style.marginLeft = '10px';
+      expandIcon.onclick = () => window.open(doc.imageUrl, '_blank');
+
+      card.appendChild(title);
+      card.appendChild(image);
+      card.appendChild(expandIcon);
+      content.appendChild(card);
+    });
+
+    contentWrapper.appendChild(content);
+  });
+
+  processedDocsDiv.appendChild(tabNav);
+  processedDocsDiv.appendChild(contentWrapper);
+}
+
+function renderErrorListFromBackend() {
+  const errorListDiv = document.getElementById("errorList");
+  const errorContainer = document.createElement("div");
+  let errorCount = 0;
+
+  uploadedImages.forEach(doc => {
+    const statusCode = doc.backendObj?.statusCode;
+    const errorDetails = doc.backendObj?.errors || doc.backendObj?.errorMessages || [];
+  
+
+    if (statusCode !== 200 || (Array.isArray(errorDetails) && errorDetails.length)) {
+      const title = document.createElement("div");
+      title.className = "error-category";
+      title.textContent = `${doc.docType} - ${doc.fileName}`;
+      errorContainer.appendChild(title);
+
+      if (Array.isArray(errorDetails) && errorDetails.length) {
+        errorDetails.forEach(err => {
+          const errorItem = document.createElement("div");
+          errorItem.className = "error-item";
+          errorItem.innerHTML = `<i class="material-icons">warning</i>${err}`;
+          errorContainer.appendChild(errorItem);
+          errorCount++;
+        });
+      } else {
+        const fallback = document.createElement("div");
+        fallback.className = "error-item";
+        fallback.innerHTML = `<i class="material-icons">warning</i>Unknown error occurred (Status ${statusCode})`;
+        errorContainer.appendChild(fallback);
+        errorCount++;
+      }
+    }
+  });
+
+  if (errorCount > 0) {
+    document.querySelector(".badge.rounded-pill").textContent = errorCount;
+    errorListDiv.innerHTML = '';
+    errorListDiv.appendChild(errorContainer);
+  } else {
+    document.querySelector(".badge.rounded-pill").textContent = 0;
+    errorListDiv.innerHTML = `<div class="error-item"><i class="material-icons">check_circle</i>All documents processed successfully!</div>`;
+  }
+}
+
+function renderMissingDocTypeErrors() {
+  const allDocTypes = [
+    "Passport",
+    "Aadhaar card",
+    "Certificate of Marriage",
+    "Marriage Certificate",
+    "Income Tax Return Acknowledgement",
+    "Passbook",
+    "Residence Permit",
+    "GST Registration"
+  ];
+
+  const uploadedDocTypes = uploadedImages.map(doc => doc.docType);
+  const missingTypes = allDocTypes.filter(type => !uploadedDocTypes.includes(type));
+
+  if (missingTypes.length > 0) {
+    const errorListDiv = document.getElementById("errorList");
+
+    const sectionTitle = document.createElement("div");
+    sectionTitle.className = "error-category";
+    sectionTitle.textContent = "Missing Document Types";
+    errorListDiv.appendChild(sectionTitle);
+
+    missingTypes.forEach(type => {
+      const errorItem = document.createElement("div");
+      errorItem.className = "error-item";
+      errorItem.innerHTML = `<i class="material-icons">warning</i>${type} has not been uploaded`;
+      errorListDiv.appendChild(errorItem);
+    });
+
+    const badge = document.querySelector(".badge.rounded-pill");
+    badge.textContent = parseInt(badge.textContent) + missingTypes.length;
+  }
+}
+function splitFullName(fullName = '') {
+  const parts = fullName.trim().split(/\s+/);
+  return {
+    First_Name: parts[0] || '',
+    Surname: parts.length > 1 ? parts.slice(1).join(' ') : ''
+  };
+}
+
+function autoFillFormFromAllDocuments() {
+  const formContainer = document.querySelector('.review-form-container') || document.querySelector('form');
+  if (!formContainer) return;
+
+  const loader = document.createElement('div');
+  loader.className = 'loader';
+  loader.innerHTML = `
+    <div class="text-center py-3">
+      <div class="spinner-border text-warning" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-2">Extracting details and filling form...</p>
+    </div>
+  `;
+  formContainer.prepend(loader);
+
+  if (!uploadedImages?.length) {
+    loader.remove();
+    return;
+  }
+
+  let fieldsFilled = 0;
+  let statusMessage = '';
+
+  const hasPassport = uploadedImages.some(doc => 
+    doc?.backendObj?.parsedData?.Document_Type?.toLowerCase().includes('passport')
+  );
+  const hasNonPassport = uploadedImages.some(doc => 
+    doc?.backendObj?.parsedData?.Document_Type && 
+    !doc?.backendObj?.parsedData?.Document_Type?.toLowerCase().includes('passport')
+  );
+
+  if (hasNonPassport) {
+    let extractedDetails = getFirstValidDocumentDetails();
+    if (extractedDetails?.Name) {
+      const { First_Name, Surname } = splitFullName(extractedDetails.Name);
+      extractedDetails.First_Name = First_Name;
+      extractedDetails.Surname = Surname;
+    }
+    if (extractedDetails) {
+      fieldsFilled += fillFormFields(extractedDetails, getDocumentFieldMap());
+      statusMessage += fieldsFilled > 0 ? `Filled ${fieldsFilled} fields from documents. ` : '';
+    }
+  }
+
+  if (hasPassport) {
+    let passportDetails = getFirstValidPassportDetails();
+    if (passportDetails?.Name) {
+      const { First_Name, Surname } = splitFullName(passportDetails.Name);
+      passportDetails.First_Name = First_Name;
+      passportDetails.Surname = Surname;
+    }
+    if (passportDetails) {
+      const passportFieldsFilled = fillFormFields(passportDetails, getPassportFieldMap());
+      fieldsFilled += passportFieldsFilled;
+      statusMessage += passportFieldsFilled > 0 ? `Filled ${passportFieldsFilled} fields from passport. ` : '';
+    }
+  }
+
+  setTimeout(() => {
+    loader.remove();
+
+    if (fieldsFilled > 0 || statusMessage) {
+      const statusMsg = document.createElement('div');
+      statusMsg.className = 'alert alert-info mt-3';
+      statusMsg.innerHTML = `
+        <i class="material-icons">info</i>
+        ${statusMessage || 'No matching data found in documents'}
+      `;
+      formContainer.prepend(statusMsg);
+
+      setTimeout(() => statusMsg.remove(), 5000);
+    }
+  }, 1000);
+}
+
+function getFirstValidDocumentDetails() {
+  for (const doc of uploadedImages) {
+    if (doc?.backendObj?.parsedData?.Extracted_Details && 
+        !doc?.backendObj?.parsedData?.Document_Type?.toLowerCase().includes('passport')) {
+      return doc.backendObj.parsedData.Extracted_Details;
+    }
+  }
+  return null;
+}
+
+function getFirstValidPassportDetails() {
+  for (const doc of uploadedImages) {
+    if (doc?.backendObj?.parsedData?.Extracted_Details && 
+        doc?.backendObj?.parsedData?.Document_Type?.toLowerCase().includes('passport')) {
+      return doc.backendObj.parsedData.Extracted_Details;
+    }
+  }
+  return null;
+}
+
+function getPassportFieldMap() {
+  return [
+    {
+      labels: ['First name(s)', 'Given name', 'First name'],
+      keys: ['First_Name'],
+      type: 'text',
+      processor: (value) => value || ''
+    },
+    {
+      labels: ['Surname(s)', 'Family name', 'Last name', 'Surname'],
+      keys: ['Surname'],
+      type: 'text',
+      processor: (value) => value || ''
+    },
+    {
+      labels: ['Date of birth', 'Birth date', 'DOB'],
+      keys: ['Date_of_Birth'],
+      type: 'date',
+      processor: (value) => value || ''
+    },
+    {
+      labels: ['Passport Number', 'Number of Travel Document'],
+      keys: ['Document_Number'],
+      type: 'text',
+      processor: (value) => value || '',
+      docType: 'passport'
+    },
+    {
+      labels: ['Travel Document Number'],
+      keys: ['Document_Number'],
+      type: 'text',
+      processor: (value) => value || '',
+      docType: 'passport'
+    },
+    {
+      labels: ['Nationality', 'Citizenship'],
+      keys: ['Nationality'],
+      type: 'text',
+      processor: (value) => value || ''
+    },
+    {
+      labels: ['Place of Birth', 'Birth Place'],
+      keys: ['Place_of_Birth'],
+      type: 'text',
+      processor: (value) => value || ''
+    },
+    {
+      labels: ['Date of Issue', 'Issue Date'],
+      keys: ['Date_of_Issue'],
+      type: 'date',
+      processor: (value) => value || ''
+    },
+    {
+      labels: ['Date of Expiry', 'Expiry Date'],
+      keys: ['Date_of_Expiry'],
+      type: 'date',
+      processor: (value) => value || ''
+    },
+    {
+      labels: ['Gender', 'Sex'],
+      keys: ['Gender'],
+      type: 'text',
+      processor: (value) => value || ''
+    }
+  ];
+}
+
+function extractAddress(addressObj) {
+    console.log(addressObj,"address")
+  if (!addressObj || typeof addressObj !== 'object') return '';
+  // Try all possible keys for address object
+  const parts = [
+    addressObj.Village,
+    addressObj.VTC,
+    addressObj.PO,
+    addressObj.District,
+    addressObj['Sub District'] || addressObj.SubDistrict,
+    addressObj.State,
+    addressObj.PinCode
+  ]
+    .filter(part => part && part.toString().trim() !== '')
+    .join(', ');
+    console.log(parts,"address")
+  return parts;
+}
+
+function getDocumentFieldMap() {
+  return [
+    {
+      labels: ['First name(s)', 'Given name', 'First name'],
+      keys: ['First_Name'],
+      type: 'text',
+      processor: (value) => value || ''
+    },
+    {
+      labels: ['Surname(s)', 'Family name', 'Last name', 'Surname'],
+      keys: ['Surname'],
+      type: 'text',
+      processor: (value) => value || ''
+    },
+    {
+      labels: ['Date of birth', 'Birth date', 'DOB'],
+      keys: ['Date_of_Birth'],
+      type: 'date',
+      processor: (value) => value || ''
+    },
+    // Individual address fields
+    {
+      labels: ['State/Province'],
+      keys: ['Address'],
+      type: 'text',
+      processor: (address) => address && address.State ? address.State : ''
+    },
+    {
+      labels: ['Place'],
+      keys: ['Address'],
+      type: 'text',
+      processor: (address) => address && (address.Village || address.VTC || address.PO || address.District) 
+        ? [address.Village, address.VTC, address.PO, address.District].filter(Boolean).join(', ') : ''
+    },
+    {
+      labels: ['Postal Code'],
+      keys: ['Address'],
+      type: 'text',
+      processor: (address) => address && address.PinCode ? address.PinCode : ''
+    },
+    {
+      labels: ['Address', 'Residential address', 'Permanent address'],
+      keys: ['Address'],
+      type: 'text',
+      processor: (address) => {
+        if (!address || typeof address !== 'object') return '';
+        // Use all address fields except House/Flat/PinCode as "Address"
+        return [address.Village, address.VTC, address.PO, address.District, address['Sub District'] || address.SubDistrict, address.State]
+          .filter(Boolean)
+          .join(', ');
+      }
+    },
+    {
+      labels: ['House number'],
+      keys: ['Address'],
+      type: 'text',
+      processor: (address) => address && address.HouseNumber ? address.HouseNumber : ''
+    },
+    {
+      labels: ['Flat number'],
+      keys: ['Address'],
+      type: 'text',
+      processor: (address) => address && address.FlatNumber ? address.FlatNumber : ''
+    },
+    // Aadhaar/ID numbers
+    {
+      labels: ['Aadhaar Number', 'National Identity Number'],
+      keys: ['Document_Number'],
+      type: 'text',
+      processor: (value) => value || '',
+      docType: 'non-passport'
+    },
+    {
+      labels: ['Document Number', 'ID Number'],
+      keys: ['Document_Number'],
+      type: 'text',
+      processor: (value) => value || '',
+      docType: 'non-passport'
+    }
+  ];
+}
+
+function fillFormFields(details, fieldMap) {
+  let fieldsFilled = 0;
+  const filledInputs = new Set();
+
+  fieldMap.forEach(mapping => {
+    mapping.labels.forEach(labelText => {
+      const labels = Array.from(document.querySelectorAll('label')).filter(label =>
+        label.textContent.toLowerCase().includes(labelText.toLowerCase())
+      );
+
+      labels.forEach(label => {
+        const input = getAssociatedInput(label);
+        if (input && !filledInputs.has(input) && (input.tagName === 'INPUT' || input.tagName === 'TEXTAREA')) {
+          let rawValue;
+          // For address-related keys, pass the whole address object
+          if (mapping.keys[0] === 'Address' && typeof details['Address'] === 'object') {
+            rawValue = details['Address'];
+          } else {
+            rawValue = mapping.keys.reduce((val, key) => 
+              val || (details[key] !== null && details[key] !== undefined ? details[key] : null),
+              null
+            );
+          }
+          const processedValue = mapping.processor(rawValue);
+
+          if (processedValue) {
+            input.value = processedValue;
+            input.dispatchEvent(new Event('change', { bubbles: true }));
+            filledInputs.add(input);
+            fieldsFilled++;
+          }
+        }
+      });
+    });
+  });
+
+  return fieldsFilled;
+}
+
+function getAssociatedInput(label) {
+  // Handles both 'input' and 'textarea' (and 'select' just in case)
+  let input = label.nextElementSibling;
+  while (input && !['INPUT', 'TEXTAREA', 'SELECT'].includes(input.tagName)) {
+    input = input.nextElementSibling;
+  }
+  if (!input && label.hasAttribute('for')) {
+    input = document.getElementById(label.getAttribute('for'));
+  }
+  return input;
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  const saved = sessionStorage.getItem("uploadedDocuments");
+  if (saved) {
+    uploadedImages = JSON.parse(saved);
+    renderProcessedDocs();
+    renderErrorListFromBackend();
+    renderMissingDocTypeErrors();
+
+    setTimeout(autoFillFormFromAllDocuments, 500);
+  }
+});
+
+function populateCountryDropdowns() {
+  fetch("https://restcountries.com/v3.1/all")
+    .then(res => res.json())
+    .then(data => {
+      const countryNames = data.map(c => c.name.common).sort();
+      const options = '<option value="">-- Please Select --</option>' +
+        countryNames.map(name => `<option value="${name}">${name}</option>`).join('');
+
+      // Target only the dropdowns related to countries/nationalities
+      document.querySelectorAll("select").forEach(select => {
+        const label = select.closest('.mb-3')?.querySelector('label')?.textContent?.toLowerCase() || '';
+        const isCountryField = label.includes("country") || label.includes("nationality") || label.includes("place of birth") || label.includes("issuing state");
+
+        if (isCountryField && select.options.length <= 1) {
+          select.innerHTML = options;
+        }
+      });
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const signupData = JSON.parse(localStorage.getItem('signupData'));
+  const visaData = JSON.parse(localStorage.getItem('visaData'));
+
+  if (signupData?.firstName) {
+    document.getElementById('reviewName').textContent = `${signupData.firstName}, Know before you go!`;
+    const profileInitialEl = document.getElementById('profileInitial');
+    if (profileInitialEl) {
+      profileInitialEl.textContent = signupData.firstName.charAt(0).toUpperCase();
+    }
+  }
+
+  if (visaData) {
+    const destination = (visaData.destinationCountry || visaData.arrCountyName || 'Unknown');
+    const visaType = visaData.visaCategory || 'Tourism';
+    const fromDateStr = visaData.fromDate?.split('T')[0];
+    const toDateStr = visaData.toDate?.split('T')[0];
+
+    // Update info bar
+    const formatDate = (iso) => new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    const getDuration = (start, end) => {
+      const d1 = new Date(start);
+      const d2 = new Date(end);
+      const diff = Math.ceil((d2 - d1) / (1000 * 60 * 60 * 24));
+      return diff > 0 ? `${diff} days` : 'N/A';
+    };
+
+    document.getElementById('infoDestination').textContent = destination;
+    document.getElementById('infoVisaType').textContent = visaType;
+    document.getElementById('infoDuration').textContent = getDuration(fromDateStr, toDateStr);
+    document.getElementById('infoDates').textContent = `${formatDate(fromDateStr)} – ${formatDate(toDateStr)}`;
+
+    // Show the form for selected country
+    document.querySelectorAll('.country-form').forEach(div => div.style.display = 'none');
+    const formDiv = document.getElementById(`form-${destination}`);
+    if (formDiv) {
+      formDiv.style.display = 'block';
+
+      // Now populate country dropdowns after form becomes visible
+      setTimeout(() => {
+        fetch("https://restcountries.com/v3.1/all")
+          .then(res => res.json())
+          .then(data => {
+            const countryNames = data.map(c => c.name.common).sort();
+            const options = '<option value="">-- Please Select --</option>' +
+              countryNames.map(name => `<option value="${name}">${name}</option>`).join('');
+
+            // Target only relevant selects inside the currently shown form
+            formDiv.querySelectorAll("select").forEach(select => {
+              const label = select.closest('.mb-3')?.querySelector('label')?.textContent?.toLowerCase() || '';
+              const isCountryField = label.includes("country") || label.includes("nationality") || label.includes("place of birth") || label.includes("issuing state");
+              if (isCountryField) {
+                select.innerHTML = options;
+              }
+            });
+          });
+      }, 200);
+    } else {
+      console.warn(`Form not found for destination: ${destination}`);
+    }
+  }
+
+  function setupToggleSection(checkboxId, targetSectionId) {
+    const checkbox = document.getElementById(checkboxId);
+    const section = document.getElementById(targetSectionId);
+    if (checkbox && section) {
+      checkbox.addEventListener('change', () => {
+        section.style.display = checkbox.checked ? 'block' : 'none';
+      });
+    }
+  }
+  
+  function setupRadioToggle(groupName, yesId, targetId) {
+    const yesRadio = document.getElementById(yesId);
+    const target = document.getElementById(targetId);
+    const radios = document.getElementsByName(groupName);
+
+    if (yesRadio && target && radios.length) {
+      const toggle = () => {
+        target.style.display = yesRadio.checked ? 'block' : 'none';
+      };
+
+      radios.forEach(r => r.addEventListener('change', toggle));
+      toggle();
+    }
+  }
+
+  // Setup all your radio toggles
+  document.addEventListener("DOMContentLoaded", () => {
+    setupRadioToggle('hasNationalID', 'hasNationalIDYes', 'national-id-section');
+  });
+  
+  // Additional logic to control EU block visibility based on French family selection
+  const joinFrenchRadios = document.querySelectorAll('input[name="joinFrench"]');
+  const euBlock = document.getElementById('join-eu-question-block');
+
+  if (joinFrenchRadios.length && euBlock) {
+    const updateEUVisibility = () => {
+      const isFrenchNo = document.getElementById('joinFrenchNo')?.checked;
+      euBlock.style.display = isFrenchNo ? 'block' : 'none';
+    };
+
+    joinFrenchRadios.forEach(radio => {
+      radio.addEventListener('change', updateEUVisibility);
+    });
+
+    updateEUVisibility();
+  }
+
+  // Setup all your toggle sections and radio buttons
+  setupRadioToggle('joinFrench', 'joinFrenchYes', 'french-family-details');
+  setupRadioToggle('joinEU', 'joinEUYes', 'eu-family-details');
+  setupToggleSection('toggle-eu-section', 'section-eu-section');
+  setupRadioToggle('fingerprints', 'fingerprintsYes', 'fingerprints-extra');
+  setupRadioToggle('residenceCheck', 'residenceYes', 'section-residence-details');
+  setupRadioToggle('referenceType', 'invitingPerson', 'reference-person-section');
+  setupRadioToggle('referenceType', 'invitingCompany', 'reference-company-section');
+  setupRadioToggle('costsCovered', 'self', 'costs-self-section');
+  setupRadioToggle('costsCovered', 'sponsor', 'costs-sponsor-section');
+  setupRadioToggle('freedomMovement', 'freedomYes', 'freedom-section-yes');
+  setupToggleSection('freedomCheckbox', 'freedom-section-yes', 'freedom-section-no');
+  setupToggleSection('residenceCheckbox', 'residence-detail-section');
+  setupToggleSection('fingerprintsToggle', 'fingerprint-details-section');
+  setupToggleSection('visaStickerToggle', 'visa-sticker-section');
+  setupRadioToggle('recentSchengen', 'visaYes', 'schengen-details');
+  setupRadioToggle('fingerprintsTaken', 'fpYes', 'fingerprint-details');
+  setupRadioToggle('residencyStatus', 'resideYes', 'residency-details');
+  setupRadioToggle('prevStay', 'prevStayYes', 'prev-stay-details');
+  setupRadioToggle('prevBiometrics', 'prevBiometricsYes', 'biometric-details');
+  setupRadioToggle('otherTravel', 'otherTravelYes', 'otherTravelSection');
+  setupRadioToggle('hostPerson', 'hostYes', 'host-details');
+  setupRadioToggle('hostOrg', 'hostOrgYes', 'host-org-details');
+  setupRadioToggle('altAccom', 'altAccomYes', 'alt-accom-details');
+  setupRadioToggle('otherTripPurpose', 'otherTripYes', 'other-purpose-section');
+  setupRadioToggle('emailOwns', 'emailOwnsYes', 'q2-container');
+  setupRadioToggle('emailOwns', 'emailOwnsNo', 'q3-container');
+  setupRadioToggle('otherEmail', 'otherEmailYes', 'extra-emails-container');
+  setupRadioToggle('otherEmail', 'otherEmailNo', 'email-preference-container');
+  setupRadioToggle('ownEmail', 'ownEmailYes', 'email-if-own-container');
+  setupRadioToggle('hasOtherPhone', 'hasOtherPhoneYes', 'other-phone-container');
+  setupRadioToggle('otherName', 'otherNameYes', 'other-name-section');
+  setupRadioToggle('isCorrespondence', 'isCorrespondenceYes', 'correspondence-address-section', 'no');
+  setupRadioToggle('hasOtherPhone', 'hasOtherPhoneNo', 'other-phone-container');
+  setupRadioToggle('hasNationalID', 'hasNationalIDYes', 'national-id-section');
+  setupRadioToggle('hasOtherNationality', 'hasOtherNationalityYes', 'other-nationality-section');
+  setupRadioToggle('hasPassport', 'hasPassportYes', 'passport-details-section');
+  setupRadioToggle('hasIdentityCard', 'hasIdentityCardYes', 'identity-card-section');
+  setupRadioToggle('hasAdditionalNationality', 'hasAdditionalNationalityYes', 'additional-nationality-section');
+  setupRadioToggle('hasSponsor', 'hasSponsorYes', 'sponsor-details-section');
+  
+  // Setup funding options
+  document.getElementById('fundSelf')?.addEventListener('change', e => {
+    document.getElementById('self-fund-options').style.display = e.target.checked ? 'block' : 'none';
+  });
+  document.getElementById('fundHost')?.addEventListener('change', e => {
+    document.getElementById('host-fund-options').style.display = e.target.checked ? 'block' : 'none';
+  });
+  document.getElementById('fundGuarantor')?.addEventListener('change', e => {
+    document.getElementById('guarantor-fund-options').style.display = e.target.checked ? 'block' : 'none';
+  });
+});
+
+// Add this CSS for the loader
+const loaderCSS = `
+.loader {
+  position: relative;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.loader .spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+`;
+
+// Inject the CSS
+const style = document.createElement('style');
+style.textContent = loaderCSS;
+document.head.appendChild(style);
+
+
+</script>
+
+
+</body>
+</html>

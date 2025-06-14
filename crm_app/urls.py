@@ -321,6 +321,11 @@ urlpatterns = [
    path("Ai/Index",ai_index,name="ai_index"),
    path("Ai/Form",ai_form,name="ai_form"),
    path("Visa/Form",visa_form,name="visa_form"),
+   path("AI/Home",ai_home,name="ai_home"),
+   path("AI/Guideline",ai_guideline,name="ai_guideline"),
+   path("AI/upload2",ai_upload2,name="ai_upload2"),
+   path("AI/Review",ai_review,name="ai_review"),
+   path("AI/Submit",ai_submit,name="ai_submit"),
 
 
    

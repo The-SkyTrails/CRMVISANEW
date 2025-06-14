@@ -1,0 +1,737 @@
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Review - The Skytrails</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      /* background: linear-gradient(90deg, #fff4ee 0%, #fdeffb 55%, #e1eaff 100%); */
+      margin: 0;
+      
+    }
+
+   
+body {
+  background: linear-gradient(120deg, #ffffff 0%, #f8f2f8 48%, #e9bddd 100%);
+}
+
+   .logo-img {
+  max-height: 220px;
+  object-fit: contain;
+  display: block;
+}
+
+
+    .nav-link {
+      font-weight: 600;
+      color: #1e1e1e;
+      font-size: 15px;
+    }
+     /* .navbar-brand img {
+      width: 100px;
+      height: 10px;
+        object-fit: contain;
+    } */
+
+    .navbar {
+  min-height: 64px; /* set your desired max */
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+    .nav-link:hover {
+      color: #f97316;
+    }
+    .tab-step {
+      background: #fbeee9;
+      padding: 10px 25px;
+      border-radius: 999px;
+      font-size: 16px;
+      font-weight: 500;
+      color: #333;
+    }
+    .tab-step.active {
+      border: 2px solid #ffa043;
+      color: #f97316;
+      background: #fff;
+      font-weight: 600;
+    }
+    .review-heading {
+      font-size: 2.1rem;
+      font-weight: 700;
+      color: #1e1e1e;
+    }
+    .highlight-text {
+      color: #f97316;
+      font-style: italic;
+      font-weight: 600;
+    }
+    .review-box {
+      border: 2px solid #ffb8b8;
+      background: #fff1f1;
+      padding: 1rem 1.25rem;
+      border-radius: 15px;
+      margin-top: 1rem;
+    }
+    .review-box h6 {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .error-text {
+      color: #e02424;
+      font-weight: 500;
+    }
+    .badge-error {
+      background-color: #dc3545;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 5px 10px;
+    }
+    .info-pill {
+      background: rgba(255, 255, 255, 0.65);
+      border-radius: 999px;
+      padding: 8px 18px;
+      font-size: 7px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .info-pill i {
+      font-size: 17px;
+      color: #444;
+    }
+    .toggle-edit {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+
+
+ .review-container {
+      display: flex;
+      gap: 24px;
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 1320px;
+    }
+    .errors-panel {
+        background-color: #8b8b8b1a;
+      border-radius: 20px;
+      padding: 20px;
+      width: 40%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+    .errors-panel.collapsed {
+  max-height: 160px;
+  overflow: hidden;
+}
+    .form-panel {
+      background-color: #8b8b8b1a;
+      border-radius: 20px;
+      padding: 30px;
+      width: 60%;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      overflow-y: scroll;
+      max-height: 90vh;
+      scrollbar-width: none; /* Firefox */
+    }
+    .form-panel::-webkit-scrollbar {
+      display: none; /* Chrome, Safari */
+    }
+    .error-heading {
+      font-size: 20px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+    .error-heading .badge {
+      background-color: #dc3545;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 5px 10px;
+    }
+    .error-category {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 1rem 0 0.5rem;
+    }
+    .error-item {
+      color: #d62424;
+      font-weight: 500;
+      font-size: 15px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .error-item i {
+      color: #f59e0b;
+    }
+    .form-section-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .form-control, select {
+      border-radius: 10px;
+      border: 2px solid #d8b4fe;
+      font-weight: 500;
+    }
+    .form-control:focus {
+      border-color: #a855f7;
+      box-shadow: none;
+    }
+    .form-text-error {
+      color: red;
+      font-size: 0.9rem;
+    }
+    .form-check-label {
+      margin-left: 0.5rem;
+      font-weight: 500;
+    }
+    .section-divider {
+      border-top: 1px solid #ddd;
+      margin: 2rem 0;
+    }
+      .errors-panel {
+    transition: max-height 0.3s ease-in-out;
+  }
+  .errors-panel.collapsed {
+    max-height: 160px;
+    overflow: hidden;
+  }
+
+
+
+    
+    .application {
+     
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 1rem;
+    }
+
+
+    .summary-card, .guidelines-card {
+      border-radius: 20px;
+         background-color: #8b8b8b1a;
+      padding: 30px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+    .status-pill {
+      background-color: #d4edda;
+      color: #198754;
+      font-weight: 600;
+      font-size: 14px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      display: inline-block;
+    }
+    .badge-orange {
+      background-color: #f97316;
+      color: white;
+      border-radius: 999px;
+      font-size: 14px;
+      padding: 5px 12px;
+    }
+    .checkmark {
+      color: #22c55e;
+      font-size: 18px;
+    }
+    .download-icon, .view-icon {
+      font-size: 18px;
+      color: #f97316;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+    .file-link {
+      color: #f97316;
+      font-weight: 500;
+      text-decoration: none;
+    }
+    .file-link:hover {
+      text-decoration: underline;
+    }
+
+
+
+        .footer-bar {
+      margin-top: 3rem;
+      padding: 5px 10px;
+      /* background: linear-gradient(to right, #fbeee9, #f5e4f8); */
+      border-top: 1px solid rgba(0, 0, 0, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      color: #666;
+       max-width: 1140px; /* limit width */
+       max-height: 100px;
+   
+    }
+    .footer-bar .btn {
+      border-radius: 30px;
+      padding: 8px 20px;
+      font-weight: 600;
+      margin-top: 10px;
+         
+    }
+
+
+
+ 
+.btn-submit-custom {
+      background-color: #f97316;
+      color: #fff;
+      border: none;
+    }
+    .btn-submit-custom:hover {
+      background-color: #fb923c;
+    }
+
+
+.info-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 28px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 40px;
+  font-size: 11px;
+  color: #1f1f1f;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.info-bar > div {
+  display: flex;
+  align-items: center;
+}
+
+.info-bar i {
+  font-size: 18px;
+  margin-right: 6px;
+  color: #333;
+}
+
+
+
+
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg border-bottom px-4 py-3" style="background: linear-gradient(90deg, #ebe9e9 0%, #d4d4d4 55%, #e1eaff 100%);">
+    <div class="container-fluid">
+     <a class="navbar-brand d-flex align-items-center" href="#"  style="height: 44px"   >
+  <img src="{% static "assets/images/logo1.png" %}" alt="Logo" class="logo-img">
+</a>
+
+      <div class="d-flex align-items-center gap-4">
+        <a href="{% url "ai_form" %}" class="nav-link">Apply now</a>
+        <a href="#" class="nav-link">My Applications</a>
+        <a href="#" class="nav-link">My Documents</a>
+        <a href="#" class="nav-link">Show Walkthrough</a>
+        <div class="dropdown">
+          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">Premium Services</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Visa Help</a></li>
+            <li><a class="dropdown-item" href="#">Consulting</a></li>
+          </ul>
+        </div>
+        <div class="dropdown">
+          <a  id="profileInitial"  class="d-flex align-items-center justify-content-center rounded-circle bg-light" style="width: 36px; height: 36px; font-weight: 600; font-size: 14px; color: #555;" data-bs-toggle="dropdown">
+            A
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><a class="dropdown-item" href="#">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container py-5">
+    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center">
+      <div class="mb-4 mb-lg-0" style="max-width: 55%;">
+        <h2 class="review-heading" id="reviewName">, Final Review</h2>
+        <p class="fs-5 text-muted">
+          Time to polish it up! Fix the errors, review your docs, and when it all looks good—smash that <span class="highlight-text">Prepare File</span> button to prep your downloadable application package and glide into the next steps!
+        </p>
+      </div>
+
+    
+    
+    
+
+   <div class="info-bar d-inline-flex px-4 py-2 align-items-center justify-content-start" style="background: rgba(0, 0, 0, 0.03); font-size: 12px; border-radius: 20px;">
+  <div class="d-flex align-items-center me-3">
+    <i class="material-icons me-1">location_on</i>
+    <span id="infoDestination">Destination</span>
+  </div>
+  <div class="d-flex align-items-center me-3">
+    <i class="material-icons me-1">badge</i>
+    <span id="infoVisaType">Visa Type</span>
+  </div>
+  <div class="d-flex align-items-center me-3">
+    <i class="material-icons me-1">timer</i>
+    <span id="infoDuration">Duration</span>
+  </div>
+  <div class="d-flex align-items-center text-muted">
+    <i class="material-icons me-1">calendar_today</i>
+    <span id="infoDates">Travel Dates</span>
+  </div>
+</div>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    </div>
+
+    <div class="d-flex align-items-center gap-4 pt-5 flex-wrap">
+      <div class="tab-step">Details</div>
+      <div class="tab-step">Guidelines</div>
+      <div class="tab-step">Upload</div>
+      <div class="tab-step ">Review</div>
+      <div class="tab-step active border border-warning">Submit</div>
+    </div>
+  </div>
+     
+
+
+
+    <div class="application">
+
+ 
+    <div class="container">
+    <h2 class="fw-bold mb-2">Application Summary</h2>
+    <p class="text-muted mb-4">Review your application summary and make necessary changes before submission.</p>
+
+    <div class="row g-4">
+      <!-- Summary Card -->
+      <div class="col-lg-8">
+        <div class="summary-card">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-semibold " id="country"></h5>
+            <div>
+              <span class="badge-orange">PENDING</span>
+              <i class="material-icons ms-2" style="cursor: pointer;">edit</i>
+            </div>
+          </div>
+
+<h4 class="fw-bold mb-1" id="userNameDisplay">
+    <!-- Name will be dynamically inserted here -->
+    <span class="text-success ms-2">✔</span>
+</h4>
+          <div class="text-muted mb-1">Visa Type</div>
+          <h6 class="fw-semibold " id="visaTypeHeading">Schengen Visa (Type C) – Tourism</h6>
+
+          <div class="row mt-3">
+            <div class="col-md-4">
+              <div class="text-muted">Category</div>
+<div class="fw-semibold" id="userCategory">Visitor</div>
+            </div>
+            <div class="col-md-4">
+              <div class="text-muted">Status</div>
+              <div class="status-pill">Form-data collected</div>
+            </div>
+            <div class="col-md-4">
+              <div class="text-muted">Date</div>
+              <div class="fw-semibold" id="fromDateDisplay"></div>
+            </div>
+          </div>
+
+          <p class="text-muted mt-4" style="font-size: 14px;">Note: Application card information reflects applicant selections; final visa details are subject to government decisions.</p>
+        </div>
+      </div>
+
+      <!-- Guidelines Card -->
+      <div class="col-lg-4">
+        <div class="guidelines-card">
+          <h5 class="fw-semibold">Guidelines for next step</h5>
+          <hr>
+
+          <div class="mb-3">
+            <div class="fw-semibold mb-1" >Visa Type</div>
+            <div id="visaTypeTitle">✔<span class="checkmark" ></span> </div>
+          </div>
+<div class="mb-3">
+  <div class="fw-semibold mb-1">Application Package Details</div>
+  <div><span class="checkmark">✔</span> Package <a class="file-link" href="#"><i class="material-icons download-icon">file_download</i>Download Package</a></div>
+  <div><span class="checkmark">✔</span> View Form <a class="file-link" href="#"><i class="material-icons view-icon">visibility</i>View</a> <a class="file-link" href="#"><i class="material-icons download-icon">file_download</i>Download</a></div>
+  
+  <!-- Dynamic section for all uploaded documents -->
+  <div id="uploaded-documents-container">
+    <!-- Documents will be added here dynamically -->
+    <div id="no-documents-message" style="display: none;">
+      <span class="text-muted">No additional documents uploaded</span>
+    </div>
+  </div>
+</div>
+
+
+           <div class="mb-3">
+            <div class="fw-semibold mb-1">Download Package</div>
+            <div><span class="checkmark">✔</span>Download the package and take it to your nearest embassy </div>
+            
+          </div>
+
+            <div class="mb-3">
+            <div class="fw-semibold mb-1">Appointment Details</div>
+            <div><span class="checkmark">✔</span>Once you have completed and paid for your visa application on GOV.UK, </div>
+            <div><span class="checkmark">✔</span>You will need to book an appointment at a Visa Application Centre</div>
+             <div><span class="checkmark">✔</span>Your biometric data (fingerprints and photograph) will be captured.</div>
+          </div>
+
+             <div class="mb-3">
+            <div class="fw-semibold mb-1">Application Tracking</div>
+            <div><span class="checkmark">✔</span>You will receive an email update when your decision has been returned to the Visa Application Centre.</div>
+            <div><span class="checkmark">✔</span>You can also choose to get updates by SMS directly to your phone.</div>
+             
+          </div>
+
+
+          <div class="mb-3">
+            <div class="fw-semibold mb-1">Collection of Passport</div>
+            <div><span class="checkmark">✔</span>To collect your documents in person, bring the receipt issued by the Visa Application Centre and a form of government identification.</div>
+            <div><span class="checkmark">✔</span>Please check with the Visa Application Centre at the time of your appointment for the options available to collect your documents.</div>
+             
+          </div>
+
+
+          
+
+        </div>
+      </div>
+    </div>
+ 
+
+
+  <div class="footer-bar mt-5">
+      <div>
+        &copy; | Powered by The Skytrails
+      </div>
+      <div>
+        <a href="reviewA.html">
+        <button class="btn btn-secondary me-2">Go Back</button></a>
+        
+      </div>
+    </div>
+
+   </div>
+    </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+
+
+
+  <script>
+
+document.addEventListener('DOMContentLoaded',function(){
+  const visaTitle=sessionStorage.getItem('selectedVisaTitle') || 'Visa Title' ;
+  document.getElementById('visaTypeHeading').textContent=visaTitle;
+});
+document.addEventListener('DOMContentLoaded',function(){
+  const visaTitle=sessionStorage.getItem('selectedVisaTitle') || 'Visa Title' ;
+  document.getElementById('visaTypeTitle').textContent=visaTitle;
+});
+
+
+
+function displayUploadedDocuments() {
+  const container = document.getElementById('uploaded-documents-container');
+  const noDocsMessage = document.getElementById('no-documents-message');
+  
+  // Clear all existing content
+  container.innerHTML = '';
+  
+  // Re-add the no documents message (hidden by default)
+  container.appendChild(noDocsMessage);
+  noDocsMessage.style.display = 'none';
+  
+  // Get documents from session storage
+  const sessionDocuments = JSON.parse(sessionStorage.getItem('uploadedDocuments')) || [];
+  
+  // Filter out invalid documents
+  const validDocuments = sessionDocuments.filter(doc => doc.docType && doc.imageUrl);
+  
+  if (validDocuments.length > 0) {
+    // Add each uploaded document to the container
+    validDocuments.forEach(doc => {
+      const docElement = document.createElement('div');
+      
+      // Shorten long file names
+      const shortenedFileName = doc.fileName.length > 20 
+        ? `${doc.fileName.substring(0, 10)}...${doc.fileName.substring(doc.fileName.lastIndexOf('.'))}`
+        : doc.fileName;
+      
+      docElement.innerHTML = `
+        <span class="checkmark">✔</span> ${doc.docType} - ${shortenedFileName}
+        <a class="file-link" href="${doc.imageUrl}" download="${doc.fileName || doc.docType}" title="Download ${doc.docType}">
+          <i class="material-icons download-icon">file_download</i>
+        </a>
+      `;
+      container.appendChild(docElement);
+    });
+  } else {
+    // Show "no documents" message if nothing was uploaded
+    noDocsMessage.style.display = 'block';
+  }
+}
+
+// Call the function when the page loads
+document.addEventListener('DOMContentLoaded', displayUploadedDocuments);
+
+const userData=JSON.parse(localStorage.getItem('visaData'));
+console.log(userData);
+
+if(userData && userData.fromDate){
+  const from=new Date(userData.fromDate);
+  console.log(from);
+
+  const formattedDateTime=new Intl.DateTimeFormat('en-IN', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+    }).format(from);
+
+document.getElementById('fromDateDisplay').textContent= formattedDateTime;
+}
+
+/// visa Category 
+document.addEventListener('DOMContentLoaded',function(){
+  const userData=JSON.parse(localStorage.getItem('visaData'));
+  if(userData?.visaCategory){
+    document.getElementById('userCategory').textContent=userData.visaCategory;
+  }
+
+
+})
+
+// Wait for DOM to load
+// Wait for the DOM to load
+document.addEventListener('DOMContentLoaded', function() {
+    // Retrieve and parse user data from localStorage
+    const userData = JSON.parse(localStorage.getItem('visaData'));
+
+    if (userData && userData.firstName && userData.lastName) {
+        const fullName = `${userData.firstName} ${userData.lastName}`;
+        const userNameDisplay = document.getElementById('userNameDisplay');
+        userNameDisplay.innerHTML = `${fullName} <span class="text-success ms-2">✔</span>`;
+    }
+});
+/// dynamica country 
+document.addEventListener('DOMContentLoaded',function(){
+  const userData=JSON.parse(localStorage.getItem('visaData'));
+
+  if(userData && userData.destinationCountry){
+    document.getElementById('country').textContent=userData.destinationCountry;
+  }
+})
+    document.addEventListener('DOMContentLoaded', () => {
+  const signupData = JSON.parse(localStorage.getItem('signupData'));
+  const visaData = JSON.parse(localStorage.getItem('visaData'));
+
+  if (signupData?.firstName) {
+    // Update name in heading
+    const heading = document.getElementById('reviewName');
+    if (heading) {
+      heading.textContent = `${signupData.firstName}, Know before you go!`;
+    }
+
+    // Update profile initial
+    const profileInitialEl = document.getElementById('profileInitial');
+    if (profileInitialEl) {
+      profileInitialEl.textContent = signupData.firstName.charAt(0).toUpperCase();
+    }
+  }
+
+  if (visaData) {
+    const destination = visaData.destinationCountry || visaData.arrCountyName || 'Unknown';
+    const visaType = visaData.visaCategory || 'Tourism';
+    const fromDateStr = visaData.fromDate?.split('T')[0];
+    const toDateStr = visaData.toDate?.split('T')[0];
+
+    const formatDate = (iso) => {
+      const date = new Date(iso);
+      const options = { year: 'numeric', month: 'short', day: 'numeric' };
+      return date.toLocaleDateString('en-US', options);
+    };
+
+    const getDuration = (start, end) => {
+      const d1 = new Date(start);
+      const d2 = new Date(end);
+      const diff = Math.ceil((d2 - d1) / (1000 * 60 * 60 * 24));
+      return diff > 0 ? `${diff} days` : 'N/A';
+    };
+
+    document.getElementById('infoDestination').textContent = destination;
+    document.getElementById('infoVisaType').textContent = visaType;
+    document.getElementById('infoDuration').textContent = getDuration(fromDateStr, toDateStr);
+    document.getElementById('infoDates').textContent = `${formatDate(fromDateStr)} – ${formatDate(toDateStr)}`;
+  }
+});
+
+  </script>
+
+
+
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

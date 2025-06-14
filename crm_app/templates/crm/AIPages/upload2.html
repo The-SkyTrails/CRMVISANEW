@@ -1,0 +1,1900 @@
+
+
+ <!DOCTYPE html>
+ {% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Document Upload - The Skytrails</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+   <style>
+    
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      background: linear-gradient(90deg, #fff4ee 0%, #fdeffb 55%, #e1eaff 100%);
+      min-height: 100vh;
+    }
+    body {
+  background: linear-gradient(120deg, #ffffff 0%, #f8f2f8 48%, #e9bddd 100%);
+}
+    .gradient-text {
+      background: linear-gradient(to right, #f97316, #ec4899, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .custom-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      /* background: linear-gradient(to right, #7d7d7d, #b5b5b5); */
+      padding: 1.5rem 2.5rem;
+      border-top: 1px solid #ddd;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #2b2b2b;
+      border-radius: 18px;
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+      margin-top: 3rem;
+    }
+    .doc-app-container {
+      display: flex;
+      height: 100vh;
+      min-height: 680px;
+      overflow: hidden;
+    }
+    .left-panel {
+      width: 310px;
+      /* border-right: 1.5px solid #f6dbfc; */
+      padding: 38px 0 36px 36px;
+      background: transparent;
+      height: 100vh;
+      overflow-y: auto;
+      position: relative;
+
+      scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+}
+
+.left-panel::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+    
+    .checklist-box {
+       border-radius: 20px; padding: 27px 18px 20px 23px;
+      box-shadow: 0 1.5px 14px #eadafd15;
+    }
+    .checklist-title {
+      font-size: 19px; font-weight: 700; display: flex; align-items: center; gap: 9px; margin-bottom: 22px;
+    }
+    .doc-type-row {
+      margin-bottom: 18px;
+    }
+    .doc-type-main {
+      display: flex; align-items: center; font-size: 17px; font-weight: 600;
+      gap: 6px; border-radius: 8px; padding: 2px 3px 2px 7px;
+      cursor: pointer; width: 100%; min-width: 0;
+    }
+    .doc-type-checkbox {
+      accent-color: #ff9800; width: 22px; height: 22px; margin-right: 6px;
+      margin-bottom:2px;
+    }
+    .doc-type-count {
+      color: #bfbfbf; font-size:14.7px; font-weight: 400; margin-left:auto; margin-right:7px;
+    }
+    .doc-type-main.selected {
+      background: linear-gradient(90deg,#ffefe3 65%, #ffe5c0 100%);
+      color: #e46c13; font-weight: 700;
+      box-shadow:0 0 0 1.6px #ff995041;
+    }
+    .doc-type-files {
+      margin-left: 42px; margin-top:2px; display: flex; flex-direction:column; gap:5px;
+    }
+    .doc-type-file {
+      border-radius: 6px; padding: 4px 9px 4px 9px; font-size:15px; color:#65666a; cursor:pointer;
+      min-width:0; display:flex;align-items:center;gap:6px;
+      transition: background .13s, color .13s;
+      background: transparent;
+    }
+    .doc-type-file.selected {
+      background: linear-gradient(90deg,#fff1e7 60%, #ffe9be 100%);
+      color:#e46c13;
+      font-weight:700;
+      box-shadow:0 0 0 1.2px #ff995033;
+    }
+    .doc-type-file .mdi {
+      font-size:16px; color: #ff9800;
+    }
+    .doc-type-file.selected .mdi { color:#e46c13; }
+    .doc-type-file span.filename {
+      overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:150px;display:inline-block;
+    }
+    /* .center-panel 
+    { 
+      flex:1; 
+      height:100vh; 
+      overflow-y:auto;
+       min-width:0;
+        display:flex;
+         flex-direction:column;
+         justify-content:center;
+         align-items:center;
+        } */
+
+        .center-panel {
+  flex: 1;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden; /* <--- This line removes the horizontal scrollbar */
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+    .upload-empty-card 
+    { margin:auto; margin-top:100px; max-width:444px; width:100%; border-radius:17px;
+      box-shadow: 0 1.5px 18px #efe0ff18; padding:40px 22px 32px 22px;
+      text-align: center;
+    }
+    .upload-empty-card .mdi { font-size:49px;color:#a3a0a5;margin-bottom:10px;}
+    .upload-empty-card .upload-btn {
+      margin-top: 22px;   margin-left: 60px;  border:none; border-radius:99px;height:60px;
+      background: linear-gradient(90deg, #ff9800 8%, #ff6e3e 92%);
+      color:#fff; font-size:18px; font-weight:550; padding:9px 35px; display: flex; align-items: center; gap: 11px; box-shadow:0 2px 9px #ffb37028;
+    }
+    .upload-empty-card .upload-btn:hover {background: linear-gradient(90deg,#ff6e3e 5%, #ff9800 95%);}
+    .uploading-indicator {
+      max-width:410px;width:100%;margin:auto;margin-top:75px;
+      background:rgba(255,255,255,0.97);
+      border-radius:10px; box-shadow:0 1px 14px #eaecf022;
+      padding:34px 16px 20px;
+      display: flex; flex-direction:column; align-items:center;
+    }
+    .lds-dual-ring {
+      display: inline-block; width: 38px; height: 38px;margin-bottom:14px;
+    }
+    .lds-dual-ring:after {
+      content:" "; display:block;
+      width:38px; height:38px; border-radius:50%;
+      border:4.5px solid #fbbd8a; border-color: #fbbd8a transparent #ff9021 transparent;
+      animation: lds-dual-ring 1.08s linear infinite;}
+    @keyframes lds-dual-ring {0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+    .uploading-meta {font-size:16.5px;color:#958aa2;margin-bottom:9px;}
+    .uploading-file-name {font-size:15px;color:#6055ee;font-weight:500;}
+    .doc-toolbar {width:100%;display:flex;align-items:center;gap:10px;margin-top:7px;margin-bottom:13px;}
+    .doc-toolbar .doc-type-icon {font-size:22px;color:#ff9800;background:#fff7f0;border-radius:8px;padding:4.5px;margin-right:2px;}
+    .doc-toolbar select {
+      font-size:17px; font-weight:600; color:#444; background:#f9f5ef; border:none; margin:0 4px; border-radius:7px; padding:2.5px 12px 2.5px 8px;
+    }
+    .doc-toolbar .mdi-chevron-right {font-size:18px;}
+    .doc-toolbar .doc-file-id-box {
+      padding:1.5px 13px;background:#fcfdff;border-radius:8px;font-size:16px;font-weight:500;color:#e46c13;display:flex;align-items:center;gap:4px;
+    }
+    .doc-toolbar .mdi-checkbox-marked-circle-outline{
+      font-size:19px;color:#17b43e;
+    }
+    .doc-toolbar .doc-toolbar-btns {
+      display:flex;flex-direction:column;gap:8px;margin-left:auto;margin-right:8px;
+    }
+    .doc-toolbar .doc-toolbar-btn {
+      background: #fff; border-radius:8px; border:none; padding:6px 11px;
+      box-shadow:0 1px 8px #fec2af22; transition:0.15s;font-size:21px; color:#ff8f31; opacity:0.95; margin-bottom:1.5px;
+    }
+    .doc-toolbar .doc-toolbar-btn.active, .doc-toolbar .doc-toolbar-btn:hover { background: #ffe6d3; color: #fc5f17; }
+    .large-doc-preview-card {
+      box-shadow:0 2px 13px #eacbfd21;
+      border-radius:13px; margin: 0px auto; padding: 15px 7px 10px 7px; width:295px;display:flex;flex-direction:column;align-items:center;
+    }
+    .large-doc-preview-img {
+  width: 40%;             /* Make it scale with container */
+  height: auto;            /* Maintain aspect ratio */
+  max-height: 260px;       /* Optional: control max height */
+  object-fit: contain;     /* Ensure full image shows */
+  padding: 8px;            /* Add padding to avoid clipping */
+  box-sizing: border-box;  /* Include padding in bounds */
+  border-radius: 7px;
+  margin: 0 auto;
+}
+
+    .doc-thumb-carousel {
+      width:296px;display:flex;gap:10px;margin:14px 0 0 7px;justify-content:left;
+    }
+    .doc-thumb-carousel-img {
+      width:37px;height:37px;border-radius: 6px;
+      object-fit: cover;border:2px solid #ececec;cursor:pointer;background:#fff;transition: border .13s;
+    }
+    .doc-thumb-carousel-img.selected { border: 2px solid #ff9800; }
+    .right-panel {
+      width: 330px; background: none; padding:55px 23px 23px 25px;
+      min-height:100vh;box-sizing:border-box;
+    }
+    .review-header-row {display:flex;align-items:center;gap:11px;margin-bottom:14px;}
+    .review-bar {
+      background:#fff;border-radius:10px;display:flex;flex-direction:row;gap:6px;align-items:center;
+      padding:7px 12px 7px 13px;
+      font-size:16px;color:#ff9021;margin-bottom:5px;border:1.15px solid #f8e0c6;font-weight:600;
+    }
+    .review-bar .count-bubble {
+      background:#fff4e2;color:#fe973b;border-radius:7px;padding:1px 7px;font-size:13.8px;margin-left:6px;font-weight:700;
+    }
+    .save-edited-btn {border:none;background:none;padding:0;color:#fd8221;font-size:15px;font-weight:700;margin-bottom:10px;}
+    .save-edited-btn .mdi {margin-right:3px;}
+    .right-details-fields {margin-top:13px;}
+    .doc-details-field {margin-bottom:12px;}
+    .doc-details-field label {font-size:13.7px;font-weight:600;color:#7e7f8a;margin-bottom:2px;}
+    .doc-details-field input {
+      border:none;background:#f6f5fa;border-radius:8px;
+      padding:5px 10px 5.5px;font-size:15.6px;font-weight:600;
+      color:#444;pointer-events:none;width:100%;
+    }
+    .document-item.completed { background-color: #f0fff0; }
+    #scrollable-documents::-webkit-scrollbar { display: none; }
+    #scrollable-documents {-ms-overflow-style: none; scrollbar-width: none;}
+    .uploaded-file {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f8fafc;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin-bottom: 8px;
+    }
+    .uploaded-file-name {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .uploaded-file-size {
+      color: #6c757d;
+      font-size: 0.8rem;
+      margin-left: 8px;
+    }
+    .uploaded-file-remove {
+      color: #dc3545;
+      cursor: pointer;
+      margin-left: 8px;
+    }
+    .hover-scale {
+      transition: transform 0.2s ease;
+    }
+    .hover-scale:hover {
+      transform: scale(1.05);
+    }
+
+.step-pill {
+  background: rgba(255, 255, 255, 0.8);
+  padding: 10px 30px;
+  border-radius: 999px;
+  font-weight: 500;
+  font-size: 16px;
+  color: #333;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+  white-space: nowrap;
+}
+.step-pill.active {
+  background: linear-gradient(to right, #fff4ee, #ffe8cc);
+  border: 2px solid #ffa043;
+  color: #f97316;
+  font-weight: 600;
+}
+.info-bar {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 12px 28px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 40px;
+  font-size: 14px;
+  color: #1f1f1f;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.info-bar > div {
+  display: flex;
+  align-items: center;
+}
+
+.info-bar i {
+  font-size: 18px;
+  margin-right: 6px;
+  color: #333;
+}
+
+.logo-img {
+  max-height: 220px;
+  object-fit: contain;
+  display: block;
+}
+  .footer-bar {
+      margin-top: 3rem;
+    
+      /* background: linear-gradient(to right, #fbeee9, #f5e4f8); */
+      border-top: 1px solid rgba(0, 0, 0, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      color: #666;
+       max-width: 1140px; 
+       max-height: 100px;
+     
+      
+    
+
+      padding: 1rem 0.5rem;
+     
+    }
+    .footer-bar .btn {
+      border-radius: 30px;
+      padding: 8px 20px;
+      font-weight: 600;
+      margin-top: 10px;
+         
+    }
+
+
+
+ 
+.btn-submit-custom {
+      background-color: #f97316;
+      color: #fff;
+      border: none;
+    }
+    .btn-submit-custom:hover {
+      background-color: #fb923c;
+    }
+
+    @media (max-width:1080px){ .left-panel{width:158px;} .center-panel{padding:0 2px;} .right-panel{width:130px;} }
+    @media (max-width:650px){ .doc-app-container{flex-direction:column;} .left-panel, .center-panel, .right-panel {width:100vw !important;min-width:0;max-width:100vw;} }
+
+    #main-upload-btn {
+  margin-top: 20px;
+  display: block;
+}
+
+#main-upload-btn {
+  background: linear-gradient(90deg, #ff9800 8%, #ff6e3e 92%);
+  color: #fff;
+  font-weight: 600;
+  padding: 6px 16px;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px #ffcba8;
+}
+#main-upload-btn:hover {
+  background: linear-gradient(90deg, #ff6e3e 5%, #ff9800 95%);
+}
+.review-bar.active {
+  background: linear-gradient(to right, #ffe8cc, #fff1e1);
+  border-color: #ffc89e;
+  color: #f97316;
+}
+
+
+
+.doc-toolbar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 7px;
+    margin-bottom: 13px;
+  }
+  .doc-type-icon {
+    font-size: 20px;
+    color: #ff9800;
+    background: #fff7f0;
+    border-radius: 8px;
+    padding: 4.5px;
+  }
+  .doc-file-id-box {
+    padding: 1.5px 10px;
+    background: #fcfdff;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #e46c13;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .doc-toolbar-btns {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .doc-toolbar-btn {
+    background: #fff;
+    border-radius: 8px;
+    border: none;
+    padding: 4px 8px;
+    box-shadow: 0 1px 6px #fec2af22;
+    transition: 0.15s;
+    font-size: 18px;
+    color: #ff8f31;
+    opacity: 0.95;
+  }
+  .doc-toolbar-btn:hover {
+    background: #ffe6d3;
+    color: #fc5f17;
+  }
+
+
+
+
+
+
+.doc-toolbar-wrapper {
+    background: linear-gradient(rgba(213, 213, 213, 0.1), rgba(111, 111, 111, 0.1));
+  border: 1px solid #f0f0f0;
+  border-radius: 14px;
+  padding: 12px 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  margin: 10px auto;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.doc-toolbar-btn {
+  padding: 4px 6px;
+  font-size: 16px;
+}
+
+.doc-toolbar-btns {
+  gap: 4px;
+}
+
+
+
+
+.processing-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url('/mnt/data/5f374ced-067d-40d0-8b9b-e95d395e01a8.png') center center / cover no-repeat;
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.processing-box {
+background: rgba(159, 159, 159, 0.3);
+  backdrop-filter: blur(5px);
+  padding: 30px 40px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+    
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 90%;
+  color: white;
+   box-shadow: rgba(0, 0, 0, 0.37) 0px 8px 32px 0px;
+}
+
+
+
+
+.processing-steps {
+  list-style: none;
+  padding-left: 0;
+  text-align: left;
+  margin: 0 auto;
+  max-width: 300px;
+}
+
+.processing-steps li {
+  margin: 10px 0;
+  font-weight: 500;
+  font-size: 15.5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.loader-circle {
+  width: 12px;
+  height: 12px;
+  border: 2px solid #f97316;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0); }
+  100% { transform: rotate(360deg); }
+}
+
+
+.processing-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.processing-box {
+
+  padding: 30px 40px;
+  border-radius: 18px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 90%;
+}
+
+.processing-steps {
+  list-style: none;
+  padding-left: 0;
+  text-align: left;
+  margin: 0 auto;
+  max-width: 300px;
+}
+
+.processing-steps li {
+  margin: 10px 0;
+  font-weight: 500;
+  font-size: 15.5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.loader-circle {
+  width: 12px;
+  height: 12px;
+  border: 2px solid #f97316;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0); }
+  100% { transform: rotate(360deg); }
+}
+.no-error-message {
+    padding: 15px;
+    color: green;
+    font-weight: 600;
+    text-align: center;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    margin: 10px;
+    background-color: #f8fff8;
+}
+
+.editable-field-container {
+  position: relative;
+  width: 100%;
+}
+
+.editable-field {
+  padding: 6px 8px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: rgb(248, 245, 245);
+  min-height: 20px;
+  outline: none;
+}
+
+.editable-field:focus {
+  border-color: #ffc107;
+  background-color: #fff;
+  box-shadow: 0 0 0 2px rgba(255, 193, 7, 0.3);
+}
+
+.save-btn {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.save-btn:hover {
+  background: #388E3C;
+}
+
+.no-data-message {
+  padding: 20px;
+  text-align: center;
+  color: #d89b9b;
+}
+
+#right-details-fields {
+  max-height: 400px; /* or any height you want */
+  overflow-y: scroll;
+
+  /* Hide scrollbar for Chrome, Safari, Edge */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE 10+ */
+}
+
+#right-details-fields::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari, Opera */
+}
+
+.custom-alert-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.custom-alert-box {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 400px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    text-align: center;
+}
+
+.custom-alert-box h3 {
+    margin-top: 0;
+    color: #e53935;
+}
+
+.custom-alert-btn {
+    background: #e53935;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    margin-top: 15px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+
+  </style> 
+
+
+
+
+
+</head>
+<body>
+<nav class="navbar navbar-expand-lg" style="background: linear-gradient(90deg, #ebe9e9 0%, #d4d4d4 55%, #e1eaff 100%); border-bottom: 1px solid #fbd8d1; padding: 14px 48px;">
+  <div class="container-fluid px-0 d-flex align-items-center justify-content-between">
+    <!-- Logo/Brand -->
+    <a class="d-flex align-items-center text-decoration-none" style="height: 44px;" href="#">
+      <img src="{% static "assets/images/logo1.png" %}" alt="Logo" class="logo-img">
+    </a>
+
+    <!-- Mobile Toggle Button (hidden on desktop) -->
+    <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" 
+            style="border: none; background: transparent; padding: 8px;">
+      <span class="navbar-toggler-icon" style="display: flex; flex-direction: column; gap: 4px;">
+        <span style="width: 24px; height: 2px; background-color: #333;"></span>
+        <span style="width: 24px; height: 2px; background-color: #333;"></span>
+        <span style="width: 24px; height: 2px; background-color: #333;"></span>
+      </span>
+    </button>
+
+    <!-- Navbar Content - Will collapse on mobile -->
+    <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
+      <div class="d-flex align-items-center gap-4">
+        <div class="d-flex flex-column flex-lg-row gap-4">
+          <a href="./Form.html" class="text-dark fw-semibold text-decoration-none" style="font-size: 15px;">Apply now</a>
+          <a href="#" class="text-dark fw-semibold text-decoration-none" style="font-size: 15px;">My Applications</a>
+          <a href="#" class="text-dark fw-semibold text-decoration-none" style="font-size: 15px;">My Documents</a>
+
+          <div class="dropdown">
+            <a class="dropdown-toggle text-dark fw-semibold text-decoration-none" href="#" role="button" data-bs-toggle="dropdown" style="font-size: 15px;">
+              Premium Services
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Visa Help</a></li>
+              <li><a class="dropdown-item" href="#">Consulting</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="dropdown">
+          <a id="profileInitial" href="#" class="d-flex align-items-center justify-content-center rounded-circle bg-light" 
+             style="width: 36px; height: 36px; font-weight: 600; font-size: 14px; color: #555;" data-bs-toggle="dropdown">
+            A
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><a class="dropdown-item" href="#">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+
+
+
+
+
+
+<div class="container py-3 py-md-5">
+
+  <div class="d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center gap-3 gap-md-4">
+    
+    <!-- Text Content -->
+    <div class="mb-4 mb-lg-0" style="max-width: 100%; width: 100%;">
+      <h2 id="reviewName" class="fw-bold mb-2" style="font-size: clamp(1.5rem, 4vw, 2.1rem);">
+        Abhinandan, <span class="fw-bold">Upload Documents</span>
+      </h2>
+      <p class="fs-5 text-muted mb-0" style="font-size: clamp(0.9rem, 2vw, 1rem);">
+        <span class="text-warning fst-italic">Upload</span>
+        all the required docs to unlock the next step—no sneaky skips allowed! Peek at the
+        <span class="text-warning fst-italic">Review & Errors tabs</span>
+        to make sure our AI nailed the details before you blast off to the form!
+      </p>
+    </div>
+
+    <!-- Info Bar - Modified for responsiveness -->
+    <div class="info-bar d-flex flex-wrap px-3 px-md-4 py-2 align-items-center justify-content-start" 
+         style="background: rgba(0, 0, 0, 0.03); font-size: clamp(0.65rem, 1.5vw, 0.75rem); border-radius: 20px; gap: 0.5rem 1rem; width: 100%;">
+      <div class="d-flex align-items-center">
+        <i class="material-icons me-1" style="font-size: inherit;">location_on</i>
+        <span id="infoDestination">Destination</span>
+      </div>
+      <div class="d-flex align-items-center">
+        <i class="material-icons me-1" style="font-size: inherit;">badge</i>
+        <span id="infoVisaType">Visa Type</span>
+      </div>
+      <div class="d-flex align-items-center">
+        <i class="material-icons me-1" style="font-size: inherit;">timer</i>
+        <span id="infoDuration">Duration</span>
+      </div>
+      <div class="d-flex align-items-center text-muted">
+        <i class="material-icons me-1" style="font-size: inherit;">calendar_today</i>
+        <span id="infoDates">Travel Dates</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Step Pills - Made scrollable on mobile -->
+  <div class="d-flex align-items-center gap-3 pt-4 pt-md-5 flex-nowrap overflow-auto pb-2" style="scrollbar-width: none;">
+    <div class="step-pill active" style="white-space: nowrap;">Details</div>
+    <div class="step-pill active" style="white-space: nowrap;">Guidelines</div>
+    <div class="step-pill border border-warning text-warning bg-white fw-bold" style="white-space: nowrap;">Upload</div>
+    <div class="step-pill" style="white-space: nowrap;">Review</div>
+    <div class="step-pill" style="white-space: nowrap;">Submit</div>
+  </div>
+
+</div>
+
+
+ 
+<div class="doc-toolbar-wrapper">
+
+ <div class="container-fluid">
+  
+    <div class="doc-app-container">
+ 
+
+    
+
+
+       
+     
+      <aside class="left-panel">
+
+  
+  <div class="checklist-box">
+    <div class="checklist-title">
+       <button id="main-upload-btn" class="btn btn-warning btn-sm d-flex align-items-center gap-2" style="font-weight: 600; border-radius: 8px;">
+    <span class="mdi mdi-upload"></span> Upload Documents
+  </button>
+  <input type="file" id="main-file-input" style="display: none;" accept="image/*,.pdf" multiple />
+    </div>
+    <div id="doc-checklist"></div>
+  </div>
+</aside>
+
+
+      <main class="center-panel">
+        <div id="empty-upload-card" class="upload-empty-card">
+          <span class="mdi mdi-file-remove-outline"></span>
+          <h4>No Documents Uploaded</h4>
+          <p>Start by uploading your documents here<br>to proceed with your application.</p>
+        <button class="upload-btn" id="center-upload-btn"><span class="mdi mdi-upload"></span> Upload Documents</button>
+<input type="file" id="center-file-input" style="display:none" accept="image/*,.pdf" multiple />
+
+          
+        </div>
+        <div id="uploading-indicator" class="uploading-indicator" style="display:none;">
+          <div class="lds-dual-ring"></div>
+          <div class="uploading-meta">Uploading your document…</div>
+          <div class="uploading-file-name" id="uploading-file-name"></div>
+        </div>
+        <div id="doc-preview-full" style="display:none;width:100%;">
+          
+<div class="doc-toolbar">
+  <div class="doc-toolbar-left d-flex align-items-center" style="gap: 8px;">
+    <span class="doc-type-icon mdi mdi-file-document-outline" style="font-size: 20px;"></span>
+    <select id="doc-type-dropdown" style="max-width: 180px; font-size: 15px; padding: 2px 8px; border-radius: 6px; background: #f7f7f7; font-weight: 600;">
+    </select>
+  </div>
+  <div class="d-flex align-items-center" style="gap: 8px; margin-left: auto; margin-top: -70px;">
+    <span class="mdi mdi-chevron-right" style="font-size: 18px; color: #999;"></span>
+    <span class="doc-file-id-box" id="doc-file-id-box">
+      <span id="preview-file-name"></span>
+      <span class="mdi mdi-checkbox-marked-circle-outline"></span>
+    </span>
+    <div class="doc-toolbar-btns d-flex flex-column">
+      <button class="doc-toolbar-btn" title="Settings">
+        <span class="mdi mdi-tune-variant"></span>
+      </button>
+      <button class="doc-toolbar-btn" title="Zoom In" onclick="zoomInImage()">
+        <span class="mdi mdi-magnify-plus-outline"></span>
+      </button>
+      <button class="doc-toolbar-btn" title="Zoom Out" onclick="zoomOut()">
+  <span class="mdi mdi-magnify-minus-outline"></span>
+</button>
+    </div>
+  </div>
+</div>
+
+  
+
+
+          <div class="large-doc-preview-card">
+            <img id="preview-img-main" class="large-doc-preview-img" src="" style="display:none" alt="Preview" />
+          </div>
+          <div class="doc-thumb-carousel" id="perdoc-thumb-carousel"></div>
+        </div>
+      </main>
+      
+      <aside class="right-panel d-flex flex-column">
+        
+
+           <div class="review-header-row">
+<button class="review-bar" id="tab-review" onclick="toggleReviewErrorTab('review')">
+    <span class="mdi mdi-clipboard-check-outline"></span>
+    Review Details
+    <span class="count-bubble" id="review-details-count">0</span>
+  </button>
+<button class="review-bar" id="tab-errors" onclick="toggleReviewErrorTab('error')">
+    Errors
+    <span class="count-bubble" id="review-errors-count">0</span>
+  </button>
+</div>
+<div id="review-tab-content">
+  <form class="right-details-fields" id="right-details-fields"></form>
+</div>
+<div id="error-tab-content" style="display: none;">
+  <div id="dynamic-error-list" style="font-size: 15px; color: #e53935; font-weight: 500;"></div>
+</div>
+          
+          
+        </div> 
+         
+        
+        
+      </aside>
+    </div>
+</div>
+
+
+
+<div id="upload-more-container" style="display: none; text-align: center; margin-top: 30px;">
+  
+  <input type="file" id="upload-more-input" style="display: none" accept="image/*,.pdf" multiple />
+</div>
+
+
+      <div class="footer-bar mt-5">
+      <div>
+            &copy; | Powered by The SkyTrails
+
+      </div>
+      <div>
+        <a href="Guideline.html">
+        <button class="btn btn-secondary me-2">Go Back</button></a>
+        <a href="{% url "ai_review" %}">
+        <button class="btn btn-submit-custom">Submit</button></a>
+      </div>
+    </div>
+
+
+  </div>
+
+
+
+
+
+  <div id="file-processing-overlay" class="processing-overlay" style="display: none;">
+  <div class="processing-box">
+    <div class="icon mb-3">
+      <img src="images/passport-docs.svg" alt="Processing Icon" width="48">
+    </div>
+    <h4 class="fw-bold mb-1">Processing Files</h4>
+    <p class="mb-3" id="processing-counter">Processing 0 of 0 documents</p>
+    <ul class="processing-steps">
+      <li><span class="loader-circle"></span> Categorising your documents...</li>
+      <li><span class="loader-circle"></span> Verifying your information...</li>
+      <li><span class="loader-circle"></span> Validating as per guidelines...</li>
+      <li><span class="loader-circle"></span> Extracting information for your application...</li>
+    </ul>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+
+
+
+<script>
+  // Global auth object
+  window.auth = {
+    userId: null,
+    email: null
+  };
+
+  // Initialize uploadedImages from sessionStorage at the start
+  let uploadedImages = JSON.parse(sessionStorage.getItem('uploadedDocuments')) || [];
+  const DOC_TYPES = [
+    "Unsorted",
+    "Passport", 
+    "Photo", "Account statement", "Certificate of Marriage","Marriage Certificate",
+    "Aadhaar card", "Income Tax Return Acknowledgement",
+    "Passbook", "Residence Permit",
+    "GST Registration Document", "GSTIN Document", "Annexure B",
+    "Bank Statement", "GST Document" ,"GST Registration Details",
+    "Financial Statement","Emigration Check Required Document"
+  ];
+
+  let selectedDocTypeIdx = 0, selectedFileIdx = 0;
+  let currentZoomLevel = 1;
+  const zoomStep = 0.2;
+  const maxZoom = 2.5;
+  const minZoom = 0.5;
+
+  // Helper function to format key names
+  function formatKeyName(key) {
+    return key
+      .replace(/_/g, ' ')
+      .replace(/([a-z])([A-Z])/g, '$1 $2')
+      .replace(/\b\w/g, l => l.toUpperCase());
+  }
+
+  function escapeHtml(unsafe) {
+    return unsafe
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function showNoDataMessage(message = 'No data available') {
+    const form = document.getElementById('right-details-fields');
+    form.innerHTML = `<div class="no-data-message">${message}</div>`;
+  }
+  function hasRequiredDocuments() {
+  return uploadedImages.length > 0;
+}
+
+// window.addEventListener('beforeunload', function(e) {
+//   if (!hasRequiredDocuments()) {
+//     e.preventDefault();
+//     e.returnValue = 'You need to upload at least one document before leaving this page.';
+//     return e.returnValue;
+//   }
+// });
+
+document.addEventListener('click', function(e) {
+  const target = e.target.closest('a');
+  if (target && !hasRequiredDocuments()) {
+    e.preventDefault();
+    alert('Please upload  document before proceeding.');
+  }
+});
+
+
+function updateNavigationButtons() {
+  const navButtons = document.querySelectorAll('.nav-button, .next-btn');
+  navButtons.forEach(button => {
+    button.disabled = !hasRequiredDocuments();
+    if (button.disabled) {
+      button.title = 'Please upload the document before going to nextpage';
+    }
+  });
+}
+
+// Call this whenever the uploaded documents change
+updateNavigationButtons();
+
+
+
+function showUploadRequiredModal() {
+  const modal = document.createElement('div');
+  modal.style.position = 'fixed';
+  modal.style.top = '0';
+  modal.style.left = '0';
+  modal.style.width = '100%';
+  modal.style.height = '100%';
+  modal.style.backgroundColor = 'rgba(0,0,0,0.5)';
+  modal.style.display = 'flex';
+  modal.style.justifyContent = 'center';
+  modal.style.alignItems = 'center';
+  modal.style.zIndex = '1000';
+  
+  modal.innerHTML = `
+    <div style="background: white; padding: 20px; border-radius: 8px; max-width: 400px;">
+      <h3>Upload Required</h3>
+      <p>You need to upload  document before you can proceed.</p>
+      <button id="upload-now-btn" style="padding: 8px 16px; background: #4285f4; color: white; border: none; border-radius: 4px;">
+        Upload Documents Now
+      </button>
+    </div>
+  `;
+  
+  document.body.appendChild(modal);
+  
+  modal.querySelector('#upload-now-btn').addEventListener('click', function() {
+    document.body.removeChild(modal);
+    document.getElementById('main-upload-btn').click();
+  });
+}
+
+// Then modify the beforeunload and click handlers to use this modal instead
+
+  function matchDocType(docTypeRaw) {
+    if (!docTypeRaw || typeof docTypeRaw !== "string") return "Unsorted";
+
+    const normalized = docTypeRaw.trim().toLowerCase().replace(/[\s_]+/g, '');
+
+    const normalizedMap = {};
+    DOC_TYPES.forEach(type => {
+      const key = type.toLowerCase().replace(/[\s_]+/g, '');
+      normalizedMap[key] = type;
+    });
+
+    const ALIASES = {
+      "gstregistrationcertificate": "GST Registration Document",
+      "gstregistrationdetails": "GST Registration Document",
+      "gstindocument": "GSTIN Document",
+      "gstinregistrationdocument": "GSTIN Document",
+      "bankaccountstatement": "Bank Statement",
+      "financialstatement": "Bank Statement",
+      "itreturnacknowledgement": "Income Tax Return Acknowledgement",
+      "indianincometaxreturnacknowledgement": "Income Tax Return Acknowledgement",
+      "marriagecertificate": "Certificate of Marriage",
+      "aadhaar": "Aadhaar card",
+      "aadharcard": "Aadhaar card"
+    };
+
+    if (normalizedMap[normalized]) return normalizedMap[normalized];
+    
+    if (ALIASES[normalized]) return ALIASES[normalized];
+
+    for (const key in normalizedMap) {
+      if (normalized.includes(key)) {
+        return normalizedMap[key];
+      }
+    }
+
+    console.warn("⚠️ Unknown document type received:", docTypeRaw);
+    return "Unsorted";
+  }
+
+  function truncateFilename(name, maxLen = 22) {
+    return name.length <= maxLen ? name : name.slice(0, maxLen - 4) + '...' + name.split('.').pop();
+  }
+
+  function renderChecklist() {
+    const ctn = document.getElementById('doc-checklist');
+    ctn.innerHTML = '';
+    DOC_TYPES.forEach((docType, dtIdx) => {
+      const files = uploadedImages.filter(x => x.docType === docType);
+      const main = document.createElement('div');
+      main.className = "doc-type-row";
+      main.innerHTML = `
+        <div class="doc-type-main${dtIdx === selectedDocTypeIdx ? ' selected' : ''}" data-idx="${dtIdx}">
+          <input class="doc-type-checkbox" type="checkbox" disabled ${files.length > 0 ? 'checked' : ''}>
+          <span>${docType}</span>
+          <span class="doc-type-count">(${files.length})</span>
+        </div>
+        <div class="doc-type-files"></div>`;
+      const filesDiv = main.querySelector('.doc-type-files');
+      files.forEach((obj, i) => {
+        const fileDiv = document.createElement('div');
+        fileDiv.className = 'doc-type-file' + ((dtIdx === selectedDocTypeIdx && i === selectedFileIdx) ? ' selected' : '');
+        fileDiv.innerHTML = `<span class="mdi mdi-checkbox-blank-circle"></span><span class="filename">${truncateFilename(obj.fileName || obj.imageUrl || 'Doc')}</span>`;
+        fileDiv.onclick = () => { selectDocFile(dtIdx, i); };
+        filesDiv.appendChild(fileDiv);
+      });
+      main.querySelector('.doc-type-main').onclick = () => {
+        if (files.length) selectDocFile(dtIdx, 0);
+      };
+      ctn.appendChild(main);
+    });
+  }
+
+  function selectDocFile(dtIdx, fileIdx) {
+    const docType = DOC_TYPES[dtIdx];
+    const docsOfType = uploadedImages.filter(x => x.docType === docType);
+    
+    if (docsOfType.length === 0) return;
+    
+    selectedDocTypeIdx = dtIdx;
+    selectedFileIdx = Math.min(fileIdx, docsOfType.length - 1);
+    updateMainPreview();
+  }
+
+  function setUIState(state, filename) {
+    const uploadBtn = document.getElementById('main-upload-btn');
+    document.getElementById('empty-upload-card').style.display = (state === 'empty') ? '' : 'none';
+    document.getElementById('uploading-indicator').style.display = (state === 'uploading') ? '' : 'none';
+    document.getElementById('doc-preview-full').style.display = (state === 'preview') ? '' : 'none';
+
+    uploadBtn.style.display = (state === 'uploading') ? 'none' : 'block';
+
+    if (state === 'uploading') {
+      document.getElementById('uploading-file-name').textContent = filename || '';
+    }
+  }
+
+  function updateMainPreview() {
+    const docsOfType = uploadedImages.filter(x => x.docType === DOC_TYPES[selectedDocTypeIdx]);
+    if (!docsOfType.length) return setUIState('empty');
+    setUIState('preview');
+
+    const sel = document.getElementById('doc-type-dropdown');
+    sel.innerHTML = DOC_TYPES.map((type, i) => `<option value="${i}">${type}</option>`).join('');
+    const curr = docsOfType[selectedFileIdx];
+    sel.value = DOC_TYPES.indexOf(curr.docType);
+
+    sel.onchange = function() {
+      const newDocType = DOC_TYPES[Number(sel.value)];
+      const docsOfType = uploadedImages.filter(x => x.docType === newDocType);
+
+      if (docsOfType.length > 0) {
+        curr.docType = newDocType;
+        selectedDocTypeIdx = DOC_TYPES.indexOf(newDocType);
+        selectedFileIdx = docsOfType.length - 1;
+        renderChecklist();
+        updateMainPreview();
+      } else {
+        alert(`No documents uploaded under "${newDocType}" yet.`);
+        sel.value = DOC_TYPES.indexOf(curr.docType); // revert dropdown
+      }
+    };
+
+    document.getElementById('preview-file-name').textContent = truncateFilename(curr.fileName || curr.imageUrl || 'Document');
+    document.getElementById('preview-img-main').src = curr.imageUrl;
+    document.getElementById('preview-img-main').style.display = '';
+
+    const thumbRow = document.getElementById('perdoc-thumb-carousel');
+    thumbRow.innerHTML = '';
+    docsOfType.forEach((obj, idx) => {
+      const thumb = document.createElement('img');
+      thumb.src = obj.imageUrl;
+      thumb.className = 'doc-thumb-carousel-img' + (idx === selectedFileIdx ? ' selected' : '');
+      thumb.onclick = () => selectDocFile(selectedDocTypeIdx, idx);
+      thumbRow.appendChild(thumb);
+    });
+
+    renderRightDetails();
+    renderErrorSummary();
+    renderChecklist();
+  }
+
+ function renderRightDetails() {
+    try {
+      const form = document.getElementById('right-details-fields');
+      form.innerHTML = '';
+      document.getElementById('review-details-count').innerText = '0';
+      document.getElementById('review-errors-count').innerText = '0';
+
+      if (!uploadedImages?.length || selectedDocTypeIdx === null || selectedFileIdx === null) {
+        return showNoDataMessage('No document selected');
+      }
+
+      const docsOfType = uploadedImages.filter(x => x.docType === DOC_TYPES[selectedDocTypeIdx]);
+      if (!docsOfType.length) {
+        return showNoDataMessage('No documents of this type');
+      }
+
+      const currentDoc = docsOfType[selectedFileIdx];
+      if (!currentDoc?.backendObj?.parsedData) {
+        return showNoDataMessage('Document data not loaded');
+      }
+
+      const parsedData = currentDoc.backendObj.parsedData;
+      let extractedDetails = {};
+
+      const possibleDetailKeys = [
+        'Extracted Details',
+        'Extracted_Details',
+        'extracted_details',
+        'ExtractedDetails',
+        'Details',
+        'details'
+      ];
+
+      for (const key of possibleDetailKeys) {
+        if (parsedData[key]) {
+          extractedDetails = parsedData[key];
+          break;
+        }
+      }
+
+      if (Array.isArray(extractedDetails)) {
+        extractedDetails = extractedDetails.reduce((acc, item) => {
+          if (typeof item === 'object' && item !== null) {
+            return { ...acc, ...item };
+          }
+          return { ...acc, [`Item_${Object.keys(acc).length + 1}`]: item };
+        }, {});
+      }
+
+      const flattenedDetails = {};
+      Object.keys(extractedDetails).forEach(key => {
+        const value = extractedDetails[key];
+        
+        if (value && typeof value === 'object' && !Array.isArray(value)) {
+          Object.keys(value).forEach(subKey => {
+            flattenedDetails[`${key}_${subKey}`] = value[subKey];
+          });
+        } else {
+          flattenedDetails[key] = value;
+        }
+      });
+
+      const keys = Object.keys(flattenedDetails);
+      if (!keys.length) {
+        return showNoDataMessage('No data extracted from document');
+      }
+
+      let validCount = 0, errorCount = 0;
+      
+      keys.forEach(key => {
+        let value = flattenedDetails[key];
+        let displayValue = 'Not available';
+        let isEmpty = true;
+
+        if (value !== null && value !== undefined && value !== 'null') {
+          if (Array.isArray(value)) {
+            displayValue = value.filter(v => v != null).join(', ');
+            isEmpty = displayValue.length === 0;
+          } else if (typeof value === 'object') {
+            displayValue = JSON.stringify(value);
+            isEmpty = false;
+          } else {
+            displayValue = String(value).trim();
+            isEmpty = displayValue.length === 0;
+          }
+        }
+
+        if (!isEmpty) validCount++;
+        else errorCount++;
+
+        const fieldHtml = `
+          <div class="doc-details-field">
+            <label>${formatKeyName(key)}</label>
+            <div class="editable-field-container">
+              <div class="editable-field" 
+                   contenteditable="true" 
+                   data-key="${escapeHtml(key)}"
+                   data-original="${escapeHtml(displayValue)}">
+                ${escapeHtml(displayValue)}
+              </div>
+              <button class="save-btn" data-key="${escapeHtml(key)}" style="display:none">
+                <span class="mdi mdi-check"></span>
+              </button>
+            </div>
+          </div>`;
+        
+        form.innerHTML += fieldHtml;
+      });
+
+      // Add event listeners for editable fields
+      document.querySelectorAll('.editable-field').forEach(field => {
+        field.addEventListener('focus', function() {
+          this.parentElement.querySelector('.save-btn').style.display = 'inline-block';
+        });
+        
+        field.addEventListener('blur', function() {
+          // Delay hiding the save button to allow click
+          setTimeout(() => {
+            this.parentElement.querySelector('.save-btn').style.display = 'none';
+          }, 200);
+        });
+        
+        field.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            this.blur();
+            saveFieldValue(this);
+          }
+        });
+      });
+
+      // Add event listeners for save buttons
+      document.querySelectorAll('.save-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const field = this.parentElement.querySelector('.editable-field');
+          saveFieldValue(field);
+        });
+      });
+
+      document.getElementById('review-details-count').innerText = validCount;
+      document.getElementById('review-errors-count').innerText = errorCount;
+
+    } catch (error) {
+      console.error('Error in renderRightDetails:', error);
+      showNoDataMessage('Error displaying document data');
+    }
+}
+
+function saveFieldValue(fieldElement) {
+    const key = fieldElement.getAttribute('data-key');
+    const newValue = fieldElement.textContent.trim();
+    const originalValue = fieldElement.getAttribute('data-original');
+
+    if (newValue === originalValue) return;
+
+    const currentDocType = DOC_TYPES[selectedDocTypeIdx];
+    const docsOfType = uploadedImages.filter(x => x.docType === currentDocType);
+    const currentDoc = docsOfType[selectedFileIdx];
+
+    if (!currentDoc) return;
+
+    const parsedData = currentDoc.backendObj.parsedData;
+
+    const keyParts = key.split('_');
+    let targetObj = parsedData;
+
+    for (let i = 0; i < keyParts.length - 1; i++) {
+        const part = keyParts[i];
+        if (!targetObj[part] || typeof targetObj[part] !== 'object') {
+            targetObj[part] = {};
+        }
+        targetObj = targetObj[part];
+    }
+
+    const finalKey = keyParts[keyParts.length - 1];
+    targetObj[finalKey] = newValue;
+
+    // Optionally update original data to avoid repeated saves
+    fieldElement.setAttribute('data-original', newValue);
+
+    // Hide save button
+    const saveBtn = fieldElement.parentElement.querySelector('.save-btn');
+    if (saveBtn) saveBtn.style.display = 'none';
+}
+
+  function showReviewTab() {
+    document.getElementById('tab-review').classList.add('active');
+    document.getElementById('tab-errors').classList.remove('active');
+    document.getElementById('right-details-fields').style.display = 'block';
+    document.getElementById('review-errors-container').style.display = 'none';
+  }
+
+  function showErrorTab() {
+    document.getElementById('tab-errors').classList.add('active');
+    document.getElementById('tab-review').classList.remove('active');
+    document.getElementById('right-details-fields').style.display = 'none';
+    document.getElementById('review-errors-container').style.display = 'block';
+  }
+
+  function bindUploadBtn(btnId, inputId) {
+    document.getElementById(btnId).onclick = () => {
+      const input = document.getElementById(inputId);
+      input.value = '';
+      input.click();
+    };
+    document.getElementById(inputId).onchange = function(e) {
+      if (e.target.files) handleFilesSelected(e.target.files);
+    };
+  }
+
+  function showProcessingOverlay(totalFiles) {
+    document.getElementById('file-processing-overlay').style.display = 'flex';
+    document.getElementById('processing-counter').textContent = `Processing 0 of ${totalFiles} documents`;
+  }
+
+  function updateProcessingProgress(current, total) {
+    document.getElementById('processing-counter').textContent = `Processing ${current} of ${total} documents`;
+  }
+
+  function hideProcessingOverlay() {
+    document.getElementById('file-processing-overlay').style.display = 'none';
+  }
+
+  function applyZoom() {
+    const img = document.getElementById('preview-img-main');
+    if (img) {
+      img.style.transform = `scale(${currentZoomLevel})`;
+      img.style.transition = 'transform 0.3s ease-in-out';
+      img.style.transformOrigin = 'center center';
+    }
+  }
+
+  function zoomInImage() {
+    if (currentZoomLevel < maxZoom) {
+      currentZoomLevel = Math.min(currentZoomLevel + zoomStep, maxZoom);
+      applyZoom();
+    }
+  }
+
+  function zoomOut() {
+    if (currentZoomLevel > minZoom) {
+      currentZoomLevel = Math.max(currentZoomLevel - zoomStep, minZoom);
+      applyZoom();
+    }
+  }
+
+  function resetZoom() {
+    currentZoomLevel = 1;
+    applyZoom();
+  }
+
+  function renderErrorSummary() {
+    const errorListDiv = document.getElementById("dynamic-error-list");
+    if (!errorListDiv) return;
+
+    errorListDiv.innerHTML = '';
+    let errorCount = 0;
+
+    // Get current document
+    const currentDocType = DOC_TYPES[selectedDocTypeIdx];
+    const docsOfType = uploadedImages.filter(x => x.docType === currentDocType);
+    const currentDoc = docsOfType[selectedFileIdx];
+
+    if (!currentDoc) {
+        errorListDiv.innerHTML = `<div class="no-error-message">No document selected</div>`;
+        document.getElementById("review-errors-count").textContent = "0";
+        return;
+    }
+
+    // Get errors from all possible fields
+    const errorDetails = currentDoc.backendObj?.errorDetails || 
+                        currentDoc.backendObj?.errorMessages || 
+                        currentDoc.backendObj?.parsedData?.detected_errors ||
+                        currentDoc.backendObj?.parsedData?.['Detected Errors'] || 
+                        [];
+
+    // Convert to array and filter
+    const errorsArray = Array.isArray(errorDetails) ? errorDetails : 
+                       typeof errorDetails === 'string' ? [errorDetails] : [];
+    
+    const filteredErrors = errorsArray.filter(err => 
+        err && !err.toLowerCase().includes('no error') && 
+        !err.toLowerCase().includes('readable')
+    );
+
+    // Add status code error if present
+    if (currentDoc.backendObj?.statusCode && currentDoc.backendObj.statusCode !== 200) {
+        filteredErrors.push(`API Error: Status Code ${currentDoc.backendObj.statusCode}`);
+    }
+
+    // Display errors or no-error message
+    if (filteredErrors.length > 0) {
+        const title = document.createElement("div");
+        title.className = "doc-details-field";
+        title.innerHTML = `<label><strong>${currentDoc.docType} - ${currentDoc.fileName}</strong></label>`;
+        errorListDiv.appendChild(title);
+
+        filteredErrors.forEach(err => {
+            const errorItem = document.createElement("div");
+            errorItem.className = "doc-details-field";
+            errorItem.innerHTML = `<input type="text" readonly value="${escapeHtml(err)}" style="color:#e53935; font-weight: 600;" />`;
+            errorListDiv.appendChild(errorItem);
+            errorCount++;
+        });
+    } else {
+        errorListDiv.innerHTML = `
+            <div class="no-error-message">
+                <span class="mdi mdi-check-circle" style="color:green; font-size:24px;"></span>
+                No errors detected in this document
+            </div>`;
+    }
+
+    // Update error count badge
+    document.getElementById("review-errors-count").textContent = errorCount.toString();
+
+    // Only show missing doc types if we're viewing all errors
+    if (document.getElementById('tab-errors').classList.contains('active')) {
+        renderMissingDocTypeErrors();
+    }
+  }
+
+  function toggleReviewErrorTab(tab) {
+    const reviewTab = document.getElementById('tab-review');
+    const errorTab = document.getElementById('tab-errors');
+    const reviewContent = document.getElementById('review-tab-content');
+    const errorContent = document.getElementById('error-tab-content');
+
+    if (tab === 'review') {
+        reviewContent.style.display = 'block';
+        errorContent.style.display = 'none';
+        reviewTab.classList.add('active');
+        errorTab.classList.remove('active');
+        renderRightDetails(); // Refresh details view
+    } else {
+        reviewContent.style.display = 'none';
+        errorContent.style.display = 'block';
+        reviewTab.classList.remove('active');
+        errorTab.classList.add('active');
+        renderErrorSummary(); // Refresh error display
+    }
+  }
+
+  function renderMissingDocTypeErrors() {
+    const requiredDocTypes = [
+      "Passport",
+      "Photo",
+      "Aadhaar card",
+      "Certificate of Marriage",
+      "Marriage Certificate",
+      "Income Tax Return Acknowledgement",
+      "Passbook",
+      "Residence Permit",
+      "GST Registration Document"
+    ];
+
+    const uploadedDocTypes = uploadedImages.map(doc => doc.docType);
+    const missingTypes = requiredDocTypes.filter(type => !uploadedDocTypes.includes(type));
+
+    if (missingTypes.length > 0) {
+      const errorListDiv = document.getElementById("dynamic-error-list");
+      if (!errorListDiv) return;
+
+      // const sectionTitle = document.createElement("div");
+      // sectionTitle.className = "doc-details-field";
+      // sectionTitle.innerHTML = `<label><strong>Missing Document Types</strong></label>`;
+      errorListDiv.appendChild(sectionTitle);
+
+      missingTypes.forEach(type => {
+        const errorItem = document.createElement("div");
+        errorItem.className = "doc-details-field";
+        errorItem.innerHTML = `<input type="text" readonly value="${type} not uploaded" style="color:#e53935; font-weight: 600;" />`;
+        errorListDiv.appendChild(errorItem);
+      });
+
+      const currentCount = parseInt(document.getElementById("review-errors-count").textContent) || 0;
+      document.getElementById("review-errors-count").textContent = (currentCount + missingTypes.length).toString();
+    }
+  }
+  // Add this near your other constants
+const MAX_PHOTOS_ALLOWED = 3;
+async function handleFilesSelected(fileInputs) {
+    if (!fileInputs.length) return;
+
+    // Photo count validation (unchanged)
+    const existingPhotoCount = uploadedImages.filter(img => 
+        img.docType === "Photo"
+    ).length;
+    
+    const newFiles = Array.from(fileInputs);
+    const newPhotosCount = newFiles.filter(file => 
+        file.type.startsWith('image/')
+    ).length;
+
+    if (existingPhotoCount + newPhotosCount > MAX_PHOTOS_ALLOWED) {
+        alert(`You can only upload ${MAX_PHOTOS_ALLOWED} photos maximum.\n\nYou already have ${existingPhotoCount} photos uploaded and are trying to add ${newPhotosCount} more.`);
+        return;
+    }
+
+    showProcessingOverlay(newFiles.length);
+    document.getElementById('uploading-file-name').textContent = `${newFiles.length} files selected`;
+
+    try {
+        // 1. Get results and ensure it's always an array
+        const results = await uploadFilesWithRetry(newFiles, 0);
+        const processedResults = Array.isArray(results) ? results : [results];
+
+        // 2. Process each result safely
+        processedResults.forEach((result, index) => {
+            const file = newFiles[index];
+            
+            // Ensure result has expected structure
+            const safeResult = result || {};
+            const docType = safeResult.docType || "Unsorted";
+            const imageUrl = safeResult.imageUrl || "";
+            const backendObj = safeResult.backendObj || {};
+
+            const fileEntry = {
+                docType: matchDocType(docType),
+                fileName: file.name,
+                imageUrl,
+                backendObj
+            };
+
+            // Check for duplicates
+            if (!uploadedImages.some(img => 
+                img.fileName === fileEntry.fileName && 
+                img.imageUrl === fileEntry.imageUrl
+            )) {
+                uploadedImages.push(fileEntry);
+            }
+
+            updateProcessingProgress(index + 1, newFiles.length);
+        });
+
+    } catch (e) {
+        console.error(`Batch upload failed:`, e);
+        alert(`Upload failed: ${e.message || 'Unknown error'}`);
+    } finally {
+        hideProcessingOverlay();
+        sessionStorage.setItem('uploadedDocuments', JSON.stringify(uploadedImages));
+        updateMainPreview();
+        renderChecklist();
+        setUIState(uploadedImages.length ? 'preview' : 'empty');
+        document.getElementById('upload-more-container').style.display = 'block';
+    }
+}
+
+  async function uploadFilesWithRetry(files, attempt = 0) {
+    try {
+        const result = await uploadFiles(files);
+        // Ensure we always return an array of processed files
+        return result.uploadedFiles || [];
+    } catch (error) {
+        if (attempt < MAX_RETRIES) {
+            await new Promise(resolve => setTimeout(resolve, RETRY_DELAY_MS));
+            return uploadFilesWithRetry(files, attempt + 1);
+        }
+        throw error;
+    }
+}
+async function uploadFiles(files) {
+    const userData = JSON.parse(sessionStorage.getItem('userData'));
+
+    if (!userData || !userData.userId || !userData.email) {
+        throw new Error('❌ User not logged in. Please sign in first.');
+    }
+
+    const formData = new FormData();
+    files.forEach(file => formData.append('images', file));
+    formData.append('userId', userData.userId);
+    formData.append('applicantEmail', userData.email);
+
+    try {
+        // First API call
+        const uploadResponse = await axios.post(
+            'https://back.theskytrails.com/skyTrails/api/visa/uploadedDocsDetails',
+            formData,
+            { headers: { 'Content-Type': 'multipart/form-data' } }
+        );
+
+        // Safely extract imageeDetails from different possible response structures
+        const result = uploadResponse.data?.result || uploadResponse.data;
+        console.log(result);
+        const imageDetails = Array.isArray(result?.imageeDetails) 
+            ? result.imageeDetails 
+            : Array.isArray(result)
+                ? result
+                : [];
+
+        if (imageDetails.length === 0) {
+            throw new Error('❌ No valid documents were processed');
+        }
+
+        const processedFiles = imageDetails.map((entry, idx) => ({
+            docType: matchDocType(entry.parsedData?.Document_Type || "Unsorted"),
+            fileName: files[idx]?.name || `document_${idx}`,
+            imageUrl: entry.imageUrl,
+            backendObj: entry
+        }));
+
+        // Store in sessionStorage
+        sessionStorage.setItem('uploadedDocuments', JSON.stringify({
+            uploadedFiles: processedFiles,
+            userId: userData.userId,
+            email: userData.email
+        }));
+
+        // Second API call - completely silent
+       if (uploadResponse.data.statusCode === 200 || uploadResponse.data.statusCode === 201) {
+    // Fire-and-forget with response logging (but no UI impact)
+    axios.post(
+        'https://st-backend-rzu7.onrender.com/skyTrails/api/visa/openai/visaApplDocCreation',
+        {
+            payload: {
+                userId: userData.userId,
+                applicantEmail: userData.email,
+                imageeDetails: imageDetails
+            }
+        },
+        { headers: { 'Content-Type': 'application/json' } }
+    )
+    .then(response => {
+        // Silent success logging (dev-only)
+        console.debug('Second API success:', {
+            status: response.status,
+            data: response.data // Optional: Redact sensitive data in production
+        });
+    })
+    .catch(error => {
+        // Silent error logging (dev-only)
+        console.error('Second API failed (silent):', {
+            status: error.response?.status,
+            message: error.message,
+            config: { url: error.config?.url } // Redact sensitive data
+        });
+    });
+}
+
+return { 
+    uploadedFiles: processedFiles, // Only first API data
+    userId: userData.userId,
+    email: userData.email
+};
+
+    } catch (error) {
+        console.error("Upload failed:", error);
+        throw error;
+    }
+}
+  function initializePage() {
+    console.log("Initializing page with uploadedImages:", uploadedImages);
+    
+    const signupData = JSON.parse(localStorage.getItem('signupData'));
+    const visaData = JSON.parse(localStorage.getItem('visaData'));
+
+    if (signupData?.firstName) {
+      const heading = document.getElementById('reviewName');
+      if (heading) {
+        heading.textContent = `${signupData.firstName}, Know before you go!`;
+      }
+      const profileInitialEl = document.getElementById('profileInitial');
+      if (profileInitialEl) {
+        profileInitialEl.textContent = signupData.firstName.charAt(0).toUpperCase();
+      }
+    }
+
+    if (visaData) {
+      const destination = visaData.destinationCountry || visaData.arrCountyName || 'Unknown';
+      const visaType = visaData.visaCategory || 'Tourism';
+      const fromDateStr = visaData.fromDate?.split('T')[0];
+      const toDateStr = visaData.toDate?.split('T')[0];
+
+      const formatDate = (iso) => {
+        const date = new Date(iso);
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        return date.toLocaleDateString('en-US', options);
+      };
+
+      const getDuration = (start, end) => {
+        const d1 = new Date(start);
+        const d2 = new Date(end);
+        const diff = Math.ceil((d2 - d1) / (1000 * 60 * 60 * 24));
+        return diff > 0 ? `${diff} days` : 'N/A';
+      };
+
+      document.getElementById('infoDestination').textContent = destination;
+      document.getElementById('infoVisaType').textContent = visaType;
+      document.getElementById('infoDuration').textContent = getDuration(fromDateStr, toDateStr);
+      document.getElementById('infoDates').textContent = `${formatDate(fromDateStr)} – ${formatDate(toDateStr)}`;
+    }
+
+    if (uploadedImages.length > 0) {
+      setUIState('preview');
+      selectedDocTypeIdx = 0;
+      selectedFileIdx = 0;
+      updateMainPreview();
+    } else {
+      setUIState('empty');
+    }
+    
+    renderChecklist();
+    bindEventHandlers();
+  }
+
+  function bindEventHandlers() {
+    document.getElementById('main-upload-btn').onclick = () => {
+      document.getElementById('main-file-input').value = '';
+      document.getElementById('main-file-input').click();
+    };
+
+    document.getElementById('main-file-input').onchange = function(e) {
+      if (e.target.files) handleFilesSelected(e.target.files);
+    };
+
+    document.getElementById('upload-more-input').onchange = function(e) {
+      if (e.target.files) handleFilesSelected(e.target.files);
+    };
+
+    document.getElementById('tab-review').addEventListener('click', showReviewTab);
+    document.getElementById('tab-errors').addEventListener('click', showErrorTab);
+
+    document.getElementById('zoom-in-btn')?.addEventListener('click', zoomInImage);
+    document.getElementById('zoom-out-btn')?.addEventListener('click', zoomOut);
+    document.getElementById('zoom-reset-btn')?.addEventListener('click', resetZoom);
+
+    bindUploadBtn('center-upload-btn', 'center-file-input');
+  }
+
+  document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'visible') {
+      console.log("Page became visible, reloading data");
+      const freshData = JSON.parse(sessionStorage.getItem('uploadedDocuments')) || [];
+      if (JSON.stringify(freshData) !== JSON.stringify(uploadedImages)) {
+        uploadedImages = freshData;
+        initializePage();
+      }
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', initializePage);
+
+  setUIState(uploadedImages.length ? 'preview' : 'empty');
+  renderChecklist();
+</script>
+
+</body>
+</html>    
+
+
+
+
+
+
+
+
+

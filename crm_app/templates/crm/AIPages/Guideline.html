@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Review - The Skytrails</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        /* background: linear-gradient(90deg, #fff4ee 0%, #fdeffb 55%, #e1eaff 100%); */
+        margin: 0;
+      }
+
+      body {
+        background: linear-gradient(
+          120deg,
+          #ffffff 0%,
+          #f8f2f8 48%,
+          #e9bddd 100%
+        );
+      }
+
+      .nav-link {
+        font-weight: 600;
+        color: #1e1e1e;
+        font-size: 15px;
+      }
+      .nav-link:hover {
+        color: #f97316;
+      }
+      .tab-step {
+        background: #fbeee9;
+        padding: 10px 25px;
+        border-radius: 999px;
+        font-size: 16px;
+        font-weight: 500;
+        color: #333;
+      }
+      .tab-step.active {
+        border: 2px solid rgb(199, 187, 175);
+        color: #f97316;
+        background: #fff;
+        font-weight: 600;
+      }
+      .review-heading {
+        font-size: 2.1rem;
+        font-weight: 700;
+        color: #1e1e1e;
+      }
+      .highlight-text {
+        color: #f97316;
+        font-style: italic;
+        font-weight: 600;
+      }
+      .review-box {
+        border: 2px solid #ffb8b8;
+        background: #fff1f1;
+        padding: 1rem 1.25rem;
+        border-radius: 15px;
+        margin-top: 1rem;
+      }
+
+      .footer-bar {
+        margin-top: 3rem;
+        padding: 5px 10px;
+        /* background: linear-gradient(to right, #fbeee9, #f5e4f8); */
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 14px;
+        color: #666;
+        max-width: 1140px; /* limit width */
+        max-height: 100px;
+      }
+      .footer-bar .btn {
+        border-radius: 30px;
+        padding: 8px 20px;
+        font-weight: 600;
+        margin-top: 10px;
+      }
+
+      .btn-submit-custom {
+        background-color: #f97316;
+        color: #fff;
+        border: none;
+      }
+      .btn-submit-custom:hover {
+        background-color: #fb923c;
+      }
+
+      .info-bar {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        padding: 12px 28px;
+        background: rgba(255, 255, 255, 0.6);
+        border-radius: 40px;
+        font-size: 14px;
+        color: #1f1f1f;
+        white-space: nowrap;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-bar > div {
+        display: flex;
+        align-items: center;
+      }
+
+      .info-bar i {
+        font-size: 18px;
+        margin-right: 6px;
+        color: #333;
+      }
+      .logo-img {
+        max-height: 220px;
+        object-fit: contain;
+        display: block;
+      }
+
+      .stats-card {
+        /* background: linear-gradient(135deg, #fffdfc 0%, #ffeef2 30%, #f4ebfb 70%, #ecdfff 100%); */
+        border-radius: 20px;
+        padding: 30px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+        max-width: 100%;
+        margin: 40px auto;
+        min-height: 300px;
+        position: relative;
+      }
+
+      .left-container {
+        background-color: #fef3c7; /* Replace with your desired color */
+        padding: 20px;
+        border-radius: 16px;
+      }
+
+      .right-container {
+        background-color: #e0f2fe; /* Replace with your desired color */
+        padding: 20px;
+        border-radius: 16px;
+        overflow-y: auto;
+        max-height: 80vh;
+      }
+      */ .left-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .country-box {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 12px;
+        padding: 12px 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 20px;
+        font-weight: 600;
+        color: rgb(14, 13, 13);
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+      }
+
+      .country-box img {
+        height: 24px;
+        width: auto;
+      }
+
+      .right-content {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .stat-box {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 16px;
+        padding: 15px 25px;
+        text-align: right;
+        color: rgb(58, 51, 51);
+        min-width: 180px;
+      }
+
+      .stat-box .title {
+        font-size: 14px;
+        opacity: 0.85;
+      }
+
+      .stat-box .value {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+
+      .stat-box .subtext {
+        font-size: 12px;
+        opacity: 0.8;
+      }
+
+      .left-content img {
+        height: 22px;
+        margin-right: 8px;
+      }
+
+      @media (max-width: 768px) {
+        .stats-card {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .right-content {
+          margin-top: 20px;
+        }
+
+        .country-box {
+          position: static;
+          margin-top: 20px;
+        }
+      }
+
+      .tab-btn {
+        font-weight: 600;
+        font-size: 18px;
+        border-radius: 12px;
+        padding: 10px 24px;
+        border: none;
+      }
+
+      .tab-btn.active {
+        background-color: white;
+        border: 2px solid #ddd;
+      }
+
+      .visa-option {
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 16px;
+        background: linear-gradient(
+          rgba(213, 213, 213, 0.1),
+          rgba(111, 111, 111, 0.1)
+        );
+        transition: all 0.2s;
+        cursor: pointer;
+      }
+
+      .visa-option.active {
+        background: #ffe4d3;
+        border: 1px solid #ffae80;
+      }
+
+      .document-guidelines {
+        border-radius: 20px;
+        background: linear-gradient(
+          rgba(213, 213, 213, 0.1),
+          rgba(111, 111, 111, 0.1)
+        );
+        padding: 20px;
+        overflow-y: auto;
+        max-height: 600px;
+        scrollbar-width: none;
+      }
+
+      .document-guidelines::-webkit-scrollbar {
+        display: none;
+      }
+
+      .guideline-block {
+        background: rgba(255, 255, 255, 0.3);
+        padding: 20px;
+        margin-bottom: 15px;
+        border-radius: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav
+      class="navbar navbar-expand-lg border-bottom px-4 py-3"
+      style="
+        background: linear-gradient(
+          90deg,
+          #ebe9e9 0%,
+          #d4d4d4 55%,
+          #e1eaff 100%
+        );
+      "
+    >
+      <div class="container-fluid">
+        <a
+          class="navbar-brand d-flex align-items-center"
+          href="#"
+          style="height: 44px"
+        >
+          <img src="{% static "assets/images/logo1.png" %}" alt="Logo" class="logo-img" />
+        </a>
+        <div class="d-flex align-items-center gap-4">
+          <a href="./Form.html" class="nav-link">Apply now</a>
+          <a href="#" class="nav-link">My Applications</a>
+          <a href="#" class="nav-link">My Documents</a>
+          <a href="#" class="nav-link">Show Walkthrough</a>
+          <div class="dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              data-bs-toggle="dropdown"
+              href="#"
+              >Premium Services</a
+            >
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Visa Help</a></li>
+              <li><a class="dropdown-item" href="#">Consulting</a></li>
+            </ul>
+          </div>
+          <div class="dropdown">
+            <a
+              id="profileInitial"
+              class="d-flex align-items-center justify-content-center rounded-circle bg-light"
+              style="
+                width: 36px;
+                height: 36px;
+                font-weight: 600;
+                font-size: 14px;
+                color: #555;
+              "
+              data-bs-toggle="dropdown"
+            >
+              A
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="#">Profile</a></li>
+              <li><a class="dropdown-item" href="#">Logout</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container py-5">
+      <div
+        class="d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center"
+      >
+        <div class="mb-4 mb-lg-0" style="max-width: 57%">
+          <h2 class="review-heading" id="reviewName">Know before you go!</h2>
+          <p class="fs-5 text-muted">
+            Check your visa type, fees, and docs needed—then hit
+            <span class="highlight-text">Start Application</span> to keep things
+            moving!
+          </p>
+        </div>
+
+        <!-- <div class="info-bar d-inline-flex px-4 py-2 align-items-center justify-content-start" style="background: rgba(0, 0, 0, 0.03); font-size: 12px; border-radius: 20px;">
+  <div class="d-flex align-items-center me-3">
+    <i class="material-icons me-1">location_on</i>
+    United Kingdom
+  </div>
+  <div class="d-flex align-items-center me-3">
+    <i class="material-icons me-1">badge</i>
+    Tourism
+  </div>
+  <div class="d-flex align-items-center me-3">
+    <i class="material-icons me-1">timer</i>
+    29 days
+  </div>
+  <div class="d-flex align-items-center text-muted">
+    <i class="material-icons me-1">calendar_today</i>
+    May 26, 2025 – Jun 24, 2025
+  </div>
+</div> -->
+
+        <div
+          class="info-bar d-inline-flex px-4 py-2 align-items-center justify-content-start"
+          style="
+            background: rgba(0, 0, 0, 0.03);
+            font-size: 12px;
+            border-radius: 20px;
+          "
+        >
+          <div class="d-flex align-items-center me-3">
+            <i class="material-icons me-1">location_on</i>
+            <span id="infoDestination">Destination</span>
+          </div>
+          <div class="d-flex align-items-center me-3">
+            <i class="material-icons me-1">badge</i>
+            <span id="infoVisaType">Visa Type</span>
+          </div>
+          <div class="d-flex align-items-center me-3">
+            <i class="material-icons me-1">timer</i>
+            <span id="infoDuration">Duration</span>
+          </div>
+          <div class="d-flex align-items-center text-muted">
+            <i class="material-icons me-1">calendar_today</i>
+            <span id="infoDates">Travel Dates</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex align-items-center gap-4 pt-5 flex-wrap">
+        <div class="tab-step">Details</div>
+        <div class="tab-step active border border-warning">Guidelines</div>
+        <div class="tab-step">Upload</div>
+        <div class="tab-step">Review</div>
+        <div class="tab-step">Submit</div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="stats-card">
+        <!-- Left -->
+        <div class="left-content">
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/221/221725.png"
+            alt="Cityscape"
+            height="32"
+          />
+          <!-- Placeholder image, replace with your cityscape image -->
+          <div class="country-box">
+            <img id="country-flag" alt="Country Flag" />
+            <span id="country-name">Loading...</span>
+          </div>
+        </div>
+
+        <!-- Right -->
+        <div class="right-content text-end">
+          <div class="stat-box">
+            <div class="title">Ease of applying</div>
+            <div class="value">12K+ users</div>
+            <div class="subtext">Easy document upload</div>
+          </div>
+          <div class="stat-box">
+            <div class="title">Time to Upload</div>
+            <div class="value">02:50 s</div>
+            <div class="subtext">Average form filling time</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="d-flex mb-4">
+        <button class="tab-btn active me-3" onclick="switchTab('tourism')">
+          Tourism
+        </button>
+        <button class="tab-btn" onclick="switchTab('business')">
+          Business
+        </button>
+      </div>
+
+      <div class="row">
+        <!-- Left Column -->
+        <div class="col-md-4">
+          <div id="visaOptions">
+            <!-- JS will populate visa options -->
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-md-8">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="fw-bold" style="white-space: pre-line">
+              Document Guidelines
+            </h4>
+            <button
+              class="btn btn-light border rounded-pill px-4"
+              id="downloadGuidelines"
+            >
+              <i class="bi bi-download"></i> Download
+            </button>
+          </div>
+          <div id="guidelinesContent" class="document-guidelines">
+            <!-- JS will populate document guidelines -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container py-4">
+      <div class="footer-bar mt-5">
+        <div>&copy; | Powered by The SkyTrails</div>
+        <div>
+          <a href="aihome.html">
+            <button class="btn btn-secondary me-2">Go Back</button></a
+          >
+          <a href="{% url "ai_upload2" %}">
+            <button class="btn btn-submit-custom">Submit</button></a
+          >
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script>
+      // Add this script to your head section
+      const visaDataString = localStorage.getItem("visaData");
+
+      if (visaDataString) {
+        try {
+          const visaData = JSON.parse(visaDataString);
+
+          // Extract destination country - using the most specific property available
+          const countryName =
+            visaData.destinationCountry ||
+            visaData.arrCountyName ||
+            "United Kingdom"; // fallback
+
+          document.getElementById("country-name").textContent = countryName;
+
+          // Set flag image based on country
+          const flagImage = document.getElementById("country-flag");
+          const flagImages = {
+            Italy: "./images/Italy.webp",
+            India: "./flags/in.svg",
+            "United Kingdom": "./images/UK.png",
+            "United States": "./images/united-states.png",
+            Canada: "./images/canada.png",
+            Australia: "./images/australia.png",
+            France: "./images/France.png",
+            Germany: "./images/Germany.png",
+            Switzerland: "./images/Switzerland.png",
+            Belgium: "./images/Belgium.png",
+            Poland: "./images/poland.png",
+            Portugal: "./images/",
+            Netherlands: "./images/netherlands.png",
+          };
+
+          // Convert country name to standard format for matching
+          const standardizedCountryName = countryName.trim();
+
+          // Set the flag image if available, otherwise use default
+          flagImage.src =
+            flagImages[standardizedCountryName] || "./flags/default-flag.svg";
+          flagImage.alt = `${countryName} Flag`;
+        } catch (e) {
+          console.error("Error parsing visaData from localStorage:", e);
+          // Set defaults if there's an error
+          document.getElementById("country-name").textContent =
+            "United Kingdom";
+          document.getElementById("country-flag").src = "./flags/gb.svg";
+        }
+      } else {
+        console.log("No visaData found in localStorage");
+        // Set defaults if no data found
+        document.getElementById("country-name").textContent = "United Kingdom";
+        document.getElementById("country-flag").src = "./flags/gb.svg";
+      }
+
+      // Then modify the download button handler:
+      document
+        .getElementById("downloadGuidelines")
+        .addEventListener("click", function () {
+          const { jsPDF } = window.jspdf;
+          const doc = new jsPDF();
+
+          const country =
+            document.getElementById("infoDestination").textContent || "Visa";
+          const visaType =
+            document.getElementById("infoVisaType").textContent || "Guidelines";
+
+          // Add title
+          doc.setFontSize(18);
+          doc.text(`${country} ${visaType} Requirements`, 10, 15);
+
+          // Add guidelines content
+          const guidelinesBlocks =
+            document.querySelectorAll(".guideline-block");
+          let yPosition = 30;
+
+          guidelinesBlocks.forEach((block) => {
+            const heading = block.querySelector("h6").textContent;
+            const content = block.querySelector("p").textContent;
+
+            doc.setFontSize(12);
+            doc.setFont(undefined, "bold");
+            doc.text(heading, 10, yPosition);
+            yPosition += 7;
+
+            doc.setFont(undefined, "normal");
+            const splitText = doc.splitTextToSize(content, 180);
+            doc.text(splitText, 10, yPosition);
+            yPosition += splitText.length * 7 + 10;
+
+            // Add new page if needed
+            if (yPosition > 280) {
+              doc.addPage();
+              yPosition = 20;
+            }
+          });
+
+          // Save the PDF
+          doc.save(`${country}_${visaType}_Requirements.pdf`);
+        });
+   const visaData = {
+    Netherlands :{
+  "tourism": [
+    {
+      "title": "Schengen Visa (Type C) – Tourism",
+      "duration": "90 days within 180 days",
+      "fee": "€80 (approx. £70)",
+      "time": "Approx. 15 days",
+      "guidelines": [
+        {
+          "heading": "Passport",
+          "text": "Valid passport with at least 3 months validity beyond return date and 2 blank pages.\n\nCopies of previous Schengen visas and entry/exit stamps.\n\nPassport must not be older than 10 years."
+        },
+        {
+          "heading": "Application Form",
+          "text": "Completed and signed Schengen visa application form with a photograph attached.\n\nMust be printed with all barcode pages included."
+        },
+        {
+          "heading": "Photo",
+          "text": "Two recent passport-sized photographs (35x45mm).\n\nWhite background, 80% face coverage, neutral expression.\n\nNo glasses or headwear (except for religious reasons)."
+        },
+        {
+          "heading": "Proof of Funds",
+          "text": "Bank statements for the last 3 months showing sufficient funds (minimum €55 per day).\n\nSalary slips (last 3 months) if employed.\n\nTax returns (last 2 years) if self-employed."
+        },
+        {
+          "heading": "Proof of Travel",
+          "text": "Confirmed round-trip flight reservations.\n\nHotel bookings for the entire stay in the Netherlands.\n\nTravel insurance covering at least €30,000 for medical emergencies in the Schengen area."
+        },
+        {
+          "heading": "Letter",
+          "text": "Cover letter explaining the purpose of the visit, itinerary, and financial means.\n\nIf visiting family/friends: Invitation letter from the host in the Netherlands + proof of their residence status."
+        },
+        {
+          "heading": "Other",
+          "text": "Employment proof (employer letter with leave approval).\n\nBusiness registration documents (if self-employed).\n\nFor minors: Notarized parental consent if traveling alone or with one parent.\n\nPrevious Schengen/US/UK visas (if applicable)."
+        }
+      ]
+    }
+  ],
+  "business": [
+    {
+      "title": "Schengen Visa (Type C) – Business",
+      "duration": "90 days within 180 days",
+      "fee": "€80 (approx. £70)",
+      "time": "Approx. 15 days",
+      "guidelines": [
+        {
+          "heading": "Passport",
+          "text": "Same as Tourism Visa requirements."
+        },
+        {
+          "heading": "Application Form",
+          "text": "Same as Tourism Visa requirements."
+        },
+        {
+          "heading": "Photo",
+          "text": "Same as Tourism Visa requirements."
+        },
+        {
+          "heading": "Proof of Funds",
+          "text": "Same as Tourism Visa requirements."
+        },
+        {
+          "heading": "Proof of Travel",
+          "text": "Same as Tourism Visa requirements."
+        },
+        {
+          "heading": "Business Documents",
+          "text": "Invitation letter from a Dutch company (with address, purpose, and duration of stay).\n\nEmployer letter confirming business purpose, funding, and job position.\n\nCompany registration proof (if self-employed)."
+        },
+        {
+          "heading": "Letter",
+          "text": "Cover letter detailing business purpose (meetings, conferences, training, etc.).\n\nSponsorship details (if applicable)."
+        },
+        {
+          "heading": "Other",
+          "text": "Trade licenses or tax documents (if self-employed).\n\nConference/event registration proof (if applicable).\n\nPrevious Schengen business visas (if any)."
+        }
+      ]
+    }
+  ]
+
+    },
+  Australia: {
+  "tourism": [
+    {
+      "title": "Visitor Visa (Subclass 600) - Tourist Stream",
+      "duration": "3, 6, or 12 months",
+      "fee": "AUD 190",
+      "time": "7–30 days",
+      "guidelines": [
+        {
+          "heading": "Passport",
+          "text": "Valid passport with **6+ months validity** and **1 blank page**.\n\nCopies of previous visas/entry stamps (if any)."
+        },
+        {
+          "heading": "Application Form",
+          "text": "Completed online application (ImmiAccount) with barcode.\n\nPrinted copy with signature (if requested)."
+        },
+        {
+          "heading": "Photo",
+          "text": "One recent passport-sized photo (45mm x 35mm).\n\nWhite background, neutral expression, no glasses/headwear."
+        },
+        {
+          "heading": "Proof of Funds",
+          "text": "**Bank statements (last 3–6 months)** showing **AUD 5,000+** for stay.\n\nSalary slips (if employed) or business/tax docs (if self-employed)."
+        },
+        {
+          "heading": "Proof of Travel",
+          "text": "**Return flight itinerary**.\n\n**Hotel bookings** or invitation letter from family/friends (with host’s residency proof)."
+        },
+        {
+          "heading": "Letter",
+          "text": "**Cover letter** explaining trip purpose, itinerary, and ties to home country.\n\nIf visiting family/friends: **Invitation letter** with host’s contact + address."
+        },
+        {
+          "heading": "Other",
+          "text": "**Employment proof**: Employer letter (leave approval) or enrollment certificate (students).\n\n**Minors**: Birth certificate + notarized parental consent if traveling alone.\n\n**Travel insurance** (strongly recommended).\n\n**Health exams**: Required for stays **over 3 months** (depending on country)."
+        }
+      ]
+    },
+    {
+      "title": "eVisitor Visa (Subclass 651)",
+      "duration": "Up to 3 months per visit",
+      "fee": "Free",
+      "time": "24–72 hours",
+      "guidelines": [
+        {
+          "heading": "Eligibility",
+          "text": "Only for **EU passport holders** and select countries.\n\nPassport must be valid for **6+ months**."
+        },
+        {
+          "heading": "Proof of Funds",
+          "text": "Bank statements (last 3 months) with **AUD 1,000+ per month** of stay."
+        },
+        {
+          "heading": "Travel Itinerary",
+          "text": "Brief plan of activities/accommodation in Australia."
+        },
+        {
+          "heading": "Other",
+          "text": "**Cannot be extended** or applied for from within Australia."
+        }
+      ]
+    },
+    {
+      "title": "ETA (Subclass 601)",
+      "duration": "Up to 3 months per visit",
+      "fee": "AUD 20",
+      "time": "Instant to 72 hours",
+      "guidelines": [
+        {
+          "heading": "Eligibility",
+          "text": "For **USA, Canada, UK, Japan, Singapore**, and other approved countries."
+        },
+        {
+          "heading": "Application",
+          "text": "Apply **online** or via approved airlines/travel agents."
+        },
+        {
+          "heading": "Limitations",
+          "text": "**No work permitted** (except business meetings).\n**Multiple entries** allowed for 12 months."
+        }
+      ]
+    }
+  ],
+  "business": [
+    {
+      "title": "Visitor Visa (Subclass 600) - Business Stream",
+      "duration": "Up to 3 months",
+      "fee": "AUD 190",
+      "time": "7–30 days",
+      "guidelines": [
+        {
+          "heading": "Business Documents",
+          "text": "**Invitation letter** from Australian company with:\n- Meeting/conference details\n- Host’s contact + address\n- Proof of business registration"
+        },
+        {
+          "heading": "Employer Letter",
+          "text": "From your employer confirming:\n- Purpose of visit\n- Funding (if applicable)\n- Job position + leave approval"
+        },
+        {
+          "heading": "Other",
+          "text": "**Standard tourist visa requirements apply** (passport, funds, return ticket).\n\n**No paid work** allowed (only meetings/negotiations)."
+        }
+      ]
+    }
+  ],
+  "student": [
+    {
+      "title": "Student Visa (Subclass 500)",
+      "duration": "Duration of course",
+      "fee": "AUD 710",
+      "time": "4 weeks–3 months",
+      "guidelines": [
+        {
+          "heading": "Key Requirements",
+          "text": "**Confirmation of Enrollment (CoE)** from Australian institution.\n\n**Genuine Temporary Entrant (GTE) statement** (proof of intent to return home).\n\n**Overseas Student Health Cover (OSHC)** for entire stay."
+        },
+        {
+          "heading": "Financial Proof",
+          "text": "**AUD 24,505/year** for living costs + tuition fees.\n\nBank statements/sponsor letters (if applicable)."
+        },
+        {
+          "heading": "Other",
+          "text": "English proficiency test (IELTS/TOEFL) if required.\n\nHealth exams + police clearance (if staying >6 months)."
+        }
+      ]
+    }
+  ],
+  "workingHoliday": [
+    {
+      "title": "Working Holiday Visa (Subclass 417)",
+      "duration": "12 months (extendable to 2–3 years)",
+      "fee": "AUD 635",
+      "time": "1–3 months",
+      "guidelines": [
+        {
+          "heading": "Eligibility",
+          "text": "Aged **18–30** (35 for some countries).\nPassport from **approved country** (UK, Canada, France, etc.)."
+        },
+        {
+          "heading": "Financial Proof",
+          "text": "**AUD 5,000+** in bank account.\nReturn flight ticket or proof of funds to purchase one."
+        },
+        {
+          "heading": "Other",
+          "text": "**No dependent children** allowed.\n**Health insurance** required.\nMust not have previously held this visa (unless applying for extension)."
+        }
+      ]
+    }
+  ]
+},
+  Germany: {
+  "tourism": [
+    {
+      "title": "Schengen Visa (Type C) – Tourism",
+      "duration": "90 days within 180-day period",
+      "fee": "€80 (approx. £70)",
+      "time": "Approx. 15 days",
+      "guidelines": [
+        {
+          "heading": "Passport",
+          "text": "Valid passport with at least 3 months validity beyond return date and 2 blank pages.\n\nCopies of all previous visas and entry/exit stamps.\n\nPassport should not be older than 10 years."
+        },
+        {
+          "heading": "Application Form",
+          "text": "Completed and signed Schengen visa application form with a photograph attached.\n\nThe form needs to be printed and signed by the applicant and include all barcode pages."
+        },
+        {
+          "heading": "Photo",
+          "text": "Two recent passport-sized color photographs (35-45mm).\n\nWhite background\n\n80% face coverage, neutral expression (without any sunglasses, head coverings, etc.)\n\nPhotos must be less than 6 months old"
+        },
+        {
+          "heading": "Proof of Funds",
+          "text": "For employed individuals: Bank statements for the last 6 months showing sufficient funds (minimum €45 per day).\n\nFor self-employed or business owners: Business registration certificates and personal bank statements for the last 3 months.\n\nPersonal Income Tax returns for the last 2 years."
+        },
+        {
+          "heading": "Proof of Travel",
+          "text": "Detailed day-by-day travel itinerary covering planned dates and locations in Germany.\n\nConfirmed round-trip flight reservations.\n\nHotel bookings covering the entire stay or invitation letter from host in Germany.\n\nTravel Insurance covering at least €30,000 for medical emergencies, valid for all Schengen countries."
+        },
+        {
+          "heading": "Letter",
+          "text": "Cover Letter: A signed letter from the applicant explaining the purpose of visit, detailed itinerary, duration of stay, financial means, accommodation details, and strong ties to home country.\n\nIf visiting friends or family: Signed invitation letter (Verpflichtungserklärung) from host in Germany along with their proof of residence and passport copy."
+        },
+        {
+          "heading": "Other",
+          "text": "If sponsored: Sponsorship letter with sponsor's financial documents (last 3 months bank statements) and proof of relationship.\n\nFor minors: Birth certificate and notarized parental consent letter if traveling without both parents.\n\nProof of employment: Employer letter stating position, salary, and approved leave (if employed).\n\nFor students: Enrollment certificate and school/university approval letter.\n\nProof of civil status: Marriage certificate, birth certificates of children, property deeds (to show ties to home country).\n\nPrevious Schengen visas copies (if applicable)."
+        }
+      ]
+    }
+  ],
+  "business": [
+    {
+      "title": "Schengen Visa (Type C) – Business",
+      "duration": "90 days within 180-day period",
+      "fee": "€80 (approx. £70)",
+      "time": "Approx. 15 days",
+      "guidelines": [
+        {
+          "heading": "Passport",
+          "text": "Same requirements as Tourism Visa"
+        },
+        {
+          "heading": "Application Form",
+          "text": "Same requirements as Tourism Visa"
+        },
+        {
+          "heading": "Photo",
+          "text": "Same requirements as Tourism Visa"
+        },
+        {
+          "heading": "Proof of Funds",
+          "text": "Same requirements as Tourism Visa"
+        },
+        {
+          "heading": "Business Documents",
+          "text": "Original invitation letter from German company on official letterhead with:\n- Company address and registration details\n- Purpose and duration of visit\n- Names and positions of meeting participants\n- Who will cover expenses\n\nLetter from applicant's employer confirming:\n- Business purpose\n- Employment status\n- Permission for travel\n- Financial coverage (if applicable)"
+        },
+        {
+          "heading": "Proof of Travel",
+          "text": "Same requirements as Tourism Visa, plus:\n\nConference registration (if attending event)\n\nTrade fair tickets (if applicable)"
+        },
+        {
+          "heading": "Other",
+          "text": "Company registration documents (if self-employed or business owner).\n\nProof of previous business dealings with German company (contracts, invoices, etc.) if applicable.\n\nAll other requirements same as Tourism Visa."
+        }
+      ]
+    }
+  ]
+},
+  Portugal:{
+  "tourism": [
+    {
+      "title": "Schengen Visa (Type C) – Tourism",
+      "duration": "90 days within 180-day period",
+      "fee": "€80 (approx. £70)",
+      "time": "Approx. 15 working days",
+      "guidelines": [
+        {
+          "heading": "Passport",
+          "text": "Valid passport with at least 3 months validity beyond intended departure from Schengen area and two blank pages.\n\nCopies of all previous visas and entry/exit stamps.\n\nPassport should not be older than 10 years."
+        },
+        {
+          "heading": "Application Form",
+          "text": "Completed and signed Portugal Schengen visa application form with a photograph attached.\n\nThe form must be printed and signed by the applicant at the appropriate places and include all barcode pages."
+        },
+        {
+          "heading": "Photo",
+          "text": "Two identical recent passport-sized color photographs (35-45mm).\n\nLight gray or white background\n\n80% face coverage, neutral expression (no smiling, sunglasses or head coverings)\n\nPhotos must be less than 6 months old"
+        },
+        {
+          "heading": "Proof of Funds",
+          "text": "For employed individuals: Original bank statements for last 3 months showing minimum €40 per day of stay.\n\nFor self-employed: Business registration, tax returns (last 2 years), and personal/business bank statements.\n\nIf sponsored: Sponsor's bank statements and notarized letter of financial responsibility."
+        },
+        {
+          "heading": "Proof of Travel",
+          "text": "Detailed day-by-day itinerary of Portugal visit with dates and locations.\n\nRound-trip flight reservation (not necessarily paid ticket).\n\nConfirmed hotel bookings or invitation letter from Portuguese host with copy of their residence permit.\n\nTravel medical insurance covering minimum €30,000, valid for all Schengen countries."
+        },
+        {
+          "heading": "Letter",
+          "text": "Signed cover letter explaining purpose of visit, itinerary, accommodation details, and financial means.\n\nIf visiting friends/family: Original 'Carta de Convidado' (Portuguese invitation form) completed by host and certified at Portuguese city hall or notary."
+        },
+        {
+          "heading": "Other",
+          "text": "Employment verification: Recent payslips (last 3 months) and employer letter approving leave.\n\nFor students: Enrollment certificate and school/university approval letter.\n\nFor minors: Birth certificate and notarized parental authorization if traveling without both parents.\n\nProof of accommodation for entire stay (hotel bookings or host's housing proof).\n\nProof of civil status (marriage certificate, children's birth certificates if applicable).\n\nPrevious Schengen visas copies (if any)."
+        }
+      ]
+    }
+  ],
+  "business": [
+    {
+      "title": "Schengen Visa (Type C) – Business",
+      "duration": "90 days within 180-day period",
+      "fee": "€80 (approx. £70)",
+      "time": "Approx. 15 working days",
+      "guidelines": [
+        {
+          "heading": "Passport",
+          "text": "Same requirements as Tourism Visa"
+        },
+        {
+          "heading": "Application Form",
+          "text": "Same requirements as Tourism Visa"
+        },
+        {
+          "heading": "Photo",
+          "text": "Same requirements as Tourism Visa"
+        },
+        {
+          "heading": "Proof of Funds",
+          "text": "Same requirements as Tourism Visa"
+        },
+        {
+          "heading": "Business Documents",
+          "text": "Original invitation letter from Portuguese company on official letterhead including:\n- Company registration details (NIF number)\n- Full address and contact information\n- Purpose and duration of visit\n- Names of meeting participants\n- Financial responsibility declaration\n\nLetter from applicant's employer confirming:\n- Business purpose of trip\n- Employment status and position\n- Financial coverage details"
+        },
+        {
+          "heading": "Proof of Travel",
+          "text": "Same as Tourism Visa plus:\n\nConference/trade fair registration confirmation (if applicable)\n\nMeeting schedule with Portuguese company"
+        },
+        {
+          "heading": "Other",
+          "text": "Company registration documents (if self-employed).\n\nProof of previous business relations with Portuguese company (if applicable).\n\nAll other requirements same as Tourism Visa."
+        }
+      ]
+    }
+  ]
+},
+  France: {
+  "tourism": [
+    {
+      "title": "Schengen Visa (Type C) – Tourism",
+      "duration": "90 days within 180-day period",
+      "fee": "€80 (approx. £70)",
+      "time": "Approx. 15 working days",
+      "guidelines": [
+        {
+          "heading": "Passport",
+          "text": "Valid passport with at least 3 months validity beyond intended departure from Schengen area and two blank pages.\n\nCopies of all previous visas and entry/exit stamps.\n\nPassport should not be older than 10 years."
+        },
+        {
+          "heading": "Application Form",
+          "text": "Completed and signed France Schengen visa application form with a photograph attached.\n\nThe form must be printed and signed by the applicant at the appropriate places and include all barcode pages from France-Visas portal."
+        },
+        {
+          "heading": "Photo",
+          "text": "Two identical recent passport-sized color photographs (35-45mm).\n\nPlain white background\n\n80% face coverage, neutral expression (no smiling, sunglasses or head coverings)\n\nPhotos must be less than 6 months old"
+        },
+        {
+          "heading": "Proof of Funds",
+          "text": "For employed individuals: Original bank statements for last 3 months showing minimum €65 per day of stay.\n\nFor self-employed: Business registration, tax returns (last 2 years), and personal/business bank statements.\n\nIf sponsored: Sponsor's bank statements and 'Attestation d'Accueil' (official French hosting certificate)."
+        },
+        {
+          "heading": "Proof of Travel",
+          "text": "Detailed day-by-day itinerary of France visit with dates and locations.\n\nRound-trip flight reservation (not necessarily paid ticket).\n\nConfirmed hotel bookings or 'Attestation d'Accueil' from French host.\n\nTravel medical insurance covering minimum €30,000, valid for all Schengen countries."
+        },
+        {
+          "heading": "Letter",
+          "text": "Signed cover letter explaining purpose of visit, itinerary, accommodation details, and financial means in French or English.\n\nIf visiting friends/family: Original 'Attestation d'Accueil' obtained by host from their local French town hall."
+        },
+        {
+          "heading": "Other",
+          "text": "Employment verification: Recent payslips (last 3 months) and employer letter approving leave in French/English.\n\nFor students: Enrollment certificate and school/university approval letter.\n\nFor minors: Birth certificate and notarized 'Autorisation de Sortie du Territoire' if traveling without both parents.\n\nProof of accommodation for entire stay (hotel bookings or 'Attestation d'Accueil').\n\nProof of civil status (marriage certificate, children's birth certificates if applicable).\n\nPrevious Schengen visas copies (if any)."
+        }
+      ]
+    }
+  ],
+  "business": [
+    {
+      "title": "Schengen Visa (Type C) – Business",
+      "duration": "90 days within 180-day period",
+      "fee": "€80 (approx. £70)",
+      "time": "Approx. 15 working days",
+      "guidelines": [
+        {
+          "heading": "Passport",
+          "text": "Same requirements as Tourism Visa"
+        },
+        {
+          "heading": "Application Form",
+          "text": "Same requirements as Tourism Visa"
+        },
+        {
+          "heading": "Photo",
+          "text": "Same requirements as Tourism Visa"
+        },
+        {
+          "heading": "Proof of Funds",
+          "text": "Same requirements as Tourism Visa"
+        },
+        {
+          "heading": "Business Documents",
+          "text": "Original invitation letter from French company on official letterhead including:\n- Company SIRET number\n- Full address and contact information\n- Purpose and duration of visit\n- Names of meeting participants\n- Financial responsibility declaration\n\nLetter from applicant's employer confirming:\n- Business purpose of trip\n- Employment status and position\n- Financial coverage details"
+        },
+        {
+          "heading": "Proof of Travel",
+          "text": "Same as Tourism Visa plus:\n\nConference/trade fair registration confirmation (if applicable)\n\nMeeting schedule with French company"
+        },
+        {
+          "heading": "Other",
+          "text": "Company registration documents (if self-employed).\n\nProof of previous business relations with French company (if applicable).\n\nAll other requirements same as Tourism Visa."
+        }
+      ]
+    }
+  ]
+},
+  Italy:{
+  "tourism": [
+    {
+      "title": "Schengen Visa (Type C) – Tourism",
+      "duration": "90 days within 180-day period",
+      "fee": "€80 (approx. £70)",
+      "time": "Approx. 15 calendar days",
+      "guidelines": [
+        {
+          "heading": "Passport",
+          "text": "Valid passport with at least 3 months validity beyond intended departure from Schengen area and two blank visa pages.\n\nPhotocopies of all previous Schengen visas and entry/exit stamps.\n\nPassport must have been issued within the last 10 years."
+        },
+        {
+          "heading": "Application Form",
+          "text": "Completed and signed Italian Schengen visa application form (available in Italian/English).\n\nForm must be printed single-sided, signed at points marked with 'X', and include all barcode pages from the online application."
+        },
+        {
+          "heading": "Photo",
+          "text": "Two identical recent passport photos (35x45mm).\n\nLight gray or white background (no patterns)\n\nFace must cover 70-80% of photo (32-36mm from chin to crown)\n\nStrict no-smiling policy with neutral expression\n\nPhotos must be less than 3 months old"
+        },
+        {
+          "heading": "Proof of Funds",
+          "text": "Original bank statements showing transactions for last 3 months with minimum balance of €50 per day of stay.\n\nFor employees: Last 3 payslips and employment contract copy.\n\nFor self-employed: Chamber of Commerce registration and last 2 years' tax returns.\n\nIf sponsored: Sponsor's bank statements and notarized 'Dichiarazione di Ospitalità'."
+        },
+        {
+          "heading": "Proof of Travel",
+          "text": "Detailed day-by-day itinerary of Italian visit with confirmed hotel bookings.\n\nRound-trip flight reservation (actual ticket not required).\n\nFor road trips: driver's license, car registration and planned route.\n\nTravel insurance covering minimum €30,000, valid in all Schengen states."
+        },
+        {
+          "heading": "Letter",
+          "text": "Signed cover letter in Italian or English explaining:\n- Purpose of visit\n- Detailed itinerary\n- Accommodation arrangements\n- Financial means\n- Strong ties to home country\n\nIf visiting friends/relatives: Original 'Dichiarazione di Ospitalità' from host's local Italian police station."
+        },
+        {
+          "heading": "Other",
+          "text": "Employment verification: Original company letter on letterhead with:\n- Position and salary\n- Approved leave dates\n- Company contact details\n\nFor students: School/university enrollment certificate and no-objection letter.\n\nFor minors: Birth certificate and notarized parental travel consent form.\n\nProof of civil status (marriage/birth certificates if applicable).\n\nPrevious Schengen visas copies (if any).\n\nFor retirees: Pension statements and proof of retirement."
+        }
+      ]
+    }
+  ],
+  "business": [
+    {
+      "title": "Schengen Visa (Type C) – Business",
+      "duration": "90 days within 180-day period",
+      "fee": "€80 (approx. £70)",
+      "time": "Approx. 15 calendar days",
+      "guidelines": [
+        {
+          "heading": "Passport",
+          "text": "Valid passport with at least 3 months validity beyond intended departure from Schengen area and two blank visa pages.\n\nPhotocopies of all previous Schengen visas and entry/exit stamps.\n\nPassport must have been issued within the last 10 years."
+        },
+        {
+          "heading": "Application Form",
+          "text": "Completed and signed Italian Schengen visa application form (available in Italian/English).\n\nForm must be printed single-sided, signed at points marked with 'X', and include all barcode pages from the online application."
+        },
+        {
+          "heading": "Photo",
+          "text": "Two identical recent passport photos (35x45mm).\n\nLight gray or white background (no patterns)\n\nFace must cover 70-80% of photo (32-36mm from chin to crown)\n\nStrict no-smiling policy with neutral expression\n\nPhotos must be less than 3 months old"
+        },
+        {
+          "heading": "Proof of Funds",
+          "text": "Detailed day-by-day itinerary of Italian visit with confirmed hotel bookings.\n\nRound-trip flight reservation (actual ticket not required).\n\nFor road trips: driver's license, car registration and planned route.\n\nTravel insurance covering minimum €30,000, valid in all Schengen states"
+        },
+        {
+          "heading": "Business Documents",
+          "text": "Original invitation letter from Italian company on official letterhead including:\n- Italian company's Partita IVA (VAT number)\n- Complete company address and contacts\n- Names and positions of meeting participants\n- Detailed meeting schedule\n- Financial responsibility statement\n\nLetter from applicant's employer confirming:\n- Business purpose\n- Employment verification\n- Financial coverage details"
+        },
+        {
+          "heading": "Proof of Travel",
+          "text": "Same as Tourism Visa plus:\n\nConference registration (if applicable)\n\nTrade fair participation documents\n\nMeeting confirmation emails"
+        },
+        {
+          "heading": "Other",
+          "text": "Company registration documents (if self-employed).\n\nProof of previous business with Italian company (contracts/invoices).\n\nAll other requirements same as Tourism Visa."
+        }
+      ]
+    }
+  ]
+},
+  "United Kingdom": {
+  "tourism": [
+    {
+      "title": "Standard Visitor Visa (Tourism)",
+      "duration": "Up to 6 months",
+      "fee": "£115",
+      "time": "Approx. 3 weeks",
+      "guidelines": [
+        {
+          "heading": "Passport",
+          "text": "Valid passport with at least one blank page and valid for entire stay.\n\nPrevious travel history (copies of previous visas and stamps).\n\nPassport must not be damaged or have unauthorised alterations."
+        },
+        {
+          "heading": "Application Form",
+          "text": "Completed online application form on UK Visas and Immigration website.\n\nPrinted application form with barcode and applicant's signature.\n\nAppointment confirmation from Visa Application Centre."
+        },
+        {
+          "heading": "Proof of Funds",
+          "text": "Personal bank statements showing transactions for last 6 months (minimum balance of £1,000+ recommended).\n\nPayslips from last 6 months if employed.\n\nBusiness financial documents if self-employed (last 2 years' accounts).\n\nSponsor's financial documents if applicable."
+        },
+        {
+          "heading": "Proof of Travel",
+          "text": "Flight reservation (not necessarily paid ticket).\n\nDetailed travel itinerary with dates and locations.\n\nHotel bookings or invitation letter from UK host with their accommodation details."
+        },
+        {
+          "heading": "Photo",
+          "text": "One passport-sized photo (45mm x 35mm) for biometric purposes.\n\nPlain light-colored background\n\nNeutral expression with mouth closed\n\nNo headwear (except for religious purposes)"
+        },
+        {
+          "heading": "Letter",
+          "text": "Cover letter explaining purpose of visit, itinerary and return plans.\n\nIf visiting friends/family: Invitation letter with host's passport copy and proof of UK immigration status.\n\nFor business visits: Letter from UK company detailing purpose of visit."
+        },
+        {
+          "heading": "Other",
+          "text": "Employment verification: Employer letter confirming position, salary and approved leave.\n\nFor students: Enrollment letter from school/university.\n\nFor minors: Birth certificate and notarized parental consent letter.\n\nTB test results if applying from listed countries.\n\nProof of UK accommodation for entire stay.\n\nEvidence of strong ties to home country (property deeds, family commitments etc.)"
+        }
+      ]
+    },
+    {
+      "title": "2-Year Long-term Visitor Visa",
+      "duration": "2 years (max 6 months per visit)",
+      "fee": "£432",
+      "time": "Approx. 3 weeks",
+      "guidelines": [
+        {
+          "heading": "Requirements",
+          "text": "Same as Standard Visitor Visa but must demonstrate:\n\nNeed for frequent visits to UK\nStronger financial evidence\nExcellent travel compliance history"
+        }
+      ]
+    },
+    {
+      "title": "5-Year Long-term Visitor Visa",
+      "duration": "5 years (max 6 months per visit)",
+      "fee": "£771",
+      "time": "Approx. 3 weeks",
+      "guidelines": [
+        {
+          "heading": "Requirements",
+          "text": "Same as 2-Year Visa but with:\n\nProven history of UK visits\nExceptional financial standing\nImpeccable immigration record"
+        }
+      ]
+    },
+    {
+      "title": "10-Year Long-term Visitor Visa",
+      "duration": "10 years (max 6 months per visit)",
+      "fee": "£963",
+      "time": "Approx. 3 weeks",
+      "guidelines": [
+        {
+          "heading": "Requirements",
+          "text": "Same as 5-Year Visa but applicant must:\n\nShow compelling reasons for decade-long visa\nDemonstrate substantial financial means\nHave perfect compliance with all immigration rules"
+        }
+      ]
+    }
+  ],
+  "business": [
+    {
+      "title": "Standard Visitor Visa (Business)",
+      "duration": "Up to 6 months",
+      "fee": "£115",
+      "time": "Approx. 3 weeks",
+      "guidelines": [
+        {
+          "heading": "Business Documents",
+          "text": "Letter from UK host company detailing:\n- Nature of business\n- Meetings schedule\n- Names of contacts\n- Financial arrangements\n\nLetter from employer confirming:\n- Position and salary\n- Purpose of UK visit\n- Duration of approved leave"
+        },
+        {
+          "heading": "Additional Requirements",
+          "text": "Conference/trade fair registration if applicable\n\nEvidence of business dealings with UK companies\n\nProfessional qualifications if relevant to visit\n\nAll other standard visitor visa requirements apply"
+        }
+      ]
+    }
+  ],
+  "study": [
+    {
+      "title": "Short-term Study Visa",
+      "duration": "6 months (11 months for English courses)",
+      "fee": "£200",
+      "time": "Approx. 3 weeks",
+      "guidelines": [
+        {
+          "heading": "Study Documents",
+          "text": "Unconditional offer letter from accredited UK institution\n\nProof of course fees payment or scholarship\n\nEvidence of English language proficiency if required\n\nAcademic qualifications used to obtain offer"
+        },
+        {
+          "heading": "Additional Requirements",
+          "text": "Detailed study plan\n\nAccommodation arrangements in UK\n\nProof of sufficient maintenance funds\n\nAll other standard documentation requirements"
+        }
+      ]
+    }
+  ]
+}
+};
+
+      // let currentTab = 'tourism';
+
+      // function switchTab(tab) {
+      //   currentTab = tab;
+      //   document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      //   event.target.classList.add('active');
+      //   renderVisaOptions();
+      // }
+
+      // function renderVisaOptions() {
+      //   const container = document.getElementById('visaOptions');
+      //   container.innerHTML = '';
+      //   visaData[currentTab].forEach((visa, index) => {
+      //     const div = document.createElement('div');
+      //     div.className = 'visa-option' + (index === 0 ? ' active' : '');
+      //     div.innerHTML = `
+      //       <h6 class="fw-semibold">${visa.title}</h6>
+      //       <div class="text-muted small">Duration: ${visa.duration}</div>
+      //       <div class="text-muted small">Gov Fee: ${visa.fee}</div>
+      //       <div class="text-muted small">Processing Time: ${visa.time}</div>
+      //     `;
+      //     div.onclick = () => {
+      //       document.querySelectorAll('.visa-option').forEach(el => el.classList.remove('active'));
+      //       div.classList.add('active');
+      //       renderGuidelines(visa.guidelines);
+      //     };
+      //     container.appendChild(div);
+      //     if (index === 0) renderGuidelines(visa.guidelines);
+      //   });
+      // }
+
+      let currentTab = "tourism";
+      let currentCountry = "Australia"; // default
+
+      function switchTab(tab) {
+        currentTab = tab;
+        document
+          .querySelectorAll(".tab-btn")
+          .forEach((btn) => btn.classList.remove("active"));
+        event.target.classList.add("active");
+        renderVisaOptions();
+      }
+
+      function renderVisaOptions() {
+        const container = document.getElementById("visaOptions");
+        container.innerHTML = "";
+
+        const visas = visaData[currentCountry]?.[currentTab] || [];
+
+        if (visas.length === 0) {
+          container.innerHTML =
+            '<div class="text-muted">No visa options available for this category and country.</div>';
+          return;
+        }
+
+        visas.forEach((visa, index) => {
+          const div = document.createElement("div");
+          div.className = "visa-option" + (index === 0 ? " active" : "");
+          div.innerHTML = `
+      <h6 class="fw-semibold">${visa.title}</h6>
+      <div class="text-muted small">Duration: ${visa.duration}</div>
+      <div class="text-muted small">Gov Fee: ${visa.fee}</div>
+      <div class="text-muted small">Processing Time: ${visa.time}</div>
+    `;
+          div.onclick = () => {
+            document
+              .querySelectorAll(".visa-option")
+              .forEach((el) => el.classList.remove("active"));
+            div.classList.add("active");
+
+            sessionStorage.setItem("selectedVisaTitle", visa.title);
+
+            renderGuidelines(visa.guidelines);
+          };
+          container.appendChild(div);
+          if (index === 0) renderGuidelines(visa.guidelines);
+        });
+      }
+
+      function renderGuidelines(guidelines) {
+        const content = document.getElementById("guidelinesContent");
+        content.innerHTML = "";
+        if (!guidelines.length) {
+          content.innerHTML =
+            '<div class="text-muted">No specific guidelines available.</div>';
+          return;
+        }
+        guidelines.forEach((g) => {
+          const block = document.createElement("div");
+          block.className = "guideline-block";
+          block.innerHTML = `<h6 class="fw-bold mb-2">${g.heading}</h6><p  style="white-space: pre-line;">${g.text}</p>`;
+          content.appendChild(block);
+        });
+      }
+
+      // document.addEventListener('DOMContentLoaded', () => {
+      //   const signupData = JSON.parse(localStorage.getItem('signupData'));
+      //   const visaData = JSON.parse(localStorage.getItem('visaData'));
+
+      //   if (signupData?.firstName) {
+      //     const heading = document.getElementById('reviewName');
+      //     if (heading) {
+      //       heading.textContent = `${signupData.firstName}, Know before you go!`;
+      //     }
+
+      //      const profileInitialEl = document.getElementById('profileInitial');
+      //   if (profileInitialEl) {
+      //     profileInitialEl.textContent = signupData.firstName.charAt(0).toUpperCase();
+      //   }
+      // }
+
+      //   if (visaData) {
+      //     const destination = visaData.destinationCountry || visaData.arrCountyName || 'Unknown';
+      //     const visaType = visaData.visaCategory || 'Tourism';
+      //     const fromDateStr = visaData.fromDate?.split('T')[0];
+      //     const toDateStr = visaData.toDate?.split('T')[0];
+
+      //     // Format date
+      //     const formatDate = (iso) => {
+      //       const date = new Date(iso);
+      //       const options = { year: 'numeric', month: 'short', day: 'numeric' };
+      //       return date.toLocaleDateString('en-US', options);
+      //     };
+
+      //     // Duration in days
+      //     const getDuration = (start, end) => {
+      //       const d1 = new Date(start);
+      //       const d2 = new Date(end);
+      //       const diff = Math.ceil((d2 - d1) / (1000 * 60 * 60 * 24));
+      //       return diff > 0 ? `${diff} days` : 'N/A';
+      //     };
+
+      //     // Fill info-bar fields
+      //     document.getElementById('infoDestination').textContent = destination;
+      //     document.getElementById('infoVisaType').textContent = visaType;
+      //     document.getElementById('infoDuration').textContent = getDuration(fromDateStr, toDateStr);
+      //     document.getElementById('infoDates').textContent = `${formatDate(fromDateStr)} – ${formatDate(toDateStr)}`;
+      //   }
+
+      // });
+
+      // Initialize
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const signupData = JSON.parse(localStorage.getItem("signupData"));
+        const visaData = JSON.parse(localStorage.getItem("visaData"));
+
+        if (signupData?.firstName) {
+          const heading = document.getElementById("reviewName");
+          if (heading) {
+            heading.textContent = `${signupData.firstName}, Know before you go!`;
+          }
+
+          const profileInitialEl = document.getElementById("profileInitial");
+          if (profileInitialEl) {
+            profileInitialEl.textContent = signupData.firstName
+              .charAt(0)
+              .toUpperCase();
+          }
+        }
+
+        if (visaData) {
+          const destination =
+            visaData.destinationCountry || visaData.arrCountyName || "Unknown";
+          const visaType = visaData.visaCategory || "Tourism";
+          const fromDateStr = visaData.fromDate?.split("T")[0];
+          const toDateStr = visaData.toDate?.split("T")[0];
+
+          // ✅ Set current country for visa options
+          currentCountry = destination;
+
+          // ✅ Render visa options based on destination country
+          renderVisaOptions();
+
+          // Format date
+          const formatDate = (iso) => {
+            const date = new Date(iso);
+            const options = { year: "numeric", month: "short", day: "numeric" };
+            return date.toLocaleDateString("en-US", options);
+          };
+
+          // Duration in days
+          const getDuration = (start, end) => {
+            const d1 = new Date(start);
+            const d2 = new Date(end);
+            const diff = Math.ceil((d2 - d1) / (1000 * 60 * 60 * 24));
+            return diff > 0 ? `${diff} days` : "N/A";
+          };
+
+          // Fill info-bar fields
+          document.getElementById("infoDestination").textContent = destination;
+          document.getElementById("infoVisaType").textContent = visaType;
+          document.getElementById("infoDuration").textContent = getDuration(
+            fromDateStr,
+            toDateStr
+          );
+          document.getElementById("infoDates").textContent = `${formatDate(
+            fromDateStr
+          )} – ${formatDate(toDateStr)}`;
+        } else {
+          // fallback render in case no visaData yet
+          renderVisaOptions();
+        }
+      });
+
+      renderVisaOptions();
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

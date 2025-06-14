@@ -7330,3 +7330,18 @@ def ai_form(request):
 
 def visa_form(request):
     return render(request,'crm/AIPages/visaForm.html')
+
+def ai_home(request):
+    return render(request,'crm/AIPages/aihome.html')
+
+def ai_guideline(request):
+    return render(request,'crm/AIPages/Guideline.html')
+
+def ai_upload2(request):
+    return render(request,'crm/AIPages/upload2.html')
+
+def ai_review(request):
+    return render(request,'crm/AIPages/reviewA.html')
+
+def ai_submit(request):
+    return render(request,'crm/AIPages/submit.html')
