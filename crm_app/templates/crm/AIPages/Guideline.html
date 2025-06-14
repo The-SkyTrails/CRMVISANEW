@@ -489,7 +489,7 @@
       <div class="footer-bar mt-5">
         <div>&copy; | Powered by The SkyTrails</div>
         <div>
-          <a href="aihome.html">
+          <a href="{% url "ai_home" %}">
             <button class="btn btn-secondary me-2">Go Back</button></a
           >
           <a href="{% url "ai_upload2" %}">
@@ -520,19 +520,19 @@
           // Set flag image based on country
           const flagImage = document.getElementById("country-flag");
           const flagImages = {
-            Italy: "./images/Italy.webp",
-            India: "./flags/in.svg",
-            "United Kingdom": "./images/UK.png",
-            "United States": "./images/united-states.png",
-            Canada: "./images/canada.png",
-            Australia: "./images/australia.png",
-            France: "./images/France.png",
-            Germany: "./images/Germany.png",
-            Switzerland: "./images/Switzerland.png",
-            Belgium: "./images/Belgium.png",
-            Poland: "./images/poland.png",
-            Portugal: "./images/",
-            Netherlands: "./images/netherlands.png",
+            Italy: "/static/assets/images/Italy.webp",
+            India: "/static/assets/images/in.svg",
+            "United Kingdom": "/static/assets/images/UK.png",
+            "United States": "/static/assets/images/united-states.png",
+            Canada: "/static/assets/images/canada.png",
+            Australia: "/static/assets/images/australia.png",
+            France: "/static/assets/images/France.png",
+            Germany: "/static/assets/images/Germany.png",
+            Switzerland: "/static/assets/images/Switzerland.png",
+            Belgium: "/static/assets/images/Belgium.png",
+            Poland: "/static/assets/images/poland.png",
+            Portugal: "/static/assets/images/portugal.png",
+            Netherlands: "/static/assets/images/netherlands.png",
           };
 
           // Convert country name to standard format for matching
