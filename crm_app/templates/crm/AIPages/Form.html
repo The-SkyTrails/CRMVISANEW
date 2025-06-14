@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Signup Form</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background: linear-gradient(120deg, #ffffff 0%, #f0cde7 48%, #fffbfe 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .form-container {
+      background: linear-gradient(rgba(213, 213, 213, 0.1), rgba(111, 111, 111, 0.1));
+      margin-top: 40px;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      padding: 32px;
+      width: 100%;
+      max-width: 900px;
+      border: 1px solid #f3f3f3;
+      backdrop-filter: blur(6px);
+    }
+
+    .form-group {
+      position: relative;
+      margin-bottom: 1.75rem;
+      animation: fadeIn 0.4s ease both;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #2b2b2b;
+      font-size: 0.95rem;
+      margin-left: 5px;
+    }
+
+    .form-icon {
+      position: absolute;
+      left: 25px;
+      top: 44px;
+      color: #7b828b;
+      font-size: 1rem;
+    }
+
+    .form-control,
+    .form-select {
+      padding-left: 45px;
+      height: 44px;
+      border-radius: 8px !important;
+      font-size: 0.95rem;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      border-color: #2b2b2b;
+      box-shadow: 0 0 0 0.15rem rgba(42, 42, 42, 0.15);
+    }
+
+    .btn-primary {
+      background-color: #ff5a1f;
+      border: none;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      padding: 12px 24px;
+      font-size: 1.05rem;
+      box-shadow: 0 6px 20px rgba(255, 90, 31, 0.25);
+    }
+
+    .btn-primary:hover {
+      background-color: #ff5a1f;
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 24px rgba(255, 90, 31, 0.3);
+    }
+
+    .btn-primary:focus {
+      box-shadow: 0 0 0 0.25rem rgba(255, 90, 31, 0.35);
+    }
+
+    .form-select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+      background-position: right 12px center;
+      background-repeat: no-repeat;
+      background-size: 1.25em 1.25em;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .form-control,
+      .form-select {
+        font-size: 0.9rem;
+        height: 42px;
+      }
+
+      .btn-primary {
+        width: 100%;
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .form-container {
+        padding: 20px;
+        border-radius: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <div class="text-center mb-5">
+      <h2 class="text-primary1 fw-bold mb-2" style="font-size: 2rem;">Application Information</h2>
+      <p class="text-muted">Join us today and start your journey</p>
+    </div>
+    
+    <form id="signupForm" class="row g-4">
+      <!-- First Name -->
+      <div class="col-md-6 form-group">
+        <label for="firstName" class="form-label">First Name</label>
+        <i class="fas fa-user form-icon"></i>
+        <input type="text" id="firstName" class="form-control" required>
+      </div>
+      
+      <!-- Last Name -->
+      <div class="col-md-6 form-group">
+        <label for="lastName" class="form-label">Last Name</label>
+        <i class="fas fa-user form-icon"></i>
+        <input type="text" id="lastName" class="form-control" required>
+      </div>
+      
+      <!-- Email -->
+      <div class="col-12 form-group">
+        <label for="email" class="form-label">Email Address</label>
+        <i class="fas fa-envelope form-icon"></i>
+        <input type="email" id="email" class="form-control" required>
+      </div>
+      
+      <!-- Phone -->
+      <div class="col-md-6 form-group">
+        <label for="phone" class="form-label">Phone Number</label>
+        <i class="fas fa-phone form-icon"></i>
+        <input type="text" id="phone" class="form-control" required>
+      </div>
+      
+      <!-- Gender -->
+      <div class="col-md-6 form-group">
+        <label for="gender" class="form-label">Gender</label>
+        <i class="fas fa-venus-mars form-icon"></i>
+        <select id="gender" class="form-select" required>
+          <option value="" selected disabled hidden>Select Gender</option>
+          <option>Male</option>
+          <option>Female</option>
+          <option>Other</option>
+        </select>
+      </div>
+      
+      <!-- Country -->
+      <div class="col-md-6 form-group">
+        <label for="country" class="form-label">Country</label>
+        <i class="fas fa-globe form-icon"></i>
+        <select id="country" class="form-select" required>
+          <option value="" selected disabled hidden>Select Country</option>
+        </select>
+      </div>
+      
+      <!-- State -->
+      <div class="col-md-6 form-group">
+        <label for="state" class="form-label">State</label>
+        <i class="fas fa-map-marked-alt form-icon"></i>
+        <select id="state" class="form-select" required disabled>
+          <option value="" selected disabled hidden>Select State</option>
+        </select>
+      </div>
+      
+      <!-- City -->
+      <div class="col-md-6 form-group">
+        <label for="city" class="form-label">City</label>
+        <i class="fas fa-city form-icon"></i>
+        <select id="city" class="form-select" required disabled>
+          <option value="" selected disabled hidden>Select City</option>
+        </select>
+      </div>
+      
+      <!-- Zip Code -->
+      <div class="col-md-6 form-group">
+        <label for="zip" class="form-label">Zip Code</label>
+        <i class="fas fa-mail-bulk form-icon"></i>
+        <input type="text" id="zip" class="form-control" required>
+      </div>
+      
+      <!-- Submit Button -->
+      <div class="col-12 text-center mt-3">
+        <button type="submit" class="btn btn-primary btn-lg">
+          <i class="fas fa-paper-plane me-2"></i> Submit Application
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Bootstrap JS Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    async function fetchCountries() {
+      const response = await fetch('https://countriesnow.space/api/v0.1/countries');
+      const data = await response.json();
+      const countrySelect = document.getElementById('country');
+      data.data.forEach(c => {
+        const option = document.createElement('option');
+        option.value = c.country;
+        option.textContent = c.country;
+        countrySelect.appendChild(option);
+      });
+    }
+
+    async function fetchStates(country) {
+      const stateSelect = document.getElementById('state');
+      const citySelect = document.getElementById('city');
+      stateSelect.innerHTML = '<option value="" selected disabled hidden>Select State</option>';
+      citySelect.innerHTML = '<option value="" selected disabled hidden>Select City</option>';
+      citySelect.disabled = true;
+
+      const response = await fetch('https://countriesnow.space/api/v0.1/countries/states', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ country })
+      });
+      const data = await response.json();
+      if (data.data && data.data.states) {
+        data.data.states.forEach(s => {
+          const option = document.createElement('option');
+          option.value = s.name;
+          option.textContent = s.name;
+          stateSelect.appendChild(option);
+        });
+        stateSelect.disabled = false;
+      }
+    }
+
+    async function fetchCities(country, state) {
+      const citySelect = document.getElementById('city');
+      citySelect.innerHTML = '<option value="" selected disabled hidden>Select City</option>';
+
+      const response = await fetch('https://countriesnow.space/api/v0.1/countries/state/cities', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ country, state })
+      });
+      const data = await response.json();
+      if (data.data) {
+        data.data.forEach(city => {
+          const option = document.createElement('option');
+          option.value = city;
+          option.textContent = city;
+          citySelect.appendChild(option);
+        });
+        citySelect.disabled = false;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchCountries();
+      
+      // Add animation to form elements
+      const formGroups = document.querySelectorAll('.form-group');
+      formGroups.forEach((group, index) => {
+        group.style.animationDelay = `${index * 0.1}s`;
+      });
+      
+      document.getElementById('country').addEventListener('change', (e) => {
+        if (e.target.value) {
+          fetchStates(e.target.value);
+        }
+      });
+
+      document.getElementById('state').addEventListener('change', (e) => {
+        const country = document.getElementById('country').value;
+        if (country && e.target.value) {
+          fetchCities(country, e.target.value);
+        }
+      });
+
+      document.getElementById('signupForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const formData = {
+          firstName: document.getElementById('firstName').value,
+          lastName: document.getElementById('lastName').value,
+          email: document.getElementById('email').value,
+          phone: document.getElementById('phone').value,
+          gender: document.getElementById('gender').value,
+          country: document.getElementById('country').value,
+          state: document.getElementById('state').value,
+          city: document.getElementById('city').value,
+          zip: document.getElementById('zip').value,
+        };
+        localStorage.setItem('signupData', JSON.stringify(formData));
+        alert('Form submitted successfully! Your data has been saved.');
+        window.location.href = "{% url 'visa_form' %}";
+      });
+    });
+  </script>
+</body>
+</html>

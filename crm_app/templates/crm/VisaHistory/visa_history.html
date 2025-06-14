@@ -192,16 +192,20 @@
                         <table class="visa-booking-table">
                            <thead>
                               <tr>
-                                 <th>Si No</th>   
+                                 <th>Si No</th> 
+                                 <th>View</th>  
                                  <th>First Name</th>
                                  <th>Last Name</th>   
                                  <th>Email</th>                        
                                  <th>Booking Type</th>
                                  <th>Visa Type</th>
+                                 <th>Visa Status</th> 
+                                 <th>Payment Status</th>
                                  <th>Departure Country</th>
                                  <th>Arrival Country</th>
                                  <th>From Date</th>
                                  <th>To Date</th>
+                                 <th>Documents</th>
                               </tr>
                            </thead>
                            <tbody class="list form-check-all" hx-get="{% url 'visa_history_list' %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="search-results">

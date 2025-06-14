@@ -6980,12 +6980,15 @@ def visa_history_list(request):
     # API se data fetch karenge
     user_id = request.user.id  # Id fix hai ya aap dynamic bhi kar sakte ho
     print("userss id",user_id)
-    api_url = f"https://back.theskytrails.com/skyTrails/api/visa/getVisaApplicationByUser?userId={user_id}"
+    api_url = f"https://back.theskytrails.com/skyTrails/api/visa/getVisaApplicationByUser?userId=3572"
+    # api_url = f"https://back.theskytrails.com/skyTrails/api/visa/getVisaApplicationByUser?userId={user_id}"
+    
     
     try:
         response = requests.get(api_url)
         response_data = response.json()
         visa_applications = response_data.get('result', [])
+        print("response here.........",visa_applications)
     except Exception as e:
         print(f"Error fetching API data: {e}")
         visa_applications = []
@@ -7315,3 +7318,15 @@ def sub_agent_delete(request, pk):
     except CustomUser.DoesNotExist:
         return HttpResponseNotFound("SubAgent not found")
     
+
+
+# ------------------------------ AI Parts -------------------
+
+def ai_index(request):
+    return render(request,'crm/AIPages/index.html')
+
+def ai_form(request):
+    return render(request,'crm/AIPages/Form.html')
+
+def visa_form(request):
+    return render(request,'crm/AIPages/visaForm.html')

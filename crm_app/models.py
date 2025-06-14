@@ -241,6 +241,7 @@ Department_Choices = [
         ("Visa Team", "Visa Team"),
         ("HR", "HR"),
         ("Account Team", "Account Team"),
+        ("AI Visa", "AI Visa"),
     ]
 
 
@@ -255,9 +256,6 @@ COLOR_CODE = [
 
 
 class Employee(models.Model):
-
-  
-
 
     users = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     emp_code = models.CharField(max_length=20, unique=True, null=True, blank=True)

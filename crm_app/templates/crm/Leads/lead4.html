@@ -32,7 +32,7 @@
                                              <th scope="col">Action</th>
                                           </tr>
                                        </thead>
-                                       <tbody hx-get="{% url "testt" %}" hx-trigger="load, movieListChanged from:body" hx-target="this" id="search-results">
+                                       <tbody hx-get="#" hx-trigger="load, movieListChanged from:body" hx-target="this" id="search-results">
                                             {% for document in documents %}
                                           <tr>
                                              <td>{{ forloop.counter }}</td>

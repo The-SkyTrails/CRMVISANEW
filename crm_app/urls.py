@@ -316,6 +316,13 @@ urlpatterns = [
    path("visa/history/",visa_history,name="visa_history"),
    path("visa/history/list",visa_history_list,name="visa_history_list"),
 
+
+   # -----------------------AI Integrations---------------------
+   path("Ai/Index",ai_index,name="ai_index"),
+   path("Ai/Form",ai_form,name="ai_form"),
+   path("Visa/Form",visa_form,name="visa_form"),
+
+
    
    
   

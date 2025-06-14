@@ -1,0 +1,508 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Visa Application Form</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .box{
+       background: linear-gradient(120deg, #ffffff 0%, #f8f2f8 48%, #e9bddd 100%);
+    }
+    #visaForm{
+       /* background: linear-gradient(120deg, #ffffff 0%, #f8f2f8 48%, #e9bddd 100%); */
+       background-color: #d5d5d51a;
+       border-color: rgba(var(--bs-white-rgb), var(--bs-border-opacity)) !important;
+       max-width: 1100px;
+    }
+    .submit1{
+         background-color: rgb(255 90 31 / var(--tw-bg-opacity, 1));
+    }
+    .submit1:hover{
+           background-color: rgb(255 90 31 / var(--tw-bg-opacity, 1));
+    }
+    .text-heading{
+      justify-content: center;
+    }
+  </style>
+</head>
+<body class="box">
+
+ <div class="relative min-h-screen flex items-center justify-center px-4 py-10 overflow-hidden">
+    <div class="absolute top-[-200px] left-[-200px] w-[800px] h-[800px] bg-gradient-to-br from-pink-200 via-purple-300 to-white opacity-60 rounded-full filter blur-[160px] z-0"></div>
+
+    <form id="visaForm" class="w-full max-w-3xl p-10 bg-white rounded-2xl shadow-xl transition-all duration-700 ease-out transform z-10 translate-y-10 scale-95">
+    <h2 class="text-heading text-3xl font-extrabold text-gray-900 mb-10 text-center mx-auto">
+  Visa Application Form
+</h2>
+
+      <div class="mb-6">
+        <label class="block text-sm font-medium text-gray-700 mb-1">What country is your passport from?</label>
+        <select id="passportCountry" required class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-400"></select>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Traveling From</label>
+          <select id="travelFrom" required class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-400"></select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Traveling To</label>
+          <select id="travelTo" required class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-400"></select>
+        </div>
+      </div>
+
+      <div id="visaCategorySection" class="mt-6 hidden">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Visa Category</label>
+        <select id="visaCategory"   name="visaCategory"  required class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-400"></select>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Departure Date</label>
+          <input type="date" id="departureDate" required class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-400">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Arrival Date</label>
+          <input type="date" id="arrivalDate" required class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-400">
+        </div>
+      </div>
+       
+
+    
+     
+
+
+  
+     
+
+    <div class="mt-10">
+  <button type="submit" class=" submit1 w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 rounded-xl text-lg transition-all duration-300 shadow-md hover:shadow-xl">
+    Pay Now
+  </button>
+</div>
+
+
+    </form>
+  </div> 
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const passportCountrySelect = document.getElementById('passportCountry');
+      const travelFromSelect = document.getElementById('travelFrom');
+      const travelToSelect = document.getElementById('travelTo');
+      const visaCategorySelect = document.getElementById('visaCategory');
+      const visaCategorySection = document.getElementById('visaCategorySection');
+      const form = document.getElementById('visaForm');
+
+      
+   const res = await fetch('https://back.theskytrails.com/skyTrails/grnconnect/getcountrylist');
+const result = await res.json();
+console.log(result);
+
+const countries = result.data.map(c => c.countryName).sort();
+
+// Add default option first
+const defaultOption = new Option("Please select the country", "");
+// defaultOption.disabled = true;
+// defaultOption.selected = true;
+
+// Add to both selects
+passportCountrySelect.add(defaultOption.cloneNode(true));
+travelFromSelect.add(defaultOption.cloneNode(true));
+
+// Then add all countries
+countries.forEach(country => {
+  const option = new Option(country, country);
+  passportCountrySelect.add(option.cloneNode(true));
+  travelFromSelect.add(option.cloneNode(true));
+});
+
+const response = await axios.get('https://back.theskytrails.com/api/skyTrails/getCountryList');
+const travelToOptions = response.data.result;
+
+// Add default option to travelToSelect
+travelToSelect.add(new Option("Please select the country", "", true, true));
+travelToOptions.forEach(item => {
+  const option = new Option(item.country, item.country);
+  travelToSelect.add(option);
+});
+//       let travelToOptions = [];
+
+// try {
+//   const response = await axios.get('https://back.theskytrails.com/api/skyTrails/getCountryList');
+//   console.log("Travel To API Result:", response.data);
+
+//   travelToSelect.innerHTML = '<option value="">Select a country</option>';
+
+//   if (response.data && Array.isArray(response.data.result)) {
+//     travelToOptions = response.data.result;
+
+//     travelToOptions.forEach(item => {
+//       const option = new Option(item.country, item.country);
+//       travelToSelect.add(option);
+//     });
+//   } else {
+//     console.error('Invalid response format from getCountryList API:', response.data);
+//     alert('Failed to load Travel To countries.');
+//   }
+// } catch (err) {
+//   console.error('API call to getCountryList failed:', err);
+//   alert('Failed to load "Traveling To" countries. Please try again later.');
+// }
+
+
+
+
+      travelToSelect.addEventListener('change', () => {
+        const selectedCountry = travelToSelect.value.trim();
+        const selected = travelToOptions.find(item => item.country === selectedCountry);
+
+        visaCategorySelect.innerHTML = '<option value="">Select a category</option>';
+
+        if (selected && Array.isArray(selected.visaCategories)) {
+          selected.visaCategories.forEach(category => {
+            visaCategorySelect.add(new Option(category, category));
+          });
+          visaCategorySection.classList.remove('hidden');
+        } else {
+          visaCategorySection.classList.add('hidden');
+        }
+      });
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const signupData = JSON.parse(localStorage.getItem("signupData"));
+        if (!signupData) {
+          alert("Signup data missing!");
+          return;
+        }
+
+        const finalData = {
+          userId: signupData.userId,
+          firstName: signupData.firstName,
+          lastName: signupData.lastName,
+          email: signupData.email,
+          sex: signupData.gender,
+          mobileNumber: signupData.phone,
+          address: signupData.address,
+          depCountyName: travelFromSelect.value.trim(),
+          arrCountyName: travelToSelect.value.trim(),
+          fromDate: new Date(document.getElementById('departureDate').value).toISOString(),
+          toDate: new Date(document.getElementById('arrivalDate').value).toISOString(),
+          visaType: visaCategorySelect.value.trim(),
+          visaCategory: visaCategorySelect.value.trim(),
+          sourceCountry: passportCountrySelect.value.trim(),
+          destinationCountry: travelToSelect.value.trim(),
+        };
+
+        // ✅ Log data for verification
+        console.log("Final Visa Data:", finalData);
+
+        try {
+          const result = await axios.post('https://back.theskytrails.com/skyTrails/api/visa/applyForAiVisa', finalData, {
+            headers: { 'Content-Type': 'application/json' }
+          });
+          // alert('Visa application submitted successfully!');
+          console.log("Response:", result.data);
+       
+          // ✅ Save to localStorage for use on AI Home page
+          localStorage.setItem('visaData', JSON.stringify(finalData));
+
+    // ✅ Redirect to AI home page (optional)
+          window.location.href = 'aihome.html';
+       
+        } catch (err) {
+          console.error('Submission failed:', err.response?.data || err.message);
+          alert('Submission failed. Check console for error.');
+        }
+        function formatDateToDDMMYYYY(dateStr) {
+      const date = new Date(dateStr);
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const year = date.getFullYear();
+      return `${day}-${month}-${year}`;
+    }
+
+
+
+      });
+
+      // Animate form appearance
+      setTimeout(() => {
+        form.classList.remove('opacity-0', 'translate-y-10', 'scale-95');
+        form.classList.add('opacity-100', 'translate-y-0', 'scale-100');
+      }, 100);
+      
+    });
+   sessionStorage.setItem('userData', JSON.stringify({
+  userId: '683e9561d61092e6328658b1',  
+  email: 'user@example.com' 
+}));
+
+  </script>
+
+
+ 
+
+
+
+</body>
+</html> 
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+ 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Visa Application Form</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .box{
+       background: linear-gradient(120deg, #ffffff 0%, #f8f2f8 48%, #e9bddd 100%);
+    }
+    #visaForm{
+       /* background: linear-gradient(120deg, #ffffff 0%, #f8f2f8 48%, #e9bddd 100%); */
+       background-color: #d5d5d51a;
+       border-color: rgba(var(--bs-white-rgb), var(--bs-border-opacity)) !important;
+       max-width: 1100px;
+    }
+    .submit1{
+         background-color: rgb(255 90 31 / var(--tw-bg-opacity, 1));
+    }
+    .submit1:hover{
+           background-color: rgb(255 90 31 / var(--tw-bg-opacity, 1));
+    }
+    .text-heading{
+      justify-content: center;
+    }
+  </style>
+</head>
+<body class="box">
+
+  <div class="relative min-h-screen flex items-center justify-center px-4 py-10 overflow-hidden">
+    <div class="absolute top-[-200px] left-[-200px] w-[800px] h-[800px] bg-gradient-to-br from-pink-200 via-purple-300 to-white opacity-60 rounded-full filter blur-[160px] z-0"></div>
+
+
+
+    <form id="visaForm" class="w-full max-w p bg-white rounded-2xl shadow-xl transition-all duration-700 ease-out transform z-10  translate-y-10 scale-95">
+    <h2 class="text-heading text-3xl font-extrabold text-gray-900 mb-10 text-center mx-auto">
+  Visa Application Form
+</h2>
+
+      <div class="mb-6">
+        <label class="block text-sm font-medium text-gray-700 mb-1">What country is your passport from?</label>
+        <select id="passportCountry" required class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-400"></select>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Traveling From</label>
+          <select id="travelFrom" required class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-400"></select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Traveling To</label>
+          <select id="travelTo" required class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-400"></select>
+        </div>
+      </div>
+
+      <div id="visaCategorySection" class="mt-6 hidden">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Visa Category</label>
+        <select id="visaCategory"   name="visaCategory"  required class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-400"></select>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Departure Date</label>
+          <input type="date" id="departureDate" required class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-400">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Arrival Date</label>
+          <input type="date" id="arrivalDate" required class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-400">
+        </div>
+      </div>
+       
+
+    
+     
+
+
+  
+     
+
+    <div class="mt-10">
+  <button type="submit" class=" submit1 w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 rounded-xl text-lg transition-all duration-300 shadow-md hover:shadow-xl">
+    Pay Now
+  </button>
+</div>
+
+
+    </form>
+  </div> 
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const passportCountrySelect = document.getElementById('passportCountry');
+      const travelFromSelect = document.getElementById('travelFrom');
+      const travelToSelect = document.getElementById('travelTo');
+      const visaCategorySelect = document.getElementById('visaCategory');
+      const visaCategorySection = document.getElementById('visaCategorySection');
+      const form = document.getElementById('visaForm');
+
+      
+      const countries = await fetch('https://restcountries.com/v3.1/all')
+        .then(res => res.json())
+        .then(data => data.map(c => c.name.common).sort());
+
+      countries.forEach(country => {
+        const option = new Option(country, country);
+        passportCountrySelect.add(option.cloneNode(true));
+        travelFromSelect.add(option.cloneNode(true));
+      });
+
+      const response = await axios.get('https://back.theskytrails.com/api/skyTrails/getCountryList');
+      const travelToOptions = response.data.result;
+
+      travelToOptions.forEach(item => {
+        const option = new Option(item.country, item.country);
+        travelToSelect.add(option);
+      });
+
+      travelToSelect.addEventListener('change', () => {
+        const selectedCountry = travelToSelect.value.trim();
+        const selected = travelToOptions.find(item => item.country === selectedCountry);
+
+        visaCategorySelect.innerHTML = '<option value="">Select a category</option>';
+
+        if (selected && Array.isArray(selected.visaCategories)) {
+          selected.visaCategories.forEach(category => {
+            visaCategorySelect.add(new Option(category, category));
+          });
+          visaCategorySection.classList.remove('hidden');
+        } else {
+          visaCategorySection.classList.add('hidden');
+        }
+      });
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const signupData = JSON.parse(localStorage.getItem("signupData"));
+        if (!signupData) {
+          alert("Signup data missing!");
+          return;
+        }
+
+        const finalData = {
+          userId: signupData.userId,
+          firstName: signupData.firstName,
+          lastName: signupData.lastName,
+          email: signupData.email,
+          sex: signupData.gender,
+          mobileNumber: signupData.phone,
+          address: signupData.address,
+          depCountyName: travelFromSelect.value.trim(),
+          arrCountyName: travelToSelect.value.trim(),
+          fromDate: new Date(document.getElementById('departureDate').value).toISOString(),
+          toDate: new Date(document.getElementById('arrivalDate').value).toISOString(),
+          visaType: visaCategorySelect.value.trim(),
+          visaCategory: visaCategorySelect.value.trim(),
+          sourceCountry: passportCountrySelect.value.trim(),
+          destinationCountry: travelToSelect.value.trim(),
+        };
+
+        // ✅ Log data for verification
+        console.log("Final Visa Data:", finalData);
+
+        try {
+          const result = await axios.post('https://back.theskytrails.com/skyTrails/api/visa/applyForAiVisa', finalData, {
+            headers: { 'Content-Type': 'application/json' }
+          });
+          alert('Visa application submitted successfully!');
+          console.log("Response:", result.data);
+       
+          // ✅ Save to localStorage for use on AI Home page
+          localStorage.setItem('visaData', JSON.stringify(finalData));
+
+    // ✅ Redirect to AI home page (optional)
+          window.location.href = 'aihome.html';
+       
+        } catch (err) {
+          console.error('Submission failed:', err.response?.data || err.message);
+          alert('Submission failed. Check console for error.');
+        }
+        function formatDateToDDMMYYYY(dateStr) {
+      const date = new Date(dateStr);
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const year = date.getFullYear();
+      return `${day}-${month}-${year}`;
+    }
+
+
+
+      });
+
+      // Animate form appearance
+      setTimeout(() => {
+        form.classList.remove('opacity-0', 'translate-y-10', 'scale-95');
+        form.classList.add('opacity-100', 'translate-y-0', 'scale-100');
+      }, 100);
+    });
+  </script>
+
+
+ 
+
+
+
+</body>
+</html> 
+ 
+
+
+
+
+
+ -->
