@@ -6997,6 +6997,8 @@ def visa_history_list(request):
 
 
 
+def ai_documents_list(request):
+    return render(request,'crm/VisaHistory/ai_documents.html')
 
 
 # ------------------------------- Sub AGENT --------------------------

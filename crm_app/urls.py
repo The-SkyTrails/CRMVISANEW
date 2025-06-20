@@ -315,6 +315,7 @@ urlpatterns = [
    path("booking/history",booking_history,name="booking_history"),
    path("visa/history/",visa_history,name="visa_history"),
    path("visa/history/list",visa_history_list,name="visa_history_list"),
+   path("Ai/Documents",ai_documents_list,name="ai_documents_list"),
 
 
    # -----------------------AI Integrations---------------------

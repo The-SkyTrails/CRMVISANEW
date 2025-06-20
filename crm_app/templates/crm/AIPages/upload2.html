@@ -718,7 +718,7 @@ background: rgba(159, 159, 159, 0.3);
     <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
       <div class="d-flex align-items-center gap-4">
         <div class="d-flex flex-column flex-lg-row gap-4">
-          <a href="{% url "ai_form" %}" class="text-dark fw-semibold text-decoration-none" style="font-size: 15px;">Apply now</a>
+          <a href="./Form.html" class="text-dark fw-semibold text-decoration-none" style="font-size: 15px;">Apply now</a>
           <a href="#" class="text-dark fw-semibold text-decoration-none" style="font-size: 15px;">My Applications</a>
           <a href="#" class="text-dark fw-semibold text-decoration-none" style="font-size: 15px;">My Documents</a>
 
@@ -933,7 +933,7 @@ background: rgba(159, 159, 159, 0.3);
       <div>
         <a href="{% url "ai_guideline" %}">
         <button class="btn btn-secondary me-2">Go Back</button></a>
-        <a href="{% url "ai_review" %}">
+        <a href="{% url ""ai_review" " %}">
         <button class="btn btn-submit-custom">Submit</button></a>
       </div>
     </div>
@@ -984,7 +984,6 @@ background: rgba(159, 159, 159, 0.3);
 
 
 
-
 <script>
   // Global auth object
   window.auth = {
@@ -1010,6 +1009,16 @@ background: rgba(159, 159, 159, 0.3);
   const zoomStep = 0.2;
   const maxZoom = 2.5;
   const minZoom = 0.5;
+  const MAX_PHOTOS_ALLOWED = 3;
+  const MAX_RETRIES = 3;
+  const RETRY_DELAY_MS = 1000;
+
+  // Helper function to check for duplicate files
+  function isDuplicateFile(file, existingFiles) {
+    return existingFiles.some(uploaded => 
+      uploaded.fileName.toLowerCase() === file.name.toLowerCase()
+    );
+  }
 
   // Helper function to format key names
   function formatKeyName(key) {
@@ -1032,74 +1041,51 @@ background: rgba(159, 159, 159, 0.3);
     const form = document.getElementById('right-details-fields');
     form.innerHTML = `<div class="no-data-message">${message}</div>`;
   }
+
   function hasRequiredDocuments() {
-  return uploadedImages.length > 0;
-}
-
-// window.addEventListener('beforeunload', function(e) {
-//   if (!hasRequiredDocuments()) {
-//     e.preventDefault();
-//     e.returnValue = 'You need to upload at least one document before leaving this page.';
-//     return e.returnValue;
-//   }
-// });
-
-document.addEventListener('click', function(e) {
-  const target = e.target.closest('a');
-  if (target && !hasRequiredDocuments()) {
-    e.preventDefault();
-    alert('Please upload  document before proceeding.');
+    return uploadedImages.length > 0;
   }
-});
 
+  function updateNavigationButtons() {
+    const navButtons = document.querySelectorAll('.nav-button, .next-btn');
+    navButtons.forEach(button => {
+      button.disabled = !hasRequiredDocuments();
+      if (button.disabled) {
+        button.title = 'Please upload the document before going to nextpage';
+      }
+    });
+  }
 
-function updateNavigationButtons() {
-  const navButtons = document.querySelectorAll('.nav-button, .next-btn');
-  navButtons.forEach(button => {
-    button.disabled = !hasRequiredDocuments();
-    if (button.disabled) {
-      button.title = 'Please upload the document before going to nextpage';
-    }
-  });
-}
-
-// Call this whenever the uploaded documents change
-updateNavigationButtons();
-
-
-
-function showUploadRequiredModal() {
-  const modal = document.createElement('div');
-  modal.style.position = 'fixed';
-  modal.style.top = '0';
-  modal.style.left = '0';
-  modal.style.width = '100%';
-  modal.style.height = '100%';
-  modal.style.backgroundColor = 'rgba(0,0,0,0.5)';
-  modal.style.display = 'flex';
-  modal.style.justifyContent = 'center';
-  modal.style.alignItems = 'center';
-  modal.style.zIndex = '1000';
-  
-  modal.innerHTML = `
-    <div style="background: white; padding: 20px; border-radius: 8px; max-width: 400px;">
-      <h3>Upload Required</h3>
-      <p>You need to upload  document before you can proceed.</p>
-      <button id="upload-now-btn" style="padding: 8px 16px; background: #4285f4; color: white; border: none; border-radius: 4px;">
-        Upload Documents Now
-      </button>
-    </div>
-  `;
-  
-  document.body.appendChild(modal);
-  
-  modal.querySelector('#upload-now-btn').addEventListener('click', function() {
-    document.body.removeChild(modal);
-    document.getElementById('main-upload-btn').click();
-  });
-}
-
-// Then modify the beforeunload and click handlers to use this modal instead
+  function showUploadRequiredModal() {
+    const modal = document.createElement('div');
+    modal.style.position = 'fixed';
+    modal.style.top = '0';
+    modal.style.left = '0';
+    modal.style.width = '100%';
+    modal.style.height = '100%';
+    modal.style.backgroundColor = 'rgba(0,0,0,0.5)';
+    modal.style.display = 'flex';
+    modal.style.justifyContent = 'center';
+    modal.style.alignItems = 'center';
+    modal.style.zIndex = '1000';
+    
+    modal.innerHTML = `
+      <div style="background: white; padding: 20px; border-radius: 8px; max-width: 400px;">
+        <h3>Upload Required</h3>
+        <p>You need to upload document before you can proceed.</p>
+        <button id="upload-now-btn" style="padding: 8px 16px; background: #4285f4; color: white; border: none; border-radius: 4px;">
+          Upload Documents Now
+        </button>
+      </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    modal.querySelector('#upload-now-btn').addEventListener('click', function() {
+      document.body.removeChild(modal);
+      document.getElementById('main-upload-btn').click();
+    });
+  }
 
   function matchDocType(docTypeRaw) {
     if (!docTypeRaw || typeof docTypeRaw !== "string") return "Unsorted";
@@ -1171,6 +1157,7 @@ function showUploadRequiredModal() {
       };
       ctn.appendChild(main);
     });
+    updateNavigationButtons();
   }
 
   function selectDocFile(dtIdx, fileIdx) {
@@ -1242,7 +1229,7 @@ function showUploadRequiredModal() {
     renderChecklist();
   }
 
- function renderRightDetails() {
+  function renderRightDetails() {
     try {
       const form = document.getElementById('right-details-fields');
       form.innerHTML = '';
@@ -1358,7 +1345,6 @@ function showUploadRequiredModal() {
         });
         
         field.addEventListener('blur', function() {
-          // Delay hiding the save button to allow click
           setTimeout(() => {
             this.parentElement.querySelector('.save-btn').style.display = 'none';
           }, 200);
@@ -1388,9 +1374,9 @@ function showUploadRequiredModal() {
       console.error('Error in renderRightDetails:', error);
       showNoDataMessage('Error displaying document data');
     }
-}
+  }
 
-function saveFieldValue(fieldElement) {
+  function saveFieldValue(fieldElement) {
     const key = fieldElement.getAttribute('data-key');
     const newValue = fieldElement.textContent.trim();
     const originalValue = fieldElement.getAttribute('data-original');
@@ -1419,13 +1405,10 @@ function saveFieldValue(fieldElement) {
     const finalKey = keyParts[keyParts.length - 1];
     targetObj[finalKey] = newValue;
 
-    // Optionally update original data to avoid repeated saves
     fieldElement.setAttribute('data-original', newValue);
-
-    // Hide save button
     const saveBtn = fieldElement.parentElement.querySelector('.save-btn');
     if (saveBtn) saveBtn.style.display = 'none';
-}
+  }
 
   function showReviewTab() {
     document.getElementById('tab-review').classList.add('active');
@@ -1500,7 +1483,6 @@ function saveFieldValue(fieldElement) {
     errorListDiv.innerHTML = '';
     let errorCount = 0;
 
-    // Get current document
     const currentDocType = DOC_TYPES[selectedDocTypeIdx];
     const docsOfType = uploadedImages.filter(x => x.docType === currentDocType);
     const currentDoc = docsOfType[selectedFileIdx];
@@ -1511,14 +1493,12 @@ function saveFieldValue(fieldElement) {
         return;
     }
 
-    // Get errors from all possible fields
     const errorDetails = currentDoc.backendObj?.errorDetails || 
                         currentDoc.backendObj?.errorMessages || 
                         currentDoc.backendObj?.parsedData?.detected_errors ||
                         currentDoc.backendObj?.parsedData?.['Detected Errors'] || 
                         [];
 
-    // Convert to array and filter
     const errorsArray = Array.isArray(errorDetails) ? errorDetails : 
                        typeof errorDetails === 'string' ? [errorDetails] : [];
     
@@ -1527,12 +1507,10 @@ function saveFieldValue(fieldElement) {
         !err.toLowerCase().includes('readable')
     );
 
-    // Add status code error if present
     if (currentDoc.backendObj?.statusCode && currentDoc.backendObj.statusCode !== 200) {
         filteredErrors.push(`API Error: Status Code ${currentDoc.backendObj.statusCode}`);
     }
 
-    // Display errors or no-error message
     if (filteredErrors.length > 0) {
         const title = document.createElement("div");
         title.className = "doc-details-field";
@@ -1554,10 +1532,8 @@ function saveFieldValue(fieldElement) {
             </div>`;
     }
 
-    // Update error count badge
     document.getElementById("review-errors-count").textContent = errorCount.toString();
 
-    // Only show missing doc types if we're viewing all errors
     if (document.getElementById('tab-errors').classList.contains('active')) {
         renderMissingDocTypeErrors();
     }
@@ -1574,13 +1550,13 @@ function saveFieldValue(fieldElement) {
         errorContent.style.display = 'none';
         reviewTab.classList.add('active');
         errorTab.classList.remove('active');
-        renderRightDetails(); // Refresh details view
+        renderRightDetails();
     } else {
         reviewContent.style.display = 'none';
         errorContent.style.display = 'block';
         reviewTab.classList.remove('active');
         errorTab.classList.add('active');
-        renderErrorSummary(); // Refresh error display
+        renderErrorSummary();
     }
   }
 
@@ -1604,11 +1580,6 @@ function saveFieldValue(fieldElement) {
       const errorListDiv = document.getElementById("dynamic-error-list");
       if (!errorListDiv) return;
 
-      // const sectionTitle = document.createElement("div");
-      // sectionTitle.className = "doc-details-field";
-      // sectionTitle.innerHTML = `<label><strong>Missing Document Types</strong></label>`;
-      errorListDiv.appendChild(sectionTitle);
-
       missingTypes.forEach(type => {
         const errorItem = document.createElement("div");
         errorItem.className = "doc-details-field";
@@ -1620,35 +1591,42 @@ function saveFieldValue(fieldElement) {
       document.getElementById("review-errors-count").textContent = (currentCount + missingTypes.length).toString();
     }
   }
-  // Add this near your other constants
-const MAX_PHOTOS_ALLOWED = 3;
 
-async function handleFilesSelected(fileInputs) {
+  async function handleFilesSelected(fileInputs) {
     if (!fileInputs.length) return;
 
-    // Only count new photo files being uploaded
     const newFiles = Array.from(fileInputs);
-    const newPhotosCount = newFiles.filter(file => 
+    
+    // Filter out duplicates
+    const uniqueNewFiles = newFiles.filter(file => 
+        !isDuplicateFile(file, uploadedImages)
+    );
+
+    if (uniqueNewFiles.length < newFiles.length) {
+        const duplicateCount = newFiles.length - uniqueNewFiles.length;
+        alert(`${duplicateCount} file(s) were not uploaded because they are duplicates of already uploaded files.`);
+    }
+
+    if (!uniqueNewFiles.length) return;
+
+    const newPhotosCount = uniqueNewFiles.filter(file => 
         file.type.startsWith('image/')
     ).length;
 
-    // Validate only the new photo count
     if (newPhotosCount > MAX_PHOTOS_ALLOWED) {
         alert(`You can only upload ${MAX_PHOTOS_ALLOWED} photos at a time.\n\nYou are trying to add ${newPhotosCount} photos.`);
         return;
     }
 
-    showProcessingOverlay(newFiles.length);
-    document.getElementById('uploading-file-name').textContent = `${newFiles.length} files selected`;
+    showProcessingOverlay(uniqueNewFiles.length);
+    document.getElementById('uploading-file-name').textContent = `${uniqueNewFiles.length} files selected`;
 
     try {
-        // Upload files
-        const results = await uploadFilesWithRetry(newFiles, 0);
+        const results = await uploadFilesWithRetry(uniqueNewFiles, 0);
         const processedResults = Array.isArray(results) ? results : [results];
 
-        // Process each result
         processedResults.forEach((result, index) => {
-            const file = newFiles[index];
+            const file = uniqueNewFiles[index];
             
             const safeResult = result || {};
             const docType = safeResult.docType || "Unsorted";
@@ -1662,10 +1640,8 @@ async function handleFilesSelected(fileInputs) {
                 backendObj
             };
 
-            // Add to uploaded images (without duplicate check if you want to allow duplicates)
             uploadedImages.push(fileEntry);
-
-            updateProcessingProgress(index + 1, newFiles.length);
+            updateProcessingProgress(index + 1, uniqueNewFiles.length);
         });
 
     } catch (e) {
@@ -1679,11 +1655,11 @@ async function handleFilesSelected(fileInputs) {
         setUIState(uploadedImages.length ? 'preview' : 'empty');
         document.getElementById('upload-more-container').style.display = 'block';
     }
-}
+  }
+
   async function uploadFilesWithRetry(files, attempt = 0) {
     try {
         const result = await uploadFiles(files);
-        // Ensure we always return an array of processed files
         return result.uploadedFiles || [];
     } catch (error) {
         if (attempt < MAX_RETRIES) {
@@ -1692,8 +1668,9 @@ async function handleFilesSelected(fileInputs) {
         }
         throw error;
     }
-}
-async function uploadFiles(files) {
+  }
+
+  async function uploadFiles(files) {
     const userData = JSON.parse(sessionStorage.getItem('userData'));
 
     if (!userData || !userData.userId || !userData.email) {
@@ -1706,14 +1683,12 @@ async function uploadFiles(files) {
     formData.append('applicantEmail', userData.email);
 
     try {
-        // First API call
         const uploadResponse = await axios.post(
             'https://back.theskytrails.com/skyTrails/api/visa/uploadedDocsDetails',
             formData,
             { headers: { 'Content-Type': 'multipart/form-data' } }
         );
 
-        // Safely extract imageeDetails from different possible response structures
         const result = uploadResponse.data?.result || uploadResponse.data;
         console.log(result);
         const imageDetails = Array.isArray(result?.imageeDetails) 
@@ -1733,16 +1708,13 @@ async function uploadFiles(files) {
             backendObj: entry
         }));
 
-        // Store in sessionStorage
         sessionStorage.setItem('uploadedDocuments', JSON.stringify({
             uploadedFiles: processedFiles,
             userId: userData.userId,
             email: userData.email
         }));
 
-        // Second API call - completely silent
        if (uploadResponse.data.statusCode === 200 || uploadResponse.data.statusCode === 201) {
-    // Fire-and-forget with response logging (but no UI impact)
     axios.post(
         'https://back.theskytrails.com/skyTrails/api/visa/openai/visaApplDocCreation',
         {
@@ -1755,33 +1727,32 @@ async function uploadFiles(files) {
         { headers: { 'Content-Type': 'application/json' } }
     )
     .then(response => {
-        // Silent success logging (dev-only)
         console.debug('Second API success:', {
             status: response.status,
-            data: response.data // Optional: Redact sensitive data in production
+            data: response.data
         });
     })
     .catch(error => {
-        // Silent error logging (dev-only)
         console.error('Second API failed (silent):', {
             status: error.response?.status,
             message: error.message,
-            config: { url: error.config?.url } // Redact sensitive data
+            config: { url: error.config?.url }
         });
     });
 }
 
-return { 
-    uploadedFiles: processedFiles, // Only first API data
-    userId: userData.userId,
-    email: userData.email
-};
+        return { 
+            uploadedFiles: processedFiles,
+            userId: userData.userId,
+            email: userData.email
+        };
 
     } catch (error) {
         console.error("Upload failed:", error);
         throw error;
     }
-}
+  }
+
   function initializePage() {
     console.log("Initializing page with uploadedImages:", uploadedImages);
     
@@ -1859,6 +1830,15 @@ return {
     document.getElementById('zoom-reset-btn')?.addEventListener('click', resetZoom);
 
     bindUploadBtn('center-upload-btn', 'center-file-input');
+
+    // Prevent navigation when required documents aren't uploaded
+    document.addEventListener('click', function(e) {
+      const target = e.target.closest('a');
+      if (target && !hasRequiredDocuments()) {
+        e.preventDefault();
+        showUploadRequiredModal();
+      }
+    });
   }
 
   document.addEventListener('visibilitychange', function() {
