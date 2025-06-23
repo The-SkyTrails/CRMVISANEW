@@ -6988,6 +6988,8 @@ def visa_history_list(request):
         response = requests.get(api_url)
         response_data = response.json()
         visa_applications = response_data.get('result', [])
+        for visa in visa_applications:
+            visa['visa_id'] = visa.get('_id')
         print("response here.........",visa_applications)
     except Exception as e:
         print(f"Error fetching API data: {e}")
@@ -6997,9 +6999,83 @@ def visa_history_list(request):
 
 
 
-def ai_documents_list(request):
-    return render(request,'crm/VisaHistory/ai_documents.html')
+def ai_documents_list(request,visa_id):
+    api_url = f"https://back.theskytrails.com/skyTrails/api/visa/documents/applicantDocDetails?appId={visa_id}"
+    # api_url = f"https://back.theskytrails.com/skyTrails/api/visa/getVisaApplicationByUser?_id={visa_id}"
 
+    try:
+        response = requests.get(api_url)
+        print("Status Code:", response.status_code)
+        print("Raw Response:", response.text)  # 👈 Yeh sabse important hai
+        response_data = response.json()
+        visa = response_data.get('result', {})
+    except Exception as e:
+        print(f"API error: {e}")
+        visa = {}
+    return render(request,'crm/VisaHistory/ai_documents.html',{'visa': visa})
+
+
+import requests
+from django.http import HttpResponse, Http404
+from urllib.parse import urlparse
+
+def download_document(request):
+    file_url = request.GET.get("url")
+
+    if not file_url:
+        raise Http404("File URL is missing.")
+
+    try:
+        response = requests.get(file_url, stream=True)
+        filename = urlparse(file_url).path.split("/")[-1]
+
+        if response.status_code == 200:
+            content_type = response.headers.get("Content-Type", "application/octet-stream")
+            res = HttpResponse(response.content, content_type=content_type)
+            res['Content-Disposition'] = f'attachment; filename="{filename}"'
+            return res
+        else:
+            raise Http404("File not found.")
+    except Exception as e:
+        print("Error downloading file:", e)
+        raise Http404("Error fetching file.")
+
+import requests
+import io
+import zipfile
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from urllib.parse import urlparse
+
+@csrf_exempt
+def download_all_documents(request):
+    if request.method == "POST":
+        urls = request.POST.getlist('urls[]')
+
+        if not urls:
+            return HttpResponse("No document URLs provided.", status=400)
+
+        # Create in-memory ZIP
+        zip_buffer = io.BytesIO()
+        with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+            for url in urls:
+                try:
+                    response = requests.get(url)
+                    if response.status_code == 200:
+                        file_name = urlparse(url).path.split('/')[-1] or "document.jpg"
+                        zip_file.writestr(file_name, response.content)
+                    else:
+                        print(f"Failed to download: {url}")
+                except Exception as e:
+                    print(f"Error downloading {url}: {e}")
+
+        # Prepare ZIP for response
+        zip_buffer.seek(0)
+        response = HttpResponse(zip_buffer, content_type='application/zip')
+        response['Content-Disposition'] = 'attachment; filename="documents.zip"'
+        return response
+
+    return HttpResponse("Invalid request method.", status=405)
 
 # ------------------------------- Sub AGENT --------------------------
 

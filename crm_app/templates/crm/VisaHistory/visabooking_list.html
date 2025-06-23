@@ -26,9 +26,17 @@
       <td>{{ visa.toDate }}</td>
       <td>
        <ul class="list-inline hstack gap-2 mb-0">
-        <li>
-            <a href=""></a>
-        </li>
+        {% if visa.documents %}
+                <li>
+                    <a href="{% url 'ai_documents_list' visa.visa_id %}" class="btn btn-primary">View</a>
+                </li>
+            {% else %}
+                <li>No documents</li>
+            {% endif %}
+        
+        {% comment %} <li>
+            <a href="{% url "ai_documents_list" visa.visa_id %}">doc</a>
+        </li> {% endcomment %}
          
           {% comment %} <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Edit">
              <a href="#"  class="text-primary d-inline-block edit-item-btn">

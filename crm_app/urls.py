@@ -315,7 +315,11 @@ urlpatterns = [
    path("booking/history",booking_history,name="booking_history"),
    path("visa/history/",visa_history,name="visa_history"),
    path("visa/history/list",visa_history_list,name="visa_history_list"),
-   path("Ai/Documents",ai_documents_list,name="ai_documents_list"),
+   path("Ai/Documents/<str:visa_id>/",ai_documents_list,name="ai_documents_list"),
+   
+   path('download/', download_document, name='download_document'),
+   path('download-all/', download_all_documents, name='download_all_documents'),
+
 
 
    # -----------------------AI Integrations---------------------
