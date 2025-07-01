@@ -7407,7 +7407,11 @@ def ai_form(request):
     return render(request,'crm/AIPages/Form.html')
 
 def visa_form(request):
-    return render(request,'crm/AIPages/visaForm.html')
+    user_id = request.user.id
+    context = {
+        'user_id':user_id
+    }
+    return render(request,'crm/AIPages/visaForm.html',context)
 
 def ai_home(request):
     return render(request,'crm/AIPages/aihome.html')
