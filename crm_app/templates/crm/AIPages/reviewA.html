@@ -6084,7 +6084,8 @@ function validateFormBeforeSubmit() {
 
 function validateAndSubmit() {
   if (validateFormBeforeSubmit()) {
-    window.location.href = 'submit.html';
+   // window.location.href = 'submit.html';
+   window.location.href = '{% url "ai_submit" %}';
   }
   return false;
 }
