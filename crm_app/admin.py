@@ -53,4 +53,5 @@ admin.site.register(Todo)
 admin.site.register(Wallet)
 admin.site.register(RechargeHistory)
 admin.site.register(SubAgnt)
+admin.site.register(WalletHistory)
 
