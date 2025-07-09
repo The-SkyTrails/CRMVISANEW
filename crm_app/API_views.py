@@ -18,6 +18,7 @@ from .models import (
     Admin, 
     Employee,
     Wallet,
+    WalletHistory,
     RechargeHistory
     
 )
@@ -281,6 +282,14 @@ class WalletAPIView(APIView):
 
         wallet.balance += increment_amount
         wallet.save()
+        WalletHistory.objects.create(
+            user=request.user,
+            transaction_type='CREDIT',
+            amount=increment_amount,
+            balance_after_transaction=wallet.balance,
+            type='Wallet Recharge',   # या तुम कुछ और डाल सकते हो
+            booking_id=None
+        )
 
         return Response({
             "message": f"Balance incremented by {increment_amount}",
@@ -311,6 +320,14 @@ class WalletAPIView(APIView):
         wallet.booking_id = booking_id
         
         wallet.save()
+        WalletHistory.objects.create(
+            user=request.user,
+            transaction_type='DEBIT',
+            amount=decrement_amount,
+            balance_after_transaction=wallet.balance,
+            type=dec_type,
+            booking_id=booking_id
+        )
 
         return Response({
             "message": f"Balance decremented by {decrement_amount}",

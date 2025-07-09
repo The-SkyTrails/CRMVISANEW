@@ -161,24 +161,27 @@
                            <thead>
                               <tr>
                                  <th>S.No.</th>
+                                 <th>Transaction Type</th>
+                                 <th>Amount</th>
                                  <th>Balance</th>
                                  <th>Type</th>
-                                 <th>Updated At</th>
-                                 <th>Booking ID</th>
+                                 <th>Created At</th>
                               </tr>
                            </thead>
                            <tbody class="list form-check-all">
                               {% for i in wallet %}
                               <tr>
                                  <td>{{forloop.counter}}</td>
-                                 <td>₹{{i.balance}}</td>
-                                 <td>
-                                    <span class="type-badge type-{{i.type|lower}}">
-                                       {{i.type}}
+                                  <td>
+                                    <span class="type-badge type-{{i.transaction_type|lower}}">
+                                       {{i.transaction_type}}
                                     </span>
                                  </td>
-                                 <td>{{i.updated_at}}</td>
-                                 <td>{{i.booking_id|default:"-"}}</td>
+                                 <td>₹{{i.amount}}</td>
+                                
+                                 <td>{{i.balance_after_transaction}}</td>
+                                 <td>{{i.type}}</td>
+                                 <td>{{i.created_at}}</td>
                               </tr>
                               {% endfor %}
                            </tbody>

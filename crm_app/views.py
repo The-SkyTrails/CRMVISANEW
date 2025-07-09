@@ -6833,6 +6833,14 @@ def handle_response(request):
                 print("ppppppppppppppppp")
                 wallet_history.save()
             # wallet.balance += float(amount)
+            WalletHistory.objects.create(
+                user=request.user,
+                transaction_type='CREDIT',
+                amount=Decimal(str(amount)),
+                balance_after_transaction=wallet_history.balance,
+                type="Cashfree",
+                booking_id=""
+            )
             
 
 
@@ -6924,7 +6932,7 @@ def recharge_history(request):
 
 
 def wallet_history(request):
-    Wallet_history = Wallet.objects.filter(user=request.user)
+    Wallet_history = WalletHistory.objects.filter(user=request.user)
     context = {
         'wallet':Wallet_history
     }

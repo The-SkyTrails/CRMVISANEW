@@ -1119,14 +1119,26 @@ class Wallet(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     booking_id = models.CharField(max_length=100)
 
-    # def __str__(self):
-    #     name = ""
-    #     if self.agent:
-    #         name = f"{self.agent.users.first_name} {self.agent.users.last_name}"
-    #     elif self.outsourceagent:
-    #         name = f"{self.outsourceagent.users.first_name} {self.outsourceagent.users.last_name}"
-    #     return f"{name} - ₹{self.amount} on {self.created_at.date()}"
+
+class WalletHistory(models.Model):
+    TRANSACTION_TYPES = (
+        ('CREDIT', 'Credit'),
+        ('DEBIT', 'Debit'),
+    )
     
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    transaction_type = models.CharField(max_length=10, choices=TRANSACTION_TYPES)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    balance_after_transaction = models.DecimalField(max_digits=10, decimal_places=2)
+    type = models.CharField(max_length=100, null=True, blank=True)
+    booking_id = models.CharField(max_length=100, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"{self.user} | {self.transaction_type} | {self.amount}"
+
+
+
 class RechargeHistory(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
